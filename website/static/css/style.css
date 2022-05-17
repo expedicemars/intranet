@@ -1,0 +1,26 @@
+/* neumim css */
+.alertcolor-info {
+    background-color: rgb(253, 235, 138  );
+}
+.alertcolor-error  {
+    background-color: rgb(255, 121, 121);
+}
+.alertcolor-success {
+    background-color: rgb(138, 253, 138  );
+}
+
+h2 {
+    color: #023975;
+}
+
+h3 {
+    color: #023975;
+}
+
+section {
+    background-color: rgb(247, 247, 255);
+}
+
+.bug {
+    background-color: white;
+}
