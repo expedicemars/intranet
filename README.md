@@ -34,6 +34,9 @@ Máš tu funkční stránky s login, admin a bugtracking systémem.
   - dal: `from website import create_app`
   - `application = create_app()`
 
+- Force HTTPS on
+- HTTPS certificate - auto Let's encrypt
+
 
 
 
