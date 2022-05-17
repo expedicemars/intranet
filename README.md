@@ -1,6 +1,42 @@
 # Šablona stránek
 
 Máš tu funkční stránky s login, admin a bugtracking systémem.
+
+## Zakládání všeho
+
+### Dostat věci na bitbucket
+1. Založit repo na bitbucketu
+2. zkopírovat SSH adresu (něco jako git@bitbucket.org:piipecek/sablona.git)
+3. git init v mé složce na lokálu
+4. git remote add origin \<SSH adresa\>
+5. git push -u origin master
+
+### Subdoména
+
+1. Forpsi -> administrace -> domény -> klik na moojí (asi piipovostranky.cz) -> editace DNS záznamů
+2. Na pythonanywhere zalozit novou app, dostat z ni cname
+3. nový DNS záznam: typ CNAME, napsat subdomenu, paste CNAME
+
+### Rozeběhnout app na python anywhere
+
+1. `git clone` do PA do normalne nejvyssi slozky (vytvori to svoji slozku na repo)
+2. `cd` in
+3. `mkvirtualenv ENV_JMENO --python='/usr/bin/python3.9'`
+4. `pip install -r requirements.txt`
+5. Na webabb stránce
+- do virtualenv napsat to jmeno virtual_envu
+- working environment do slozky s repem
+- do code/source code napsat tu samou slozku
+-WSGI: ve Flask sekci uncommentnout:
+  - import sys
+  - path = 
+  - ten if block
+  - dal: `from website import create_app`
+  - `application = create_app()`
+
+
+
+
 ## Hosting
 
 - používám hosting na [python anywhere](https://eu.pythonanywhere.com).
