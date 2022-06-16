@@ -2,8 +2,19 @@
 {% block nav %}
     <li class="nav-item"><a class="nav-link active" href="{{url_for('default_views.home')}}">&lt-Zpět do uživatelské sekce</a></li>
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.admin_dashboard')}}">Admin dashboard</a></li>
+    {% if "editing_bugs_allowed" in roles %}
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.uprava_znamych_bugu')}}">Přehled známých bugů</a></li>
+    {% endif %}
+    {% if "editing_logs_allowed" in roles %}
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.logs_file')}}">Logs file</a></li>
+    {% endif %}
+    {% if "editing_users_allowed" in roles %}
+    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.edit_users')}}">Úprava uživatelů</a></li>
+    {% endif %}
+    {% if "editing_admins_allowed" in roles %}
+    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.jmenovat_adminy')}}">Jmenovat adminy</a></li>
+    {% endif %}
+
     {% endblock %}
 
 {% block footer %}

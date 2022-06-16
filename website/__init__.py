@@ -63,4 +63,8 @@ def create_app():
     def not_found(e):
         return render_template("not_found.html"), 404
 
+    @app.errorhandler(401)
+    def not_found(e):
+        return render_template("not_authorised.html"), 401
+
     return app

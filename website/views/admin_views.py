@@ -1,82 +1,102 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
 from flask_login import current_user
 from website.json_handlers.admin_handling import is_admin
 from website.models.chyba import Chyba
+from website.models.user import User
 from website.json_handlers.logs_handling import delete_logs
 import json
+from website.roles.role_handler import get_access_rights
 
 
 admin_views = Blueprint("admin_views",__name__)
 
-
-# @admin_views.route("/", methods=["GET","POST"])
-# def ():
-#     if current_user.is_authenticated:
-#         if is_admin(current_user.email):
-#             if request.method == "GET":
-#                 return render_template(".html")
-#             else:
-#                 return None
-    
-#     flash("Na tuto stránku nemáte přístup.", "error")
-#     return redirect(url_for("default_views.home"))
-
 @admin_views.route("/")
 @admin_views.route("/dashboard")
 def admin_dashboard():
-    if current_user.is_authenticated:
-        if is_admin(current_user.email):
-            flash("Zkouška error hlášky", category="error")
-            flash("Zkouška success hlášky", category="success")
-            flash("Zkouška info hlášky", category="info")
-            return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych())
-    
-    flash("Na tuto stránku nemáte přístup.", "error")
-    return redirect(url_for("default_views.home"))
+    roles = get_access_rights(current_user)
+    if "admin" in roles:
+        flash("Zkouška error hlášky", category="error")
+        flash("Zkouška success hlášky", category="success")
+        flash("Zkouška info hlášky", category="info")
+        print(roles)
+        return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych(), roles=roles)
+    else:
+        abort(401)
 
 
 @admin_views.route("/planovane_featury")
 def planovane_featury():
-    if current_user.is_authenticated:
-        if is_admin(current_user.email):
-            return render_template("admin_planovane_featury.html")
-    
-    flash("Na tuto stránku nemáte přístup.", "error")
-    return redirect(url_for("default_views.home"))
+    if "admin" in get_access_rights(current_user):
+       return render_template("admin_planovane_featury.html", roles=get_access_rights(current_user))
+    else:
+        abort(401)
+
 
 @admin_views.route("/historie_verzi")
 def historie_verzi():
-    if current_user.is_authenticated:
-        if is_admin(current_user.email):
-            return render_template("admin_historie_verzi.html")
-    
-    flash("Na tuto stránku nemáte přístup.", "error")
-    return redirect(url_for("default_views.home"))
+    if "admin" in get_access_rights(current_user):
+        return render_template("admin_historie_verzi.html", roles=get_access_rights(current_user))
+    else:
+        abort(401)
 
 
 @admin_views.route("/uprava_znamych_bugu", methods=["GET","POST"])
 def uprava_znamych_bugu():
-    if current_user.is_authenticated:
-        if is_admin(current_user.email):
-            if request.method == "GET":
-                return render_template("admin_uprava_znamych_chyb.html")
-            else:
-                Chyba.save_po_upravach(json.loads(request.form.get("result")))
-                return redirect(url_for("admin_views.admin_dashboard"))
-    
-    flash("Na tuto stránku nemáte přístup.", "error")
-    return redirect(url_for("default_views.home"))
+    if "editing_bugs_allowed" in get_access_rights(current_user):
+        if request.method == "GET":
+            return render_template("admin_uprava_znamych_chyb.html", roles=get_access_rights(current_user))
+        else:
+            Chyba.save_po_upravach(json.loads(request.form.get("result")))
+            return redirect(url_for("admin_views.admin_dashboard"))
+    else:
+        abort(401)
     
 
 @admin_views.route("/logs_file", methods=["GET","POST"])
 def logs_file():
-    if current_user.is_authenticated:
-        if is_admin(current_user.email):
-            if request.method == "GET":
-                return render_template("admin_logs_file.html")
-            else:
-                delete_logs()
-                return redirect(url_for("admin_views.admin_dashboard"))
+    if "editing_logs_allowed" in get_access_rights(current_user):
+        if request.method == "GET":
+            return render_template("admin_logs_file.html", roles=get_access_rights(current_user))
+        else:
+            delete_logs()
+            return redirect(url_for("admin_views.admin_dashboard"))
+    else:
+        abort(401)
 
-    flash("Na tuto stránku nemáte přístup.", "error")
-    return redirect(url_for("default_views.home"))
+
+@admin_views.route("/edit_users", methods=["GET","POST"])
+def edit_users():
+    if "editing_users_allowed" in get_access_rights(current_user):
+        if request.method == "GET":
+            return render_template("admin_edit_users.html", roles=get_access_rights(current_user))
+        else:
+            result = request.form.get("result")
+            user_na_odstraneni = User.query.get(int(result))
+            if is_admin(user_na_odstraneni.email):
+                flash("Nemůžeš odstranit admina.", category="error")
+            else:
+                user_na_odstraneni.odstranit()
+                flash("User smazán", category="success")
+            return redirect(url_for("admin_views.admin_dashboard"))
+    else:
+        abort(401)
+
+@admin_views.route("/jmenovat_adminy", methods=["GET","POST"])
+def jmenovat_adminy():
+    if "editing_admins_allowed" in get_access_rights(current_user):
+        if request.method == "GET":
+            return render_template("admin_jmenovat_adminy.html", roles=get_access_rights(current_user))
+        else:
+            return redirect(url_for("admin_views.vybrat_role_adminovi", id=int(request.form.get("result"))))
+    else:
+        abort(401)
+
+@admin_views.route("/jmenovat_adminy/<int:id>", methods=["GET","POST"])
+def vybrat_role_adminovi(id):
+    if "editing_admins_allowed" in get_access_rights(current_user):
+        if request.method == "GET":
+            return render_template("admin_vybrat_role_adminovi.html", user=User.query.get(id), roles=get_access_rights(current_user))
+        else:
+            pass
+    else:
+        abort(401)
