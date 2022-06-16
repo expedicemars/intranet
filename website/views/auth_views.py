@@ -5,6 +5,7 @@ from website import db
 from website.models.user import User
 from website.mails.mail_handler import mail_sender
 import datetime
+import json
 
 
 auth_views = Blueprint("auth_views",__name__)
@@ -57,7 +58,7 @@ def register():
 				flash("Tento email je už zaregistrovaný. Použij prosím jiný", category="error")
 				return redirect(url_for("auth_views.register"))
 			else:
-				user = User(email=email, password=generate_password_hash(password, method="sha256"), pocet_odhadu=0, confirmed=False, last_login = datetime.date.today())
+				user = User(email=email, password=generate_password_hash(password, method="sha256"), confirmed=False, last_login = datetime.date.today(), role=json.dumps(["user"]))
 				db.session.add(user)
 				db.session.commit()
 				login_user(user, remember=True)

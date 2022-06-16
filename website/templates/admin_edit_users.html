@@ -1,0 +1,36 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<h2>Úprava uživatelů</h2>
+
+Tady jsou data posbíraná z databáze.
+<div id="from_db" class="container">
+    <div class="row">
+        <div class="col-auto">
+            <b>id</b>
+        </div>
+        <div class="col">
+            <b>email</b>
+        </div>
+        <div class="col">
+            Last Login
+        </div>
+        <div class="col">
+            Confirmed
+        </div>
+        <div class="col">
+            Role
+        </div>
+        <div class="col-auto">
+            Smazat
+        </div>
+    </div>
+</div>
+
+<form method="post" id="form">
+    <input hidden name="result" id="result"/>
+</form>
+
+<script type="module" src="{{url_for('static', filename='js/admin_edit_users.js')}}"></script>
+
+{% endblock %}

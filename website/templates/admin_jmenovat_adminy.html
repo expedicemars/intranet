@@ -1,0 +1,26 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<h2>Vyber uživatele, kterým chceš upravit role:</h2>
+
+<div id="from_db" class="container">
+    <div class="row">
+        <div class="col-auto">
+            <b>id</b>
+        </div>
+        <div class="col">
+            <b>email</b>
+        </div>
+        <div class="col-auto">
+            Vybrat...
+        </div>
+    </div>
+</div>
+
+<form method="post" id="form">
+    <input hidden name="result" id="result"/>
+</form>
+
+<script type="module" src="{{url_for('static', filename='js/admin_jmenovat_adminy.js')}}"></script>
+
+{% endblock %}

@@ -10,7 +10,7 @@ class User(db.Model, UserMixin):
 	password = db.Column(db.String(256))
 	last_login = db.Column(db.Date)
 	confirmed = db.Column(db.Boolean)
-	pocet_odhadu = db.Column(db.Integer)
+	role = db.Column(db.Text)
 
 	def get_reset_token(self, expires_sec = 9000) -> str:
 		s = Serializer(current_app.config["SECRET_KEY"],  expires_sec)
@@ -30,8 +30,8 @@ class User(db.Model, UserMixin):
 			"id": self.id,
 			"email":self.email,
 			"confirmed": self.confirmed,
-			"pocet_odhadu": self.pocet_odhadu,
-			"last_login": str(self.last_login)
+			"last_login": str(self.last_login),
+			"role": self.role
 		}
 
 	def odstranit(self):
