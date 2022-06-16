@@ -6,6 +6,7 @@ from website.models.user import User
 from website.json_handlers.logs_handling import delete_logs
 import json
 from website.roles.role_handler import get_access_rights
+from website import db
 
 
 admin_views = Blueprint("admin_views",__name__)
@@ -72,12 +73,13 @@ def edit_users():
         else:
             result = request.form.get("result")
             user_na_odstraneni = User.query.get(int(result))
-            if is_admin(user_na_odstraneni.email):
+            if "admin" in user_na_odstraneni.role:
                 flash("Nemůžeš odstranit admina.", category="error")
+                return redirect(url_for("admin_views.edit_users"))
             else:
                 user_na_odstraneni.odstranit()
                 flash("User smazán", category="success")
-            return redirect(url_for("admin_views.admin_dashboard"))
+                return redirect(url_for("admin_views.admin_dashboard"))
     else:
         abort(401)
 
@@ -97,6 +99,13 @@ def vybrat_role_adminovi(id):
         if request.method == "GET":
             return render_template("admin_vybrat_role_adminovi.html", user=User.query.get(id), roles=get_access_rights(current_user))
         else:
-            pass
+            nove_role = json.loads(request.form.get("result"))
+            u = User.query.get(id)
+            u.role = json.dumps(nove_role)
+            db.session.add(u)
+            db.session.commit()
+            flash("Role byly upraveny.", category="success")
+            return redirect(url_for("admin_views.jmenovat_adminy"))
+            
     else:
         abort(401)

@@ -1,6 +1,6 @@
-from flask import Flask, render_template  
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_mail import Mail
 from website.file_check.check_files import check_known_bugs_file, check_logs_file
 from .paths.paths import user_database_path
@@ -59,12 +59,14 @@ def create_app():
     def load_user(id):
         return User.query.get(int(id))
     
+    from website.roles.role_handler import get_access_rights 
+
     @app.errorhandler(404)
     def not_found(e):
-        return render_template("not_found.html"), 404
+        return render_template("not_found.html", roles = get_access_rights(current_user)), 404
 
     @app.errorhandler(401)
     def not_found(e):
-        return render_template("not_authorised.html"), 401
+        return render_template("not_authorised.html", roles = get_access_rights(current_user)), 401
 
     return app
