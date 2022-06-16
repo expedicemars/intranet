@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
-from flask_login import login_required, current_user
+from flask_login import current_user
 from website.models.chyba import Chyba
 from website.models.user import User
-from website.json_handlers.admin_handling import is_admin
 from website.mails.mail_handler import mail_sender
 from website import db
 from website.roles.role_handler import get_access_rights
