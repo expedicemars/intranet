@@ -42,8 +42,10 @@ def create_app():
     from .views.auth_views import auth_views
     from .views.admin_views import admin_views
     from .views.sender_endpoints import sender
+    from .views.user_views  import user_views
 
     app.register_blueprint(default_views, url_prefix="/")
+    app.register_blueprint(user_views, url_prefix="/")
     app.register_blueprint(auth_views, url_prefix="/auth")
     app.register_blueprint(admin_views, url_prefix = "/admin")
     app.register_blueprint(sender, url_prefix="/")

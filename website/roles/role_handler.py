@@ -1,7 +1,7 @@
 from website.models.user import User
 import json
 
-dostupna_omezeni = ["user", "admin", "editing_bugs_allowed", "editing_logs_allowed", "editing_users_allowed", "editing_admins_allowed"]
+dostupna_omezeni = ["user", "admin", "editing_bugs_allowed", "editing_logs_allowed", "editing_users_allowed", "editing_admins_allowed", "stanovit_terminy_allowed"]
 
 def get_access_rights(userobj: User) -> list:
     if userobj.is_authenticated:

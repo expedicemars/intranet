@@ -14,8 +14,10 @@
     {% if "editing_admins_allowed" in roles %}
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.jmenovat_adminy')}}">Jmenovat adminy</a></li>
     {% endif %}
-
-    {% endblock %}
+    {% if "stanovit_terminy_allowed" in roles %}
+    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.stanovit_terminy')}}">Stanovit termíny</a></li>
+    {% endif %}
+{% endblock %}
 
 {% block footer %}
 <footer>

@@ -4,6 +4,7 @@ from website.models.chyba import Chyba
 from website.models.user import User
 from website.json_handlers.logs_handling import get_logs
 from website.roles.role_handler import get_access_rights, dostupna_omezeni
+from website.paths.paths import terminy_path
 
 
 sender = Blueprint("sender", __name__)
@@ -27,3 +28,9 @@ def send_admin(query):
         return json.dumps(get_access_rights(User.query.get(zadane_id))) 
     elif query == "vsechny_omezeni":
         return json.dumps(dostupna_omezeni)
+
+@sender.route("/send_user/<string:query>")
+def send_user(query):
+    if query == "terminy":
+        with open(terminy_path()) as file:
+            return json.dumps(json.load(file))

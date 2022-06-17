@@ -3,6 +3,7 @@ from flask_login import current_user
 from website.models.chyba import Chyba
 from website.models.user import User
 from website.json_handlers.logs_handling import delete_logs
+from website.paths.paths import terminy_path
 import json
 from website.roles.role_handler import get_access_rights
 from website import db
@@ -106,5 +107,19 @@ def vybrat_role_adminovi(id):
             flash("Role byly upraveny.", category="success")
             return redirect(url_for("admin_views.jmenovat_adminy"))
             
+    else:
+        abort(401)
+
+
+@admin_views.route("/stanovit_terminy", methods=["GET","POST"])
+def stanovit_terminy():
+    if "stanovit_terminy_allowed" in get_access_rights(current_user):
+        if request.method == "GET":
+            return render_template("admin_stanovit_terminy.html", roles=get_access_rights(current_user))
+        else:
+            with open(terminy_path(), "w") as file:
+                file.write(json.dumps(json.loads(request.form.get("result")), indent=4))
+            flash("Termíny byly upraveny.", category="success")
+            return redirect(url_for("admin_views.admin_dashboard"))
     else:
         abort(401)
