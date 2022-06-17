@@ -11,3 +11,6 @@ def log_file_path() -> Path:
 
 def terminy_path() -> Path:
     return Path.cwd() / "data" / "terminy.json"
+
+def faze_path() -> Path:
+    return Path.cwd() / "data" /  "faze.json"

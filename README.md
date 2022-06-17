@@ -50,3 +50,12 @@ Pro přidání superadmina:
 2. v Pythonanywhere najít skript "jmenovani_super_adminem.py"s
 3. upravit v něm email_na_jmenovani
 4. v konzoli to pustit
+
+# Pár slov k fázím
+
+Expedice mars má (zatím) 4 fáze: 
+- otevřená registrace
+- zpřístupněné zadání
+- uzavřená registrace
+- ukončený ročník
+Admini s povolením prepinani_fazi_allowed může hru posouvat do dalších fází, nebo zpět, je-li to možné.

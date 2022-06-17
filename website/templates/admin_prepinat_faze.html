@@ -1,0 +1,17 @@
+{% extends "admin_base.html" %}
+{% block content %}
+<h2 id="aktualni_nadpis"></h2>
+<div id="aktualni"></div>
+<button type="button" class="btn btn-success" id="predchozi_faze_btn">Předchozí fáze</button>
+<button type="button" class="btn btn-success" id="dalsi_faze_btn">Další fáze</button>
+<hr>
+<div id="prehled">
+    <h3>Přehled fází EM</h3>
+</div>
+
+<form method="post" id="form">
+    <input hidden id="result" name="result" type="text">
+</form>
+
+<script type="module" src="{{url_for('static', filename='js/admin_prepinat_faze.js')}}"></script>
+{% endblock %}

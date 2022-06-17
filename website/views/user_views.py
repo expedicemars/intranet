@@ -13,7 +13,7 @@ user_views = Blueprint("user_views", __name__)
 def account():
     if "user" in get_access_rights(current_user):
         if request.method == "GET":
-            return render_template("account.html",current_user = current_user, roles = get_access_rights(current_user))
+            return render_template("account.html", current_user = current_user, roles = get_access_rights(current_user))
         else:
             token = current_user.get_reset_token()
             mail_sender(mail_identifier="potvrzeni_emailu", target=current_user.email, data=token)
