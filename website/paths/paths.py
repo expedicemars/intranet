@@ -9,5 +9,8 @@ def known_bugs_path() -> Path:
 def log_file_path() -> Path:
     return Path.cwd() / "data" / "logs.txt"
 
-def admins_path() -> Path:
-    return Path.cwd() / "data" / "admins.txt"
+def terminy_path() -> Path:
+    return Path.cwd() / "data" / "terminy.json"
+
+def faze_path() -> Path:
+    return Path.cwd() / "data" /  "faze.json"

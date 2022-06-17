@@ -1,0 +1,14 @@
+{% extends "admin_base.html" %}
+{% block content %}
+<h2>Stanovení deadlinů</h2>
+<div id="terminy"></div>
+<button type="button" class="btn btn-primary" id="novy_termin">Přidat nový termín</button>
+<button type="button" class="btn btn-success" id="ulozit">Uložit</button>
+
+
+<form method="post" id="form">
+    <input hidden id="result" name="result" type="text">
+</form>
+
+<script type="module" src="{{url_for('static', filename='js/admin_stanovit_terminy.js')}}"></script>
+{% endblock %}

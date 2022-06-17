@@ -3,6 +3,7 @@ from flask_login import current_user
 from website.models.chyba import Chyba
 from website.models.user import User
 from website.json_handlers.logs_handling import delete_logs
+from website.paths.paths import terminy_path,faze_path
 import json
 from website.roles.role_handler import get_access_rights
 from website import db
@@ -15,10 +16,6 @@ admin_views = Blueprint("admin_views",__name__)
 def admin_dashboard():
     roles = get_access_rights(current_user)
     if "admin" in roles:
-        flash("Zkouška error hlášky", category="error")
-        flash("Zkouška success hlášky", category="success")
-        flash("Zkouška info hlášky", category="info")
-        print(roles)
         return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych(), roles=roles)
     else:
         abort(401)
@@ -106,5 +103,42 @@ def vybrat_role_adminovi(id):
             flash("Role byly upraveny.", category="success")
             return redirect(url_for("admin_views.jmenovat_adminy"))
             
+    else:
+        abort(401)
+
+
+@admin_views.route("/stanovit_terminy", methods=["GET","POST"])
+def stanovit_terminy():
+    if "stanovit_terminy_allowed" in get_access_rights(current_user):
+        if request.method == "GET":
+            return render_template("admin_stanovit_terminy.html", roles=get_access_rights(current_user))
+        else:
+            with open(terminy_path(), "w") as file:
+                file.write(json.dumps(json.loads(request.form.get("result")), indent=4))
+            flash("Termíny byly upraveny.", category="success")
+            return redirect(url_for("admin_views.admin_dashboard"))
+    else:
+        abort(401)
+
+
+@admin_views.route("/prepinat_faze", methods=["GET","POST"])
+def prepinat_faze():
+    if "prepinani_fazi_allowed" in get_access_rights(current_user):
+        if request.method == "GET":
+            return render_template("admin_prepinat_faze.html", roles=get_access_rights(current_user))
+        else:
+            with open(faze_path()) as file:
+                faze = json.load(file)
+            aktualni_faze = list(filter(lambda x: x["active"], faze))[0]
+            aktualni_faze["active"] = False
+            pozadavek = request.form.get("result")
+            if pozadavek == "dalsi":
+                nova_faze = list(filter(lambda x: x["nazev"] == aktualni_faze["nasledujici"], faze))[0]
+            else:
+                nova_faze = list(filter(lambda x: x["nasledujici"] == aktualni_faze["nazev"], faze))[0]
+            nova_faze["active"] = True
+            with open(faze_path(), "w") as file:
+                file.write(json.dumps(faze, indent=4))
+            return redirect(url_for("admin_views.prepinat_faze"))
     else:
         abort(401)

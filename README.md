@@ -1,44 +1,4 @@
-# Šablona stránek
-
-Máš tu funkční stránky s login, admin a bugtracking systémem.
-
-## Zakládání všeho
-
-### Dostat věci na bitbucket
-1. Založit repo na bitbucketu
-2. zkopírovat SSH adresu (něco jako git@bitbucket.org:piipecek/sablona.git)
-3. git init v mé složce na lokálu
-4. git remote add origin \<SSH adresa\>
-5. git push -u origin master
-
-### Subdoména
-
-1. Forpsi -> administrace -> domény -> klik na moojí (asi piipovostranky.cz) -> editace DNS záznamů
-2. Na pythonanywhere zalozit novou app, dostat z ni cname
-3. nový DNS záznam: typ CNAME, napsat subdomenu, paste CNAME
-
-### Rozeběhnout app na python anywhere
-
-1. `git clone` do PA do normalne nejvyssi slozky (vytvori to svoji slozku na repo)
-2. `cd` in
-3. `mkvirtualenv ENV_JMENO --python='/usr/bin/python3.9'`
-4. `pip install -r requirements.txt`
-5. Na webabb stránce
-- do virtualenv napsat to jmeno virtual_envu
-- working environment do slozky s repem
-- do code/source code napsat tu samou slozku
--WSGI: ve Flask sekci uncommentnout:
-  - import sys
-  - path = 
-  - ten if block
-  - dal: `from website import create_app`
-  - `application = create_app()`
-
-- Force HTTPS on
-- HTTPS certificate - auto Let's encrypt
-
-
-
+# Intranet Expedice Mars
 
 ## Hosting
 
@@ -72,25 +32,30 @@ Máš tu funkční stránky s login, admin a bugtracking systémem.
   - [uuid](https://docs.python.org/3/library/uuid.html) - pro generování Universaly Unique IDentifierů = id odhadů
 - [Stl JS Plugin](https://www.viewstl.com/plugin/#p_models) - pro zobrazování .stl souborů
 
+# Pár slov k rolím
 
-## Local build
+Vedle rolí user a admin je hromada  dalších rolí, které plní svůj účel. Všechny ostatní jsou vždy mutace admina. Omezují, kam admin může a co všechno smí.
 
-bohužel neumím přesně syntax příkazů, tak to popíšu slovy:
+Pro přidání superadmina viz níže.
 
-Pro spuštění flask serveru je potřeba
+Pro přidání admina:
+1. Registrace usera.
+2. Existující admin s povolením typu editing_admins_allowed vleze do admin prostředí.
+3. najde usera a upraví mu role na to, co je třeba.
 
-- mít local verzi tohoto repa
-- mít naistalovaný Python a pip
-- pomocí pip instalovat všechny knihovny v requirements.txt
-- spustit skript main.py
+Superadmin má přístup všude. Zároveň je přidán mechanismus, který může jmenovat nové superadminy (kdybychom třeba neměli kontakt k žádnému stávajícímu superadminovi).
 
-## Pro přístě
+Pro přidání superadmina:
+1. Registrace Usera
+2. v Pythonanywhere najít skript "jmenovani_super_adminem.py"s
+3. upravit v něm email_na_jmenovani
+4. v konzoli to pustit
 
-- pro správné nastavení Python anywhere WSGI aplikace doporučuju [tohle video](https://youtu.be/5jbdkOlf4cY)
-- na [tomhle čase](https://youtu.be/dam0GPOAvVI?t=4367) mě naučili login support
-- úprava SQLite databaze z terminalu:
-sqlite 3
-.open database.db -rw
-DELETE FROM user WHERE id=6;
+# Pár slov k fázím
 
-- zjištění IP místo CNAME: v pythonanywhere přejmenuju app na joseflat.eu.pythonanywhere.com a v nějakym online IP lookupu to lookupnu
+Expedice mars má (zatím) 4 fáze: 
+- otevřená registrace
+- zpřístupněné zadání
+- uzavřená registrace
+- ukončený ročník
+Admini s povolením prepinani_fazi_allowed může hru posouvat do dalších fází, nebo zpět, je-li to možné.

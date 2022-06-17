@@ -2,13 +2,13 @@
 {% block content %}
 
 <h2>Admin sekce</h2>
-word word.
+Vítej v admin sekci. To, co tu vidíš, ovlivňují admini s povolením <code>editing_admins_allowed</code>. Pokud myslíš, že bys měl mít přístup někam, kam nemůžeš, kontaktuj jednoho znich:
+<div class="border rounded-2 p-2 my-2 border-secondary" id="emails"></div>
 <div>
     <div class="border rounded-2 p-2 my-2 border-secondary">
         <h3>Počet neřešených bugů: {{pocet_bugu}}</h3>
     </div>
 </div>
 
-
-
+<script type="module" src="{{url_for('static', filename='js/admin_dashboard.js')}}"></script>
 {% endblock %}
