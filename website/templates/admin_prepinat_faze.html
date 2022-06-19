@@ -1,9 +1,19 @@
 {% extends "admin_base.html" %}
 {% block content %}
 <h2 id="aktualni_nadpis"></h2>
-<div id="aktualni"></div>
-<button type="button" class="btn btn-success" id="predchozi_faze_btn">Předchozí fáze</button>
-<button type="button" class="btn btn-success" id="dalsi_faze_btn">Další fáze</button>
+<div id="aktualni">
+    <div id="mailing_list">
+        <h3>Seznam předregistrovaných uživatelů</h3>
+        Tito uživatelé nám dali mail s tím, že čekají, že se jim se startem nového ročníku ozveme.
+        <br>
+        <code id="mailing_list_content"></code>
+        <form method="post">
+            <button class="btn btn-danger" type="submit" name="smazat_mailing_list" value="1">Promazat mailing list</button>
+        </form>
+    </div>
+</div>
+<button type="button" class="btn btn-success my-2" id="predchozi_faze_btn">Předchozí fáze</button>
+<button type="button" class="btn btn-success my-2" id="dalsi_faze_btn">Další fáze</button>
 <hr>
 <div id="prehled">
     <h3>Přehled fází EM</h3>

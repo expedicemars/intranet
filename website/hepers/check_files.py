@@ -22,3 +22,14 @@ def check_logs_file() -> None:
         logs_path.touch()
         log("creating (this) log file at  " + str(logs_path))
 
+def check_mailing_list() -> None:
+    mailing_list_path = p.mailing_list_path()
+    if mailing_list_path.exists():
+        log("Mailing list already exists.")
+    else:
+        mailing_list_path.touch()
+        with open(mailing_list_path, "w") as file:
+            file.write(json.dumps([]))
+        log("Created mailing list at " + str(mailing_list_path))
+
+

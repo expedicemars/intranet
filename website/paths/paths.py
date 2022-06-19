@@ -14,3 +14,6 @@ def terminy_path() -> Path:
 
 def faze_path() -> Path:
     return Path.cwd() / "data" /  "faze.json"
+
+def mailing_list_path() -> Path:
+    return Path.cwd() / "data"  / "mailing_list.json"

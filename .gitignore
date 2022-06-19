@@ -8,6 +8,7 @@
 known_bugs.json
 database.db
 logs.txt
+mailing_list.json
 
 # Node artifact files
 node_modules/

@@ -6,6 +6,7 @@ from website.models.user import User
 from website.json_handlers.logs_handling import get_logs
 from website.roles.role_handler import get_access_rights, dostupna_omezeni
 from website.paths.paths import terminy_path, faze_path
+from website.hepers.mailing_list import get_mails_from_mailing_list
 
 
 sender = Blueprint("sender", __name__)
@@ -56,6 +57,11 @@ def send_admin(query):
         if "prepinani_fazi_allowed" in rights:
             with open(faze_path()) as file:
                 return json.dumps(json.load(file))
+        else:
+            abort(401)
+    elif query == "mailing_list":
+        if "prepinani_fazi_allowed" in rights:
+            return json.dumps(get_mails_from_mailing_list())
         else:
             abort(401)
 

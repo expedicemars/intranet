@@ -9,13 +9,13 @@
         "nazev": "zpristupnena_zadani",
         "popis": "Nov\u00ed u\u017eivatel\u00e9 se st\u00e1le sm\u00ed registrovat, registrovan\u00ed u\u017eivatel\u00e9 m\u016f\u017eou zvolit odbornost, nahl\u00ed\u017eet do zad\u00e1n\u00ed dom\u00e1c\u00edch kol nebo na deadliny.",
         "nasledujici": "uzavrene_registrace",
-        "active": false
+        "active": true
     },
     {
         "nazev": "uzavrene_registrace",
         "popis": "Nov\u00ed u\u017eivatel\u00e9 u\u017e se nemohou registrovat. P\u0159i registraci je to hod\u00ed na mailing_list, kterej bude d\u016fle\u017eitej potom. V t\u00e9to f\u00e1zi b\u011b\u017e\u00ed semi, fin\u00e1le, simulace, bal\u00f3n i eurotrip.",
         "nasledujici": "ukonceny_rocnik",
-        "active": true
+        "active": false
     },
     {
         "nazev": "ukonceny_rocnik",
