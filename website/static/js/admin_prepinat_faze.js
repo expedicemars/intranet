@@ -1,7 +1,7 @@
 import httpGet from "./httpGet.js"
 
 let faze = JSON.parse(httpGet("/send_admin/faze"))
-let aktualni_div = document.getElementById("aktualni")
+let mailing_list_div = document.getElementById("mailing_list")
 let prehled_div = document.getElementById("prehled")
 let aktualni_nadpis = document.getElementById("aktualni_nadpis")
 let predchozi_faze_btn = document.getElementById("predchozi_faze_btn")
@@ -43,19 +43,28 @@ let nadpis = "Aktuální fáze: " + aktualni_faze["nazev"]
 aktualni_nadpis.innerHTML = nadpis
 
 if (aktualni_faze["nazev"] == "otevrene_registrace") {
+    let emails = httpGet("/send_admin/mailing_list")
+    document.getElementById("mailing_list_content").innerHTML = JSON.parse(emails)
+    mailing_list_div.hidden = false
     predchozi_faze_btn.hidden =  true
     dalsi_faze_btn.innerHTML = "Zpřístupnit zadání"
 } else if (aktualni_faze["nazev"] == "zpristupnena_zadani") {
     predchozi_faze_btn.hidden =  false
+    mailing_list_div.hidden = true
     dalsi_faze_btn.innerHTML = "Uzavřít registrace"
 } else if (aktualni_faze["nazev"] == "uzavrene_registrace") {
     predchozi_faze_btn.hidden =  false
+    mailing_list_div.hidden = true
     dalsi_faze_btn.innerHTML = "Ukončit ročník"
 } else if (aktualni_faze["nazev"] == "ukonceny_rocnik") {
     predchozi_faze_btn.hidden =  true
+    mailing_list_div.hidden = true
     dalsi_faze_btn.innerHTML = "Otevřít registrace a začít nový ročník"
 }
 
+
+
+// odeslani pozadavku na server o prepnuti faze
 function odeslat(jak) {
     if (aktualni_faze["nazev"] == "uzavrene_registrace" && jak == "dalsi") {
         if (confirm("Chystáš se ukončit ročník, zazálohovat a smazat data. Jseš si jistej?")) {
@@ -68,7 +77,6 @@ function odeslat(jak) {
                 }
             }
         }
-        //4x confirm tabulka
     } else {
         result_input.value = jak
         form.submit()

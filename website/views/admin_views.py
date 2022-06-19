@@ -7,6 +7,7 @@ from website.paths.paths import terminy_path,faze_path
 import json
 from website.roles.role_handler import get_access_rights
 from website import db
+from website.hepers.mailing_list import promazat_mailing_list
 
 
 admin_views = Blueprint("admin_views",__name__)
@@ -127,18 +128,23 @@ def prepinat_faze():
         if request.method == "GET":
             return render_template("admin_prepinat_faze.html", roles=get_access_rights(current_user))
         else:
-            with open(faze_path()) as file:
-                faze = json.load(file)
-            aktualni_faze = list(filter(lambda x: x["active"], faze))[0]
-            aktualni_faze["active"] = False
-            pozadavek = request.form.get("result")
-            if pozadavek == "dalsi":
-                nova_faze = list(filter(lambda x: x["nazev"] == aktualni_faze["nasledujici"], faze))[0]
+            if request.form.get("smazat_mailing_list"):
+                flash("Mailing list byl promazán.", category="info")
+                promazat_mailing_list()
+                return redirect(url_for("admin_views.prepinat_faze"))
             else:
-                nova_faze = list(filter(lambda x: x["nasledujici"] == aktualni_faze["nazev"], faze))[0]
-            nova_faze["active"] = True
-            with open(faze_path(), "w") as file:
-                file.write(json.dumps(faze, indent=4))
-            return redirect(url_for("admin_views.prepinat_faze"))
+                with open(faze_path()) as file:
+                    faze = json.load(file)
+                aktualni_faze = list(filter(lambda x: x["active"], faze))[0]
+                aktualni_faze["active"] = False
+                pozadavek = request.form.get("result")
+                if pozadavek == "dalsi":
+                    nova_faze = list(filter(lambda x: x["nazev"] == aktualni_faze["nasledujici"], faze))[0]
+                else:
+                    nova_faze = list(filter(lambda x: x["nasledujici"] == aktualni_faze["nazev"], faze))[0]
+                nova_faze["active"] = True
+                with open(faze_path(), "w") as file:
+                    file.write(json.dumps(faze, indent=4))
+                return redirect(url_for("admin_views.prepinat_faze"))
     else:
         abort(401)
