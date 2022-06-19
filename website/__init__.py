@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_mail import Mail
-from website.hepers.check_files import check_known_bugs_file, check_logs_file, check_mailing_list
+from website.hepers.check_files import check_known_bugs_file, check_logs_file, check_mailing_list, check_terminy, check_faze
 from .paths.paths import user_database_path
 from .json_handlers.logs_handling import log
 
@@ -55,6 +55,8 @@ def create_app():
     check_if_database_exists_else_create(app)
     check_known_bugs_file()
     check_mailing_list()
+    check_faze()
+    check_terminy()
 
     login_manager.login_view = "auth_views.login"
 
