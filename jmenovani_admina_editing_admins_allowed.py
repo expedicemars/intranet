@@ -14,6 +14,6 @@ with app.app_context():
     if user_na_jmenovani is None:
         print("Zadaný email v db neexistuje, asi ho musíš nejdřív registrovat.")
     else:
-        user_na_jmenovani.role = json.dumps(["superadmin"])
+        user_na_jmenovani.role = json.dumps(["admin", "editing_admins_allowed"])
         db.session.commit()
         print("Success")

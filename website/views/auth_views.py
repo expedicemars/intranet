@@ -30,8 +30,6 @@ def login():
 		if user and check_password_hash(user.password, password):
 			login_user(user, remember=True)
 			flash("úspěšné přihlášení", category="success")
-			user.last_login = datetime.date.today()
-			db.session.commit()
 			return redirect(url_for("default_views.home"))
 		else:
 			flash("E-mail nebo heslo byly špatně", category="error")
@@ -62,7 +60,7 @@ def register():
 					flash("Tento email je už zaregistrovaný. Použij prosím jiný", category="error")
 					return redirect(url_for("auth_views.register"))
 				else:
-					user = User(email=email, password=generate_password_hash(password, method="sha256"), confirmed=False, last_login = datetime.date.today(), role=json.dumps(["user"]))
+					user = User(email=email, password=generate_password_hash(password, method="sha256"), confirmed=False,)
 					db.session.add(user)
 					db.session.commit()
 					login_user(user, remember=True)

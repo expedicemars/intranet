@@ -32,6 +32,13 @@ def send_admin(query):
             return json.dumps([user.get_basic_info() for user in User.query.all()])
         else:
             abort(401)
+    elif "detail_usera_" in query:
+        if "editing_users_allowed" in rights:
+            id = int(query.replace("detail_usera_", ""))
+            u = User.query.get(id)
+            return u.get_basic_info()
+        else:
+            abort(401)
     elif "role" in query:
         if "editing_admins_allowed" in rights:
             zadane_id = int(query.replace("role_",""))
@@ -64,12 +71,14 @@ def send_admin(query):
             return json.dumps(get_mails_from_mailing_list())
         else:
             abort(401)
+    
+
 
 @sender.route("/send_user/<string:query>")
 def send_user(query):
     rights = get_access_rights(current_user)
     if query == "terminy":
-        if "user" in rights:
+        if "user" in rights or "admin" in rights:
             with open(terminy_path()) as file:
                 return json.dumps(json.load(file))
         else:

@@ -1,9 +1,10 @@
 {% extends "admin_base.html" %}
 
 {% block content %}
-<h2>Vyber uživatele, kterým chceš upravit role:</h2>
-
-<div id="from_db" class="container">
+<h2>Úprava oprávnění</h2>
+<hr>
+<h3>Úprava rolí stávajících adminů</h3>
+<div id="admins" class="container">
     <div class="row">
         <div class="col-auto">
             <b>id</b>
@@ -16,6 +17,22 @@
         </div>
     </div>
 </div>
+<hr>
+<h3>Jmenování nových adminů</h3>
+<div id="users" class="container">
+    <div class="row">
+        <div class="col-auto">
+            <b>id</b>
+        </div>
+        <div class="col">
+            <b>email</b>
+        </div>
+        <div class="col-auto">
+            Vybrat...
+        </div>
+    </div>
+</div>
+
 
 <form method="post" id="form">
     <input hidden name="result" id="result"/>

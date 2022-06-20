@@ -6,12 +6,11 @@ dostupna_omezeni = ["user", "admin", "editing_bugs_allowed", "editing_logs_allow
 def get_access_rights(userobj: User) -> list:
     if userobj.is_authenticated:
         role = json.loads(userobj.role)
-        # superadmin přebíjí vše: to dodává smysl tomu skriptu, kterej může vždy vytvořit superadmina, i když se správa stránek předá
-        if "superadmin" in role:
-            return dostupna_omezeni
+        # prihlasen - proto, aby se mohli logoutnout i user i admin
+        role.append("prihlasen")
         # dalsi vyjimka - pokud jeste neni overenej, tak to vrati role tak, aby videl jen ucet a tam vyzvu k overeni
-        if not userobj.confirmed:
-            role.append("not_confirmed")
+        if userobj.confirmed:
+            role.append("confirmed")
             return role
         else:
             return role

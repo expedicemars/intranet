@@ -1,0 +1,12 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<h2>Detail uživatele</h2>
+<input hidden id="id" value="{{id}}"/>
+<code><pre id="temp"></pre></code>
+<form method="post">
+    <button class="btn btn-danger" type="submit" value="1" name="smazat">Smazat uživatele</button>
+</form>
+
+<script type="module" src="{{url_for('static', filename='js/admin_detail_usera.js')}}"
+{% endblock %}

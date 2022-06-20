@@ -15,34 +15,37 @@ admin_views = Blueprint("admin_views",__name__)
 @admin_views.route("/")
 @admin_views.route("/dashboard")
 def admin_dashboard():
-    roles = get_access_rights(current_user)
-    if "admin" in roles:
-        return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych(), roles=roles)
+    rights = get_access_rights(current_user)
+    if "admin" in rights:
+        return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych(), roles=rights)
     else:
         abort(401)
 
 
 @admin_views.route("/planovane_featury")
 def planovane_featury():
-    if "admin" in get_access_rights(current_user):
-       return render_template("admin_planovane_featury.html", roles=get_access_rights(current_user))
+    rights = get_access_rights(current_user)
+    if "admin" in rights:
+       return render_template("admin_planovane_featury.html", roles=rights)
     else:
         abort(401)
 
 
 @admin_views.route("/historie_verzi")
 def historie_verzi():
-    if "admin" in get_access_rights(current_user):
-        return render_template("admin_historie_verzi.html", roles=get_access_rights(current_user))
+    rights = get_access_rights(current_user)
+    if "admin" in rights:
+        return render_template("admin_historie_verzi.html", roles=rights)
     else:
         abort(401)
 
 
 @admin_views.route("/uprava_znamych_bugu", methods=["GET","POST"])
 def uprava_znamych_bugu():
-    if "editing_bugs_allowed" in get_access_rights(current_user):
+    rights = get_access_rights(current_user)
+    if "editing_bugs_allowed" in rights:
         if request.method == "GET":
-            return render_template("admin_uprava_znamych_chyb.html", roles=get_access_rights(current_user))
+            return render_template("admin_uprava_znamych_chyb.html", roles=rights)
         else:
             Chyba.save_po_upravach(json.loads(request.form.get("result")))
             return redirect(url_for("admin_views.admin_dashboard"))
@@ -52,9 +55,10 @@ def uprava_znamych_bugu():
 
 @admin_views.route("/logs_file", methods=["GET","POST"])
 def logs_file():
-    if "editing_logs_allowed" in get_access_rights(current_user):
+    rights = get_access_rights(current_user)
+    if "editing_logs_allowed" in rights:
         if request.method == "GET":
-            return render_template("admin_logs_file.html", roles=get_access_rights(current_user))
+            return render_template("admin_logs_file.html", roles=rights)
         else:
             delete_logs()
             return redirect(url_for("admin_views.admin_dashboard"))
@@ -64,27 +68,34 @@ def logs_file():
 
 @admin_views.route("/edit_users", methods=["GET","POST"])
 def edit_users():
-    if "editing_users_allowed" in get_access_rights(current_user):
+    rights = get_access_rights(current_user)
+    if "editing_users_allowed" in rights:
         if request.method == "GET":
-            return render_template("admin_edit_users.html", roles=get_access_rights(current_user))
+            return render_template("admin_edit_users.html", roles=rights)
         else:
             result = request.form.get("result")
-            user_na_odstraneni = User.query.get(int(result))
-            if "admin" in user_na_odstraneni.role:
-                flash("Nemůžeš odstranit admina.", category="error")
-                return redirect(url_for("admin_views.edit_users"))
-            else:
-                user_na_odstraneni.odstranit()
-                flash("User smazán", category="success")
-                return redirect(url_for("admin_views.admin_dashboard"))
+            return redirect(url_for("admin_views.detail_usera",id=int(result)))
     else:
         abort(401)
+    
+@admin_views.route("/edit_users/<int:id>", methods=["GET","POST"])
+def detail_usera(id):
+    rights = get_access_rights(current_user)
+    if "editing_users_allowed" in rights:
+        if request.method == "GET":
+            return render_template("admin_detail_usera.html", roles = rights, id=id)
+        else:
+            pass
+    else:
+        abort(401)
+    
 
 @admin_views.route("/jmenovat_adminy", methods=["GET","POST"])
 def jmenovat_adminy():
-    if "editing_admins_allowed" in get_access_rights(current_user):
+    rights = get_access_rights(current_user)
+    if "editing_admins_allowed" in rights:
         if request.method == "GET":
-            return render_template("admin_jmenovat_adminy.html", roles=get_access_rights(current_user))
+            return render_template("admin_jmenovat_adminy.html", roles=rights)
         else:
             return redirect(url_for("admin_views.vybrat_role_adminovi", id=int(request.form.get("result"))))
     else:
@@ -92,9 +103,10 @@ def jmenovat_adminy():
 
 @admin_views.route("/jmenovat_adminy/<int:id>", methods=["GET","POST"])
 def vybrat_role_adminovi(id):
-    if "editing_admins_allowed" in get_access_rights(current_user):
+    rights = get_access_rights(current_user)
+    if "editing_admins_allowed" in rights:
         if request.method == "GET":
-            return render_template("admin_vybrat_role_adminovi.html", user=User.query.get(id), roles=get_access_rights(current_user))
+            return render_template("admin_vybrat_role_adminovi.html", user=User.query.get(id), roles=rights)
         else:
             nove_role = json.loads(request.form.get("result"))
             u = User.query.get(id)
@@ -110,9 +122,10 @@ def vybrat_role_adminovi(id):
 
 @admin_views.route("/stanovit_terminy", methods=["GET","POST"])
 def stanovit_terminy():
-    if "stanovit_terminy_allowed" in get_access_rights(current_user):
+    rights = get_access_rights(current_user)
+    if "stanovit_terminy_allowed" in rights:
         if request.method == "GET":
-            return render_template("admin_stanovit_terminy.html", roles=get_access_rights(current_user))
+            return render_template("admin_stanovit_terminy.html", roles=rights)
         else:
             with open(terminy_path(), "w") as file:
                 file.write(json.dumps(json.loads(request.form.get("result")), indent=4))
@@ -124,9 +137,10 @@ def stanovit_terminy():
 
 @admin_views.route("/prepinat_faze", methods=["GET","POST"])
 def prepinat_faze():
-    if "prepinani_fazi_allowed" in get_access_rights(current_user):
+    rights = get_access_rights(current_user)
+    if "prepinani_fazi_allowed" in rights:
         if request.method == "GET":
-            return render_template("admin_prepinat_faze.html", roles=get_access_rights(current_user))
+            return render_template("admin_prepinat_faze.html", roles=rights)
         else:
             if request.form.get("smazat_mailing_list"):
                 flash("Mailing list byl promazán.", category="info")

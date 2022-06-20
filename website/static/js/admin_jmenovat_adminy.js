@@ -8,10 +8,10 @@ function vybrat_usera(id) {
     document.getElementById("form").submit()
 }
 
-function generator_from_db(id, email, role) {
+function generator_from_db(target, id, email) {
     let row = document.createElement("div")
     row.classList.add("row", "my-2")
-    document.getElementById("from_db").appendChild(row)
+    document.getElementById(target).appendChild(row)
 
     let col1 = document.createElement("div")
     col1.classList.add("col-auto")
@@ -35,6 +35,14 @@ function generator_from_db(id, email, role) {
     col6.appendChild(button)
 }
 
+
+// targety: "admins" a "users"
 for (let i=0;i<users_from_db.length;i++) {
-    generator_from_db(users_from_db[i]["id"], String(users_from_db[i]["email"]))
+    let target
+    if (users_from_db[i]["role"].includes("admin")) {
+        target = "admins"
+    } else {
+        target = "users"
+    }
+    generator_from_db(target, users_from_db[i]["id"], String(users_from_db[i]["email"]))
 }
