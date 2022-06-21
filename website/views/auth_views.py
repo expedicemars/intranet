@@ -4,10 +4,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from website import db
 from website.models.user import User
 from website.mails.mail_handler import mail_sender
-import datetime
-import json
 from website.hepers.get_aktualni_faze import je_registrace_otevrena
 from website.hepers.mailing_list import get_mails_from_mailing_list, pridat_mail_do_mailing_listu
+from website.paths.paths import user_data_folder_path
 
 auth_views = Blueprint("auth_views",__name__)
 
@@ -60,11 +59,14 @@ def register():
 					flash("Tento email je už zaregistrovaný. Použij prosím jiný", category="error")
 					return redirect(url_for("auth_views.register"))
 				else:
-					user = User(email=email, password=generate_password_hash(password, method="sha256"), confirmed=False,)
+					user = User(email=email, password=generate_password_hash(password, method="sha256"))
 					db.session.add(user)
 					db.session.commit()
 					login_user(user, remember=True)
 					flash("Úspěšná registrace.", category="info")
+					# create files
+					user_folder_path = user_data_folder_path() / str(user.id)
+					user_folder_path.mkdir()
 					return redirect(url_for("default_views.home"))
 			else:
 				email = request.form.get("email")

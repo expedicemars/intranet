@@ -78,8 +78,11 @@ def send_admin(query):
 def send_user(query):
     rights = get_access_rights(current_user)
     if query == "terminy":
-        if "user" in rights or "admin" in rights:
+        if "user" in rights or "admin" in rights: # připouštim oba, protože i úpravy termínů posílaj request sem
             with open(terminy_path()) as file:
                 return json.dumps(json.load(file))
         else:
             abort(401)
+    elif query == "info":
+        if "user" in rights:
+            return current_user.get_basic_info()

@@ -3,6 +3,8 @@ from website import db
 from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 import json
+from website.paths.paths import user_data_folder_path
+from shutil import rmtree
 
 
 class User(db.Model, UserMixin):
@@ -13,9 +15,10 @@ class User(db.Model, UserMixin):
 	jmeno = db.Column(db.String(100))
 	adresa = db.Column(db.String(100))
 	telcislo = db.Column(db.String(100))
+	mail_rodicu = db.Column(db.String(100))
 	souhlas_rodicu = db.Column(db.Boolean, default=False)
-	odbornost = db.Column(db.String(100))
-	datum_narozeni=db.Column(db.Date)
+	odbornost = db.Column(db.String(100), default = "zatím nevybraná")
+	datum_narozeni=db.Column(db.String(100))
 	progress = db.Column(db.String(100))
 	role = db.Column(db.Text, default=json.dumps(["user"]))
 
@@ -41,6 +44,7 @@ class User(db.Model, UserMixin):
 			"jmeno": self.jmeno,
 			"adresa": self.adresa,
 			"telcislo": self.telcislo,
+			"mail_rodicu": self.mail_rodicu,
 			"souhlas_rodicu": self.souhlas_rodicu,
 			"odbornost": self.odbornost,
 			"datum_narozeni": self.datum_narozeni,
@@ -49,5 +53,8 @@ class User(db.Model, UserMixin):
 		}
 
 	def odstranit(self):
+		osobni_slozka = user_data_folder_path() / str(self.id)
+		rmtree(osobni_slozka)
 		db.session.delete(self)
 		db.session.commit()
+

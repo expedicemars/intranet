@@ -85,7 +85,12 @@ def detail_usera(id):
         if request.method == "GET":
             return render_template("admin_detail_usera.html", roles = rights, id=id)
         else:
-            pass
+            if request.form.get("smazat"):
+                User.query.get(id).odstranit()
+                flash("User byl smazán", category="success")
+                return redirect(url_for("admin_views.edit_users"))
+            else:
+                return "divna query"
     else:
         abort(401)
     
