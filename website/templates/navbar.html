@@ -6,6 +6,7 @@
             <li class="nav-item"><a class="nav-link active" href="{{url_for('user_views.ucet')}}">Účet</a></li>
             {% if "confirmed" in roles %}
                 <li class="nav-item"><a class="nav-link active" href="{{url_for('user_views.terminy')}}">Termíny</a></li>
+                <li class="nav-item"><a class="nav-link active" href="{{url_for('user_views.odbornost')}}">Odbornost</a></li>
             {% endif %}
         {% endif %}
         {% if "admin" in roles %}

@@ -6,6 +6,7 @@ from website import db
 from website.roles.role_handler import get_access_rights
 import json
 from website.paths.paths import user_data_folder_path
+from website.hepers.get_aktualni_faze import je_zadani_pristupne
 
 user_views = Blueprint("user_views", __name__)
 
@@ -72,5 +73,24 @@ def ucet_overeny(token):
 def terminy():
     if "user" in get_access_rights(current_user):
         return render_template("terminy.html", roles=get_access_rights(current_user))
+    else:
+        abort(401)
+
+@user_views.route("/odbornost", methods=["GET","POST"])
+def odbornost():
+    if "user" in get_access_rights(current_user):
+        if request.method == "GET":
+            if current_user.odbornost == "zatím nevybraná":
+                nevybrano = True
+            else:
+                nevybrano = False
+            
+            return render_template("odbornost.html", zadani_pristupne =je_zadani_pristupne() , nevybrano=nevybrano, roles=get_access_rights(current_user))
+        else:
+            current_user.odbornost = request.form["result"]
+            db.session.add(current_user)
+            db.session.commit()
+            flash("Odbornost vybrána!", category="success")
+            return redirect(url_for("user_views.ucet"))
     else:
         abort(401)

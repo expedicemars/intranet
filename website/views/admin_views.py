@@ -167,3 +167,14 @@ def prepinat_faze():
                 return redirect(url_for("admin_views.prepinat_faze"))
     else:
         abort(401)
+
+@admin_views.route("/koordinatori", methods=["GET","POST"])
+def koordinatori():
+    rights = get_access_rights(current_user)
+    if "koordinator" in rights:
+        if request.method == "GET":
+            return render_template("admin_koordinatori.html", roles=rights)
+        else:
+            return "posted"
+    else:
+        abort(401)

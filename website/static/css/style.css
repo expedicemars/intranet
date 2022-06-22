@@ -10,8 +10,25 @@
 }
 
 .aktivni-faze {
-    background-color: rgb(255, 235, 153 );
+    background-color: rgb(255, 235, 138 );
 }
+
+.fyzik-div {
+    background-color: rgb(255,243,125);
+}
+.konstrukter-div {
+    background-color: rgb(255,171,76);
+}
+.popularizator-div {
+    background-color: rgb(90,214,114);
+}
+.biolog-div {
+    background-color: rgb(255, 179, 177);
+}
+.inzenyr-div {
+    background-color: rgb(130,222,249);
+}
+
 
 h2 {
     color: #023975;
