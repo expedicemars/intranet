@@ -84,7 +84,6 @@ def odbornost():
                 nevybrano = True
             else:
                 nevybrano = False
-            
             return render_template("odbornost.html", zadani_pristupne =je_zadani_pristupne() , nevybrano=nevybrano, roles=get_access_rights(current_user))
         else:
             current_user.odbornost = request.form["result"]

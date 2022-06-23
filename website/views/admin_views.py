@@ -3,7 +3,7 @@ from flask_login import current_user
 from website.models.chyba import Chyba
 from website.models.user import User
 from website.json_handlers.logs_handling import delete_logs
-from website.paths.paths import terminy_path,faze_path
+from website.paths.paths import terminy_path,faze_path, koordinator_data_path
 import json
 from website.roles.role_handler import get_access_rights
 from website import db
@@ -175,6 +175,17 @@ def koordinatori():
         if request.method == "GET":
             return render_template("admin_koordinatori.html", roles=rights)
         else:
-            return "posted"
+            inputs_ids_list = ["biolog", "konstrukter", "fyzik", "inzenyr", "popularizator"]
+            with open(koordinator_data_path()) as file:
+                koordinator_data = json.load(file)
+            for id in inputs_ids_list:
+                res = request.form.get(id)
+                if res:
+                    koordinator_data[id] = res
+            with open(koordinator_data_path(),"w") as file:
+                file.write(json.dumps(koordinator_data, indent=4))
+            flash("Data koordinátorů byla upravena.", category="success")
+            return redirect(url_for("admin_views.admin_dashboard"))
+
     else:
         abort(401)

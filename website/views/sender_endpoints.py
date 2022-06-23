@@ -5,7 +5,7 @@ from website.models.chyba import Chyba
 from website.models.user import User
 from website.json_handlers.logs_handling import get_logs
 from website.roles.role_handler import get_access_rights, dostupna_omezeni
-from website.paths.paths import terminy_path, faze_path
+from website.paths.paths import terminy_path, faze_path,koordinator_data_path
 from website.hepers.mailing_list import get_mails_from_mailing_list
 
 
@@ -71,6 +71,12 @@ def send_admin(query):
             return json.dumps(get_mails_from_mailing_list())
         else:
             abort(401)
+    elif query == "koordinator_data":
+        if "koordinator" in rights:
+            with open(koordinator_data_path()) as file:
+                return json.dumps(json.load(file))
+        else:
+            abort(401)
     
 
 
@@ -86,3 +92,16 @@ def send_user(query):
     elif query == "info":
         if "user" in rights:
             return current_user.get_basic_info()
+        else:
+            abort(401)
+    elif query == "kontakt_na_meho_koordinatora":
+        if "user" in rights:
+            if current_user.odbornost == "zatím nevybraná":
+                return "nevybrano"
+            else:
+                with open(koordinator_data_path()) as file:
+                    file = json.load(file)
+                return file[current_user.odbornost]
+        else:
+            abort(401)
+
