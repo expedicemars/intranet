@@ -1,0 +1,102 @@
+{% extends "navbar.html" %}
+{% block content %}
+
+    {% if nevybrano %}
+        <h2>Přehled odborností</h2>
+        <div class="border rounded-2 border-primary biolog-div m-2 p-2" >
+            <h3>Biolog</h3>
+            Se stará o kytičky.
+        </div>
+        <div class="border rounded-2 border-primary fyzik-div m-2 p-2" >
+            <h3>Fyzik</h3>
+            Počítá interferenci.
+        </div>
+        <div class="border rounded-2 border-primary konstrukter-div m-2 p-2" >
+            <h3>Konstruktér</h3>
+            Skládá vlaštovky.
+        </div>
+        <div class="border rounded-2 border-primary inzenyr-div m-2 p-2" >
+            <h3>Inženýr</h3>
+            Si hraje se všim.
+        </div>
+        <div class="border rounded-2 border-primary popularizator-div m-2 p-2" >
+            <h3>Popularizátor</h3>
+            Zajišťuje lichej počet odborností.
+        </div>
+    {% endif %}
+
+    {% if not zadani_pristupne %}
+        <h2>Zadání ještě nebyla zveřejněna. Hned, jak se tak stane, ti dáme vědět.</h2>
+    {% else %}
+        {% if nevybrano %}
+            <h2>Zadání a výběr odbornosti</h2>
+            <div class="border rounded-2 border-primary biolog-div m-2 p-2" >
+                <h3>Zadání pro biology</h3>
+                <div class="row">
+                    <div class="col">
+                        Download
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-light" type="button" id="biolog">Zvolit odbornost</button>
+                    </div>
+                </div>
+            </div>
+            <div class="border rounded-2 border-primary fyzik-div m-2 p-2" >
+                <h3>Zadání pro fyziky</h3>
+                <div class="row">
+                    <div class="col">
+                        Download
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-light" type="button" id="fyzik">Zvolit odbornost</button>
+                    </div>
+                </div>
+            </div>
+            <div class="border rounded-2 border-primary konstrukter-div m-2 p-2" >
+                <h3>Zadání pro konstruktéry</h3>
+                <div class="row">
+                    <div class="col">
+                        Download
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-light" type="button" id="konstrukter">Zvolit odbornost</button>
+                    </div>
+                </div>
+            </div>
+            <div class="border rounded-2 border-primary inzenyr-div m-2 p-2" >
+                <h3>Zadání pro inženýry</h3>
+                <div class="row">
+                    <div class="col">
+                        Download
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-light" type="button" id="inzenyr">Zvolit odbornost</button>
+                    </div>
+                </div>
+            </div>
+            <div class="border rounded-2 border-primary popularizator-div m-2 p-2" >
+                <h3>Zadání pro popularizátory</h3>
+                <div class="row">
+                    <div class="col">
+                        Download
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-light" type="button" id="popularizator">Zvolit odbornost</button>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <h2>Info o odbornosti</h2>
+            Tady máš zadání intrnetováho kola Expedice Mars:
+            <br>
+            Tady potom kontakt na koordinátory. Neváhej se jich na cokoli ptát, všichni ti rádi odpoví :)
+            <div id="kontakt" class="border rounded-2 border-primary m-2 p-2"></div>
+            Tady můžeš svou hotovou práci odevzdat. Pokud obsahuje nějaké velké soubory, nahraj je prosím na libovolný disk a dej nám link.
+        {% endif %}
+
+        <form method="post" id="form">
+            <input type="text" hidden id="result" name="result"/>
+        </form>
+    {% endif %}
+<script type="module" src="{{url_for('static', filename='js/odbornost.js')}}"></script>
+{% endblock %}

@@ -13,3 +13,13 @@ def je_registrace_otevrena() -> bool:
     else:
         otevreny = True
     return otevreny
+
+def je_zadani_pristupne() -> bool:
+    aktualni_faze = get_aktualni_faze()
+    print(aktualni_faze)
+    if aktualni_faze["nazev"] in ["zpristupnena_zadani", "uzavrene_registrace"]:
+        pristupne = True
+    else:
+        pristupne = False
+    print(pristupne)
+    return pristupne

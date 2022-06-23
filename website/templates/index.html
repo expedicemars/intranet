@@ -26,7 +26,6 @@
                 </ul>
             </div>
         </nav>
-    
         {% for category, message in get_flashed_messages(with_categories=True) %}
         <div class="container-sm border border-primary border-2 rounded-3 p-2 my-2 alertcolor-{{category}}">
             {{message}}

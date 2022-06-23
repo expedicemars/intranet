@@ -1,0 +1,101 @@
+{% extends "admin_navbar.html" %}
+
+{% block content %}
+    <h2>#justkoordinatorthings</h2>
+    <form method="post">
+        <button type="submit" class="btn btn-success">Uložit</button>
+        {% if "koordinator_biolog" in roles %}
+            <div class="border rounded-2 border-primary m-2 p-2">
+                <h2>Biologové</h2>
+                <div class="row">
+                    <div class="col-auto">
+                        Nahrát zadání
+                    </div>
+                    <div class="col">
+                        <input type="file" multiple class="form-control" name="biolog_zadani">
+                    </div>
+                </div>
+                <hr>
+                náhled nahraného zadání<br>
+                <hr>
+                Sem napiš nějaké možnosti kontaktu. Třeba jméno, email, další jméno, jeho email...
+                <input type="text" class="form-control" name="biolog" id="biolog">
+            </div>
+        {% endif %}
+        {% if "koordinator_konstrukter" in roles %}
+            <div class="border rounded-2 border-primary m-2 p-2">
+                <h2>Konstruktéři</h2>
+                <div class="row">
+                    <div class="col-auto">
+                        Nahrát zadání
+                    </div>
+                    <div class="col">
+                        <input type="file" multiple class="form-control" name="konstrukter_zadani">
+                    </div>
+                </div>
+                <hr>
+                náhled nahraného zadání<br>
+                <hr>
+                Sem napiš nějaké možnosti kontaktu. Třeba jméno, email, další jméno, jeho email...
+                <input type="text" class="form-control" name="konstrukter" id="konstrukter">
+            </div>
+        {% endif %}
+        {% if "koordinator_fyzik" in roles %}
+            <div class="border rounded-2 border-primary m-2 p-2">
+                <h2>Fyzikové</h2>
+                <div class="row">
+                    <div class="col-auto">
+                        Nahrát zadání
+                    </div>
+                    <div class="col">
+                        <input type="file" multiple class="form-control" name="fyzik_zadani">
+                    </div>
+                </div>
+                <hr>
+                náhled nahraného zadání<br>
+                <hr>
+                Sem napiš nějaké možnosti kontaktu. Třeba jméno, email, další jméno, jeho email...
+                <input type="text" class="form-control" name="fyzik" id="fyzik">
+            </div>
+        {% endif %}
+        {% if "koordinator_inzenyr" in roles %}
+            <div class="border rounded-2 border-primary m-2 p-2">
+                <h2>Inženýři</h2>
+                <div class="row">
+                    <div class="col-auto">
+                        Nahrát zadání
+                    </div>
+                    <div class="col">
+                        <input type="file" multiple class="form-control" name="inzenyr_zadani">
+                    </div>
+                </div>
+                <hr>
+                náhled nahraného zadání<br>
+                <hr>
+                Sem napiš nějaké možnosti kontaktu. Třeba jméno, email, další jméno, jeho email...
+                <input type="text" class="form-control" name="inzenyr" id="inzenyr">
+            </div>
+        {% endif %}
+        {% if "koordinator_popularizator" in roles %}
+            <div class="border rounded-2 border-primary m-2 p-2">
+                <h2>Popularizátoři</h2>
+                <div class="row">
+                    <div class="col-auto">
+                        Nahrát zadání
+                    </div>
+                    <div class="col">
+                        <input type="file" multiple class="form-control" name="popularizator_zadani">
+                    </div>
+                </div>
+                <hr>
+                náhled nahraného zadání<br>
+                <hr>
+                Sem napiš nějaké možnosti kontaktu. Třeba jméno, email, další jméno, jeho email...
+                <input type="text" class="form-control" name="popularizator" id="popularizator">
+            </div>
+        {% endif %}
+    </form>
+    
+
+    <script type="module" src="{{url_for('static', filename='js/admin_koordinatori.js')}}"></script>
+{% endblock %}

@@ -84,3 +84,19 @@ def check_terminy() -> None:
         with open(terminy_path, "w") as file:
             file.write(json.dumps([]))
         log("Created terminy at " + str(terminy_path))
+
+def check_koordinator_data() -> None:
+    path = p.koordinator_data_path()
+    if path.exists():
+        log("Koordinator data soubor už existuje.")
+    else:
+        path.touch()
+        with open(path, "w") as file:
+            file.write(json.dumps({
+                "biolog": "",
+                "fyzik": "",
+                "konstrukter": "",
+                "inzenyr": "",
+                "popularizator": ""
+            }, indent=4))
+        log("Created terminy at " + str(path))

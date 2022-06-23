@@ -1,28 +1,22 @@
-{% extends "admin_base.html" %}
+{% extends "admin_navbar.html" %}
 
 {% block content %}
 <h2>Úprava uživatelů</h2>
 
-Tady jsou data posbíraná z databáze.
+Tady jsou data posbíraná z databáze. Zobrazuje tu jen účty s rolí <code>user</code>.
 <div id="from_db" class="container">
     <div class="row">
         <div class="col-auto">
             <b>id</b>
         </div>
         <div class="col">
-            <b>email</b>
+            <b>Jméno</b>
         </div>
         <div class="col">
-            Last Login
-        </div>
-        <div class="col">
-            Confirmed
-        </div>
-        <div class="col">
-            Role
+            <b>E-mail</b>
         </div>
         <div class="col-auto">
-            Smazat
+            <b>Detail</b>
         </div>
     </div>
 </div>

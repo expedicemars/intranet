@@ -1,0 +1,128 @@
+{% extends "navbar.html" %}
+{% block content %}
+
+<h2>Vítej, {{current_user.email}}</h2>
+<div>
+    {% if not current_user.confirmed %}
+        Protože veškerá komunikace s Vámi bude probíhat mailem, je nutné, abychom měli jistotu, že vám maily chodí.
+        <form method="post" enctype="multipart/form-data">
+            <button type="submit" class="btn btn-primary" name="overeni_emailu" value="whatever">Odeslat E-mail k ověření Vaší e-mailové adresy </button>
+        </form>
+    {% else %} 
+        <hr>
+        <h3>Nastavitelné údaje</h3>
+        <div class="container">
+            <div class="row my-2">
+                <div class="col-sm">
+                    Jméno:
+                </div>
+                <div class="col">
+                    <input type="text" id="jmeno" disabled class="form-control"  value="1">
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-sm">
+                    E-mail:
+                </div>
+                <div class="col">
+                    <input disabled class="form-control" type="email" id="email">
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-sm">
+                    E-mail jednoho z rodičů:
+                </div>
+                <div class="col">
+                    <input disabled class="form-control" type="email" id="mail_rodicu">
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-sm">
+                    Adresa:
+                </div>
+                <div class="col">
+                    <input disabled class="form-control" type="text" id="adresa">
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-sm">
+                    Telefoní číslo:
+                </div>
+                <div class="col">
+                    <input disabled class="form-control" type="text" id="telcislo">
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-sm">
+                    Datum narození:
+                </div>
+                <div class="col">
+                    <input disabled type="date" id="datum_narozeni">
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-outline-primary" id="zmeny" value="zamknuto">Odemknout úpravy</button>
+        <hr>
+        <h3>Pevné údaje</h3>
+        <div class="container">
+            <div class="row my-2">
+                <div class="col-sm">
+                    Ověřený e-mail:
+                </div>
+                <div class="col">
+                    <span id="confirmed"></span>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row my-2">
+                <div class="col-sm">
+                    Souhlas rodičů: 
+                </div>
+                <div class="col">
+                    <span id="souhlas_rodicu"></span>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row my-2">
+                <div class="col-sm">
+                    Odbornost: 
+                </div>
+                <div class="col">
+                    <span id="odbornost"></span>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row my-2">
+                <div class="col-sm">
+                    Postup v Expedici: 
+                </div>
+                <div class="col">
+                    <span id="progress"></span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <h3>Fotka</h3>
+
+        <div></div>
+
+        <button type="button" id="show_img_input" class="btn btn-outline-primary">Nahrát fotku</button>
+        <div id="img_input_div" hidden>
+            <form  method="post" enctype="multipart/form-data">
+                 <input type="file" class="form-control my-2" accept="image/*" name="img_file">
+                <button type="submit" class="btn btn-outline-primary" name="img" value="1">Uložit</button>
+            </form>
+        </div>
+    {% endif %}
+</div>
+
+<form method="post" id="form">
+    <input type="text" hidden id="result" name="result">
+    <input type="file" hidden id="result_image" name="result_image">
+</form>
+
+<script type="module" src="{{url_for('static', filename='js/ucet.js')}}"></script>
+{% endblock %}

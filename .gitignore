@@ -11,6 +11,8 @@ logs.txt
 mailing_list.json
 faze.json
 terminy.json
+koordinator_data.json
+user_data/*
 
 # Node artifact files
 node_modules/
