@@ -100,3 +100,11 @@ def check_koordinator_data() -> None:
                 "popularizator": ""
             }, indent=4))
         log("Created terminy at " + str(path))
+
+def check_user_data_folder() -> None:
+    path = p.user_data_folder_path()
+    if path.exists():
+        log("Složka pro user data existuje.")
+    else:
+        path.mkdir()
+        log("Vytvořena složka pro user data na "+ str(path))
