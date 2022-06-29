@@ -24,6 +24,14 @@ def ucet():
                 flash("E-mail byl odeslán. Zkontrolujte si svou schránku.", category="info")
                 return redirect(url_for("user_views.ucet"))
             elif request.form.get("img"):
+                #zkusit smazat starou
+                path = user_data_folder_path() / str(current_user.id)
+                for file in path.iterdir():
+                    if file.stem == "profiovka":
+                        profilovka_path = path / file.name
+                        profilovka_path.unlink()
+                        break
+                #nahrát novou
                 fotka = request.files.get("img_file")
                 if len(fotka.filename.split(".")) == 2:
                     pripona = fotka.filename.split(".")[1]

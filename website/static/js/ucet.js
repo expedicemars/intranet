@@ -5,11 +5,20 @@ let form = document.getElementById("form")
 let ids_list = ["jmeno", "email", "adresa", "telcislo", "datum_narozeni", "mail_rodicu"]
 let fixni_info_ids_list = ["confirmed", "souhlas_rodicu", "odbornost", "progress"]
 let show_img_input_button = document.getElementById("show_img_input")
+let img = document.getElementById("img_file");
 
 zmeny_button.addEventListener("click", toggle_zmeny)
 show_img_input_button.addEventListener("click", function() {
     document.getElementById("img_input_div").hidden = false
 })
+img.addEventListener("change", function() {
+    if(this.files[0].size > 1000000){
+       alert("Nahraj prosím  menší obrázek, limit je 1MB");
+       this.value = "";
+    };
+})
+
+
 
 
 function nacist() {
