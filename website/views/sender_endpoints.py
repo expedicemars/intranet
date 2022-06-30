@@ -77,6 +77,14 @@ def send_admin(query):
                 return json.dumps(json.load(file))
         else:
             abort(401)
+    elif query == "upozornit_na_zadani":
+        # getne maily registrovanejch useru
+        result = []
+        for u in User.query.all():
+            u_rights = get_access_rights(u)
+            if "user" in u_rights and "admin" not in u_rights:
+                result.append(u.email)
+        return json.dumps(result)
     
 
 
