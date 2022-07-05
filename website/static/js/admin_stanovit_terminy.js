@@ -3,6 +3,8 @@ let terminy = JSON.parse(httpGet("/send_user/terminy"))
 let terminy_div = document.getElementById("terminy")
 let result_input = document.getElementById("result")
 let form = document.getElementById("form")
+let registrace_date = document.getElementById("registrace_date")
+let registrace_time = document.getElementById("registrace_time")
 
 document.getElementById("novy_termin").addEventListener("click", function() {novy_zaznam("", null, null)})
 document.getElementById("ulozit").addEventListener("click", vyhodnotit)
@@ -83,13 +85,18 @@ function novy_zaznam(popis, date, time) {
 
 
 for (let zaznam of terminy) {
-    novy_zaznam(zaznam["popis"], zaznam["date"], zaznam["time"])
+    // zaznam "registrace" je spešl
+    if (zaznam["popis"] == "registrace") {
+        registrace_date.value = zaznam["date"]
+        registrace_time.value = zaznam["time"]
+    } else {
+        novy_zaznam(zaznam["popis"], zaznam["date"], zaznam["time"])
+    }
 }
 
 
 function vyhodnotit() {
     let result = []
-    console.log(terminy_div)
     for (let div of terminy_div.childNodes) {
         let zaznam = {}
         zaznam["popis"] = div.childNodes[0].childNodes[1].childNodes[0].value
@@ -98,6 +105,13 @@ function vyhodnotit() {
 
         result.push(zaznam)
     }
+    // zaznam o registraci
+    let zaznam_o_registraci = {}
+    zaznam_o_registraci["popis"] = "registrace"
+    zaznam_o_registraci["date"] = registrace_date.value
+    zaznam_o_registraci["time"] = registrace_time.value
+
+    result.push(zaznam_o_registraci)
     result_input.value = JSON.stringify(result)
     form.submit()
 }

@@ -82,7 +82,14 @@ def check_terminy() -> None:
     else:
         terminy_path.touch()
         with open(terminy_path, "w") as file:
-            file.write(json.dumps([]))
+            # registrace tu bude vždycky
+            file.write(json.dumps([
+                {
+                    "popis": "registrace",
+                    "date": "2022-01-01",
+                    "time": "12:34"
+                }
+            ]))
         log("Created terminy at " + str(terminy_path))
 
 def check_koordinator_data() -> None:

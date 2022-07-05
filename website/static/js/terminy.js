@@ -3,7 +3,11 @@ let terminy = JSON.parse(httpGet("/send_user/terminy"))
 let terminy_div = document.getElementById("terminy")
 
 for (let zaznam of terminy) {
-    novy_zaznam(zaznam["popis"], zaznam["date"], zaznam["time"])
+    if (zaznam["popis"] == "registrace") {
+
+    } else {
+        novy_zaznam(zaznam["popis"], zaznam["date"], zaznam["time"])
+    }
 }
 
 
