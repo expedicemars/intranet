@@ -2,12 +2,31 @@
 {% block content %}
 
 <h2>Admin sekce</h2>
-Vítej v admin sekci. To, co tu vidíš, ovlivňují admini s povolením <code>editing_admins_allowed</code>. Pokud myslíš, že bys měl mít přístup někam, kam nemůžeš, kontaktuj jednoho znich:
-<div class="border rounded-2 p-2 my-2 border-secondary" id="emails"></div>
+
 <div>
+    Vítej v admin sekci. To, co tu vidíš, ovlivňují admini s povolením <code>editing_admins_allowed</code>. Pokud myslíš, že bys měl mít přístup někam, kam nemůžeš, kontaktuj jednoho znich:
     <div class="border rounded-2 p-2 my-2 border-secondary">
-        <h3>Počet neřešených bugů: {{pocet_bugu}}</h3>
+        <code id="emails"></code>
     </div>
+</div>
+<hr>
+<div>
+    <h3>Co všechno musí být udržováno up-to-date</h3>
+    <ul>
+        <li>Datum ukončení registrace, <a href="{{url_for('admin_views.stanovit_terminy')}}">upravit jde tady</a>.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h3>Počet neřešených bugů: {{pocet_bugu}}</h3>
+</div>
+<hr>
+<div>
+    <h3>Texty hromadných mailů</h3>
+</div>
+<hr>
+<div>
+    <h3>Přehled fíčur systému</h3>
 </div>
 
 <script type="module" src="{{url_for('static', filename='js/admin_dashboard.js')}}"></script>
