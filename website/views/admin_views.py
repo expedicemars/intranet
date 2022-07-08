@@ -7,7 +7,7 @@ from website.paths.paths import terminy_path,faze_path, koordinator_data_path
 import json
 from website.roles.role_handler import get_access_rights
 from website import db
-from website.hepers.mailing_list import promazat_mailing_list
+from website.helpers.mailing_list import promazat_mailing_list
 
 
 admin_views = Blueprint("admin_views",__name__)
@@ -61,6 +61,7 @@ def logs_file():
             return render_template("admin_logs_file.html", roles=rights)
         else:
             delete_logs()
+            flash("Soubor s logy byl promazán.",category="success")
             return redirect(url_for("admin_views.admin_dashboard"))
     else:
         abort(401)

@@ -19,6 +19,7 @@
 <hr>
 <div>
     <h3>Počet neřešených bugů: {{pocet_bugu}}</h3>
+    Pokud nemáš práva je upravovat, řekni to adminovi, kterej to umí. Jsem ale línej je sem vypisovat.
 </div>
 <hr>
 <div>
@@ -27,6 +28,32 @@
 <hr>
 <div>
     <h3>Přehled fíčur systému</h3>
+    <h3>Fáze Expedice</h3>
+    <ul>
+        <li>Fázování expedice je způsob, jak udržet stránky užitečné po celý rok. Dají se přepínat v admin prostředí. Je možné se ve fázích vracet zpět, pokud to dává smysl. Ovlivňují např. registrační formulář nebo přístup k zadáním.</li>
+        <li>Jsou zatím 4:</li>
+        <ul>
+            <li>Otevřené registrace. Na homepage se zobrazuje datum uzavření registrací, zadání domácích kol nejsou přístupná. Noví uživatelé se smí registrovat, upravovat své profily, nahrávat motiváky.</li>
+            <li>Zpřístupněná zadání. Noví uživatelé se stále smí registrovat, registrovaní uživatelé můžou zvolit odbornost, nahlížet do zadání domácích kol nebo na deadliny.</li>
+            <li>Uzavřené registrace. Noví uživatelé už se nemohou registrovat. Při registraci je to hodí na mailing_list, kterej bude důležitej potom. V této fázi běží semi, finále, simulace, balón i eurotrip.</li>
+            <li>Ukončený ročník. Čas pro zálohu dat, vyčištění systému.</li>
+        </ul>
+    </ul>
+    <h3>Role uživatelů</h3>
+    <ul>
+        <li>Každý registrovaný uživatel má nějaké role.</li>
+        <li>Účastníci se spokojí s <code>user</code>. Vyplyne-li potřeba nového admina, musí se tento předem registrovat a nějaký další admin ho poté povýší.</li>
+        <li>Zatímco <code>user</code> je "jen jeden", rolí adminů je řada. Každá položka v admin sekci je přístupná s určitou rolí. Vypisovat je tu nebudu, protože sem tam přibyde další a tady bych to stopro zapomněl aktualizovat.</li>
+        <li>Mezi ty hlavní patří ale určitě:</li>
+        <ul>
+            <li><code>stanovit_terminy_allowed</code> - oprávnění přidávat a měnit deadliny</li>
+            <li><code>prepinani_fazi_allowed</code> - docela jasný snad</li>
+            <li><code>editing_bugs_allowed</code> - možnost odpovídat na připomínky na bugtrackeru</li>
+            <li><code>editing_users_allowed</code> - možnost nahlížet na registrované uživatele</li>
+            <li><code>koordinator_/odbornost/</code> - možnost upravovat zadání, kontakty na sebe, nahlížet na svoje svěřence</li>
+            <li><code>editing_admins_allowed</code> - oprávnění jmenovat adminy a upravovat jejich role (dětem a blbcům vstup zakázán :P )</li>
+        </ul>
+    </ul>
 </div>
 
 <script type="module" src="{{url_for('static', filename='js/admin_dashboard.js')}}"></script>

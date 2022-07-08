@@ -4,8 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from website import db
 from website.models.user import User
 from website.mails.mail_handler import mail_sender
-from website.hepers.get_aktualni_faze import je_registrace_otevrena
-from website.hepers.mailing_list import get_mails_from_mailing_list, pridat_mail_do_mailing_listu
+from website.helpers.get_aktualni_faze import je_registrace_otevrena
+from website.helpers.mailing_list import get_mails_from_mailing_list, pridat_mail_do_mailing_listu
 from website.paths.paths import user_data_folder_path
 
 auth_views = Blueprint("auth_views",__name__)
@@ -13,7 +13,7 @@ auth_views = Blueprint("auth_views",__name__)
 @auth_views.route("/login", methods=["GET","POST"])
 def login():
 	if current_user.is_authenticated:
-		return redirect(url_for("default_views.home"))
+		return redirect(url_for("user_views.ucet"))
 	if request.method == "GET":
 		return render_template("auth_login.html")
 	else:
@@ -37,7 +37,7 @@ def login():
 @auth_views.route("/register", methods=["GET","POST"])
 def register():
 	if current_user.is_authenticated:
-		return redirect(url_for("default_views.home"))
+		return redirect(url_for("user_views.ucet"))
 	else:
 		if request.method == "GET":
 			if je_registrace_otevrena():
@@ -86,11 +86,14 @@ def register():
 			
 
 @auth_views.route("/logout")
-@login_required
 def logout():
-	logout_user()
-	flash("You have been odhlášen.", category="info")
-	return redirect(url_for("default_views.home"))
+	if current_user.is_authenticated:
+		logout_user()
+		flash("You have been odhlášen.", category="info")
+		return redirect(url_for("default_views.home"))
+	else:
+		flash("HA! slídil :)", category="success")
+		return redirect(url_for("default_views.home"))
 
 
 @auth_views.route("/reset_password", methods=["GET","POST"])
@@ -114,7 +117,7 @@ def request_reset():
 @auth_views.route("/reset_password/<token>", methods=["GET","POST"])
 def reset_password(token):
 	if current_user.is_authenticated:
-		return redirect(url_for("default_views.home"))
+		return redirect(url_for("user_views.ucet"))
 	user = User.verify_reset_token(token)
 	if user is None:
 		flash("Obnovovací link vypršel, nebo je jinak neplatný.", category="info")

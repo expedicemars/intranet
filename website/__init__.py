@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_mail import Mail
-from website.hepers.check_files import check_known_bugs_file, check_logs_file, check_mailing_list, check_terminy, check_faze, check_koordinator_data, check_user_data_folder
+from website.helpers.check_files import check_known_bugs_file, check_logs_file, check_mailing_list, check_terminy, check_faze, check_koordinator_data, check_user_data_folder
 from .paths.paths import user_database_path
 from .json_handlers.logs_handling import log
 
@@ -73,7 +73,7 @@ def create_app():
         return render_template("not_found.html", roles = get_access_rights(current_user)), 404
 
     @app.errorhandler(401)
-    def not_found(e):
+    def not_authorised(e):
         return render_template("not_authorised.html", roles = get_access_rights(current_user)), 401
 
     return app

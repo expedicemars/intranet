@@ -1,14 +1,15 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user
 from website.models.chyba import Chyba
 from website.roles.role_handler import get_access_rights
+from website.helpers.get_aktualni_faze import je_registrace_otevrena
 
 default_views = Blueprint("default_views", __name__)
 
 @default_views.route("/")
 @default_views.route("/home")
 def home():
-    return render_template("home.html", roles = get_access_rights(current_user))
+    return render_template("home.html", roles = get_access_rights(current_user), je_registrace_otevrena = je_registrace_otevrena())
 
 
 @default_views.route("/nahlasit_bug", methods=["GET", "POST"])
