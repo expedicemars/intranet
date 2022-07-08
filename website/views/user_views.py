@@ -6,7 +6,7 @@ from website import db
 from website.roles.role_handler import get_access_rights
 import json
 from website.paths.paths import user_data_folder_path
-from website.hepers.get_aktualni_faze import je_zadani_pristupne
+from website.helpers.get_aktualni_faze import je_zadani_pristupne
 
 user_views = Blueprint("user_views", __name__)
 

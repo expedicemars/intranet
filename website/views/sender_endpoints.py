@@ -6,7 +6,7 @@ from website.models.user import User
 from website.json_handlers.logs_handling import get_logs
 from website.roles.role_handler import get_access_rights, dostupna_omezeni
 from website.paths.paths import terminy_path, faze_path, koordinator_data_path, user_data_folder_path
-from website.hepers.mailing_list import get_mails_from_mailing_list
+from website.helpers.mailing_list import get_mails_from_mailing_list
 
 
 sender = Blueprint("sender", __name__)
@@ -16,6 +16,12 @@ sender = Blueprint("sender", __name__)
 def send_noauth(query):
     if query == "chyby":
         return json.dumps(Chyba.get_all())
+    elif query == "registrace":
+        with open(terminy_path()) as file:
+            file = json.load(file)
+            for t in file:
+                if t["popis"] == "registrace":
+                    return json.dumps(t)
     else:
         return f"Query {query} not found."
 

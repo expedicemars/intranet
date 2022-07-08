@@ -3,6 +3,18 @@
     
 <h2>Intranet Expedice Mars</h2>
 
-Tohle budou stránky pro internetová kola
+Info k aktuálnímu ročníku:
+
+{% if je_registrace_otevrena %}
+    <div>
+        Registrace běží, můžeš se do Expedice <a href="{{url_for('auth_views.register')}}">přidat</a>. Registraci ukončíme <code id="date"></code>.
+    </div>
+{% else %}
+    <div>
+        Tento ročník už má uzavřené registrace. Můžeš se ale <a href="{{url_for('auth_views.register')}}">zapsat do mailing listu</a>, s otevřením nového ročníku ti dáme vědět.
+    </div>
+
+{% endif %}    
+<script src="{{url_for('static', filename='js/home.js')}}", type="module"></script>
 
 {% endblock %}

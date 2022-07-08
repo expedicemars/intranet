@@ -86,8 +86,7 @@ def check_terminy() -> None:
             file.write(json.dumps([
                 {
                     "popis": "registrace",
-                    "date": "2022-01-01",
-                    "time": "12:34"
+                    "date": "2022-01-01"
                 }
             ]))
         log("Created terminy at " + str(terminy_path))
