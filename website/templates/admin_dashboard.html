@@ -14,6 +14,7 @@
     <h3>Co všechno musí být udržováno up-to-date</h3>
     <ul>
         <li>Datum ukončení registrace, <a href="{{url_for('admin_views.stanovit_terminy')}}">upravit jde tady</a>.</li>
+        <li>Reakce na bugtracker</li>
     </ul>
 </div>
 <hr>
@@ -28,7 +29,7 @@
 <hr>
 <div>
     <h3>Přehled fíčur systému</h3>
-    <h3>Fáze Expedice</h3>
+    <h4>Fáze Expedice</h3>
     <ul>
         <li>Fázování expedice je způsob, jak udržet stránky užitečné po celý rok. Dají se přepínat v admin prostředí. Je možné se ve fázích vracet zpět, pokud to dává smysl. Ovlivňují např. registrační formulář nebo přístup k zadáním.</li>
         <li>Jsou zatím 4:</li>
@@ -39,7 +40,7 @@
             <li>Ukončený ročník. Čas pro zálohu dat, vyčištění systému.</li>
         </ul>
     </ul>
-    <h3>Role uživatelů</h3>
+    <h4>Role uživatelů</h3>
     <ul>
         <li>Každý registrovaný uživatel má nějaké role.</li>
         <li>Účastníci se spokojí s <code>user</code>. Vyplyne-li potřeba nového admina, musí se tento předem registrovat a nějaký další admin ho poté povýší.</li>
@@ -53,6 +54,41 @@
             <li><code>koordinator_/odbornost/</code> - možnost upravovat zadání, kontakty na sebe, nahlížet na svoje svěřence</li>
             <li><code>editing_admins_allowed</code> - oprávnění jmenovat adminy a upravovat jejich role (dětem a blbcům vstup zakázán :P )</li>
         </ul>
+    </ul>
+    <h4>Termíny</h3>
+    <ul>
+        <li>Admini s patřičným oprávněním smí přidávat deadliny.</li>
+        <li>Nastavený deadline nic nevynucuje, ale zobrazuje se kidům v sekci Termíny</li>
+    </ul>
+    <h4>Výběr odbornosti</h3>
+    <ul>
+        <li>Je definovaných našich 5 obvyklých odborností.</li>
+        <li>Uživatelé:</li>
+        <ul>
+            <li>Před zveřejněním zadání vidí pouze popis odborností.</li>
+            <li>Po zveřejnění zadání je možnost se na ně podívat a zvolit si odbornost.</li>
+            <li>Po zvolení odbornosti je vidět zadání jen své odbornosti, kontakt na koordinátora, pole pro odevzdání.</li>
+        </ul>
+        <li>Koordinátoři:</li>
+        <ul>
+            <li>Potřebujou roli koordinátor + koordinátor_konkrétních_odborností.</li>
+            <li>Můžou nahrát zadání internetového kola a zobrazuje se jim aktuálně nahraná verze zadání.</li>
+            <li>Můžou upravit pole, které slouží jako kontakt na koordinátora / osooby, které slouží jako pomoc k projektům.</li>
+        </ul>
+        
+    </ul>
+    <h4>Data o uživateli</h4>
+    <ul>
+        <li>O každém uživateli se uchovává dost metadat.</li>
+        <li>Nebudu sem vypisovat všechny, protože bych pak přidal novou a tady bych jí zapomněl zmínit taky.</li>
+        <li>Každý to může vidět na stránce svého účtu.</li>
+    </ul>
+    <h4>Ostatní</h4>
+    <ul>
+        <li>Uživatelé musí po registraci ověřit mail, abychom měli spolehlivej komunikační kanál.</li>
+        <li>V případě zapomenutého hesla jde pomocí mailu obnovit.</li>
+        <li>Bugtracker - moožnost přidávat připomínky. Admini je můžou komentovat, popř. mazat.</li>
+        <li>Logs file - admin s oprávněním může nahlížet a mazat. Je basically k ničemu, je to debug tool pro pípa.</li>
     </ul>
 </div>
 
