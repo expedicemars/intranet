@@ -91,10 +91,10 @@ def check_terminy() -> None:
             ]))
         log("Created terminy at " + str(terminy_path))
 
-def check_koordinator_data() -> None:
-    path = p.koordinator_data_path()
+def check_velitel_odbornosti_data() -> None:
+    path = p.velitel_odbornosti_data_path()
     if path.exists():
-        log("Koordinator data soubor už existuje.")
+        log("velitel_odbornosti data soubor už existuje.")
     else:
         path.touch()
         with open(path, "w") as file:

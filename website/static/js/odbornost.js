@@ -3,7 +3,7 @@ import httpGet from "./httpGet.js"
 let button_ids = ["biolog", "fyzik", "konstrukter", "inzenyr", "popularizator"]
 let form = document.getElementById("form")
 let result = document.getElementById("result")
-let kontakt = httpGet("/send_user/kontakt_na_meho_koordinatora")
+let kontakt = httpGet("/send_user/kontakt_na_meho_velitele_odbornosti")
 
 for (let id of button_ids) {
     let node = document.getElementById(id)

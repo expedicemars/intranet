@@ -21,5 +21,5 @@ def mailing_list_path() -> Path:
 def user_data_folder_path() -> Path:
     return Path.cwd() / "user_data"
 
-def koordinator_data_path() -> Path:
-    return Path.cwd() / "data" / "koordinator_data.json"
+def velitel_odbornosti_data_path() -> Path:
+    return Path.cwd() / "data" / "velitel_odbornosti_data.json"

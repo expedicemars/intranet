@@ -3,7 +3,7 @@ from flask_login import current_user
 from website.models.chyba import Chyba
 from website.models.user import User
 from website.json_handlers.logs_handling import delete_logs
-from website.paths.paths import terminy_path,faze_path, koordinator_data_path
+from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path
 import json
 from website.roles.role_handler import get_access_rights
 from website import db
@@ -169,23 +169,23 @@ def prepinat_faze():
     else:
         abort(401)
 
-@admin_views.route("/koordinatori", methods=["GET","POST"])
-def koordinatori():
+@admin_views.route("/velitele_odbornosti", methods=["GET","POST"])
+def velitele_odbornosti():
     rights = get_access_rights(current_user)
-    if "koordinator" in rights:
+    if "velitel_odbornosti" in rights:
         if request.method == "GET":
-            return render_template("admin_koordinatori.html", roles=rights)
+            return render_template("admin_velitele_odbornosti.html", roles=rights)
         else:
             inputs_ids_list = ["biolog", "konstrukter", "fyzik", "inzenyr", "popularizator"]
-            with open(koordinator_data_path()) as file:
-                koordinator_data = json.load(file)
+            with open(velitel_odbornosti_data_path()) as file:
+                velitel_odbornosti_data = json.load(file)
             for id in inputs_ids_list:
                 res = request.form.get(id)
                 if res:
-                    koordinator_data[id] = res
-            with open(koordinator_data_path(),"w") as file:
-                file.write(json.dumps(koordinator_data, indent=4))
-            flash("Data koordinátorů byla upravena.", category="success")
+                    velitel_odbornosti_data[id] = res
+            with open(velitel_odbornosti_data_path(),"w") as file:
+                file.write(json.dumps(velitel_odbornosti_data, indent=4))
+            flash("Data velitelů odborností byla upravena.", category="success")
             return redirect(url_for("admin_views.admin_dashboard"))
 
     else:
