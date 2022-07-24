@@ -39,7 +39,7 @@ def send_admin(query):
         else:
             abort(401)
     elif "detail_usera_" in query:
-        if "editing_users_allowed" in rights:
+        if "editing_users_allowed" in rights or "editing_admins_allowed" in rights:
             id = int(query.replace("detail_usera_", ""))
             u = User.query.get(id)
             return u.get_basic_info()

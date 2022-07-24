@@ -1,12 +1,16 @@
 import httpGet from "./httpGet.js"
 let role_uzivatele = JSON.parse(httpGet("/send_admin/role_" + parseInt(document.getElementById("id").value)))
 let seznam_omezeni = JSON.parse(httpGet("/send_admin/vsechny_omezeni"))
+let info_o_adminovi = JSON.parse(httpGet("/send_admin/detail_usera_" + parseInt(document.getElementById("id").value)))
 let checkdiv = document.getElementById("check")
 let btn = document.getElementById("btn")
 let resut_input = document.getElementById("result")
 let form = document.getElementById("form")
 
 btn.addEventListener("click", vyhodnotit)
+document.getElementById("info").innerHTML = JSON.stringify(info_o_adminovi, null, 4)
+
+console.log(info_o_adminovi)
 
 
 
