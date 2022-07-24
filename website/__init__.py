@@ -34,9 +34,9 @@ def create_app():
     def check_if_database_exists_else_create(app):
         if not user_database_path().exists():
             db.create_all(app=app)
-            log("created db at " + str(user_database_path))
+            log("Vytvořena databáze na " + str(user_database_path()))
         else:
-            log("user database already exists")
+            log("Databáze uživatelů už existuje.")
 
     from .views.default_views import default_views
     from .views.auth_views import auth_views
