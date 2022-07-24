@@ -1,10 +1,10 @@
 {% extends "admin_navbar.html" %}
 
 {% block content %}
-    <h2>#justkoordinatorthings</h2>
+    <h2>#justvelitelodbornostithings</h2>
     <form method="post">
         <button type="submit" class="btn btn-success">Uložit</button>
-        {% if "koordinator_biolog" in roles %}
+        {% if "velitel_odbornosti_biolog" in roles %}
             <div class="border rounded-2 border-primary m-2 p-2">
                 <h2>Biologové</h2>
                 <div class="row">
@@ -22,7 +22,7 @@
                 <input type="text" class="form-control" name="biolog" id="biolog">
             </div>
         {% endif %}
-        {% if "koordinator_konstrukter" in roles %}
+        {% if "velitel_odbornosti_konstrukter" in roles %}
             <div class="border rounded-2 border-primary m-2 p-2">
                 <h2>Konstruktéři</h2>
                 <div class="row">
@@ -40,7 +40,7 @@
                 <input type="text" class="form-control" name="konstrukter" id="konstrukter">
             </div>
         {% endif %}
-        {% if "koordinator_fyzik" in roles %}
+        {% if "velitel_odbornosti_fyzik" in roles %}
             <div class="border rounded-2 border-primary m-2 p-2">
                 <h2>Fyzikové</h2>
                 <div class="row">
@@ -58,7 +58,7 @@
                 <input type="text" class="form-control" name="fyzik" id="fyzik">
             </div>
         {% endif %}
-        {% if "koordinator_inzenyr" in roles %}
+        {% if "velitel_odbornosti_inzenyr" in roles %}
             <div class="border rounded-2 border-primary m-2 p-2">
                 <h2>Inženýři</h2>
                 <div class="row">
@@ -76,7 +76,7 @@
                 <input type="text" class="form-control" name="inzenyr" id="inzenyr">
             </div>
         {% endif %}
-        {% if "koordinator_popularizator" in roles %}
+        {% if "velitel_odbornosti_popularizator" in roles %}
             <div class="border rounded-2 border-primary m-2 p-2">
                 <h2>Popularizátoři</h2>
                 <div class="row">
@@ -97,5 +97,5 @@
     </form>
     
 
-    <script type="module" src="{{url_for('static', filename='js/admin_koordinatori.js')}}"></script>
+    <script type="module" src="{{url_for('static', filename='js/admin_velitele_odbornosti.js')}}"></script>
 {% endblock %}
