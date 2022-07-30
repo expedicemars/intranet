@@ -21,6 +21,7 @@ class User(db.Model, UserMixin):
 	datum_narozeni=db.Column(db.String(100))
 	progress = db.Column(db.String(100))
 	role = db.Column(db.Text, default=json.dumps(["user"]))
+	tricko = db.Column(db.String(100))
 
 
 	def get_reset_token(self, expires_sec = 9000) -> str:
@@ -49,7 +50,8 @@ class User(db.Model, UserMixin):
 			"odbornost": self.odbornost,
 			"datum_narozeni": self.datum_narozeni,
 			"progress": self.progress,
-			"role": self.role
+			"role": self.role,
+			"tricko": self.tricko
 		}
 
 	def odstranit(self):
