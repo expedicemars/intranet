@@ -30,24 +30,19 @@
   - [datetime](https://docs.python.org/3/library/datetime.html) - pro získávání informací o aktuálním čase
   - [shutil](https://docs.python.org/3/library/shutil.html) - pro manipulaci se složkami a soubory (zde využíváno k odstraňování složek při mazání odhadů)
   - [uuid](https://docs.python.org/3/library/uuid.html) - pro generování Universaly Unique IDentifierů = id odhadů
-- [Stl JS Plugin](https://www.viewstl.com/plugin/#p_models) - pro zobrazování .stl souborů
-
 # Pár slov k rolím
 
 Vedle rolí user a admin je hromada  dalších rolí, které plní svůj účel. Všechny ostatní jsou vždy mutace admina. Omezují, kam admin může a co všechno smí.
-
-Pro přidání superadmina viz níže.
 
 Pro přidání admina:
 1. Registrace usera.
 2. Existující admin s povolením typu editing_admins_allowed vleze do admin prostředí.
 3. najde usera a upraví mu role na to, co je třeba.
 
-Superadmin má přístup všude. Zároveň je přidán mechanismus, který může jmenovat nové superadminy (kdybychom třeba neměli kontakt k žádnému stávajícímu superadminovi).
 
-Pro přidání superadmina:
+Pro jmenování prvního admina s rolí editing_admins_allowed:
 1. Registrace Usera
-2. v Pythonanywhere najít skript "jmenovani_super_adminem.py"s
+2. v Pythonanywhere najít skript "jmenovani_admina_editing_admins_allowed.py"s
 3. upravit v něm email_na_jmenovani
 4. v konzoli to pustit
 

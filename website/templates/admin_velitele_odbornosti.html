@@ -2,21 +2,27 @@
 
 {% block content %}
     <h2>#justvelitelodbornostithings</h2>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <button type="submit" class="btn btn-success">Uložit</button>
         {% if "velitel_odbornosti_biolog" in roles %}
             <div class="border rounded-2 border-primary m-2 p-2">
                 <h2>Biologové</h2>
-                <div class="row">
-                    <div class="col-auto">
-                        Nahrát zadání
-                    </div>
-                    <div class="col">
-                        <input type="file" multiple class="form-control" name="biolog_zadani">
+                <div id="biolog_nahrat_zadani">
+                    Přidej soubory zadání, pokud jich je víc, tak všechny naráz:
+                    <div class="row">
+                        <div class="col">
+                            <input type="file" multiple class="form-control" name="biolog_files">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" name="ulozit_zadani" value="biolog" class="btn btn-outline-success">Nahrát</button>
+                        </div>
                     </div>
                 </div>
-                <hr>
-                náhled nahraného zadání<br>
+                <div id="biolog_ukazat_zadani">
+                    Náhled nahraného zadání.
+                    <button type="submit" class="btn btn-danger" name="smazat_zadani" value="biolog">Smazat zadání</button>
+                    <br>
+                </div>
                 <hr>
                 Sem napiš nějaké možnosti kontaktu. Třeba jméno, email, další jméno, jeho email...
                 <input type="text" class="form-control" name="biolog" id="biolog">
@@ -25,16 +31,22 @@
         {% if "velitel_odbornosti_konstrukter" in roles %}
             <div class="border rounded-2 border-primary m-2 p-2">
                 <h2>Konstruktéři</h2>
-                <div class="row">
-                    <div class="col-auto">
-                        Nahrát zadání
-                    </div>
-                    <div class="col">
-                        <input type="file" multiple class="form-control" name="konstrukter_zadani">
+                <div id="konstrukter_nahrat_zadani">
+                    Přidej soubory zadání, pokud jich je víc, tak všechny naráz:
+                    <div class="row">
+                        <div class="col">
+                            <input type="file" multiple class="form-control" name="konstrukter_files">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" name="ulozit_zadani" value="konstrukter" class="btn btn-outline-success">Nahrát</button>
+                        </div>
                     </div>
                 </div>
-                <hr>
-                náhled nahraného zadání<br>
+                <div id="konstrukter_ukazat_zadani">
+                    Náhled nahraného zadání.
+                    <button type="submit" class="btn btn-danger" name="smazat_zadani" value="konstrukter">Smazat zadání</button>
+                    <br>
+                </div>
                 <hr>
                 Sem napiš nějaké možnosti kontaktu. Třeba jméno, email, další jméno, jeho email...
                 <input type="text" class="form-control" name="konstrukter" id="konstrukter">
@@ -43,16 +55,22 @@
         {% if "velitel_odbornosti_fyzik" in roles %}
             <div class="border rounded-2 border-primary m-2 p-2">
                 <h2>Fyzikové</h2>
-                <div class="row">
-                    <div class="col-auto">
-                        Nahrát zadání
-                    </div>
-                    <div class="col">
-                        <input type="file" multiple class="form-control" name="fyzik_zadani">
+                <div id="fyzik_nahrat_zadani">
+                    Přidej soubory zadání, pokud jich je víc, tak všechny naráz:
+                    <div class="row">
+                        <div class="col">
+                            <input type="file" multiple class="form-control" name="fyzik_files">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" name="ulozit_zadani" value="fyzik" class="btn btn-outline-success">Nahrát</button>
+                        </div>
                     </div>
                 </div>
-                <hr>
-                náhled nahraného zadání<br>
+                <div id="fyzik_ukazat_zadani">
+                    Náhled nahraného zadání.
+                    <button type="submit" class="btn btn-danger" name="smazat_zadani" value="fyzik">Smazat zadání</button>
+                    <br>
+                </div>
                 <hr>
                 Sem napiš nějaké možnosti kontaktu. Třeba jméno, email, další jméno, jeho email...
                 <input type="text" class="form-control" name="fyzik" id="fyzik">
@@ -61,16 +79,22 @@
         {% if "velitel_odbornosti_inzenyr" in roles %}
             <div class="border rounded-2 border-primary m-2 p-2">
                 <h2>Inženýři</h2>
-                <div class="row">
-                    <div class="col-auto">
-                        Nahrát zadání
-                    </div>
-                    <div class="col">
-                        <input type="file" multiple class="form-control" name="inzenyr_zadani">
+                <div id="inzenyr_nahrat_zadani">
+                    Přidej soubory zadání, pokud jich je víc, tak všechny naráz:
+                    <div class="row">
+                        <div class="col">
+                            <input type="file" multiple class="form-control" name="inzenyr_files">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" name="ulozit_zadani" value="inzenyr" class="btn btn-outline-success">Nahrát</button>
+                        </div>
                     </div>
                 </div>
-                <hr>
-                náhled nahraného zadání<br>
+                <div id="inzenyr_ukazat_zadani">
+                    Náhled nahraného zadání.
+                    <button type="submit" class="btn btn-danger" name="smazat_zadani" value="inzenyr">Smazat zadání</button>
+                    <br>
+                </div>
                 <hr>
                 Sem napiš nějaké možnosti kontaktu. Třeba jméno, email, další jméno, jeho email...
                 <input type="text" class="form-control" name="inzenyr" id="inzenyr">
@@ -79,16 +103,22 @@
         {% if "velitel_odbornosti_popularizator" in roles %}
             <div class="border rounded-2 border-primary m-2 p-2">
                 <h2>Popularizátoři</h2>
-                <div class="row">
-                    <div class="col-auto">
-                        Nahrát zadání
-                    </div>
-                    <div class="col">
-                        <input type="file" multiple class="form-control" name="popularizator_zadani">
+                <div id="popularizator_nahrat_zadani">
+                    Přidej soubory zadání, pokud jich je víc, tak všechny naráz:
+                    <div class="row">
+                        <div class="col">
+                            <input type="file" multiple class="form-control" name="popularizator_files">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" name="ulozit_zadani" value="popularizator" class="btn btn-outline-success">Nahrát</button>
+                        </div>
                     </div>
                 </div>
-                <hr>
-                náhled nahraného zadání<br>
+                <div id="popularizator_ukazat_zadani">
+                    Náhled nahraného zadání.
+                    <button type="submit" class="btn btn-danger" name="smazat_zadani" value="popularizator">Smazat zadání</button>
+                    <br>
+                </div>
                 <hr>
                 Sem napiš nějaké možnosti kontaktu. Třeba jméno, email, další jméno, jeho email...
                 <input type="text" class="form-control" name="popularizator" id="popularizator">

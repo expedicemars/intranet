@@ -89,10 +89,10 @@ def odbornost():
     if "user" in get_access_rights(current_user):
         if request.method == "GET":
             if current_user.odbornost == "zatím nevybraná":
-                nevybrano = True
+                odbornost = False
             else:
-                nevybrano = False
-            return render_template("odbornost.html", zadani_pristupne =je_zadani_pristupne() , nevybrano=nevybrano, roles=get_access_rights(current_user))
+                odbornost = current_user.odbornost
+            return render_template("odbornost.html", zadani_pristupne =je_zadani_pristupne() , odbornost=odbornost, roles=get_access_rights(current_user))
         else:
             current_user.odbornost = request.form["result"]
             db.session.add(current_user)

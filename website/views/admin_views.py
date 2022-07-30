@@ -3,7 +3,7 @@ from flask_login import current_user
 from website.models.chyba import Chyba
 from website.models.user import User
 from website.json_handlers.logs_handling import delete_logs
-from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path
+from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path
 import json
 from website.roles.role_handler import get_access_rights
 from website import db
@@ -176,17 +176,40 @@ def velitele_odbornosti():
         if request.method == "GET":
             return render_template("admin_velitele_odbornosti.html", roles=rights)
         else:
-            inputs_ids_list = ["biolog", "konstrukter", "fyzik", "inzenyr", "popularizator"]
-            with open(velitel_odbornosti_data_path()) as file:
-                velitel_odbornosti_data = json.load(file)
-            for id in inputs_ids_list:
-                res = request.form.get(id)
-                if res:
-                    velitel_odbornosti_data[id] = res
-            with open(velitel_odbornosti_data_path(),"w") as file:
-                file.write(json.dumps(velitel_odbornosti_data, indent=4))
-            flash("Data velitelů odborností byla upravena.", category="success")
-            return redirect(url_for("admin_views.admin_dashboard"))
+            # mazani souboru
+            if request.form.get("smazat_zadani"):
+                odbornost = request.form.get("smazat_zadani")
+                path = zadani_folder_path() / odbornost
+                for file in path.iterdir():
+                    file.unlink()
+                flash(f"Zadání odborosti {odbornost} je smazaný.", category="success")
+            
+            # ukládání souborů
+            elif request.form.get("ulozit_zadani"):
+                odbornost = request.form.get("ulozit_zadani")
+                if all(request.files.getlist(f"{odbornost}_files")):
+                    for file in request.files.getlist(f"{odbornost}_files"):
+                        file.save(zadani_folder_path() / odbornost / file.filename)
+                    flash("Zadání nahráno.", category="success")
+                else:
+                    flash("Nenahrál jsi žádné soubory.", category="info")
+
+
+            # zapisování kontaktních dat
+            else:
+                inputs_ids_list = ["biolog", "konstrukter", "fyzik", "inzenyr", "popularizator"]
+                with open(velitel_odbornosti_data_path()) as file:
+                    velitel_odbornosti_data = json.load(file)
+                for id in inputs_ids_list:
+                    res = request.form.get(id)
+                    if res:
+                        velitel_odbornosti_data[id] = res
+                with open(velitel_odbornosti_data_path(),"w") as file:
+                    file.write(json.dumps(velitel_odbornosti_data, indent=4))
+
+
+                flash("Data velitelů odborností byla upravena.", category="success")
+            return redirect(url_for("admin_views.velitele_odbornosti"))
 
     else:
         abort(401)
