@@ -114,3 +114,14 @@ def check_user_data_folder() -> None:
     else:
         path.mkdir()
         log("Vytvořena složka pro user data na "+ str(path))
+
+def check_zadani_folders() -> None:
+    path = p.zadani_folder_path()
+    if path.exists():
+        log("Složka pro zadání už existuje.")
+    else:
+        path.mkdir()
+        for odbornost in ["biolog", "konstrukter", "inzenyr", "fyzik", "popularizator"]:
+            _path = path / odbornost
+            _path.mkdir()
+        log("Vytvořena složka pro zadání na "+str(path))

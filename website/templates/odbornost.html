@@ -1,7 +1,7 @@
 {% extends "navbar.html" %}
 {% block content %}
-
-    {% if nevybrano %}
+<input hidden value="{{odbornost}}" id="odbornost">
+    {% if not odbornost %}
         <h2>Přehled odborností</h2>
         <div class="border rounded-2 border-primary biolog-div m-2 p-2" >
             <h3>Biolog</h3>
@@ -28,14 +28,12 @@
     {% if not zadani_pristupne %}
         <h2>Zadání ještě nebyla zveřejněna. Hned, jak se tak stane, ti dáme vědět.</h2>
     {% else %}
-        {% if nevybrano %}
+        {% if not odbornost %}
             <h2>Zadání a výběr odbornosti</h2>
             <div class="border rounded-2 border-primary biolog-div m-2 p-2" >
                 <h3>Zadání pro biology</h3>
                 <div class="row">
-                    <div class="col">
-                        Download
-                    </div>
+                    <div class="col" id="biolog_zadani"></div>
                     <div class="col-auto">
                         <button class="btn btn-light" type="button" id="biolog">Zvolit odbornost</button>
                     </div>
@@ -44,8 +42,8 @@
             <div class="border rounded-2 border-primary fyzik-div m-2 p-2" >
                 <h3>Zadání pro fyziky</h3>
                 <div class="row">
-                    <div class="col">
-                        Download
+                    <div class="col" id="fyzik_zadani">
+                        
                     </div>
                     <div class="col-auto">
                         <button class="btn btn-light" type="button" id="fyzik">Zvolit odbornost</button>
@@ -55,8 +53,8 @@
             <div class="border rounded-2 border-primary konstrukter-div m-2 p-2" >
                 <h3>Zadání pro konstruktéry</h3>
                 <div class="row">
-                    <div class="col">
-                        Download
+                    <div class="col" id="konstrukter_zadani">
+                        
                     </div>
                     <div class="col-auto">
                         <button class="btn btn-light" type="button" id="konstrukter">Zvolit odbornost</button>
@@ -66,8 +64,8 @@
             <div class="border rounded-2 border-primary inzenyr-div m-2 p-2" >
                 <h3>Zadání pro inženýry</h3>
                 <div class="row">
-                    <div class="col">
-                        Download
+                    <div class="col" id="inzenyr_zadani">
+                        
                     </div>
                     <div class="col-auto">
                         <button class="btn btn-light" type="button" id="inzenyr">Zvolit odbornost</button>
@@ -77,8 +75,8 @@
             <div class="border rounded-2 border-primary popularizator-div m-2 p-2" >
                 <h3>Zadání pro popularizátory</h3>
                 <div class="row">
-                    <div class="col">
-                        Download
+                    <div class="col" id="popularizator_zadani">
+                        
                     </div>
                     <div class="col-auto">
                         <button class="btn btn-light" type="button" id="popularizator">Zvolit odbornost</button>
@@ -87,7 +85,10 @@
             </div>
         {% else %}
             <h2>Info o odbornosti</h2>
-            Tady máš zadání intrnetováho kola Expedice Mars:
+            Tady máš zadání internetováho kola Expedice Mars:
+            <div id="zadani_single" class="border rounded-2 border-primary m-2 p-2">
+
+            </div>
             <br>
             Tady potom kontakt na velitele odbornosti. Neváhej se jich na cokoli ptát, všichni ti rádi odpoví :)
             <div id="kontakt" class="border rounded-2 border-primary m-2 p-2"></div>

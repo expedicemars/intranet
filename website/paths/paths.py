@@ -23,3 +23,9 @@ def user_data_folder_path() -> Path:
 
 def velitel_odbornosti_data_path() -> Path:
     return Path.cwd() / "data" / "velitel_odbornosti_data.json"
+
+def zadani_folder_path() -> Path:
+    return Path.cwd() / "data" / "zadani"
+
+def default_profilovka_path() -> Path:
+    return Path.cwd() / "data" / "default_profilovka.png"

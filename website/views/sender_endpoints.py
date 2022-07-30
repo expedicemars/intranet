@@ -5,7 +5,7 @@ from website.models.chyba import Chyba
 from website.models.user import User
 from website.json_handlers.logs_handling import get_logs
 from website.roles.role_handler import get_access_rights, dostupna_omezeni
-from website.paths.paths import terminy_path, faze_path, velitel_odbornosti_data_path, user_data_folder_path
+from website.paths.paths import terminy_path, faze_path, velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path
 from website.helpers.mailing_list import get_mails_from_mailing_list
 
 
@@ -91,6 +91,8 @@ def send_admin(query):
             if "user" in u_rights and "admin" not in u_rights:
                 result.append(u.email)
         return json.dumps(result)
+    elif query == "odbornosti_kterym_velim":
+        return json.dumps([y.replace("velitel_odbornosti_", "") for y in filter(lambda x: "velitel_odbornosti_" in x, get_access_rights(current_user))])
     
 
 
@@ -119,14 +121,37 @@ def send_user(query):
         else:
             abort(401)
     elif query == "profilovka":
-        print("here")
         if "user" in rights:
-            # iterdirem najdu filename profillovka
+            # iterdirem najdu filename profilovka
             path = user_data_folder_path() / str(current_user.id)
             for file in path.iterdir():
                 if file.stem == "profiovka":
                     profilovka_path = path / file.name
                     return send_file(profilovka_path)
+            return send_file(default_profilovka_path())
         else:
             abort(401)
+    
+
+@sender.route("/send_zadani/<string:odbornost>/<string:name>")
+def send_zadani(odbornost, name):
+    rights = get_access_rights(current_user)
+    if "user" in rights or "admin" in rights: # připouštim oba, protože i úpravy termínů posílaj request sem
+        if name == "__jmena":
+            p = zadani_folder_path() / odbornost
+            res = []
+            for file in p.iterdir():
+                res.append(file.name)
+            if len(res) == 0:
+                return json.dumps(None)
+            else:
+                return json.dumps(res)
+        else:
+            return send_file(zadani_folder_path() / odbornost / name)
+    else:
+        abort(401)
+
+
+
+
 
