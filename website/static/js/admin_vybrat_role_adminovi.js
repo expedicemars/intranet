@@ -10,9 +10,6 @@ let form = document.getElementById("form")
 btn.addEventListener("click", vyhodnotit)
 document.getElementById("info").innerHTML = JSON.stringify(info_o_adminovi, null, 4)
 
-console.log(info_o_adminovi)
-
-
 
 function generator_checkeru(label, is_checked) {
     let inp = document.createElement("input")

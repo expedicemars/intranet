@@ -25,6 +25,15 @@ function nacist() {
     for (let id of ids_list) {
         document.getElementById(id).value = info[id]
     }
+    //nacteni tricka
+    let preselected_id = ""
+    if (info["tricko"]) {
+        preselected_id = info["tricko"]
+    } else { // bude vyuzito jen poprve, kdyz je user zalozenej
+        preselected_id = "nic"
+    }
+    document.getElementById(preselected_id).selected = "selected"
+    //nacteni fixnich
     for (let id of fixni_info_ids_list) {
         document.getElementById(id).innerHTML = info[id]
     }
@@ -38,13 +47,15 @@ function toggle_zmeny() {
         for (let id of ids_list) {
             document.getElementById(id).disabled = true
         }
+        document.getElementById("tricko_select").disabled = true
         odeslat_formular()
     } else {
         zmeny_button.value = "upravy"
         zmeny_button.innerHTML = "Uložit změny"
         for (let id of ids_list) {
             document.getElementById(id).disabled = false
-        }
+        }  
+        document.getElementById("tricko_select").disabled = false
     }
 }
 
@@ -54,6 +65,7 @@ function odeslat_formular() {
     for (let id of ids_list) {
         result[id] = document.getElementById(id).value
     }
+    result["tricko"] = document.getElementById("tricko_select").value
     document.getElementById("result").value = JSON.stringify(result)
     form.submit()
 }

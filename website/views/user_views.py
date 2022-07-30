@@ -46,11 +46,13 @@ def ucet():
                     return redirect(url_for("user_views.ucet"))
             else:
                 data = json.loads(request.form.get("result"))
+                print(data)
                 current_user.jmeno = data["jmeno"]
                 current_user.adresa = data["adresa"]
                 current_user.telcislo = data["telcislo"]
                 current_user.datum_narozeni = data["datum_narozeni"]
                 current_user.mail_rodicu = data["mail_rodicu"]
+                current_user.tricko = data["tricko"]
                 if current_user.email != data["email"]:
                     current_user.email = data["email"]
                     current_user.confirmed = False
