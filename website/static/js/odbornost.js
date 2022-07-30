@@ -36,7 +36,7 @@ if (odbornost_current_usera) {
         if (zadani) {
             for (let zadani_file of zadani) {
                 let a = document.createElement("a")
-                a.href = "/send_zadani/"+ odbornost + "/" + zadani_file
+                a.href = "/send_zadani/"+ odbornost_current_usera + "/" + zadani_file
                 a.download = zadani_file
                 a.innerHTML = zadani_file
                 document.getElementById("zadani_single").appendChild(a)
