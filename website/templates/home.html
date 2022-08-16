@@ -5,13 +5,21 @@
 
 Info k aktuálnímu ročníku:
 
-{% if je_registrace_otevrena %}
+{% if faze == "otevrene_registrace" %}
     <div>
-        Registrace běží, můžeš se do Expedice <a href="{{url_for('auth_views.register')}}">přidat</a>. Registraci ukončíme <code id="date"></code>.
+        Registrace běží, zadání domácích kol ale ještě není zveřejněno. Můžeš se do Expedice <a href="{{url_for('auth_views.register')}}">přidat</a>. Registraci ukončíme <code id="date"></code>.
     </div>
-{% else %}
+{% elif faze == "zpristupnena_zadani" %}
     <div>
-        Tento ročník už má uzavřené registrace. Můžeš se ale <a href="{{url_for('auth_views.register')}}">zapsat do mailing listu</a>, s otevřením nového ročníku ti dáme vědět.
+        Registrace běží, zadání domácích kol už byla zpřístupněna. Můžeš se do Expedice <a href="{{url_for('auth_views.register')}}">přidat</a>, registraci ukončíme <code id="date"></code>.
+    </div>
+{% elif faze == "uzavrene_registrace" %}
+    <div>
+        Registrace letošního ročníku jsou uzavřeny. Můžeš se ale <a href="{{url_for('auth_views.register')}}">zapsat do mailing listu</a>, s otevřením nového ročníku ti dáme vědět.
+    </div>
+{% elif faze == "ukonceny_rocnik" %}
+    <div>
+        Tento ročník Expedice je ukončený, registrace na další zatím není spuštěna. Můžeš se ale <a href="{{url_for('auth_views.register')}}">zapsat do mailing listu</a>, s otevřením nového ročníku ti dáme vědět.
     </div>
 
 {% endif %}    
