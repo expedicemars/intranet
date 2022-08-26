@@ -11,10 +11,16 @@
 - Při programování byl používán [PEP 8](https://www.python.org/dev/peps/pep-0008/) styl pro formátování python kódu.
 - Komentáře v kódu často vedou k nepřesnostem. Zastarávají a stávají se irelevantními. V případě Pythonu se správně napsaný kód dá číst (s trochou nadsázky) jako kniha. O to se také snažím, tedy dokumentace v kódu místo nemá. Jedinou výjimou jsou TypeHints, které v kódu pomáhají mimojiné nahlédnout na typ proměnných.
 - Řada souborů se sama vytváří při spuštění a nejsou součástí version control. Jsou to:
-  - known_bugs.json
   - website/database.db
-  - logs.txt
   - user_data
+  - data/known_bugs.json
+  - data/logs.txt
+  - data/faze.json
+  - data/mailing_list.json
+  - data/terminy.json
+  - data/velitele_odbornosti_data.json
+  - zadani
+
 
 ## Použité knihovny
 

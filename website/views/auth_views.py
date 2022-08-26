@@ -48,12 +48,18 @@ def register():
 			if je_registrace_otevrena():
 				email = request.form.get("email")
 				password = request.form.get("password")
+				souhlas = request.form.get("souhlas")
 				if len(email) > 100:
 					flash("Zadaný e-mail byl delší než 100 znaků. Vyberte prosím kratší.", category="error")
 					return redirect(url_for("auth_views.register"))
 				if len(password) > 300 or len(password) <= 8:    
 					flash("Zvolené heslo nemělo vyhovující délku. Vyberte prosím nějaké mezi 8 a 300 znaky.", category="error")
-					return redirect(url_for("auth_views.register"))     
+					return redirect(url_for("auth_views.register"))
+				if souhlas != "on":
+					flash("Nesouhlasil jsi s podmínkama uchovávání dat.", category="error")
+					return redirect(url_for("auth_views.register"))
+
+				
 				user = User.query.filter_by(email=email).first()
 				if user:
 					flash("Tento email je už zaregistrovaný. Použij prosím jiný", category="error")
@@ -66,7 +72,9 @@ def register():
 					flash("Úspěšná registrace.", category="info")
 					# create files
 					user_folder_path = user_data_folder_path() / str(user.id)
+					prace_path = user_folder_path / "prace"
 					user_folder_path.mkdir()
+					prace_path.mkdir()
 					return redirect(url_for("default_views.home"))
 			else:
 				email = request.form.get("email")

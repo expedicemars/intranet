@@ -6,7 +6,7 @@ from website import db
 from website.roles.role_handler import get_access_rights
 import json
 from website.paths.paths import user_data_folder_path
-from website.helpers.get_aktualni_faze import je_zadani_pristupne
+from website.helpers.get_aktualni_faze import je_zadani_pristupne, get_aktualni_faze
 
 user_views = Blueprint("user_views", __name__)
 
@@ -16,7 +16,10 @@ user_views = Blueprint("user_views", __name__)
 def ucet():
     if "user" in get_access_rights(current_user):
         if request.method == "GET":
-            return render_template("ucet.html", current_user = current_user, roles = get_access_rights(current_user))
+            if get_aktualni_faze() == "ukonceny_rocnik":
+                flash("Tento ročník je ukončený, proto tu nejde nic upravovat. Brzy restartujeme systém a půjde se registrovat do nového.", category="error")
+            print(get_aktualni_faze())
+            return render_template("ucet.html", current_user = current_user, roles = get_access_rights(current_user), faze = get_aktualni_faze())
         else:
             if request.form.get("overeni_emailu"):
                 token = current_user.get_reset_token()
@@ -81,6 +84,8 @@ def ucet_overeny(token):
 
 @user_views.route("/terminy")
 def terminy():
+    if get_aktualni_faze() == "ukonceny_rocnik":
+        flash("Tento ročník je ukončený, proto tu nejde nic upravovat. Brzy restartujeme systém a půjde se registrovat do nového.", category="error")
     if "user" in get_access_rights(current_user):
         return render_template("terminy.html", roles=get_access_rights(current_user))
     else:
@@ -90,16 +95,26 @@ def terminy():
 def odbornost():
     if "user" in get_access_rights(current_user):
         if request.method == "GET":
+            if get_aktualni_faze() == "ukonceny_rocnik":
+                flash("Tento ročník je ukončený, proto tu nejde nic upravovat. Brzy restartujeme systém a půjde se registrovat do nového.", category="error")
             if current_user.odbornost == "zatím nevybraná":
                 odbornost = False
             else:
                 odbornost = current_user.odbornost
             return render_template("odbornost.html", zadani_pristupne =je_zadani_pristupne() , odbornost=odbornost, roles=get_access_rights(current_user))
         else:
-            current_user.odbornost = request.form["result"]
-            db.session.add(current_user)
-            db.session.commit()
-            flash("Odbornost vybrána!", category="success")
-            return redirect(url_for("user_views.ucet"))
+            if request.form.get("result"):
+                current_user.odbornost = request.form["result"]
+                db.session.add(current_user)
+                db.session.commit()
+                flash("Odbornost vybrána!", category="success")
+                return redirect(url_for("user_views.ucet"))
+            elif request.form.get("ulozit_praci"):
+                if all(request.files.getlist("nahrana_prace")):
+                    for file in request.files.getlist("nahrana_prace"):
+                        file.save() # Tady mi doslo ze musim udelat slozku na prace
+                else:
+                    flash("Nenahrál jsi žádné soubory.", category="info")
+                return "yo"
     else:
         abort(401)

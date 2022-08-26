@@ -12,7 +12,11 @@ function validate_form() {
             alert("Heslo musí být minimálně 8 znaků dlouhé")
         } else {
             if (password.value == password_confirm.value) {
-                form.submit()
+                if (document.getElementById("souhlas").checked) {
+                    form.submit()
+                } else {
+                    alert("Musíš souhlasit se zpracováním osobních údajů.")
+                }
             } else {
                 alert("Hesla se neschodují, ověřte to prosím.")
             }
