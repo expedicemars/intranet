@@ -61,5 +61,26 @@ if (odbornost_current_usera) {
             document.getElementById(odbornost + "_zadani").innerHTML = "Bohužel, tvoje odbornost ještě žádný zadání neuploadla. Měli by to udělat co nejdřív!"
         }
     }
-
 } 
+
+// prace
+
+let prace = JSON.parse(httpGet("/send_user/prace_jmena"))
+let nahrat_praci_div = document.getElementById("nahrat_praci")
+let ukazat_praci_div = document.getElementById("ukazat_praci")
+let ukazat_praci_content_div = document.getElementById("ukazat_praci_content")
+if (prace) {
+    nahrat_praci_div.hidden = true
+    ukazat_praci_div.hidden = false
+    for (let prace_file of prace) {
+        let a = document.createElement("a")
+        a.href = "/send_user/jmeno_prace_souboru=" + prace_file
+        a.download = prace_file
+        a.innerHTML = prace_file
+        ukazat_praci_content_div.appendChild(a)
+        ukazat_praci_content_div.appendChild(document.createElement("br"))
+    }
+} else {
+    nahrat_praci_div.hidden = false
+    ukazat_praci_div.hidden = true
+}

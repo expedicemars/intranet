@@ -18,7 +18,6 @@ def ucet():
         if request.method == "GET":
             if get_aktualni_faze() == "ukonceny_rocnik":
                 flash("Tento ročník je ukončený, proto tu nejde nic upravovat. Brzy restartujeme systém a půjde se registrovat do nového.", category="error")
-            print(get_aktualni_faze())
             return render_template("ucet.html", current_user = current_user, roles = get_access_rights(current_user), faze = get_aktualni_faze())
         else:
             if request.form.get("overeni_emailu"):
@@ -49,7 +48,6 @@ def ucet():
                     return redirect(url_for("user_views.ucet"))
             else:
                 data = json.loads(request.form.get("result"))
-                print(data)
                 current_user.jmeno = data["jmeno"]
                 current_user.adresa = data["adresa"]
                 current_user.telcislo = data["telcislo"]
@@ -112,9 +110,16 @@ def odbornost():
             elif request.form.get("ulozit_praci"):
                 if all(request.files.getlist("nahrana_prace")):
                     for file in request.files.getlist("nahrana_prace"):
-                        file.save() # Tady mi doslo ze musim udelat slozku na prace
+                        prace_folder_path = user_data_folder_path() / str(current_user.id) / "prace"
+                        file.save(prace_folder_path / file.filename)
+                    flash("Práce nahrána.", category="success")
                 else:
                     flash("Nenahrál jsi žádné soubory.", category="info")
-                return "yo"
+            elif request.form.get("smazat_praci"):
+                path = user_data_folder_path() / str(current_user.id) / "prace"
+                for file in path.iterdir():
+                    file.unlink()
+                flash("Svou nahranou práci jsi smazal. Nezapomeň nahrát novou verzi :)", category="success")
+            return redirect(url_for("user_views.odbornost"))
     else:
         abort(401)

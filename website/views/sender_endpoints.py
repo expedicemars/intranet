@@ -97,7 +97,7 @@ def send_admin(query):
 
 
 @sender.route("/send_user/<string:query>")
-def send_user(query):
+def send_user(query: str):
     rights = get_access_rights(current_user)
     if query == "terminy":
         if "user" in rights or "admin" in rights: # připouštim oba, protože i úpravy termínů posílaj request sem
@@ -131,7 +131,27 @@ def send_user(query):
             return send_file(default_profilovka_path())
         else:
             abort(401)
-    
+    elif query == "prace_jmena":
+        if "user" in rights:
+            result = []
+            prace_path = user_data_folder_path() / str(current_user.id) / "prace" 
+            for file in prace_path.iterdir():
+                if file.name == ".DS_Store":
+                    continue
+                result.append(file.name)
+            if len(result) == 0:
+                return json.dumps(None)
+            else:
+                return json.dumps(result)
+        else:
+            abort(401)
+            
+    elif "jmeno_prace_souboru=" in query:
+        if "user" in rights:
+            name = query.replace("jmeno_prace_souboru=","")
+            return send_file(user_data_folder_path() / str(current_user.id) / "prace" / name)
+        else:
+            abort(401)
 
 @sender.route("/send_zadani/<string:odbornost>/<string:name>")
 def send_zadani(odbornost, name):
