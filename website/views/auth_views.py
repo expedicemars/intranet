@@ -72,7 +72,9 @@ def register():
 					flash("Úspěšná registrace.", category="info")
 					# create files
 					user_folder_path = user_data_folder_path() / str(user.id)
+					prace_path = user_folder_path / "prace"
 					user_folder_path.mkdir()
+					prace_path.mkdir()
 					return redirect(url_for("default_views.home"))
 			else:
 				email = request.form.get("email")

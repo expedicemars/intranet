@@ -92,7 +92,25 @@
             <br>
             Tady potom kontakt na velitele odbornosti. Neváhej se jich na cokoli ptát, všichni ti rádi odpoví :)
             <div id="kontakt" class="border rounded-2 border-primary m-2 p-2"></div>
-            Tady můžeš svou hotovou práci odevzdat. Pokud obsahuje nějaké velké soubory, nahraj je prosím na libovolný disk a dej nám link.
+            <div id="ukazat_praci">
+                <h2>Tvá práce</h2>
+                Tady je vidět tebou nahraná práce, můžeš jí smazat a nahrát novou verzi.
+                <button id="smazat_praci" type="button" class="btn btn-danger">Smazat nahrané soubory</button>
+            </div>
+            <div id="nahrat_praci">
+                <h2>Nahraj vypracované soubory</h2>
+                <form  method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col">
+                            <input type="file" multiple class="form-control" name="nahrana_prace">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" name="ulozit_praci" value="1" class="btn btn-outline-success">Nahrát</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
         {% endif %}
 
         <form method="post" id="form">

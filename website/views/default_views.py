@@ -9,7 +9,7 @@ default_views = Blueprint("default_views", __name__)
 @default_views.route("/")
 @default_views.route("/home")
 def home():
-    return render_template("home.html", roles = get_access_rights(current_user), faze = get_aktualni_faze()["nazev"])
+    return render_template("home.html", roles = get_access_rights(current_user), faze = get_aktualni_faze())
 
 
 @default_views.route("/nahlasit_bug", methods=["GET", "POST"])
