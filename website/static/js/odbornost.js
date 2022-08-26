@@ -84,3 +84,15 @@ if (prace) {
     nahrat_praci_div.hidden = false
     ukazat_praci_div.hidden = true
 }
+
+document.getElementById("nahrana_prace").addEventListener("change", function() {
+    let spolecna_velikost = 0
+    for (let file of this.files) {
+        spolecna_velikost += file.size
+    }
+    if (spolecna_velikost > 20000000) {
+        alert("Zajisti prosím, aby celková velikost tvývh souborů nebyla přes 20 MB. Pokud potřebuješ více místa, použij prosím jakékoli cloudové úložiště a sem nám pošli textový dokument, ve kterém bude sdílecí link.")
+        this.value = "";
+    }
+
+})

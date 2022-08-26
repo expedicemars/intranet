@@ -110,10 +110,10 @@
                     <li>Obrázky, pokud nejsou v protokolech</li>
                 </ul>
                 Pokud jsou nějaká tvoje data moc velká a nechce tě to nechat je nahrát, použij prosím jakékoli z tobě dostupných cloudových úožišť a sem odevzdej jednoduše texťák se sdílceím odkazem. To samé platí, používáš-li nějaké webové aplikace, například <code>prezi</code> pro prezentování.
-                <form  method="post" enctype="multipart/form-data">
+                <form  method="post" enctype="multipart/form-data" id="ulozit_praci_form">
                     <div class="row">
                         <div class="col">
-                            <input type="file" multiple class="form-control" name="nahrana_prace">
+                            <input type="file" multiple class="form-control" name="nahrana_prace" id="nahrana_prace">
                         </div>
                         <div class="col-auto">
                             <button type="submit" name="ulozit_praci" value="1" class="btn btn-outline-success">Nahrát</button>
