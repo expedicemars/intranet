@@ -202,7 +202,9 @@ def velitele_odbornosti():
                     velitel_odbornosti_data = json.load(file)
                 for id in inputs_ids_list:
                     res = request.form.get(id)
-                    if res:
+                    if res is None:
+                        pass
+                    else:
                         velitel_odbornosti_data[id] = res
                 with open(velitel_odbornosti_data_path(),"w") as file:
                     file.write(json.dumps(velitel_odbornosti_data, indent=4))
