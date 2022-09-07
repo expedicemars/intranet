@@ -152,6 +152,25 @@ def send_user(query: str):
             return send_file(user_data_folder_path() / str(current_user.id) / "prace" / name)
         else:
             abort(401)
+    elif query == "je_motivak_nahrany":
+        if "user" in rights:
+            path = user_data_folder_path() / str(current_user.id)
+            for file in path.iterdir():
+                if file.stem == "motivak":
+                    return file.name
+            else:
+                return "no"
+        else:
+            abort(401)
+
+    elif query == "motivak":
+        if "user" in rights:
+            path = user_data_folder_path() / str(current_user.id)
+            for file in path.iterdir():
+                if file.stem == "motivak":
+                    return send_file(file)
+        else:
+            abort(401)
 
 @sender.route("/send_zadani/<string:odbornost>/<string:name>")
 def send_zadani(odbornost, name):

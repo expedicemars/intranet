@@ -6,6 +6,10 @@ let ids_list = ["jmeno", "email", "adresa", "telcislo", "datum_narozeni", "mail_
 let fixni_info_ids_list = ["confirmed", "souhlas_rodicu", "odbornost", "progress"]
 let show_img_input_button = document.getElementById("show_img_input")
 let img = document.getElementById("img_file");
+let je_motivak_nahrany = httpGet("/send_user/je_motivak_nahrany")
+let motivak_div = document.getElementById("nahrany_motivak")
+
+
 
 zmeny_button.addEventListener("click", toggle_zmeny)
 show_img_input_button.addEventListener("click", function() {
@@ -17,7 +21,15 @@ img.addEventListener("change", function() {
        this.value = "";
     };
 })
-
+console.log(je_motivak_nahrany)
+if (je_motivak_nahrany != "no") {
+    motivak_div.hidden = false
+    let a = document.createElement("a")
+    motivak_div.appendChild(a)
+    a.href = "/send_user/motivak"
+    a.innerHTML = "Stáhnout stávající verzi motiváku"
+    a.download = ""
+}
 
 
 
