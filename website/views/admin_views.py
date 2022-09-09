@@ -67,19 +67,19 @@ def logs_file():
         abort(401)
 
 
-@admin_views.route("/edit_users", methods=["GET","POST"])
-def edit_users():
+@admin_views.route("/registrovani_uzivatele", methods=["GET","POST"])
+def registrovani_uzivatele():
     rights = get_access_rights(current_user)
     if "editing_users_allowed" in rights:
         if request.method == "GET":
-            return render_template("admin_edit_users.html", roles=rights)
+            return render_template("admin_registrovani_uzivatele.html", roles=rights)
         else:
             result = request.form.get("result")
             return redirect(url_for("admin_views.detail_usera",id=int(result)))
     else:
         abort(401)
     
-@admin_views.route("/edit_users/<int:id>", methods=["GET","POST"])
+@admin_views.route("/detail_usera/<int:id>", methods=["GET","POST"])
 def detail_usera(id):
     rights = get_access_rights(current_user)
     if "editing_users_allowed" in rights:
@@ -89,7 +89,7 @@ def detail_usera(id):
             if request.form.get("smazat"):
                 User.query.get(id).odstranit()
                 flash("User byl smazán", category="success")
-                return redirect(url_for("admin_views.edit_users"))
+                return redirect(url_for("admin_views.registrovani_uzivatele"))
             else:
                 return "divna query"
     else:
@@ -114,13 +114,16 @@ def vybrat_role_adminovi(id):
         if request.method == "GET":
             return render_template("admin_vybrat_role_adminovi.html", user=User.query.get(id), roles=rights)
         else:
-            nove_role = json.loads(request.form.get("result"))
-            u = User.query.get(id)
-            u.role = json.dumps(nove_role)
-            db.session.add(u)
-            db.session.commit()
-            flash("Role byly upraveny.", category="success")
-            return redirect(url_for("admin_views.jmenovat_adminy"))
+            if request.form.get("detail"):
+                return redirect(url_for("admin_views.detail_usera", id=request.form.get("detail")))
+            else:
+                nove_role = json.loads(request.form.get("result"))
+                u = User.query.get(id)
+                u.role = json.dumps(nove_role)
+                db.session.add(u)
+                db.session.commit()
+                flash("Role byly upraveny.", category="success")
+                return redirect(url_for("admin_views.jmenovat_adminy"))
             
     else:
         abort(401)
@@ -215,3 +218,21 @@ def velitele_odbornosti():
 
     else:
         abort(401)
+
+
+@admin_views.route("/generovat_seznamy", methods=["GET","POST"])
+def generovat_seznamy():
+    rights = get_access_rights(current_user)
+    if "editing_users_allowed" in rights:
+        return render_template("admin_generovat_seznamy.html", roles=rights)
+    else:
+        abort(401)
+
+@admin_views.route("/motivaky_a_prace", methods=["GET","POST"])
+def motivaky_a_prace():
+    rights = get_access_rights(current_user)
+    if "editing_users_allowed" in rights:
+        return render_template("admin_motivaky_a_prace.html", roles=rights)
+    else:
+        abort(401)
+

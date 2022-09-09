@@ -44,7 +44,28 @@ def ucet():
                     flash("Fotka nahrána.", category="success")
                     return redirect(url_for("user_views.ucet"))
                 else:
-                    flash("Prosím, pojmenuj soubor tak, aby název obsahoval jen jednu tečku, a to u přípony.", category="success")
+                    flash("Prosím, pojmenuj soubor tak, aby název obsahoval jen jednu tečku, a to u přípony.", category="info")
+                    return redirect(url_for("user_views.ucet"))
+            elif request.form.get("nahrat_motivak"):
+                #zkusit smazat stary
+                path = user_data_folder_path() / str(current_user.id)
+                for file in path.iterdir():
+                    if file.stem == "motivak":
+                        profilovka_path = path / file.name
+                        profilovka_path.unlink()
+                        break
+                #nahrát novy
+                file = request.files.get("motivak")
+                if len(file.filename.split(".")) == 2:
+                    pripona = file.filename.split(".")[1]
+                    filename = "motivak" + "." + pripona
+                    cesta = user_data_folder_path() / str(current_user.id) / filename
+                    cesta.touch()
+                    file.save(cesta)
+                    flash("Morivák nahrán.", category="success")
+                    return redirect(url_for("user_views.ucet"))
+                else:
+                    flash("Prosím, pojmenuj soubor tak, aby název obsahoval jen jednu tečku, a to u přípony.", category="info")
                     return redirect(url_for("user_views.ucet"))
             else:
                 data = json.loads(request.form.get("result"))

@@ -65,7 +65,7 @@ if (odbornost_current_usera) {
 
 // prace
 
-let prace = JSON.parse(httpGet("/send_user/prace_jmena"))
+let prace = JSON.parse(httpGet("/send_prace_filenames"))
 let nahrat_praci_div = document.getElementById("nahrat_praci")
 let ukazat_praci_div = document.getElementById("ukazat_praci")
 let ukazat_praci_content_div = document.getElementById("ukazat_praci_content")
@@ -73,8 +73,9 @@ if (prace) {
     nahrat_praci_div.hidden = true
     ukazat_praci_div.hidden = false
     for (let prace_file of prace) {
+        console.log(prace_file)
         let a = document.createElement("a")
-        a.href = "/send_user/jmeno_prace_souboru=" + prace_file
+        a.href = "/send_prace_file/" + prace_file
         a.download = prace_file
         a.innerHTML = prace_file
         ukazat_praci_content_div.appendChild(a)
