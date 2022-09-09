@@ -21,7 +21,6 @@ img.addEventListener("change", function() {
        this.value = "";
     };
 })
-console.log(je_motivak_nahrany)
 if (je_motivak_nahrany != "no") {
     motivak_div.hidden = false
     let a = document.createElement("a")

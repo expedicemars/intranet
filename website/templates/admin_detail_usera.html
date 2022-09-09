@@ -3,7 +3,86 @@
 {% block content %}
 <h2>Detail uživatele</h2>
 <input hidden id="id" value="{{id}}"/>
-<code><pre id="temp"></pre></code>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            Jméno:
+        </div>
+        <div class="col" id="jmeno"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Datum narození:
+        </div>
+        <div class="col" id="datum_narozeni"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+            E-mail:
+        </div>
+        <div class="col" id="email"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Telefoní číslo:
+        </div>
+        <div class="col" id="telcislo"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Adresa:
+        </div>
+        <div class="col" id="adresa"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Potvrzený e-mail:
+        </div>
+        <div class="col" id="confirmed"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+            ID v systému:
+        </div>
+        <div class="col" id="id_display"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Tričko:
+        </div>
+        <div class="col" id="tricko"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+            E-mail na rodiče:
+        </div>
+        <div class="col" id="mail_rodicu"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Odbornost:
+        </div>
+        <div class="col" id="odbornost"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Progress:
+        </div>
+        <div class="col" id="progress"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Souhlas rodičů:
+        </div>
+        <div class="col" id="souhlas_rodicu"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
 <form method="post">
     <button class="btn btn-danger" type="submit" value="1" name="smazat">Smazat uživatele</button>
 </form>

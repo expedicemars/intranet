@@ -65,7 +65,7 @@ def ucet():
                     flash("Morivák nahrán.", category="success")
                     return redirect(url_for("user_views.ucet"))
                 else:
-                    flash("Prosím, pojmenuj soubor tak, aby název obsahoval jen jednu tečku, a to u přípony.", category="success")
+                    flash("Prosím, pojmenuj soubor tak, aby název obsahoval jen jednu tečku, a to u přípony.", category="info")
                     return redirect(url_for("user_views.ucet"))
             else:
                 data = json.loads(request.form.get("result"))
