@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, send_file
+from flask import Blueprint, abort, send_file, flash, redirect, url_for
 from flask_login import current_user
 import json
 from website.models.chyba import Chyba
@@ -7,7 +7,7 @@ from website.json_handlers.logs_handling import get_logs
 from website.roles.role_handler import get_access_rights, dostupna_omezeni
 from website.paths.paths import terminy_path, faze_path, velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path
 from website.helpers.mailing_list import get_mails_from_mailing_list
-from website.helpers.get_motivak import get_motivak_by_id
+from website.helpers.get_user_files import get_motivak_by_id, get_prace_filenames
 
 sender = Blueprint("sender", __name__)
 
@@ -131,27 +131,54 @@ def send_user(query: str):
             return send_file(default_profilovka_path())
         else:
             abort(401)
-    elif query == "prace_jmena":
-        if "user" in rights:
-            result = []
-            prace_path = user_data_folder_path() / str(current_user.id) / "prace" 
-            for file in prace_path.iterdir():
-                if file.name == ".DS_Store":
-                    continue
-                result.append(file.name)
-            if len(result) == 0:
-                return json.dumps(None)
-            else:
-                return json.dumps(result)
-        else:
-            abort(401)
+
             
-    elif "jmeno_prace_souboru=" in query:
-        if "user" in rights:
-            name = query.replace("jmeno_prace_souboru=","")
-            return send_file(user_data_folder_path() / str(current_user.id) / "prace" / name)
+@sender.route("/send_prace_file/<string:name>")
+def send_prace_file_minimal(name):
+    return send_prace_file(current_user.id, name)
+
+
+@sender.route("/send_prace_file/<int:id>/<string:filename>")
+def send_prace_file(id, filename: str):
+    rights = get_access_rights(current_user)
+    if "editing_users_allowed" in rights:
+        p = user_data_folder_path() / str(id) / "prace" / filename
+        if p.exists():
+            return send_file(p)
+        else:
+            flash("Tenhle soubor neexistuje", category="error")
+            return redirect(url_for("default_views.home"))
+    elif "user" in rights:
+        if id == current_user.id:
+            p = user_data_folder_path() / str(id) / "prace" / filename
+            if p.exists():
+                return send_file(p)
+            else:
+                flash("Tenhle soubor neexistuje", category="error")
+                return redirect(url_for("default_views.home"))
         else:
             abort(401)
+    else:
+        abort(401)
+
+
+@sender.route("/send_prace_filenames")
+def send_prace_filenames_minimal():
+    return send_prace_filenames(current_user.id)
+
+
+@sender.route("/send_prace_filenames/<int:id>")
+def send_prace_filenames(id):
+    rights = get_access_rights(current_user)
+    if "editing_users_allowed" in rights:
+        return get_prace_filenames(id)
+    elif "user" in rights:
+        if id == current_user.id:
+            return get_prace_filenames(id)
+        else:
+            abort(401)
+    else:
+        abort(401)
 
 
 @sender.route("/send_zadani/<string:odbornost>/<string:name>")

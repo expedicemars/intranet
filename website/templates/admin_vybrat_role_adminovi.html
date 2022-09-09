@@ -6,8 +6,9 @@ Nejsou tu žádný kontrly toho, že to, co si naklikal, dává smysl. Tak to pr
 <div id="check"></div>
 <button class="btn btn-success" id="btn" type="button">Budiž</button>
 <hr>
-Jen pro úplnost, tady je info o tomhle adminovi:
-<div><code><pre id="info"></pre></code></div>
+<form method="post">
+    <button name="detail" value="{{user.id}}" class="btn btn-primary">Detaily o účtu tohohle admina</button>
+</form>
 
 
 <input hidden id="id" value="{{user.id}}"/>

@@ -114,13 +114,16 @@ def vybrat_role_adminovi(id):
         if request.method == "GET":
             return render_template("admin_vybrat_role_adminovi.html", user=User.query.get(id), roles=rights)
         else:
-            nove_role = json.loads(request.form.get("result"))
-            u = User.query.get(id)
-            u.role = json.dumps(nove_role)
-            db.session.add(u)
-            db.session.commit()
-            flash("Role byly upraveny.", category="success")
-            return redirect(url_for("admin_views.jmenovat_adminy"))
+            if request.form.get("detail"):
+                return redirect(url_for("admin_views.detail_usera", id=request.form.get("detail")))
+            else:
+                nove_role = json.loads(request.form.get("result"))
+                u = User.query.get(id)
+                u.role = json.dumps(nove_role)
+                db.session.add(u)
+                db.session.commit()
+                flash("Role byly upraveny.", category="success")
+                return redirect(url_for("admin_views.jmenovat_adminy"))
             
     else:
         abort(401)

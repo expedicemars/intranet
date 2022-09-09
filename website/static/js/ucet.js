@@ -21,7 +21,7 @@ img.addEventListener("change", function() {
        this.value = "";
     };
 })
-if (motivak != "missing") {
+if (motivak) {
     motivak_div.hidden = false
     let a = document.createElement("a")
     motivak_div.appendChild(a)
