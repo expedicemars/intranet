@@ -7,7 +7,7 @@ from website.json_handlers.logs_handling import get_logs
 from website.roles.role_handler import get_access_rights, dostupna_omezeni
 from website.paths.paths import terminy_path, faze_path, velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path
 from website.helpers.mailing_list import get_mails_from_mailing_list
-
+from website.helpers.get_motivak import get_motivak_by_id
 
 sender = Blueprint("sender", __name__)
 
@@ -152,25 +152,7 @@ def send_user(query: str):
             return send_file(user_data_folder_path() / str(current_user.id) / "prace" / name)
         else:
             abort(401)
-    elif query == "je_motivak_nahrany":
-        if "user" in rights:
-            path = user_data_folder_path() / str(current_user.id)
-            for file in path.iterdir():
-                if file.stem == "motivak":
-                    return file.name
-            else:
-                return "no"
-        else:
-            abort(401)
 
-    elif query == "motivak":
-        if "user" in rights:
-            path = user_data_folder_path() / str(current_user.id)
-            for file in path.iterdir():
-                if file.stem == "motivak":
-                    return send_file(file)
-        else:
-            abort(401)
 
 @sender.route("/send_zadani/<string:odbornost>/<string:name>")
 def send_zadani(odbornost, name):
@@ -191,6 +173,27 @@ def send_zadani(odbornost, name):
         abort(401)
 
 
+@sender.route("/send_motivak")
+def send_motivak_min():
+    return send_motivak(current_user.id, "file")
 
+@sender.route("/send_motivak/<int:id>/<string:style>")
+def send_motivak(id, style):
+    """
+    posila file motivaku. Zaroven resi opravneni:
+    ma-li current_user pouze roli user, musi sedet jeho ID s poslanym ID. Pokud ma roli editing_users_allowed, muze requestnout i cizi motivaky.
+    id: user_id
+    style: file/name
+    """
+    rights = get_access_rights(current_user)
+    if "editing_users_allowed" in rights:
+        return get_motivak_by_id(id, style)
+    elif "user" in rights:
+        if current_user.id == id:
+            return get_motivak_by_id(id, style)
+        else:
+            abort(401)
+    else:
+        abort(401)
 
 
