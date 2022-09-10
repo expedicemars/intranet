@@ -1,4 +1,4 @@
-from website.paths.paths import user_data_folder_path
+from website.paths.paths import user_data_folder_path, default_profilovka_path
 from flask import send_file
 import json
 
@@ -31,3 +31,12 @@ def get_prace_filenames(id):
         return json.dumps(None)
     else:
         return json.dumps(result)
+
+def get_profilovka_by_id(id):
+    path = user_data_folder_path() / str(id)
+    for file in path.iterdir():
+        if file.stem == "profiovka":
+            profilovka_path = path / file.name
+            return send_file(profilovka_path)
+    else:
+        return send_file(default_profilovka_path())

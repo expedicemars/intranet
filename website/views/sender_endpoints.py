@@ -7,7 +7,7 @@ from website.json_handlers.logs_handling import get_logs
 from website.roles.role_handler import get_access_rights, dostupna_omezeni
 from website.paths.paths import terminy_path, faze_path, velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path
 from website.helpers.mailing_list import get_mails_from_mailing_list
-from website.helpers.get_user_files import get_motivak_by_id, get_prace_filenames
+from website.helpers.get_user_files import get_motivak_by_id, get_prace_filenames, get_profilovka_by_id
 
 sender = Blueprint("sender", __name__)
 
@@ -35,14 +35,14 @@ def send_admin(query):
             abort(401)
     elif query == "users_from_db":
         if "editing_users_allowed" in rights or "editing_admins_allowed" in rights:
-            return json.dumps([user.get_basic_info() for user in User.query.all()])
+            return json.dumps([user.get_full_info() for user in User.query.all()])
         else:
             abort(401)
     elif "detail_usera_" in query:
         if "editing_users_allowed" in rights or "editing_admins_allowed" in rights:
             id = int(query.replace("detail_usera_", ""))
             u = User.query.get(id)
-            return u.get_basic_info()
+            return u.get_full_info()
         else:
             abort(401)
     elif "role" in query:
@@ -93,7 +93,32 @@ def send_admin(query):
         return json.dumps(result)
     elif query == "odbornosti_kterym_velim":
         return json.dumps([y.replace("velitel_odbornosti_", "") for y in filter(lambda x: "velitel_odbornosti_" in x, get_access_rights(current_user))])
-    
+    elif query == "data_pro_motivaky_a_prace":
+        """
+        Getne seznam uživatelů, jejich ID, data o tom, zda maj motivák, jména souborů prací a hodnocoení motiváku
+        """
+        result = []
+        for u in User.query.all():
+            if "admin" in get_access_rights(u):
+                pass
+            else:
+                zaznam = {}
+                zaznam["jmeno"] = u.jmeno
+                zaznam["id"] = u.id
+                p = user_data_folder_path() / str(u.id)
+                for file in p.iterdir():
+                    if file.stem == "motivak":
+                        zaznam["motivak"] = True
+                        break
+                else:
+                    zaznam["motivak"] = False
+                zaznam["prace"] = []
+                p =  p / "prace"
+                for file in p.iterdir():
+                    zaznam["prace"].append(file.name)
+                zaznam["hodnoceni"] = u.hodnoceni_motivaku
+                result.append(zaznam)
+        return json.dumps(result)
 
 
 @sender.route("/send_user/<string:query>")
@@ -132,7 +157,24 @@ def send_user(query: str):
         else:
             abort(401)
 
-            
+@sender.route("/send_profilovka")
+def send_profilovka_minimal():
+    return send_profilovka(current_user.id)
+
+@sender.route("/send_profilovka/<int:id>")
+def send_profilovka(id):
+    rights = get_access_rights(current_user)
+    if "editing_users_allowed" in rights:
+        return get_profilovka_by_id(id)
+    elif "user" in rights:
+        if id == current_user.id:
+            return get_profilovka_by_id(id)
+        else:
+            abort(401)
+    else:
+        abort(401)
+
+
 @sender.route("/send_prace_file/<string:name>")
 def send_prace_file_minimal(name):
     return send_prace_file(current_user.id, name)
