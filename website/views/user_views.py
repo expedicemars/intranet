@@ -75,6 +75,7 @@ def ucet():
                 current_user.datum_narozeni = data["datum_narozeni"]
                 current_user.mail_rodicu = data["mail_rodicu"]
                 current_user.tricko = data["tricko"]
+                current_user.dozvedeli = data["dozvedeli"]
                 if current_user.email != data["email"]:
                     current_user.email = data["email"]
                     current_user.confirmed = False

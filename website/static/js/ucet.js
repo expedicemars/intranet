@@ -2,7 +2,7 @@ import httpGet from "./httpGet.js"
 let info = JSON.parse(httpGet("/send_user/info"))
 let zmeny_button = document.getElementById("zmeny")
 let form = document.getElementById("form")
-let ids_list = ["jmeno", "email", "adresa", "telcislo", "datum_narozeni", "mail_rodicu"]
+let ids_list = ["jmeno", "email", "adresa", "telcislo", "datum_narozeni", "mail_rodicu", "dozvedeli"]
 let fixni_info_ids_list = ["confirmed", "souhlas_rodicu", "odbornost", "progress"]
 let show_img_input_button = document.getElementById("show_img_input")
 let img = document.getElementById("img_file");
