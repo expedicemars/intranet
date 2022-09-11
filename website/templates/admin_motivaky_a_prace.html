@@ -2,24 +2,13 @@
 {% block content %}
 
     <h2>Motiváky a práce</h2>
-    <div id="content">
-        <hr>
-        <div class="row">
-            <div class="col-sm">
-                <h3>Josef Lát</h3>
-            </div>
-            <div class="col-sm">
-                <a href="#">Stáhnout motivák</a>
-            </div>
-            <div class="col-sm">
-                <a href="#">prez.pptx</a>
-                <a href="#">data.csv</a>
-                <a href="#">shrnuti.pdf</a>
-            </div>
-        </div>
-        <label for="hodnoceni_motivaku">Hodnocení motiváku:</label>
-        <textarea id="hodnoceni_motivaku" class="form-control" rows="5"></textarea>
-    </div>
+    <button type="button" id="b1" class="btn btn-success">Uložit</button>
+    <div id="content"></div>
+    <hr>
+    <button type="button" id="b2" class="btn btn-success">Uložit</button>
+    <form method="post" id="form">
+        <input type="text" hidden name="result" id="result">
+    </form>
 
     <script type="module" src="{{url_for('static', filename='js/admin_motivaky_a_prace.js')}}"></script>
 {% endblock %}

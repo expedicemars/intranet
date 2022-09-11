@@ -73,7 +73,6 @@ if (prace) {
     nahrat_praci_div.hidden = true
     ukazat_praci_div.hidden = false
     for (let prace_file of prace) {
-        console.log(prace_file)
         let a = document.createElement("a")
         a.href = "/send_prace_file/" + prace_file
         a.download = prace_file

@@ -232,7 +232,17 @@ def generovat_seznamy():
 def motivaky_a_prace():
     rights = get_access_rights(current_user)
     if "editing_users_allowed" in rights:
-        return render_template("admin_motivaky_a_prace.html", roles=rights)
+        if request.method == "GET":
+            return render_template("admin_motivaky_a_prace.html", roles=rights)
+        else:
+            result = json.loads(request.form.get("result"))
+            for zaznam in result:
+                user = User.query.get(zaznam["id"])
+                user.hodnoceni_motivaku = zaznam["hodnoceni"]
+                db.session.add(user)
+                db.session.commit()
+            flash("Hodnocení motiváků uložena.", category="success")
+            return redirect(url_for("admin_views.admin_dashboard"))
+
     else:
         abort(401)
-

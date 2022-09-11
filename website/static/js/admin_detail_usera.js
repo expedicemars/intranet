@@ -2,7 +2,7 @@ import httpGet from "./httpGet.js"
 let id_usera = document.getElementById("id").value
 let detail_usera = JSON.parse(httpGet("/send_admin/detail_usera_" + String(id_usera)))
 let motivak_bool = httpGet("/send_motivak/" + String(id_usera) + "/name")
-let prace_filenames = httpGet("/send_prace_filenames/" + String(id_usera))
+let prace_filenames = JSON.parse(httpGet("/send_prace_filenames/" + String(id_usera)))
 
 
 
@@ -25,10 +25,11 @@ if (motivak_bool) {
     document.getElementById("motivak_disclaimer").hidden = false
 }
 
+
 if (prace_filenames) {
     document.getElementById("prace_disclaimer").hidden = true
     let prace_div = document.getElementById("prace_div")
-    for (let filename of JSON.parse(prace_filenames)) {
+    for (let filename of prace_filenames) {
         let a = document.createElement("a")
         a.innerHTML = filename
         a.download = filename
