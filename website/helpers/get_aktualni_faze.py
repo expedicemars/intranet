@@ -8,7 +8,7 @@ def get_aktualni_faze() -> str:
 
 def je_registrace_otevrena() -> bool:
     if get_aktualni_faze() in ["uzavrene_registrace", "ukonceny_rocnik"]:
-        ostevreny = False
+        otevreny = False
     else:
         otevreny = True
     return otevreny

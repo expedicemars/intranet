@@ -19,13 +19,13 @@ class User(db.Model, UserMixin):
 	souhlas_rodicu = db.Column(db.Boolean, default=False)
 	odbornost = db.Column(db.String(100), default = "zatím nevybraná")
 	datum_narozeni=db.Column(db.String(100))
-	progress = db.Column(db.String(100))
+	progress = db.Column(db.String(100), default = "Domácí kolo")
 	role = db.Column(db.Text, default=json.dumps(["user"]))
 	tricko = db.Column(db.String(100))
 	dozvedeli = db.Column(db.String(100))
 	admin_poznamka = db.Column(db.String(1000))
 	hodnoceni_motivaku = db.Column(db.String(5000))
-	uzamcene_zmeny = db.Column(db.Boolean)
+	uzamcene_zmeny = db.Column(db.Boolean, default=False)
 
 
 	def get_reset_token(self, expires_sec = 9000) -> str:
