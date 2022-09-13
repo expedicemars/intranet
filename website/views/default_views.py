@@ -34,4 +34,8 @@ def nahlasit_bug():
 def known_bugs():
     return render_template("zname_chyby.html", roles = get_access_rights(current_user))
 
+@default_views.route("/info")
+def info():
+    return render_template("info.html", roles = get_access_rights(current_user))
+
         

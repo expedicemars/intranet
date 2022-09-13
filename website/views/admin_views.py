@@ -99,11 +99,17 @@ def detail_usera(id):
                     data["uzamcene_zmeny"] = True
                 if data["uzamcene_zmeny"] == "false":
                     data["uzamcene_zmeny"] = False
+                
+                if data["souhlas_rodicu"] == "true":
+                    data["souhlas_rodicu"] = True
+                if data["souhlas_rodicu"] == "false":
+                    data["souhlas_rodicu"] = False
 
                 u = User.query.get(id)
                 u.progress = data["progress"]
                 u.uzamcene_zmeny = data["uzamcene_zmeny"]
                 u.admin_poznamka = data["admin_poznamka"]
+                u.souhlas_rodicu = data["souhlas_rodicu"]
                 print(u.progress)
                 db.session.add(u)
                 db.session.commit()

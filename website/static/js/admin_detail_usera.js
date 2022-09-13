@@ -4,19 +4,30 @@ let detail_usera = JSON.parse(httpGet("/send_admin/detail_usera_" + String(id_us
 let motivak = JSON.parse(httpGet("/send_motivak/" + String(id_usera) + "/name"))
 let prace_filenames = JSON.parse(httpGet("/send_prace_filenames/" + String(id_usera)))
 let ulozit_button = document.getElementById("ulozit_button")
-let toggle_button = document.getElementById("toggle")
+let toggle_zmeny_button = document.getElementById("toggle_zmeny")
+let toggle_souhlas_button = document.getElementById("toggle_souhlas")
 let charcount_span = document.getElementById("charcount")
 let textarea = document.getElementById("admin_poznamka")
 
 
 ulozit_button.addEventListener("click", vyhodnotit)
-toggle_button.addEventListener("click", toggle)
+toggle_zmeny_button.addEventListener("click", toggle_zmeny)
+toggle_souhlas_button.addEventListener("click", toggle_souhlas)
 textarea.addEventListener("input", function() {
     charcount_span.innerHTML = String(textarea.value.length) + "/1000"
 })
 
-function toggle() {
+function toggle_zmeny() {
     let node = document.getElementById("uzamcene_zmeny")
+    if (node.innerHTML == "false") {
+        node.innerHTML = "true"
+    } else {
+        node.innerHTML = "false"
+    }
+}
+
+function toggle_souhlas() {
+    let node = document.getElementById("souhlas_rodicu")
     if (node.innerHTML == "false") {
         node.innerHTML = "true"
     } else {
@@ -29,6 +40,7 @@ function  vyhodnotit() {
     let result = {}
     result["progress"] = document.getElementById("progress").value
     result["uzamcene_zmeny"] = document.getElementById("uzamcene_zmeny").innerHTML
+    result["souhlas_rodicu"] = document.getElementById("souhlas_rodicu").innerHTML
     result["admin_poznamka"] = textarea.value
     document.getElementById("result").value = JSON.stringify(result)
     document.getElementById("form").submit()
