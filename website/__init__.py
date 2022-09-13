@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_mail import Mail
-from website.helpers.check_files import check_known_bugs_file, check_logs_file, check_mailing_list, check_terminy, check_faze, check_velitel_odbornosti_data, check_user_data_folder, check_zadani_folders
+from website.helpers.check_files import check_known_bugs_file, check_logs_files, check_mailing_list, check_terminy, check_faze, check_velitel_odbornosti_data, check_user_data_folder, check_zadani_folders
 from .paths.paths import user_database_path
 from .json_handlers.logs_handling import log
 
@@ -14,7 +14,7 @@ login_manager = LoginManager()
 
 
 def create_app():
-    check_logs_file()
+    check_logs_files()
     log("=== START appky ===")
     app = Flask(__name__)
     app.config["SECRET_KEY"] = "5aaad9a24b756347536be2fc4b4a2c40a876cd0bd0dd782ecd7303bb1ba0dbbc"

@@ -53,15 +53,29 @@ def uprava_znamych_bugu():
         abort(401)
     
 
-@admin_views.route("/logs_file", methods=["GET","POST"])
-def logs_file():
+@admin_views.route("/app_logs", methods=["GET","POST"])
+def app_logs():
     rights = get_access_rights(current_user)
     if "editing_logs_allowed" in rights:
         if request.method == "GET":
-            return render_template("admin_logs_file.html", roles=rights)
+            return render_template("admin_app_logs.html", roles=rights)
         else:
             delete_logs()
-            flash("Soubor s logy byl promazán.",category="success")
+            flash("Soubor s app logy byl promazán.",category="success")
+            return redirect(url_for("admin_views.admin_dashboard"))
+    else:
+        abort(401)
+    
+
+@admin_views.route("/admin_logs", methods=["GET","POST"])
+def admin_logs():
+    rights = get_access_rights(current_user)
+    if "editing_logs_allowed" in rights:
+        if request.method == "GET":
+            return render_template("admin_admin_logs.html", roles=rights)
+        else:
+            delete_logs()
+            flash("Soubor s admin logy byl promazán.",category="success")
             return redirect(url_for("admin_views.admin_dashboard"))
     else:
         abort(401)
