@@ -90,6 +90,25 @@ def detail_usera(id):
                 User.query.get(id).odstranit()
                 flash("User byl smazán", category="success")
                 return redirect(url_for("admin_views.registrovani_uzivatele"))
+            elif request.form.get("result"):
+                data = json.loads(request.form.get("result"))
+                if len(data["admin_poznamka"]) > 1000:
+                    flash("Admin poznámka je moc dlouhá, sori. může bejt max 1000 znaků.", category="error")
+                    return redirect(url_for("admin_views.detail_usera", id=id))
+                if data["uzamcene_zmeny"] == "true":
+                    data["uzamcene_zmeny"] = True
+                if data["uzamcene_zmeny"] == "false":
+                    data["uzamcene_zmeny"] = False
+
+                u = User.query.get(id)
+                u.progress = data["progress"]
+                u.uzamcene_zmeny = data["uzamcene_zmeny"]
+                u.admin_poznamka = data["admin_poznamka"]
+                print(u.progress)
+                db.session.add(u)
+                db.session.commit()
+                flash("Záznam o userovi upraven", category="success")
+                return redirect(url_for("admin_views.registrovani_uzivatele"))
             else:
                 return "divna query"
     else:
