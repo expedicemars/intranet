@@ -9,6 +9,8 @@ zadani
 known_bugs.json
 database.db
 logs.txt
+admin_logs.txt
+app_logs.txt
 mailing_list.json
 faze.json
 terminy.json
