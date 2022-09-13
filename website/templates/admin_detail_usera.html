@@ -68,21 +68,9 @@
             </div>
             <div class="row">
                 <div class="col">
-                    Souhlas rodičů:
-                </div>
-                <div class="col" id="souhlas_rodicu"></div>
-            </div>
-            <div class="row">
-                <div class="col">
                     Jak se o nás dozvěděli:
                 </div>
                 <div class="col" id="dozvedeli"></div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    Adminí poznámka:
-                </div>
-                <div class="col" id="admin_poznamka"></div>
             </div>
             <div class="row">
                 <div class="col">
@@ -90,25 +78,62 @@
                 </div>
                 <div class="col" id="hodnoceni_motivaku"></div>
             </div>
-            <div class="row">
-                <div class="col">
-                    Uzamčené změny:
-                </div>
-                <div class="col" id="uzamcene_zmeny"></div>
-            </div>
         </div>
         <div class="col">
             <img src="/send_profilovka/{{id}}" width="100%">
         </div>
     </div>
 </div>
+<hr>
 <div class="container">
     <div class="row">
         <div class="col">
             Progress:
         </div>
-        <div class="col" id="progress"></div>
+        <div class="col">
+            <select id="progress">
+                <option value="Domácí kolo" id="Domácí kolo">Domácí kolo</option>
+                <option value="Semifinále" id="Semifinále">Semifinále</option>
+                <option value="Finále" id="Finále">Finále</option>
+                <option value="Simulace" id="Simulace">Simulace</option>
+            </select>
+        </div>
     </div>
+    <div class="row">
+        <div class="col">
+            Uzamčené změny:
+        </div>
+        <div class="col"></div>
+        <div class="col" id="uzamcene_zmeny"></div>
+        <div class="col">
+            <button type="button" id="toggle_zmeny" class="btn btn-outline-primary">Toggle</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Souhlas rodičů:
+        </div>
+        <div class="col"></div>
+        <div class="col" id="souhlas_rodicu"></div>
+        <div class="col">
+            <button type="button" id="toggle_souhlas" class="btn btn-outline-primary">Toggle</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-auto">
+            Adminí poznámka:
+        </div>
+        <div class="col">
+            <label for="admin_poznamka">Tuhle poznámku uživatel nikdy neuvidí.</label>
+            <textarea id="admin_poznamka" class="form-control" rows="5"></textarea>
+            <span id="charcount"></span>
+        </div>
+    </div>
+    <button class="btn btn-success" id="ulozit_button">Uložit</button>
+    <form method="post" id="form">
+        <input type="text" hidden id="result" name="result">
+    </form>
+    
 </div>
     <hr>
     <div id="motivak_div">

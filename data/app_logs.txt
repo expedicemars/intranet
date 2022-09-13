@@ -1,0 +1,22 @@
+2022-09-13 19:21:53.429211:  vytvářím (tento) soubor na app logy na /Users/joseflat/Library/Mobile Documents/com~apple~CloudDocs/elektronika_a_programovani/python/em_intranet/data/app_logs.txt
+2022-09-13 19:21:53.430190:  Vytvářím soubor na admin logy na /Users/joseflat/Library/Mobile Documents/com~apple~CloudDocs/elektronika_a_programovani/python/em_intranet/data/admin_logs.txt
+2022-09-13 19:21:53.430671:  === START appky ===
+2022-09-13 19:21:53.493957:  Databáze uživatelů už existuje.
+2022-09-13 19:21:53.494941:  soubor known bugs už existuje.
+2022-09-13 19:21:53.495672:  soubor pro mailing list už existuje.
+2022-09-13 19:21:53.496350:  soubor na fázování už existuje.
+2022-09-13 19:21:53.497017:  soubor na termíny už existuje.
+2022-09-13 19:21:53.497702:  soubor velitel_odbornosti už existuje.
+2022-09-13 19:21:53.499116:  Složka pro user data existuje.
+2022-09-13 19:21:53.499984:  Složka pro zadání už existuje.
+2022-09-13 19:21:54.138334:  (tento) soubor na app logy už existuje.
+2022-09-13 19:21:54.139384:  Soubor na admin logy už existuje.
+2022-09-13 19:21:54.139848:  === START appky ===
+2022-09-13 19:21:54.200626:  Databáze uživatelů už existuje.
+2022-09-13 19:21:54.201540:  soubor known bugs už existuje.
+2022-09-13 19:21:54.202388:  soubor pro mailing list už existuje.
+2022-09-13 19:21:54.203231:  soubor na fázování už existuje.
+2022-09-13 19:21:54.204512:  soubor na termíny už existuje.
+2022-09-13 19:21:54.205239:  soubor velitel_odbornosti už existuje.
+2022-09-13 19:21:54.205910:  Složka pro user data existuje.
+2022-09-13 19:21:54.206557:  Složka pro zadání už existuje.

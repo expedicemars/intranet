@@ -28,9 +28,14 @@ def send_noauth(query):
 @sender.route("send_admin/<string:query>")
 def send_admin(query):
     rights = get_access_rights(current_user)
-    if query == "logs":
+    if query == "app_logs":
         if "editing_logs_allowed" in rights:
             return json.dumps(get_logs())
+        else:
+            abort(401)
+    elif query == "admin_logs":
+        if "editing_logs_allowed" in rights:
+            return "not done yet"
         else:
             abort(401)
     elif query == "users_from_db":

@@ -53,15 +53,29 @@ def uprava_znamych_bugu():
         abort(401)
     
 
-@admin_views.route("/logs_file", methods=["GET","POST"])
-def logs_file():
+@admin_views.route("/app_logs", methods=["GET","POST"])
+def app_logs():
     rights = get_access_rights(current_user)
     if "editing_logs_allowed" in rights:
         if request.method == "GET":
-            return render_template("admin_logs_file.html", roles=rights)
+            return render_template("admin_app_logs.html", roles=rights)
         else:
             delete_logs()
-            flash("Soubor s logy byl promazán.",category="success")
+            flash("Soubor s app logy byl promazán.",category="success")
+            return redirect(url_for("admin_views.admin_dashboard"))
+    else:
+        abort(401)
+    
+
+@admin_views.route("/admin_logs", methods=["GET","POST"])
+def admin_logs():
+    rights = get_access_rights(current_user)
+    if "editing_logs_allowed" in rights:
+        if request.method == "GET":
+            return render_template("admin_admin_logs.html", roles=rights)
+        else:
+            delete_logs()
+            flash("Soubor s admin logy byl promazán.",category="success")
             return redirect(url_for("admin_views.admin_dashboard"))
     else:
         abort(401)
@@ -89,6 +103,31 @@ def detail_usera(id):
             if request.form.get("smazat"):
                 User.query.get(id).odstranit()
                 flash("User byl smazán", category="success")
+                return redirect(url_for("admin_views.registrovani_uzivatele"))
+            elif request.form.get("result"):
+                data = json.loads(request.form.get("result"))
+                if len(data["admin_poznamka"]) > 1000:
+                    flash("Admin poznámka je moc dlouhá, sori. může bejt max 1000 znaků.", category="error")
+                    return redirect(url_for("admin_views.detail_usera", id=id))
+                if data["uzamcene_zmeny"] == "true":
+                    data["uzamcene_zmeny"] = True
+                if data["uzamcene_zmeny"] == "false":
+                    data["uzamcene_zmeny"] = False
+                
+                if data["souhlas_rodicu"] == "true":
+                    data["souhlas_rodicu"] = True
+                if data["souhlas_rodicu"] == "false":
+                    data["souhlas_rodicu"] = False
+
+                u = User.query.get(id)
+                u.progress = data["progress"]
+                u.uzamcene_zmeny = data["uzamcene_zmeny"]
+                u.admin_poznamka = data["admin_poznamka"]
+                u.souhlas_rodicu = data["souhlas_rodicu"]
+                print(u.progress)
+                db.session.add(u)
+                db.session.commit()
+                flash("Záznam o userovi upraven", category="success")
                 return redirect(url_for("admin_views.registrovani_uzivatele"))
             else:
                 return "divna query"

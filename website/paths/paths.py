@@ -6,8 +6,11 @@ def user_database_path() -> Path:
 def known_bugs_path() -> Path:
     return Path.cwd() / "data" / "known_bugs.json"
 
-def log_file_path() -> Path:
-    return Path.cwd() / "data" / "logs.txt"
+def app_logs_file_path() -> Path:
+    return Path.cwd() / "data" / "app_logs.txt"
+
+def admin_logs_file_path() -> Path:
+    return Path.cwd() / "data" / "admin_logs.txt"
 
 def terminy_path() -> Path:
     return Path.cwd() / "data" / "terminy.json"

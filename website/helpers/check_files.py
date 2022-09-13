@@ -18,13 +18,21 @@ def check_known_bugs_file() -> None:
         log("zakládám soubor known bugs na " + str(bugs_path))
         
 
-def check_logs_file() -> None:
-    logs_path = p.log_file_path()
-    if logs_path.exists():
-        log("(tento) soubor na logy už existuje.")
+def check_logs_files() -> None:
+    app_logs_path = p.app_logs_file_path()
+    if app_logs_path.exists():
+        log("(tento) soubor na app logy už existuje.")
     else:
-        logs_path.touch()
-        log("vytvářím (tento) soubor na logy na " + str(logs_path))
+        app_logs_path.touch()
+        log("vytvářím (tento) soubor na app logy na " + str(app_logs_path))
+    
+    admin_logs_path = p.admin_logs_file_path()
+    if admin_logs_path.exists():
+        log("Soubor na admin logy už existuje.")
+    else:
+        admin_logs_path.touch()
+        log("Vytvářím soubor na admin logy na " + str(admin_logs_path))
+    
 
 
 def check_mailing_list() -> None:

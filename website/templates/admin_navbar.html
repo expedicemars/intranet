@@ -9,7 +9,13 @@
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.uprava_znamych_bugu')}}">Přehled známých bugů</a></li>
     {% endif %}
     {% if "editing_logs_allowed" in roles %}
-    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.logs_file')}}">Logs file</a></li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Logs</a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.app_logs')}}">App logs</a></li>
+            <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.admin_logs')}}">Admin logs</a></li>
+        </ul>
+    </li>
     {% endif %}
     {% if "editing_users_allowed" in roles %}
     <li class="nav-item dropdown">
