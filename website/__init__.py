@@ -43,12 +43,14 @@ def create_app():
     from .views.admin_views import admin_views
     from .views.sender_endpoints import sender
     from .views.user_views  import user_views
+    from .views.trigger_endpoints import trigger
 
     app.register_blueprint(default_views, url_prefix="/")
     app.register_blueprint(user_views, url_prefix="/")
     app.register_blueprint(auth_views, url_prefix="/auth")
     app.register_blueprint(admin_views, url_prefix = "/admin")
     app.register_blueprint(sender, url_prefix="/")
+    app.register_blueprint(trigger, url_prefix="/trigger")
 
     from .models.user import User
     
