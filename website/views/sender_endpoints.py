@@ -3,7 +3,7 @@ from flask_login import current_user
 import json
 from website.models.chyba import Chyba
 from website.models.user import User
-from website.json_handlers.logs_handling import get_logs
+from website.json_handlers.logs_handling import get_logs, get_alogs
 from website.roles.role_handler import get_access_rights, dostupna_omezeni
 from website.paths.paths import terminy_path, faze_path, velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path
 from website.helpers.mailing_list import get_mails_from_mailing_list
@@ -35,7 +35,7 @@ def send_admin(query):
             abort(401)
     elif query == "admin_logs":
         if "editing_logs_allowed" in rights:
-            return "not done yet"
+            return json.dumps(get_alogs())
         else:
             abort(401)
     elif query == "users_from_db":
