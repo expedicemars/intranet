@@ -1,0 +1,24 @@
+{% extends "admin_navbar.html" %}
+{% block content %}
+    <h2>Adminí poznámky</h2>
+    <div class="row">
+        <div class="col">
+            Tohle je místo, kam si mezi adminama můžem poznamenávat něco relevantního.
+        </div>
+        <div class="col">
+            <button class="btn btn-success float-end" type="button" id="ulozit">Uložit změny</button>
+        </div>
+    </div>
+    <textarea class="form-control my-2" id="nova_poznamka"></textarea>
+    <button id="zapsat" type="button" class="btn btn-primary">Zapsat poznámku</button>
+    <hr>
+
+    <div id="poznamky"></div>
+
+    <input type="text" hidden id="username" value="{{username}}">
+    <input type="text" hidden id="date" value="{{date}}">
+    <form id="form" method="post">
+        <input hidden type="text" id="result" name="result">
+    </form>
+    <script type="module" src="{{url_for('static', filename='js/admin_poznamky.js')}}"></script>
+{% endblock %}

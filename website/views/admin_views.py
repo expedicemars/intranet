@@ -1,13 +1,15 @@
+import json
+import datetime
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
 from flask_login import current_user
+from website import db
 from website.models.chyba import Chyba
 from website.models.user import User
-from website.json_handlers.logs_handling import delete_logs
-from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path
-import json
-from website.roles.role_handler import get_access_rights
-from website import db
 from website.helpers.mailing_list import promazat_mailing_list
+from website.roles.role_handler import get_access_rights
+from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
+from website.json_handlers.poznamky_handling import zapsat_poznamky
+from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path
 
 
 admin_views = Blueprint("admin_views",__name__)
@@ -18,6 +20,20 @@ def admin_dashboard():
     rights = get_access_rights(current_user)
     if "admin" in rights:
         return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych(), roles=rights)
+    else:
+        abort(401)
+
+
+@admin_views.route("/poznamky", methods=["GET","POST"])
+def poznamky():
+    rights = get_access_rights(current_user)
+    if "admin" in rights:
+        if request.method == "GET":
+            return render_template("admin_poznamky.html", roles=rights, username = current_user.jmeno, date=datetime.date.today())
+        else:
+            zapsat_poznamky(json.loads(request.form.get("result")))
+            flash("Změny uloženy.", category="success")
+            return redirect(url_for("admin_views.poznamky"))
     else:
         abort(401)
 
@@ -48,6 +64,7 @@ def uprava_znamych_bugu():
             return render_template("admin_uprava_znamych_chyb.html", roles=rights)
         else:
             Chyba.save_po_upravach(json.loads(request.form.get("result")))
+            alog("Uprava záznamů na bugtrackeru.")
             return redirect(url_for("admin_views.admin_dashboard"))
     else:
         abort(401)
@@ -61,6 +78,7 @@ def app_logs():
             return render_template("admin_app_logs.html", roles=rights)
         else:
             delete_logs()
+            alog("Vymazani app logu.")
             flash("Soubor s app logy byl promazán.",category="success")
             return redirect(url_for("admin_views.admin_dashboard"))
     else:
@@ -74,7 +92,8 @@ def admin_logs():
         if request.method == "GET":
             return render_template("admin_admin_logs.html", roles=rights)
         else:
-            delete_logs()
+            delete_alogs()
+            alog("Vymazani admin logu.")
             flash("Soubor s admin logy byl promazán.",category="success")
             return redirect(url_for("admin_views.admin_dashboard"))
     else:
@@ -102,6 +121,7 @@ def detail_usera(id):
         else:
             if request.form.get("smazat"):
                 User.query.get(id).odstranit()
+                alog("Smazání usera " + str(id) + ".")
                 flash("User byl smazán", category="success")
                 return redirect(url_for("admin_views.registrovani_uzivatele"))
             elif request.form.get("result"):
@@ -120,11 +140,30 @@ def detail_usera(id):
                     data["souhlas_rodicu"] = False
 
                 u = User.query.get(id)
-                u.progress = data["progress"]
-                u.uzamcene_zmeny = data["uzamcene_zmeny"]
-                u.admin_poznamka = data["admin_poznamka"]
-                u.souhlas_rodicu = data["souhlas_rodicu"]
-                print(u.progress)
+                if u.progress == data["progress"]:
+                    pass
+                else:
+                    u.progress = data["progress"]
+                    alog(f"Změna progressu uživatele {id} na { u.progress }.")
+
+                if u.uzamcene_zmeny == data["uzamcene_zmeny"]:
+                    pass
+                else:
+                    u.uzamcene_zmeny = data["uzamcene_zmeny"]
+                    alog(f"Změna uzamčení změn uživatele {id} na { u.uzamcene_zmeny }.")
+                
+                if u.admin_poznamka == data["admin_poznamka"]:
+                    pass
+                else:
+                    u.admin_poznamka = data["admin_poznamka"]
+                    alog(f"Změna admin poznámky uživatele {id}.")
+                
+                if u.souhlas_rodicu == data["souhlas_rodicu"]:
+                    pass
+                else:
+                    u.souhlas_rodicu = data["souhlas_rodicu"]
+                    alog(f"Změna souhlasu rodičů uživatele {id} na { u.souhlas_rodicu }.")
+                
                 db.session.add(u)
                 db.session.commit()
                 flash("Záznam o userovi upraven", category="success")
@@ -158,7 +197,11 @@ def vybrat_role_adminovi(id):
             else:
                 nove_role = json.loads(request.form.get("result"))
                 u = User.query.get(id)
-                u.role = json.dumps(nove_role)
+                if u.role == json.dumps(nove_role):
+                    pass
+                else:
+                    u.role = json.dumps(nove_role)
+                    alog(f"Změněny role uživatele {id} na {json.dumps(nove_role)}")
                 db.session.add(u)
                 db.session.commit()
                 flash("Role byly upraveny.", category="success")
@@ -177,6 +220,7 @@ def stanovit_terminy():
         else:
             with open(terminy_path(), "w") as file:
                 file.write(json.dumps(json.loads(request.form.get("result")), indent=4))
+            alog("Úprava termínů.")
             flash("Termíny byly upraveny.", category="success")
             return redirect(url_for("admin_views.admin_dashboard"))
     else:
@@ -193,6 +237,7 @@ def prepinat_faze():
             if request.form.get("smazat_mailing_list"):
                 flash("Mailing list byl promazán.", category="info")
                 promazat_mailing_list()
+                alog("Mailing list byl promazán.")
                 return redirect(url_for("admin_views.prepinat_faze"))
             else:
                 with open(faze_path()) as file:
@@ -204,6 +249,7 @@ def prepinat_faze():
                     nova_faze = list(filter(lambda x: x["nazev"] == aktualni_faze["nasledujici"], faze))[0]
                 else:
                     nova_faze = list(filter(lambda x: x["nasledujici"] == aktualni_faze["nazev"], faze))[0]
+                alog("Změna fáze na " + nova_faze["nazev"] + ".")
                 nova_faze["active"] = True
                 with open(faze_path(), "w") as file:
                     file.write(json.dumps(faze, indent=4))
@@ -224,6 +270,7 @@ def velitele_odbornosti():
                 path = zadani_folder_path() / odbornost
                 for file in path.iterdir():
                     file.unlink()
+                alog(f"Smazání zadání odbornosti {odbornost}.")
                 flash(f"Zadání odborosti {odbornost} je smazaný.", category="success")
             
             # ukládání souborů
@@ -233,6 +280,7 @@ def velitele_odbornosti():
                     for file in request.files.getlist(f"{odbornost}_files"):
                         file.save(zadani_folder_path() / odbornost / file.filename)
                     flash("Zadání nahráno.", category="success")
+                    alog(f"Nahrání nového zadání pro odbornost {odbornost}.")
                 else:
                     flash("Nenahrál jsi žádné soubory.", category="info")
 
@@ -240,6 +288,7 @@ def velitele_odbornosti():
             # zapisování kontaktních dat
             else:
                 inputs_ids_list = ["biolog", "konstrukter", "fyzik", "inzenyr", "popularizator"]
+                zmeneno = []
                 with open(velitel_odbornosti_data_path()) as file:
                     velitel_odbornosti_data = json.load(file)
                 for id in inputs_ids_list:
@@ -247,11 +296,14 @@ def velitele_odbornosti():
                     if res is None:
                         pass
                     else:
-                        velitel_odbornosti_data[id] = res
+                        if velitel_odbornosti_data[id] == res:
+                            pass
+                        else:
+                            zmeneno.append(id)
+                            velitel_odbornosti_data[id] = res
                 with open(velitel_odbornosti_data_path(),"w") as file:
                     file.write(json.dumps(velitel_odbornosti_data, indent=4))
-
-
+                alog("Úprava kontaktních údajů pro odbornosti: " + str(zmeneno))
                 flash("Data velitelů odborností byla upravena.", category="success")
             return redirect(url_for("admin_views.velitele_odbornosti"))
 
@@ -275,11 +327,17 @@ def motivaky_a_prace():
             return render_template("admin_motivaky_a_prace.html", roles=rights)
         else:
             result = json.loads(request.form.get("result"))
+            zmeneno = []
             for zaznam in result:
                 user = User.query.get(zaznam["id"])
-                user.hodnoceni_motivaku = zaznam["hodnoceni"]
-                db.session.add(user)
-                db.session.commit()
+                if user.hodnoceni_motivaku == zaznam["hodnoceni"]:
+                    pass
+                else:
+                    user.hodnoceni_motivaku = zaznam["hodnoceni"]
+                    db.session.add(user)
+                    db.session.commit()
+                    zmeneno.append(user.id)
+            alog(f"Změna hodnocení motiváku u uživatelů {str(zmeneno)}.")
             flash("Hodnocení motiváků uložena.", category="success")
             return redirect(url_for("admin_views.admin_dashboard"))
 

@@ -18,7 +18,7 @@ def ucet():
         if request.method == "GET":
             if get_aktualni_faze() == "ukonceny_rocnik":
                 flash("Tento ročník je ukončený, proto tu nejde nic upravovat. Brzy restartujeme systém a půjde se registrovat do nového.", category="error")
-            return render_template("ucet.html", current_user = current_user, roles = get_access_rights(current_user), faze = get_aktualni_faze())
+            return render_template("ucet.html", current_user = current_user, roles = get_access_rights(current_user), faze = get_aktualni_faze(), uzamcene_zmeny = current_user.uzamcene_zmeny)
         else:
             if request.form.get("overeni_emailu"):
                 token = current_user.get_reset_token()
@@ -121,7 +121,7 @@ def odbornost():
                 odbornost = False
             else:
                 odbornost = current_user.odbornost
-            return render_template("odbornost.html", zadani_pristupne =je_zadani_pristupne() , odbornost=odbornost, roles=get_access_rights(current_user))
+            return render_template("odbornost.html", zadani_pristupne =je_zadani_pristupne() , odbornost=odbornost, roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny)
         else:
             if request.form.get("result"):
                 current_user.odbornost = request.form["result"]
