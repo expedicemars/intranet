@@ -32,3 +32,6 @@ def zadani_folder_path() -> Path:
 
 def default_profilovka_path() -> Path:
     return Path.cwd() / "data" / "default_profilovka.png"
+
+def poznamky_path() -> Path:
+    return Path.cwd() / "data" / "poznamky.json"

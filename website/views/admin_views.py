@@ -1,13 +1,15 @@
+import json
+import datetime
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
 from flask_login import current_user
+from website import db
 from website.models.chyba import Chyba
 from website.models.user import User
-from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
-from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path
-import json
-from website.roles.role_handler import get_access_rights
-from website import db
 from website.helpers.mailing_list import promazat_mailing_list
+from website.roles.role_handler import get_access_rights
+from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
+from website.json_handlers.poznamky_handling import zapsat_poznamky
+from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path
 
 
 admin_views = Blueprint("admin_views",__name__)
@@ -18,6 +20,20 @@ def admin_dashboard():
     rights = get_access_rights(current_user)
     if "admin" in rights:
         return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych(), roles=rights)
+    else:
+        abort(401)
+
+
+@admin_views.route("/poznamky", methods=["GET","POST"])
+def poznamky():
+    rights = get_access_rights(current_user)
+    if "admin" in rights:
+        if request.method == "GET":
+            return render_template("admin_poznamky.html", roles=rights, username = current_user.jmeno, date=datetime.date.today())
+        else:
+            zapsat_poznamky(json.loads(request.form.get("result")))
+            flash("Změny uloženy.", category="success")
+            return redirect(url_for("admin_views.poznamky"))
     else:
         abort(401)
 

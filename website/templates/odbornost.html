@@ -95,10 +95,14 @@
             <hr>
             <div id="ukazat_praci">
                 <h2>Tvá práce</h2>
+                {% if uzamcene_zmeny %}
+                    Tvému účtu byly uzamčeny změny dokumentů, pravděpodobně proto, že se blíží nějaký důležitý termín. Níže si můžeš ještě stáhnout poslední verzi, kterou od tebe máme. Nebo nám napiš a my ti to ještě odemkneme.
+                {% else %}
                 Tady je vidět tebou nahraná práce, můžeš jí smazat a nahrát novou verzi.
                 <form method="post">
                     <button type="submit" class="btn btn-danger" value="1" name="smazat_praci">Smazat nahrané soubory</button>
                 </form>
+                {% endif %}
                 <div id="ukazat_praci_content" class="border rounded-2 border-primary my-2 p-2"></div>
             </div>
             <div id="nahrat_praci">
