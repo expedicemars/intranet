@@ -26,6 +26,8 @@ class User(db.Model, UserMixin):
 	admin_poznamka = db.Column(db.String(1000))
 	hodnoceni_motivaku = db.Column(db.String(5000))
 	uzamcene_zmeny = db.Column(db.Boolean, default=False)
+	alergie = db.Column(db.String(1000))
+	skola = db.Column(db.String(1000))
 
 
 	def get_reset_token(self, expires_sec = 9000) -> str:
@@ -59,7 +61,9 @@ class User(db.Model, UserMixin):
 			"dozvedeli": self.dozvedeli,
 			"admin_poznamka": self.admin_poznamka,
 			"hodnoceni_motivaku": self.hodnoceni_motivaku,
-			"uzamcene_zmeny": self.uzamcene_zmeny
+			"uzamcene_zmeny": self.uzamcene_zmeny,
+			"alergie": self.alergie,
+			"skola": self.skola
 		}
 	
 	def get_basic_info(self) -> dict:
@@ -78,6 +82,8 @@ class User(db.Model, UserMixin):
 			"role": self.role,
 			"tricko": self.tricko,
 			"dozvedeli": self.dozvedeli,
+			"alergie": self.alergie,
+			"skola": self.skola
 		}
 
 	def odstranit(self):
