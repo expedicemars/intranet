@@ -315,7 +315,10 @@ def velitele_odbornosti():
 def generovat_seznamy():
     rights = get_access_rights(current_user)
     if "editing_users_allowed" in rights:
-        return render_template("admin_generovat_seznamy.html", roles=rights)
+        if request.method == "GET":
+            return render_template("admin_generovat_seznamy.html", roles=rights)
+        else:
+            return request.form.get("result")
     else:
         abort(401)
 

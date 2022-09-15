@@ -2,6 +2,146 @@
 {% block content %}
 
     <h2>Generování seznamů dětí</h2>
+    <hr>
+    Kritéria, podle kterých se vybere seznam:
+    <div class="row">
+        <div class="col-sm">
+            <h3>Odbornost</h3>
+            <input type="checkbox" name="odbornost" id="jakakoli">
+            <label for="jakakoli">Jakákoli</label>
+            <br>
+            <input type="checkbox" name="odbornost" id="biolog">
+            <label for="biolog">Biolog</label>
+            <br>
+            <input type="checkbox" name="odbornost" id="konstrukter">
+            <label for="konstrukter">Konstruktér</label>
+            <br>
+            <input type="checkbox" name="odbornost" id="fyzik">
+            <label for="fyzik">Fyzik</label>
+            <br>
+            <input type="checkbox" name="odbornost" id="inzenyr">
+            <label for="inzenyr">Inženýr</label>
+            <br>
+            <input type="checkbox" name="odbornost" id="popularizator">
+            <label for="popularizator">Popularizátor</label>
+        </div>
+        <div class="col-sm">
+            <h3>Postup v Expedici</h3>
+            <input type="checkbox" name="postup" id="jakykoli">
+            <label for="jakykoli">Jakýkoli</label>
+            <br>
+            <input type="checkbox" name="postup" id="Domácí kolo">
+            <label for="Domácí kolo">Domácí kolo</label>
+            <br>
+            <input type="checkbox" name="postup" id="Semifinále">
+            <label for="Semifinále">Semifinále</label>
+            <br>
+            <input type="checkbox" name="postup" id="Finále">
+            <label for="Finále">Finále</label>
+            <br>
+            <input type="checkbox" name="postup" id="Simulace">
+            <label for="Simulace">Simulace</label>
+        </div>
+        <div class="col-sm">
+            <h3>Chybí jim údaj</h3>
+            <input type="radio" name="udaj" id="nezalezi">
+            <label for="nezalezi">Nezáleží na tom</label>
+            <br>
+            <input type="radio" name="udaj" id="jmeno">
+            <label for="jmeno">Jméno</label>
+            <br>
+            <input type="radio" name="udaj" id="telcislo">
+            <label for="telcislo">Telefoní číslo</label>
+            <br>
+            <input type="radio" name="udaj" id="adresa">
+            <label for="adresa">Adresa</label>
+            <br>
+            <input type="radio" name="udaj" id="mail_rodicu">
+            <label for="mail_rodicu">Mail rodičů</label>
+            <br>
+            <input type="radio" name="udaj" id="odbornost">
+            <label for="odbornost">Odbornost</label>
+            <br>
+            <input type="radio" name="udaj" id="datum_narozeni">
+            <label for="datum_narozeni">Datum narození</label>
+            <br>
+            <input type="radio" name="udaj" id="tricko">
+            <label for="tricko">Tričko</label>
+            <br>
+            <input type="radio" name="udaj" id="dozvedeli">
+            <label for="dozvedeli">Jak se o nás dozvěděli</label>
+            <br>
+            <input type="radio" name="udaj" id="alergie">
+            <label for="alergie">Alergie</label>
+            <br>
+            <input type="radio" name="udaj" id="skola">
+            <label for="skola">Škola</label>
+            <br>
+            <input type="radio" name="udaj" id="motivak">
+            <label for="motivak">Motivák</label>
+            <br>
+            <input type="radio" name="udaj" id="prace">
+            <label for="prace">Práce</label>
+
+        </div>
+    </div>
+
+    <hr>
+    Data, která k nim chci vypsat:
+    <div>
+        <input type="checkbox" name="vypsat" id="prazdny_vypsat">
+        <label for="prazdny">Prázdný sloupeček</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="jmeno_vypsat">
+        <label for="jmeno">Jméno</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="email_vypsat">
+        <label for="email">E-mail</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="telcislo_vypsat">
+        <label for="telcislo">Telefoní číslo</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="adresa_vypsat">
+        <label for="adresa">Adresa</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="mail_rodicu_vypsat">
+        <label for="mail_rodicu">Mail rodičů</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="odbornost_vypsat">
+        <label for="odbornost">Odbornost</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="progress_vypsat">
+        <label for="progress">Progress</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="datum_narozeni_vypsat">
+        <label for="datum_narozeni">Datum narození</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="tricko_vypsat">
+        <label for="tricko">Tričko</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="dozvedeli_vypsat">
+        <label for="dozvedeli">Jak se o nás dozvěděli</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="alergie_vypsat">
+        <label for="alergie">Alergie</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="skola_vypsat">
+        <label for="skola">Škola</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="admin_poznamka_vypsat">
+        <label for="admin_poznamka">Adminí poznámka</label>
+        <br>
+        <input type="checkbox" name="vypsat" id="hodnoceni_vypsat">
+        <label for="hodnoceni">Hodnocení motiváku</label>
+    </div>
+
+    <br>
+    <button id="generovat" class="btn btn-success" type="button">Generovat</button>
+    <form id="form" method="post">
+        <input hidden id="result" name="result">
+    </form>
+    <hr>
+    Výsledek:
 
 
     <script src="{{url_for('static', filename='js/admin_generovat_seznamy.js')}}"></script>
