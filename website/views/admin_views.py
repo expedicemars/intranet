@@ -6,6 +6,7 @@ from website import db
 from website.models.chyba import Chyba
 from website.models.user import User
 from website.helpers.mailing_list import promazat_mailing_list
+from website.helpers.user_filter import user_filter
 from website.roles.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
@@ -107,8 +108,12 @@ def registrovani_uzivatele():
         if request.method == "GET":
             return render_template("admin_registrovani_uzivatele.html", roles=rights)
         else:
-            result = request.form.get("result")
-            return redirect(url_for("admin_views.detail_usera",id=int(result)))
+            if request.form.get("dummy"):
+                u = User.generate_random()
+                return redirect(url_for("admin_views.detail_usera", id=u.id))
+            else:
+                result = request.form.get("result")
+                return redirect(url_for("admin_views.detail_usera",id=int(result)))
     else:
         abort(401)
     
@@ -318,7 +323,7 @@ def generovat_seznamy():
         if request.method == "GET":
             return render_template("admin_generovat_seznamy.html", roles=rights)
         else:
-            return request.form.get("result")
+            return str([u.jmeno for u in user_filter(json.loads(request.form.get("result")))])
     else:
         abort(401)
 

@@ -3,11 +3,11 @@
 
     <h2>Generování seznamů dětí</h2>
     <hr>
-    Kritéria, podle kterých se vybere seznam:
+    <h3>Kritéria, podle kterých se vybere seznam:</h3>
     <div class="row">
         <div class="col-sm">
             <h3>Odbornost</h3>
-            <input type="checkbox" name="odbornost" id="jakakoli">
+            <input type="checkbox" name="odbornost" id="jakakoli" checked>
             <label for="jakakoli">Jakákoli</label>
             <br>
             <input type="checkbox" name="odbornost" id="biolog">
@@ -27,7 +27,7 @@
         </div>
         <div class="col-sm">
             <h3>Postup v Expedici</h3>
-            <input type="checkbox" name="postup" id="jakykoli">
+            <input type="checkbox" name="postup" id="jakykoli" checked>
             <label for="jakykoli">Jakýkoli</label>
             <br>
             <input type="checkbox" name="postup" id="Domácí kolo">
@@ -44,7 +44,7 @@
         </div>
         <div class="col-sm">
             <h3>Chybí jim údaj</h3>
-            <input type="radio" name="udaj" id="nezalezi">
+            <input type="radio" name="udaj" id="nezalezi" checked>
             <label for="nezalezi">Nezáleží na tom</label>
             <br>
             <input type="radio" name="udaj" id="jmeno">
@@ -82,14 +82,17 @@
             <br>
             <input type="radio" name="udaj" id="prace">
             <label for="prace">Práce</label>
+            <br>
+            <input type="radio" name="udaj" id="profilovka">
+            <label for="profilovka">Profilovka</label>
 
         </div>
     </div>
 
     <hr>
-    Data, která k nim chci vypsat:
+    <h3>Data, která k nim chci vypsat:</h3>
     <div>
-        <input type="checkbox" name="vypsat" id="prazdny_vypsat">
+        <input type="checkbox" name="vypsat" id="prazdny_vypsat" checked>
         <label for="prazdny">Prázdný sloupeček</label>
         <br>
         <input type="checkbox" name="vypsat" id="jmeno_vypsat">
