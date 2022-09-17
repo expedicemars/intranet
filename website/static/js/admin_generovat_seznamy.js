@@ -2,9 +2,17 @@ let generovat_button = document.getElementById("generovat")
 let jakakoli = document.getElementById("jakakoli")
 let jakykoli = document.getElementById("jakykoli")
 let nezalezi = document.getElementById("nezalezi")
+let vyber_div = document.getElementById("vyber")
+let vysledek_div = document.getElementById("vysledek")
+let ukazat_button = document.getElementById("ukazat")
 
 
 generovat_button.addEventListener("click", vyhodnotit)
+ukazat_button.addEventListener("click", function() {
+    generovat_button.hidden = false
+    vyber_div.hidden = false
+    ukazat_button.hidden = true
+})
 jakakoli.addEventListener("change", function() {
     for (let id of ["biolog", "konstrukter", "fyzik", "inzenyr", "popularizator"]) {
         document.getElementById(id).checked = false
@@ -18,6 +26,10 @@ jakykoli.addEventListener("change", function() {
 
 
 function vyhodnotit() {
+    vyber_div.hidden = true
+    generovat_button.hidden = true
+    vysledek_div.hidden = false
+    ukazat_button.hidden = false
     let result = {}
     // odbornost
     if (jakakoli.checked) {
