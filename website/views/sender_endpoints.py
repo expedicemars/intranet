@@ -153,17 +153,7 @@ def send_user(query: str):
                 return file[current_user.odbornost]
         else:
             abort(401)
-    elif query == "profilovka":
-        if "user" in rights:
-            # iterdirem najdu filename profilovka
-            path = user_data_folder_path() / str(current_user.id)
-            for file in path.iterdir():
-                if file.stem == "profiovka":
-                    profilovka_path = path / file.name
-                    return send_file(profilovka_path)
-            return send_file(default_profilovka_path())
-        else:
-            abort(401)
+
 
 @sender.route("/send_profilovka")
 def send_profilovka_minimal():

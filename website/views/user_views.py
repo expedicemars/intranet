@@ -29,7 +29,7 @@ def ucet():
                 #zkusit smazat starou
                 path = user_data_folder_path() / str(current_user.id)
                 for file in path.iterdir():
-                    if file.stem == "profiovka":
+                    if file.stem == "profilovka":
                         profilovka_path = path / file.name
                         profilovka_path.unlink()
                         break
@@ -37,7 +37,7 @@ def ucet():
                 fotka = request.files.get("img_file")
                 if len(fotka.filename.split(".")) == 2:
                     pripona = fotka.filename.split(".")[1]
-                    filename = "profiovka" + "." + pripona
+                    filename = "profilovka" + "." + pripona
                     cesta = user_data_folder_path() / str(current_user.id) / filename
                     cesta.touch()
                     fotka.save(cesta)
@@ -76,6 +76,8 @@ def ucet():
                 current_user.mail_rodicu = data["mail_rodicu"]
                 current_user.tricko = data["tricko"]
                 current_user.dozvedeli = data["dozvedeli"]
+                current_user.skola = data["skola"]
+                current_user.alergie = data["alergie"]
                 if current_user.email != data["email"]:
                     current_user.email = data["email"]
                     current_user.confirmed = False
