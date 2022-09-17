@@ -41,7 +41,7 @@ def get_prace_filenames(id):
 def get_profilovka_by_id(id):
     path = user_data_folder_path() / str(id)
     for file in path.iterdir():
-        if file.stem == "profliovka":
+        if file.stem == "profilovka":
             profilovka_path = path / file.name
             return send_file(profilovka_path)
     else:

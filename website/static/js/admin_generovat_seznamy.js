@@ -6,7 +6,6 @@ let nezalezi = document.getElementById("nezalezi")
 
 
 
-
 generovat_button.addEventListener("click", vyhodnotit)
 jakakoli.addEventListener("change", function() {
     for (let id of ["biolog", "konstrukter", "fyzik", "inzenyr", "popularizator"]) {
@@ -83,8 +82,17 @@ function vyhodnotit() {
         if (result["vypsat"].length == 0) {
             result["vypsat"] = ["prazdny_vypsat"]
         }
-        document.getElementById("result").value = JSON.stringify(result)
-        document.getElementById("form").submit()
+
+        $.ajax({
+            data : {
+                result: JSON.stringify(result)
+            },
+            type: "POST",
+            url: "/admin/generovat_seznamy/"
+        })
+        .done(function(data) {
+            console.log(JSON.parse(data))
+        })
     }
 
 }

@@ -6,7 +6,7 @@ from website import db
 from website.models.chyba import Chyba
 from website.models.user import User
 from website.helpers.mailing_list import promazat_mailing_list
-from website.helpers.user_filter import user_filter
+from website.helpers.user_filter import user_filter, seznam_generator
 from website.roles.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
@@ -316,14 +316,17 @@ def velitele_odbornosti():
         abort(401)
 
 
-@admin_views.route("/generovat_seznamy", methods=["GET","POST"])
+@admin_views.route("/generovat_seznamy/", methods=["GET","POST"])
 def generovat_seznamy():
     rights = get_access_rights(current_user)
     if "editing_users_allowed" in rights:
         if request.method == "GET":
             return render_template("admin_generovat_seznamy.html", roles=rights)
         else:
-            return str([u.jmeno for u in user_filter(json.loads(request.form.get("result")))])
+            kriteria = json.loads(request.form.get("result"))
+            users = user_filter(kriteria)
+            data = seznam_generator(users, kriteria["vypsat"])
+            return json.dumps(data)
     else:
         abort(401)
 
