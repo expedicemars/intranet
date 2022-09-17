@@ -4,8 +4,6 @@ let jakykoli = document.getElementById("jakykoli")
 let nezalezi = document.getElementById("nezalezi")
 
 
-
-
 generovat_button.addEventListener("click", vyhodnotit)
 jakakoli.addEventListener("change", function() {
     for (let id of ["biolog", "konstrukter", "fyzik", "inzenyr", "popularizator"]) {
@@ -17,7 +15,6 @@ jakykoli.addEventListener("change", function() {
         document.getElementById(id).checked = false
     }
 })
-
 
 
 function vyhodnotit() {
@@ -64,7 +61,7 @@ function vyhodnotit() {
     // vypsat
 
     let res = []
-    for (let id of ["prazdny_vypsat", "jmeno_vypsat", "email_vypsat", "telcislo_vypsat", "adresa_vypsat", "mail_rodicu_vypsat", "odbornost_vypsat", "progress_vypsat", "datum_narozeni_vypsat", "tricko_vypsat", "dozvedeli_vypsat", "alergie_vypsat", "skola_vypsat", "admin_poznamka_vypsat", "hodnoceni_vypsat"]) {
+    for (let id of ["prazdny_vypsat", "email_vypsat", "telcislo_vypsat", "adresa_vypsat", "mail_rodicu_vypsat", "odbornost_vypsat", "progress_vypsat", "datum_narozeni_vypsat", "tricko_vypsat", "dozvedeli_vypsat", "alergie_vypsat", "skola_vypsat", "admin_poznamka_vypsat", "hodnoceni_vypsat"]) {
         if (document.getElementById(id).checked) {
             res.push(id)
         }
@@ -91,8 +88,40 @@ function vyhodnotit() {
             url: "/admin/generovat_seznamy/"
         })
         .done(function(data) {
-            console.log(JSON.parse(data))
+            vypsat(data)
         })
     }
 
+}
+
+function vypsat(data) {
+    data = JSON.parse(data)
+    document.getElementById("emaily_vybranych").innerHTML = data["emails"].join(", ")
+    let tr = document.getElementById("tr")
+    let tbody = document.getElementById("tbody")
+    // smazani starer tabulky
+    while (tr.firstChild) {
+        tr.removeChild(tr.firstChild)
+    }
+    while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild)
+    }
+    // nadpisy
+    for (let key of data["keys"]) {
+        let th = document.createElement("th")
+        th.scope = "col"
+        th.innerHTML = key
+        tr.appendChild(th)
+    }
+    // content
+    for (let u of data["users"]) {
+        let tr = document.createElement("tr")
+        for (let key of data["keys"]) {
+            let td = document.createElement("td")
+            td.innerHTML = u[key]
+            tr.appendChild(td)
+        }
+        tbody.append(tr)
+    }
+    
 }

@@ -66,7 +66,8 @@ def user_filter(kriteria: dict) -> List[User]:
 
 
 def seznam_generator(users: List[User], vypsat_list) -> dict:
-    print(vypsat_list)
+    users = list(users)
+    vypsat_list.insert(0, "jmeno_vypsat")
     """
     struktura seznamu:
     {
@@ -95,6 +96,7 @@ def seznam_generator(users: List[User], vypsat_list) -> dict:
     result = {}
     result["emails"] = [u.email for u in users]
     result["keys"] = vypsat_list
+    result["keys"]
     result["users"] = []
     for u in users:
         zaznam = {}
@@ -127,5 +129,4 @@ def seznam_generator(users: List[User], vypsat_list) -> dict:
         if "hodnoceni_vypsat" in vypsat_list:
             zaznam["hodnoceni_vypsat"] = u.hodnoceni_motivaku
         result["users"].append(zaznam)
-
     return result
