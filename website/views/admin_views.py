@@ -110,6 +110,7 @@ def registrovani_uzivatele():
         else:
             if request.form.get("dummy"):
                 u = User.generate_random()
+                alog("Generování nového dummy usera s id=" + str(u.id))
                 return redirect(url_for("admin_views.detail_usera", id=u.id))
             else:
                 result = request.form.get("result")
@@ -323,6 +324,7 @@ def generovat_seznamy():
         if request.method == "GET":
             return render_template("admin_generovat_seznamy.html", roles=rights)
         else:
+            alog("Generování seznamu účastníků podle: " + request.form.get("result") + ".")
             kriteria = json.loads(request.form.get("result"))
             users = user_filter(kriteria)
             data = seznam_generator(users, kriteria["vypsat"])
