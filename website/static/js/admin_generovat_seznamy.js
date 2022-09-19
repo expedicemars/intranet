@@ -108,6 +108,7 @@ function vyhodnotit() {
 
 function vypsat(data) {
     data = JSON.parse(data)
+    console.log(data)
     document.getElementById("emaily_vybranych").innerHTML = data["emails"].join(", ")
     let tr = document.getElementById("tr")
     let tbody = document.getElementById("tbody")
@@ -129,9 +130,18 @@ function vypsat(data) {
     for (let u of data["users"]) {
         let tr = document.createElement("tr")
         for (let key of data["keys"]) {
-            let td = document.createElement("td")
-            td.innerHTML = u[key]
-            tr.appendChild(td)
+            if (key == "jmeno_vypsat") {
+                let td = document.createElement("td")
+                let a = document.createElement("a")
+                a.href = "/admin/detail_usera/" + String(u["id"])
+                a.innerHTML = u[key]
+                td.appendChild(a)
+                tr.appendChild(td)
+            } else {
+                let td = document.createElement("td")
+                td.innerHTML = u[key]
+                tr.appendChild(td)
+            }
         }
         tbody.append(tr)
     }

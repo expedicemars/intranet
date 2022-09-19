@@ -96,10 +96,10 @@ def seznam_generator(users: List[User], vypsat_list) -> dict:
     result = {}
     result["emails"] = [u.email for u in users]
     result["keys"] = vypsat_list
-    result["keys"]
     result["users"] = []
     for u in users:
         zaznam = {}
+        zaznam["id"] = u.id
         if "prazdny_vypsat" in vypsat_list:
             zaznam["prazdny_vypsat"] = ""
         if "jmeno_vypsat" in vypsat_list:
