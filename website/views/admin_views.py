@@ -366,7 +366,31 @@ def pohovory():
         if request.method == "GET":
             return render_template("admin_pohovory.html", roles=rights)
         else:
-            return "not done yet"
+            if request.form.get("pridat_termin"):
+                date = request.form.get("date")
+                start_time = request.form.get("start_time")
+                end_time = request.form.get("end_time")
+                start_datetime = date + " " + start_time
+                end_datetime = date + " " + end_time
+                try:
+                    start_datetime = datetime.datetime.strptime(start_datetime, "%Y-%m-%d %H:%M")
+                    end_datetime = datetime.datetime.strptime(end_datetime, "%Y-%m-%d %H:%M")
+                except ValueError:
+                    flash("Pravděpodobně nebylo zadáno datum.", category="error")
+                    return redirect(url_for("admin_views.pohovory"))
+                if start_datetime > end_datetime:
+                    flash("Časy, kkteré byly zadány, nedávaly smysl. Zkus to znova.", category="error")
+                    return redirect(url_for("admin_views.pohovory"))
+                else:
+                    terminy = []
+                    terminy.append(start_datetime)
+                    dt = datetime.timedelta(minutes=20)
+                    while terminy[-1] < end_datetime:
+                        terminy.append(terminy[-1] + dt)
+                    print(terminy)
+                    return redirect(url_for("admin_views.pohovory"))
+                    
+
 
     else:
         abort(401)

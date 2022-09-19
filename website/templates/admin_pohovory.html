@@ -1,7 +1,21 @@
 {% extends "admin_navbar.html" %}
 {% block content %}
     <h2>Pohovory</h2>
-    Tady se dají vypisovat nové termíny, do kterých se poté účastníci můžou zapsat.
+    Tady se dají vypisovat nové termíny, do kterých se poté účastníci můžou zapsat. Pohvory mají 20minutové bloky.
+    <h3>Přidat nový den a bloky pohovorů v něm</h3>
+    <form method="post">
+        <label for="date">Datum: </label>
+        <input type="date" name="date">
+        <label for="start_time">Počáteční čas</label>
+        <select id="start_time" name="start_time"></select>
+        <label for="end_time">Čas začátku posledního pohovoru</label>
+        <select id="end_time" name="end_time"></select>
+        <button name="pridat_termin" value="1" class="btn btn-primary" type="submit">Přidat</button>
+    </form>
+    <h3>Vypsané termíny</h3>
+    word
+    <h3>Přihlášení účastníci</h3>
+    word
 
     <script type="module" src="{{url_for('static', filename='js/admin_pohovory.js')}}"></script>
 {% endblock %}
