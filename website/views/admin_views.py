@@ -10,6 +10,7 @@ from website.helpers.user_filter import user_filter, seznam_generator
 from website.roles.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
+from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
 from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path
 
 
@@ -382,13 +383,15 @@ def pohovory():
                     flash("Časy, kkteré byly zadány, nedávaly smysl. Zkus to znova.", category="error")
                     return redirect(url_for("admin_views.pohovory"))
                 else:
-                    terminy = []
-                    terminy.append(start_datetime)
-                    dt = datetime.timedelta(minutes=20)
-                    while terminy[-1] < end_datetime:
-                        terminy.append(terminy[-1] + dt)
-                    print(terminy)
+                    pridat_pohovory(start_datetime=start_datetime, end_datetime=end_datetime)
+                    flash("Termíny vypsány.", category="success")
                     return redirect(url_for("admin_views.pohovory"))
+            elif request.form.get("smazat"):
+                smazat_termin(datetime.datetime.fromisoformat(request.form.get("smazat")))
+                flash("Termín smazán.", category="success")
+                return redirect(url_for("admin_views.pohovory"))
+
+
                     
 
 

@@ -35,3 +35,6 @@ def default_profilovka_path() -> Path:
 
 def poznamky_path() -> Path:
     return Path.cwd() / "data" / "poznamky.json"
+
+def pohovory_path() -> Path:
+    return Path.cwd() / "data" / "pohovory.json"
