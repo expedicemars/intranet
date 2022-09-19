@@ -6,6 +6,9 @@
     {% if "velitel_odbornosti" in roles %}
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.velitele_odbornosti')}}">Velitelé odborností</a></li>
     {% endif %}
+    {% if "editing_pohovory" in roles%}
+    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.pohovory')}}">Pohovory</a></li>
+    {% endif %}
     {% if "editing_bugs_allowed" in roles %}
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.uprava_znamych_bugu')}}">Přehled známých bugů</a></li>
     {% endif %}

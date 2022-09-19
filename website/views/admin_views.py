@@ -356,3 +356,17 @@ def motivaky_a_prace():
 
     else:
         abort(401)
+
+
+
+@admin_views.route("/pohovory", methods=["GET","POST"])
+def pohovory():
+    rights = get_access_rights(current_user)
+    if "editing_pohovory" in rights:
+        if request.method == "GET":
+            return render_template("admin_pohovory.html", roles=rights)
+        else:
+            return "not done yet"
+
+    else:
+        abort(401)
