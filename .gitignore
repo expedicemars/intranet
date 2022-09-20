@@ -17,6 +17,8 @@ terminy.json
 velitel_odbornosti_data.json
 user_data/*
 poznamky.json
+pohovory.json
+prohlaseni_rodicu.docx
 
 # Node artifact files
 node_modules/

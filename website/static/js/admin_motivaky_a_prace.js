@@ -7,6 +7,7 @@ let b2 = document.getElementById("b2")
 b1.addEventListener("click", vyhodnotit)
 b2.addEventListener("click", vyhodnotit)
 
+console.log(data)
 
 
 function generator(zaznam_o_jednom) {
@@ -19,9 +20,12 @@ function generator(zaznam_o_jednom) {
     row.appendChild(jmeno_col)
     jmeno_col.classList.add("col-sm")
     if (zaznam_o_jednom["jmeno"]) {
+        let a = document.createElement("a")
+        a.href = "/admin/detail_usera/" + String(zaznam_o_jednom["id"])
+        jmeno_col.appendChild(a)
         let jmeno = document.createElement("h3")
         jmeno.innerHTML = zaznam_o_jednom["jmeno"]
-        jmeno_col.appendChild(jmeno)
+        a.appendChild(jmeno)
     } else {
         jmeno_col.innerHTML = "Ještě nezadal jméno"
     }

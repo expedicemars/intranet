@@ -74,7 +74,7 @@ if (aktualni_faze["nazev"] == "otevrene_registrace") {
 // odeslani pozadavku na server o prepnuti faze
 function odeslat(jak) {
     if (aktualni_faze["nazev"] == "uzavrene_registrace" && jak == "dalsi") {
-        if (confirm("Chystáš se ukončit ročník, zazálohovat a smazat data. Jseš si jistej?")) {
+        if (confirm("Chystáš se ukončit ročník, měj zazálohovaný data. Jseš si jistej?")) {
             if (confirm("Vážně? Tohle neni sranda, fakt se to promaže. I deadliny budou pryč.")) {
                 if (confirm("Ještě se prosimtě ujisti, že máš přístup k odevzdanejm projektům a motivákům a tak.")) {
                     if (confirm("Je Michal nejepší?")) {

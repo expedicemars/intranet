@@ -24,7 +24,7 @@ function generator_from_db(target, id, email) {
     col2.innerHTML = email
 
     let button = document.createElement("button")
-    button.classList.add("btn", "btn-info")
+    button.classList.add("btn", "btn-primary")
     button.type = "button"
     button.innerHTML = "vybrat..."
     button.addEventListener("click", function() {vybrat_usera(id)})

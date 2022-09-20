@@ -90,6 +90,18 @@
                 </div>
                 <div class="col" id="skola"></div>
             </div>
+            <div class="row">
+                <div class="col">
+                    Datum registrace: 
+                </div>
+                <div class="col" id="datum_registrace"></div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    Datum  pohovoru: 
+                </div>
+                <div class="col" id="datum_pohovoru"></div>
+            </div>
         </div>
         <div class="col">
             <img src="/send_profilovka/{{id}}" width="100%">
@@ -139,6 +151,14 @@
             <label for="admin_poznamka">Tuhle poznámku uživatel nikdy neuvidí.</label>
             <textarea id="admin_poznamka" class="form-control" rows="5"></textarea>
             <span id="charcount"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-auto">
+            Meeting link:
+        </div>
+        <div class="col">
+            <input type="text" id="meeting_link" class="form-control"></textarea>
         </div>
     </div>
     <button class="btn btn-success" id="ulozit_button">Uložit</button>

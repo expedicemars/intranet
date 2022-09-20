@@ -116,8 +116,6 @@
                     <span id="confirmed"></span>
                 </div>
             </div>
-        </div>
-        <div class="container">
             <div class="row my-2">
                 <div class="col-sm">
                     Souhlas rodičů: 
@@ -126,8 +124,6 @@
                     <span id="souhlas_rodicu"></span>
                 </div>
             </div>
-        </div>
-        <div class="container">
             <div class="row my-2">
                 <div class="col-sm">
                     Odbornost: 
@@ -136,14 +132,28 @@
                     <span id="odbornost"></span>
                 </div>
             </div>
-        </div>
-        <div class="container">
             <div class="row my-2">
                 <div class="col-sm">
                     Postup v Expedici: 
                 </div>
                 <div class="col">
                     <span id="progress"></span>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-sm">
+                    Datum registrace:  
+                </div>
+                <div class="col">
+                    <span id="datum_registrace"></span>
+                </div>
+            </div>
+            <div class="row my-2">
+                <div class="col-sm">
+                    Datum pohovoru: 
+                </div>
+                <div class="col">
+                    <span id="datum_pohovoru"></span>
                 </div>
             </div>
         </div>
@@ -167,7 +177,7 @@
         <div id="nahrany_motivak" hidden></div>
         <hr>
         <h3>Fotka</h3>
-        <img src="{{'/send_profilovka'}}" alt="profilovka" width="20%" class="my-2">
+        <img src="/send_profilovka" alt="profilovka" width="20%" class="my-2">
         
         <div></div>
         {% if faze != "ukonceny_rocnik"%}
@@ -179,6 +189,9 @@
                 <button type="submit" class="btn btn-outline-primary" name="img" value="1">Uložit</button>
             </form>
         </div>
+        <hr>
+        <h3>Prohlášení rodičů</h3>
+        Prohlášení rodičů účastníka semifinále Expedice Mars je dokument, který musíš v případě postupu do semifinále vyplněný přinést. Jde v něm o bezinfekčnost a souhlas s pořizováním fotografií a stáhnout lze <a href="/send_user/prohlaseni_rodicu" download="prohlaseni_rodicu.docx">tady.</a>
     {% endif %}
 </div>
 

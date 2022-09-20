@@ -1,0 +1,21 @@
+{% extends "admin_navbar.html" %}
+{% block content %}
+<h2>Prohlášení rodičů</h2>
+<form method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-auto">
+            Nahrát novou verzi:
+        </div>
+        <div class="col">
+            <input type="file" id="souhlas" class="form-control" name="souhlas" accept=".docx">
+            <label for="souhlas">Přijámam jen .docx soubory a to proto, aby to šlo za rok stáhnout a upravit :)</label>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-success" type="submit">Nahrát</button>
+        </div>
+    </div>
+</form>
+<div id="existuje"></div>
+
+<script type="module" src="{{url_for('static', filename='js/admin_prohlaseni_rodicu.js')}}"></script>
+{% endblock %}

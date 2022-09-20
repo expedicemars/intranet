@@ -5,9 +5,11 @@ from website.models.chyba import Chyba
 from website.models.user import User
 from website.json_handlers.logs_handling import get_logs, get_alogs
 from website.roles.role_handler import get_access_rights, dostupna_omezeni
-from website.paths.paths import terminy_path, faze_path, velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path, poznamky_path
+from website.paths.paths import terminy_path, faze_path, velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path, poznamky_path, prohlaseni_path
 from website.helpers.mailing_list import get_mails_from_mailing_list
 from website.helpers.get_user_files import get_motivak_by_id, get_prace_filenames, get_profilovka_by_id
+from website.json_handlers.pohovory_handling import get_pohovory, get_neobsazene_pohovory
+from website.helpers.pretty_date import pretty_date
 
 sender = Blueprint("sender", __name__)
 
@@ -89,44 +91,84 @@ def send_admin(query):
         else:
             abort(401)
     elif query == "upozornit_na_zadani":
-        # getne maily registrovanejch useru
-        result = []
-        for u in User.query.all():
-            u_rights = get_access_rights(u)
-            if "user" in u_rights and "admin" not in u_rights:
-                result.append(u.email)
-        return json.dumps(result)
+        if "prepinani_fazi_allowed" in rights:
+                
+            # getne maily registrovanejch useru
+            result = []
+            for u in User.query.all():
+                u_rights = get_access_rights(u)
+                if "user" in u_rights and "admin" not in u_rights:
+                    result.append(u.email)
+            return json.dumps(result)
+        else:
+            abort(401)
     elif query == "odbornosti_kterym_velim":
-        return json.dumps([y.replace("velitel_odbornosti_", "") for y in filter(lambda x: "velitel_odbornosti_" in x, get_access_rights(current_user))])
+        if "velitel_odbornosti" in rights:
+            return json.dumps([y.replace("velitel_odbornosti_", "") for y in filter(lambda x: "velitel_odbornosti_" in x, get_access_rights(current_user))])
+        else:
+            abort(401)
     elif query == "data_pro_motivaky_a_prace":
-        """
-        Getne seznam uživatelů, jejich ID, data o tom, zda maj motivák, jména souborů prací a hodnocoení motiváku
-        """
-        result = []
-        for u in User.query.all():
-            if "admin" in get_access_rights(u):
-                pass
-            else:
-                zaznam = {}
-                zaznam["jmeno"] = u.jmeno
-                zaznam["id"] = u.id
-                p = user_data_folder_path() / str(u.id)
-                for file in p.iterdir():
-                    if file.stem == "motivak":
-                        zaznam["motivak"] = True
-                        break
+        if "editing_users_allowed" in rights:
+
+            """
+            Getne seznam uživatelů, jejich ID, data o tom, zda maj motivák, jména souborů prací a hodnocoení motiváku
+            """
+            result = []
+            for u in User.query.all():
+                if "admin" in get_access_rights(u):
+                    pass
                 else:
-                    zaznam["motivak"] = False
-                zaznam["prace"] = []
-                p =  p / "prace"
-                for file in p.iterdir():
-                    zaznam["prace"].append(file.name)
-                zaznam["hodnoceni"] = u.hodnoceni_motivaku
-                result.append(zaznam)
-        return json.dumps(result)
+                    zaznam = {}
+                    zaznam["jmeno"] = u.jmeno
+                    zaznam["id"] = u.id
+                    p = user_data_folder_path() / str(u.id)
+                    for file in p.iterdir():
+                        if file.stem == "motivak":
+                            zaznam["motivak"] = True
+                            break
+                    else:
+                        zaznam["motivak"] = False
+                    zaznam["prace"] = []
+                    p =  p / "prace"
+                    for file in p.iterdir():
+                        zaznam["prace"].append(file.name)
+                    zaznam["hodnoceni"] = u.hodnoceni_motivaku
+                    result.append(zaznam)
+            return json.dumps(result)
+        else:
+            abort(401)
     elif query == "poznamky":
-        with open(poznamky_path()) as file:
-            return json.dumps(json.load(file))
+        if "admin" in rights:
+            with open(poznamky_path()) as file:
+                return json.dumps(json.load(file))
+        else:
+            abort(401)
+    elif query == "pohovory":
+        if "editing_pohovory" in rights:
+            result = []
+            for p in get_pohovory():
+                zaznam = {}
+                zaznam["iso"] = p["iso"]
+                zaznam["pretty"] = pretty_date(p["iso"])
+                zaznam["user"] = p["user"]
+                if p["user"]:
+                    u = User.query.get(int(p["user"]))
+                    zaznam["jmeno"] = u.jmeno
+                    zaznam["link"] = u.meeting_link
+                else:
+                    zaznam["jmeno"] = None
+                    zaznam["link"] = None
+                    
+                result.append(zaznam)
+            return json.dumps(result)
+        else:
+            abort(401)
+    elif query == "prohlaseni_rodicu_existuje":
+        if "admin" in rights:
+            return json.dumps({"existuje": prohlaseni_path().exists()})
+        else:
+            abort(401)
+
 
 
 @sender.route("/send_user/<string:query>")
@@ -153,6 +195,32 @@ def send_user(query: str):
                 return file[current_user.odbornost]
         else:
             abort(401)
+    elif query == "datum_pohovoru":
+        if "user" in rights: 
+            result = {
+                "datum": pretty_date(current_user.datum_pohovoru),
+                "link": current_user.meeting_link
+                }
+            return json.dumps(result)
+        else:
+            abort(401)
+    elif query == "volne_pohovory":
+        if "user" in rights: 
+            result = []
+            for p in get_neobsazene_pohovory():
+                zaznam = {}
+                zaznam["iso"] = p["iso"]
+                zaznam["pretty"] = pretty_date(p["iso"])
+                result.append(zaznam)
+            return json.dumps(result)
+        else:
+            abort(401)
+    elif query == "prohlaseni_rodicu":
+        if "user" in rights or "admin" in rights:
+            return send_file(prohlaseni_path())
+        else:
+            abort(401)
+
 
 
 @sender.route("/send_profilovka")

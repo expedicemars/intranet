@@ -1,0 +1,23 @@
+{% extends "navbar.html" %}
+{% block content %}
+
+<h2>Přihlášení na pohovory</h2>
+Tady se můžeš zapsat na konkrétní termín pohovoru.
+<hr>
+<div>
+    <p id="datum"></p>
+    <p id="link"></p>
+</div>
+<hr>
+{% if uzamcene_zmeny %}
+Tvému účtu byly uzamčeny změny, pravděpodobně proto, že se blíží nějaký důležitý termín. Můžeš nám ale napsat a my ti výběr termínů ještě odemkneme.
+{% else %} 
+<form method="post">
+    <div id="pohovory"></div>
+</form>
+{% endif %}
+
+
+<script type="module" src="{{url_for('static', filename='js/pohovory.js')}}"></script>
+
+{% endblock %}

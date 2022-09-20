@@ -10,7 +10,8 @@ from website.helpers.user_filter import user_filter, seznam_generator
 from website.roles.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
-from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path
+from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
+from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path
 
 
 admin_views = Blueprint("admin_views",__name__)
@@ -133,7 +134,10 @@ def detail_usera(id):
             elif request.form.get("result"):
                 data = json.loads(request.form.get("result"))
                 if len(data["admin_poznamka"]) > 1000:
-                    flash("Admin poznámka je moc dlouhá, sori. může bejt max 1000 znaků.", category="error")
+                    flash("Admin poznámka je moc dlouhá, sori. Může bejt max 1000 znaků.", category="error")
+                    return redirect(url_for("admin_views.detail_usera", id=id))
+                if len(data["meeting_link"]) > 1000:
+                    flash("Meeting link je moc dlouhý, sori. Může bejt max 1000 znaků.", category="error")
                     return redirect(url_for("admin_views.detail_usera", id=id))
                 if data["uzamcene_zmeny"] == "true":
                     data["uzamcene_zmeny"] = True
@@ -169,6 +173,12 @@ def detail_usera(id):
                 else:
                     u.souhlas_rodicu = data["souhlas_rodicu"]
                     alog(f"Změna souhlasu rodičů uživatele {id} na { u.souhlas_rodicu }.")
+
+                if u.meeting_link == data["meeting_link"]:
+                    pass
+                else:
+                    u.meeting_link = data["meeting_link"]
+                    alog(f"Změna meeting linku uživatele {id}.")
                 
                 db.session.add(u)
                 db.session.commit()
@@ -352,6 +362,68 @@ def motivaky_a_prace():
                     zmeneno.append(user.id)
             alog(f"Změna hodnocení motiváku u uživatelů {str(zmeneno)}.")
             flash("Hodnocení motiváků uložena.", category="success")
+            return redirect(url_for("admin_views.admin_dashboard"))
+
+    else:
+        abort(401)
+
+
+
+@admin_views.route("/pohovory", methods=["GET","POST"])
+def pohovory():
+    rights = get_access_rights(current_user)
+    if "editing_pohovory" in rights:
+        if request.method == "GET":
+            return render_template("admin_pohovory.html", roles=rights)
+        else:
+            if request.form.get("pridat_termin"):
+                date = request.form.get("date")
+                start_time = request.form.get("start_time")
+                end_time = request.form.get("end_time")
+                start_datetime = date + " " + start_time
+                end_datetime = date + " " + end_time
+                try:
+                    start_datetime = datetime.datetime.strptime(start_datetime, "%Y-%m-%d %H:%M")
+                    end_datetime = datetime.datetime.strptime(end_datetime, "%Y-%m-%d %H:%M")
+                except ValueError:
+                    flash("Pravděpodobně nebylo zadáno datum.", category="error")
+                    return redirect(url_for("admin_views.pohovory"))
+                if start_datetime > end_datetime:
+                    flash("Časy, kkteré byly zadány, nedávaly smysl. Zkus to znova.", category="error")
+                    return redirect(url_for("admin_views.pohovory"))
+                else:
+                    pridat_pohovory(start_datetime=start_datetime, end_datetime=end_datetime)
+                    flash("Termíny vypsány.", category="success")
+                    alog(f"Vypsání nových termínů na pohovory mezi {start_datetime} a {end_datetime}")
+                    return redirect(url_for("admin_views.pohovory"))
+            elif request.form.get("smazat"):
+                isoformat = request.form.get("smazat")
+                vysledek = smazat_termin(datetime.datetime.fromisoformat(isoformat))
+                if vysledek:
+                    flash("Termín smazán.", category="success")
+                    alog(f"Smazání termínu pohovoru {isoformat}.")
+                else:
+                    flash("Tento termín si mezitím někdo zapsal, nejde tedy smazat.", category="error")
+                return redirect(url_for("admin_views.pohovory"))
+    else:
+        abort(401)
+
+
+@admin_views.route("/prohlaseni_rodicu", methods=["GET","POST"])
+def prohlaseni_rodicu():
+    rights = get_access_rights(current_user)
+    if "admin" in rights:
+        if request.method == "GET":
+            return render_template("admin_prohlaseni_rodicu.html", roles=rights)
+        else:
+            file = request.files.get("souhlas")
+            if file:
+                file.name = "prohlaseni_rodicu.docx"
+                file.save(prohlaseni_path())
+                flash("Souhlas rodičů aktualizován.", category="success")
+                alog("Nahraný nový soubor souhlasu rodičů.")
+            else:
+                flash("Nenahrál jsi žádný soubor.", category="error")
             return redirect(url_for("admin_views.admin_dashboard"))
 
     else:

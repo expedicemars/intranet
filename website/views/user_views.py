@@ -7,6 +7,7 @@ from website.roles.role_handler import get_access_rights
 import json
 from website.paths.paths import user_data_folder_path
 from website.helpers.get_aktualni_faze import je_zadani_pristupne, get_aktualni_faze
+from website.json_handlers.pohovory_handling import zapsat_na_pohovor
 
 user_views = Blueprint("user_views", __name__)
 
@@ -147,3 +148,24 @@ def odbornost():
             return redirect(url_for("user_views.odbornost"))
     else:
         abort(401)
+
+
+@user_views.route("/pohovory", methods=["GET","POST"])
+def pohovory():
+    if "user" in get_access_rights(current_user):
+        if  request.method == "GET":
+            return render_template("pohovory.html", roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny)
+        else:
+            if request.form.get("vybrat"):
+                current_user.datum_pohovoru = request.form.get("vybrat")
+                db.session.add(current_user)
+                db.session.commit()
+                vysledek = zapsat_na_pohovor(current_user.datum_pohovoru, current_user.id)
+                if vysledek:
+                    flash("Termín vybrán.", category="success")
+                else:
+                    flash("Tento termín si mezitím vybral někdo jiný. Prosím, vyber si další.", category="error")
+                return redirect(url_for("user_views.pohovory"))
+    else:
+        abort(401)
+    
