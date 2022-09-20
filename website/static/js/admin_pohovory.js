@@ -47,27 +47,41 @@ function generator_vypsanych(iso, pretty, user) {
     content_div.appendChild(row)
 }
 
-function generator_prihlasenych(jmeno, pretty, id) {
+function generator_prihlasenych(jmeno, pretty, id, link) {
     let row = document.createElement("div")
     row.classList.add("row")
     let col1 = document.createElement("div")
+    row.appendChild(col1)
     col1.classList.add("col")
+    col1.innerHTML = pretty
+    let col2 = document.createElement("div")
+    row.appendChild(col2)
+    col2.classList.add("col")
     let a = document.createElement("a")
+    col2.appendChild(a)
     a.href = "/admin/detail_usera/" + String(id)
     a.innerHTML = jmeno
-    let col2 = document.createElement("div")
-    col2.classList.add("col")
-    col1.innerHTML = pretty
-    col2.appendChild(a)
-    row.appendChild(col1)
-    row.appendChild(col2)
+    let col3 = document.createElement("div")
+    row.appendChild(col3)
+    col3.classList.add("col")
+    if (link) {
+        let a2 = document.createElement("a")
+        col3.appendChild(a2)
+        a2.innerHTML = "Odkaz na meeting"
+        a2.href = link
+        a2.target = "blank"
+    } else {
+        col3.innerHTML = "Tady link ještě není"
+    }
+    
+
     prihlaseni_div.append(row)
 }
 
 for (let p of pohovory) {
     generator_vypsanych(p["iso"], p["pretty"], p["user"])
     if (p["user"]) {
-        generator_prihlasenych(p["jmeno"], p["pretty"], p["user"])
+        generator_prihlasenych(p["jmeno"], p["pretty"], p["user"], p["link"])
     }
 }
 

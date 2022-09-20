@@ -1,13 +1,24 @@
 import httpGet from "./httpGet.js"
 let pohovory = JSON.parse(httpGet("/send_user/volne_pohovory"))
 let aktualne = JSON.parse(httpGet("/send_user/datum_pohovoru"))
-let aktualne_div = document.getElementById("aktualne")
+let datum_p = document.getElementById("datum")
+let link_p = document.getElementById("link")
 let pohovory_div = document.getElementById("pohovory")
 
 if (aktualne["datum"]) {
-    aktualne_div.innerHTML = "Momentálně máš vybrané tohle datum: " + aktualne["datum"]
+    datum_p.innerHTML = "Momentálně máš vybrané tohle datum: " + aktualne["datum"]
 } else {
-    aktualne_div.innerHTML = "Momentálně nemáš vybrané žádné datum pohovoru."
+    datum_p.innerHTML = "Momentálně nemáš vybrané žádné datum pohovoru."
+}
+
+if (aktualne["link"]) {
+    let a = document.createElement("a")
+    a.innerHTML = "Odkaz na meeting"
+    a.href = aktualne["link"]
+    a.target = "blank"
+    link_p.appendChild(a)
+} else {
+    link_p.innerHTML = "Zatím tu nemáš odkaz na pohovor. Až ho organizátoři vytvořej, čekej ho buď tady, nebo na e-mailu."
 }
 
 

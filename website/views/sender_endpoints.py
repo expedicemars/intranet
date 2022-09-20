@@ -152,9 +152,12 @@ def send_admin(query):
                 zaznam["pretty"] = pretty_date(p["iso"])
                 zaznam["user"] = p["user"]
                 if p["user"]:
-                    zaznam["jmeno"] = User.query.get(int(p["user"])).jmeno
+                    u = User.query.get(int(p["user"]))
+                    zaznam["jmeno"] = u.jmeno
+                    zaznam["link"] = u.meeting_link
                 else:
                     zaznam["jmeno"] = None
+                    zaznam["link"] = None
                     
                 result.append(zaznam)
             return json.dumps(result)
@@ -189,7 +192,10 @@ def send_user(query: str):
             abort(401)
     elif query == "datum_pohovoru":
         if "user" in rights: 
-            result = {"datum": pretty_date(current_user.datum_pohovoru)}
+            result = {
+                "datum": pretty_date(current_user.datum_pohovoru),
+                "link": current_user.meeting_link
+                }
             return json.dumps(result)
         else:
             abort(401)
