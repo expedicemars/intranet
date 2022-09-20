@@ -3,6 +3,7 @@ let start_time = document.getElementById("start_time")
 let end_time = document.getElementById("end_time")
 let pohovory = JSON.parse(httpGet("/send_admin/pohovory"))
 let content_div = document.getElementById("content")
+let prihlaseni_div = document.getElementById("prihlaseni")
 
 console.log(pohovory)
 
@@ -23,7 +24,7 @@ function seznam_casu() {
 
 seznam_casu()
 
-function generator(iso, pretty, user) {
+function generator_vypsanych(iso, pretty, user) {
     let row = document.createElement("div")
     row.classList.add("row")
     let col1 = document.createElement("div")
@@ -48,6 +49,27 @@ function generator(iso, pretty, user) {
     content_div.appendChild(row)
 }
 
-for (let p of pohovory) {
-    generator(p["iso"], p["pretty"], p["user"])
+function generator_prihlasenych(jmeno, pretty, id) {
+    let row = document.createElement("div")
+    row.classList.add("row")
+    let col1 = document.createElement("div")
+    col1.classList.add("col")
+    let a = document.createElement("a")
+    a.href = "/admin/detail_usera/" + String(id)
+    a.innerHTML = jmeno
+    let col2 = document.createElement("div")
+    col2.classList.add("col")
+    col1.innerHTML = pretty
+    col2.appendChild(a)
+    row.appendChild(col1)
+    row.appendChild(col2)
+    prihlaseni_div.append(row)
 }
+
+for (let p of pohovory) {
+    generator_vypsanych(p["iso"], p["pretty"], p["user"])
+    if (p["user"]) {
+        generator_prihlasenych(p["jmeno"], p["pretty"], p["user"])
+    }
+}
+

@@ -151,6 +151,11 @@ def send_admin(query):
                 zaznam["iso"] = p["iso"]
                 zaznam["pretty"] = pretty_date(p["iso"])
                 zaznam["user"] = p["user"]
+                if p["user"]:
+                    zaznam["jmeno"] = User.query.get(int(p["user"])).jmeno
+                else:
+                    zaznam["jmeno"] = None
+                    
                 result.append(zaznam)
             return json.dumps(result)
         else:
