@@ -43,16 +43,21 @@ def pridat_pohovory(start_datetime:  datetime, end_datetime: datetime) ->  None:
     with open(pohovory_path(),"w") as new:
         new.write(json.dumps(file, indent=4))
 
-def smazat_termin(datetime: datetime) -> None:
+def smazat_termin(datetime: datetime) -> bool:
     datetime = datetime.isoformat()
     with open(pohovory_path()) as file:
         file = json.load(file)
     for f in file:
         if f["iso"] == datetime:
-            file.remove(f)
-            break
-    with open(pohovory_path(),"w") as new:
-        new.write(json.dumps(file, indent=4))
+            if f["user"] is None:
+                file.remove(f)
+                with open(pohovory_path(),"w") as new:
+                    new.write(json.dumps(file, indent=4))
+                return True
+            else:
+                return False
+            
+                
 
 def get_pohovory() -> List[dict]:
     with open(pohovory_path()) as file:

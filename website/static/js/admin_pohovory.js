@@ -5,8 +5,6 @@ let pohovory = JSON.parse(httpGet("/send_admin/pohovory"))
 let content_div = document.getElementById("content")
 let prihlaseni_div = document.getElementById("prihlaseni")
 
-console.log(pohovory)
-
 function seznam_casu() {
     let hodiny = ["7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22"]
     let minuty = ["00", "20", "40"]

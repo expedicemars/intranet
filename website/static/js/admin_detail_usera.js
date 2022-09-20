@@ -8,6 +8,7 @@ let toggle_zmeny_button = document.getElementById("toggle_zmeny")
 let toggle_souhlas_button = document.getElementById("toggle_souhlas")
 let charcount_span = document.getElementById("charcount")
 let textarea = document.getElementById("admin_poznamka")
+let meeting_link_input = document.getElementById("meeting_link")
 
 
 ulozit_button.addEventListener("click", vyhodnotit)
@@ -42,6 +43,7 @@ function  vyhodnotit() {
     result["uzamcene_zmeny"] = document.getElementById("uzamcene_zmeny").innerHTML
     result["souhlas_rodicu"] = document.getElementById("souhlas_rodicu").innerHTML
     result["admin_poznamka"] = textarea.value
+    result["meeting_link"] = meeting_link_input.value
     document.getElementById("result").value = JSON.stringify(result)
     document.getElementById("form").submit()
 }
@@ -53,7 +55,9 @@ for (let key in detail_usera) {
         if (key == "id") {
             document.getElementById("id_display").innerHTML = detail_usera[key]
         } else if (key == "progress") {
-            document.getElementById(detail_usera["progress"]).selected = "selected"            
+            document.getElementById(detail_usera["progress"]).selected = "selected"         
+        } else if (key == "meeting_link") {
+            meeting_link_input.value = detail_usera[key]
         } else {
             node.innerHTML = detail_usera[key]
         }

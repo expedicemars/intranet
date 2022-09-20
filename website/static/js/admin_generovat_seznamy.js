@@ -73,7 +73,7 @@ function vyhodnotit() {
     // vypsat
 
     let res = []
-    for (let id of ["prazdny_vypsat", "email_vypsat", "telcislo_vypsat", "adresa_vypsat", "mail_rodicu_vypsat", "odbornost_vypsat", "progress_vypsat", "datum_narozeni_vypsat", "tricko_vypsat", "dozvedeli_vypsat", "alergie_vypsat", "skola_vypsat", "admin_poznamka_vypsat", "hodnoceni_vypsat", "registrace_vypsat", "pohovor_vypsat"]) {
+    for (let id of ["prazdny_vypsat", "email_vypsat", "telcislo_vypsat", "adresa_vypsat", "mail_rodicu_vypsat", "odbornost_vypsat", "progress_vypsat", "datum_narozeni_vypsat", "tricko_vypsat", "dozvedeli_vypsat", "alergie_vypsat", "skola_vypsat", "admin_poznamka_vypsat", "hodnoceni_vypsat", "registrace_vypsat", "pohovor_vypsat", "meeting_link_vypsat"]) {
         if (document.getElementById(id).checked) {
             res.push(id)
         }

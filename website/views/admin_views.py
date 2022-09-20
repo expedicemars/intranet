@@ -134,7 +134,10 @@ def detail_usera(id):
             elif request.form.get("result"):
                 data = json.loads(request.form.get("result"))
                 if len(data["admin_poznamka"]) > 1000:
-                    flash("Admin poznámka je moc dlouhá, sori. může bejt max 1000 znaků.", category="error")
+                    flash("Admin poznámka je moc dlouhá, sori. Může bejt max 1000 znaků.", category="error")
+                    return redirect(url_for("admin_views.detail_usera", id=id))
+                if len(data["meeting_link"]) > 1000:
+                    flash("Meeting link je moc dlouhý, sori. Může bejt max 1000 znaků.", category="error")
                     return redirect(url_for("admin_views.detail_usera", id=id))
                 if data["uzamcene_zmeny"] == "true":
                     data["uzamcene_zmeny"] = True
@@ -170,6 +173,12 @@ def detail_usera(id):
                 else:
                     u.souhlas_rodicu = data["souhlas_rodicu"]
                     alog(f"Změna souhlasu rodičů uživatele {id} na { u.souhlas_rodicu }.")
+
+                if u.meeting_link == data["meeting_link"]:
+                    pass
+                else:
+                    u.meeting_link = data["meeting_link"]
+                    alog(f"Změna meeting linku uživatele {id}.")
                 
                 db.session.add(u)
                 db.session.commit()
@@ -387,8 +396,11 @@ def pohovory():
                     flash("Termíny vypsány.", category="success")
                     return redirect(url_for("admin_views.pohovory"))
             elif request.form.get("smazat"):
-                smazat_termin(datetime.datetime.fromisoformat(request.form.get("smazat")))
-                flash("Termín smazán.", category="success")
+                vysledek = smazat_termin(datetime.datetime.fromisoformat(request.form.get("smazat")))
+                if vysledek:
+                    flash("Termín smazán.", category="success")
+                else:
+                    flash("Tento termín si mezitím někdo zapsal, nejde tedy smazat.", category="error")
                 return redirect(url_for("admin_views.pohovory"))
 
     else:

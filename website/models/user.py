@@ -33,6 +33,7 @@ class User(db.Model, UserMixin):
 	skola = db.Column(db.String(1000))
 	datum_registrace = db.Column(db.String(100), default = datetime.now().isoformat())
 	datum_pohovoru = db.Column(db.String(100))
+	meeting_link = db.Column(db.String(1000))
 
 
 	def get_reset_token(self, expires_sec = 9000) -> str:
@@ -74,7 +75,8 @@ class User(db.Model, UserMixin):
 			"alergie": self.alergie,
 			"skola": self.skola,
 			"datum_registrace": pretty_date(self.datum_registrace),
-			"datum_pohovoru": pretty_date(self.datum_pohovoru)
+			"datum_pohovoru": pretty_date(self.datum_pohovoru),
+			"meeting_link": self.meeting_link
 		}
 
 	def odstranit(self):

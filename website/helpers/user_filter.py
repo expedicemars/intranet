@@ -134,5 +134,7 @@ def seznam_generator(users: List[User], vypsat_list) -> dict:
             zaznam["registrace_vypsat"] = pretty_date(u.datum_registrace) 
         if "pohovor_vypsat" in vypsat_list:
             zaznam["pohovor_vypsat"] = pretty_date(u.datum_pohovoru)
+        if "meeting_link_vypsat" in vypsat_list:
+            zaznam["meeting_link_vypsat"] = u.meeting_link
         result["users"].append(zaznam)
     return result

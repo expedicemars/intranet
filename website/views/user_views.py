@@ -154,7 +154,7 @@ def odbornost():
 def pohovory():
     if "user" in get_access_rights(current_user):
         if  request.method == "GET":
-            return render_template("pohovory.html", roles=get_access_rights(current_user))
+            return render_template("pohovory.html", roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny)
         else:
             if request.form.get("vybrat"):
                 current_user.datum_pohovoru = request.form.get("vybrat")
