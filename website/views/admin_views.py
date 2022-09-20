@@ -391,9 +391,5 @@ def pohovory():
                 flash("Termín smazán.", category="success")
                 return redirect(url_for("admin_views.pohovory"))
 
-
-                    
-
-
     else:
         abort(401)

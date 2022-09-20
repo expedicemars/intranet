@@ -1,0 +1,12 @@
+{% extends "navbar.html" %}
+{% block content %}
+
+<h2>Přihlášení na pohovory</h2>
+Tady se můžeš zapsat na konkrétní termín pohovoru.
+<div id="aktualne"></div>
+<div id="pohovory"></div>
+
+
+<script type="module" src="{{url_for('static', filename='js/pohovory.js')}}"></script>
+
+{% endblock %}

@@ -1,6 +1,8 @@
 from website.models.user import User
 from typing import List
 from website.paths.paths import user_data_folder_path
+from website.helpers.pretty_date import pretty_date
+from datetime import datetime
 
 def user_filter(kriteria: dict) -> List[User]:
     users = User.query.all()
@@ -128,5 +130,9 @@ def seznam_generator(users: List[User], vypsat_list) -> dict:
             zaznam["admin_poznamka_vypsat"] = u.admin_poznamka
         if "hodnoceni_vypsat" in vypsat_list:
             zaznam["hodnoceni_vypsat"] = u.hodnoceni_motivaku
+        if "registrace_vypsat" in vypsat_list:
+            zaznam["registrace_vypsat"] = pretty_date(u.datum_registrace) 
+        if "pohovor_vypsat" in vypsat_list:
+            zaznam["pohovor_vypsat"] = pretty_date(u.datum_pohovoru)
         result["users"].append(zaznam)
     return result

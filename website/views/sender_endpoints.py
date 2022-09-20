@@ -143,17 +143,7 @@ def send_admin(query):
                 return json.dumps(json.load(file))
         else:
             abort(401)
-    elif query == "pohovory":
-        if "editing_pohovory" in rights:
-            result = []
-            for p in get_pohovory():
-                zaznam = {}
-                zaznam["iso"] = p.isoformat()
-                zaznam["pretty"] = pretty_date(p)
-                result.append(zaznam)
-            return json.dumps(result)
-        else:
-            abort(401)
+
 
 
 @sender.route("/send_user/<string:query>")
@@ -180,6 +170,18 @@ def send_user(query: str):
                 return file[current_user.odbornost]
         else:
             abort(401)
+    elif query == "pohovory":
+        if "editing_pohovory" in rights or "user" in rights: 
+            result = []
+            for p in get_pohovory():
+                zaznam = {}
+                zaznam["iso"] = p.isoformat()
+                zaznam["pretty"] = pretty_date(p.isoformat())
+                result.append(zaznam)
+            return json.dumps(result)
+        else:
+            abort(401)
+
 
 
 @sender.route("/send_profilovka")

@@ -147,3 +147,15 @@ def odbornost():
             return redirect(url_for("user_views.odbornost"))
     else:
         abort(401)
+
+
+@user_views.route("/pohovory", methods=["GET","POST"])
+def pohovory():
+    if "user" in get_access_rights(current_user):
+        if  request.method == "GET":
+            return render_template("pohovory.html", roles=get_access_rights(current_user))
+        else:
+            return "not done yet"
+    else:
+        abort(401)
+    

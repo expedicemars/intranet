@@ -5,6 +5,8 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 import json
 from website.paths.paths import user_data_folder_path
 from shutil import rmtree
+from website.helpers.pretty_date import pretty_date
+from datetime import datetime
 
 
 
@@ -29,6 +31,8 @@ class User(db.Model, UserMixin):
 	uzamcene_zmeny = db.Column(db.Boolean, default=False)
 	alergie = db.Column(db.String(1000))
 	skola = db.Column(db.String(1000))
+	datum_registrace = db.Column(db.String(100), default = datetime.now().isoformat())
+	datum_pohovoru = db.Column(db.String(100))
 
 
 	def get_reset_token(self, expires_sec = 9000) -> str:
@@ -45,27 +49,11 @@ class User(db.Model, UserMixin):
 		return User.query.get(user_id)
 
 	def get_full_info(self) -> dict:
-		return {
-			"id": self.id,
-			"email":self.email,
-			"confirmed": self.confirmed,
-			"jmeno": self.jmeno,
-			"adresa": self.adresa,
-			"telcislo": self.telcislo,
-			"mail_rodicu": self.mail_rodicu,
-			"souhlas_rodicu": self.souhlas_rodicu,
-			"odbornost": self.odbornost,
-			"datum_narozeni": self.datum_narozeni,
-			"progress": self.progress,
-			"role": self.role,
-			"tricko": self.tricko,
-			"dozvedeli": self.dozvedeli,
-			"admin_poznamka": self.admin_poznamka,
-			"hodnoceni_motivaku": self.hodnoceni_motivaku,
-			"uzamcene_zmeny": self.uzamcene_zmeny,
-			"alergie": self.alergie,
-			"skola": self.skola
-		}
+		info = self.get_basic_info()
+		info["admin_poznamka"] = self.admin_poznamka
+		info["hodnoceni_motivaku"] =  self.hodnoceni_motivaku
+		info["uzamcene_zmeny"] = self.uzamcene_zmeny
+		return info
 	
 	def get_basic_info(self) -> dict:
 		return {
@@ -84,7 +72,9 @@ class User(db.Model, UserMixin):
 			"tricko": self.tricko,
 			"dozvedeli": self.dozvedeli,
 			"alergie": self.alergie,
-			"skola": self.skola
+			"skola": self.skola,
+			"datum_registrace": pretty_date(self.datum_registrace),
+			"datum_pohovoru": pretty_date(self.datum_pohovoru)
 		}
 
 	def odstranit(self):
@@ -126,7 +116,7 @@ class User(db.Model, UserMixin):
 		if biased_coin():
 			u.odbornost = random.choice(["biolog", "konstrukter", "inzenyr", "fyzik", "popularizator"])
 		if biased_coin():
-			u.datum_narozeni = datetime.date.today()
+			u.datum_narozeni = datetime.date.today().isoformat()
 		if biased_coin():
 			u.progress = random.choice(["Domácí kolo", "Semifinále", "Finále", "Simulace"])
 		if biased_coin():
@@ -152,6 +142,10 @@ class User(db.Model, UserMixin):
 		if biased_coin():
 			profilovka = user_data_folder_path() / str(u.id) / "profilovka.jpg"
 			profilovka.touch()
+		if biased_coin():
+			u.datum_pohovoru = datetime.datetime.utcnow().isoformat()
+		if biased_coin():
+			u.datum_registrace = (datetime.datetime.utcnow() - datetime.timedelta(days=365)).isoformat()
 		
 
 		db.session.add(u)

@@ -4,7 +4,7 @@ from flask_login import current_user
 
 def log(data: str) -> None:
     with open(app_logs_file_path(), "a") as file:
-        file.write(str(datetime.datetime.utcnow()) + ":  " + data + "\n")
+        file.write(str(datetime.datetime.now()) + ":  " + data + "\n")
 
 def get_logs() -> str:
     with open(app_logs_file_path()) as file:
@@ -17,7 +17,7 @@ def delete_logs() -> str:
 
 def alog(data: str) -> None:
     with open(admin_logs_file_path(), "a") as file:
-        file.write(str(datetime.datetime.utcnow()) + ", user_id: " + str(current_user.id) + ": "+ data + "\n")
+        file.write(str(datetime.datetime.now()) + ", user_id: " + str(current_user.id) + ": "+ data + "\n")
 
 def get_alogs() -> str:
     with open(admin_logs_file_path()) as file:

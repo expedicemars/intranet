@@ -1,7 +1,7 @@
 import httpGet from "./httpGet.js"
 let start_time = document.getElementById("start_time")
 let end_time = document.getElementById("end_time")
-let pohovory = JSON.parse(httpGet("/send_admin/pohovory"))
+let pohovory = JSON.parse(httpGet("/send_user/pohovory"))
 let content_div = document.getElementById("content")
 
 
