@@ -394,15 +394,17 @@ def pohovory():
                 else:
                     pridat_pohovory(start_datetime=start_datetime, end_datetime=end_datetime)
                     flash("Termíny vypsány.", category="success")
+                    alog(f"Vypsání nových termínů na pohovory mezi {start_datetime} a {end_datetime}")
                     return redirect(url_for("admin_views.pohovory"))
             elif request.form.get("smazat"):
-                vysledek = smazat_termin(datetime.datetime.fromisoformat(request.form.get("smazat")))
+                isoformat = request.form.get("smazat")
+                vysledek = smazat_termin(datetime.datetime.fromisoformat(isoformat))
                 if vysledek:
                     flash("Termín smazán.", category="success")
+                    alog(f"Smazání termínu pohovoru {isoformat}.")
                 else:
                     flash("Tento termín si mezitím někdo zapsal, nejde tedy smazat.", category="error")
                 return redirect(url_for("admin_views.pohovory"))
-
     else:
         abort(401)
 
@@ -419,6 +421,7 @@ def prohlaseni_rodicu():
                 file.name = "prohlaseni_rodicu.docx"
                 file.save(prohlaseni_path())
                 flash("Souhlas rodičů aktualizován.", category="success")
+                alog("Nahraný nový soubor souhlasu rodičů.")
             else:
                 flash("Nenahrál jsi žádný soubor.", category="error")
             return redirect(url_for("admin_views.admin_dashboard"))
