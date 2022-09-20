@@ -11,7 +11,7 @@ from website.roles.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
-from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path
+from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path
 
 
 admin_views = Blueprint("admin_views",__name__)
@@ -402,6 +402,26 @@ def pohovory():
                 else:
                     flash("Tento termín si mezitím někdo zapsal, nejde tedy smazat.", category="error")
                 return redirect(url_for("admin_views.pohovory"))
+
+    else:
+        abort(401)
+
+
+@admin_views.route("/prohlaseni_rodicu", methods=["GET","POST"])
+def prohlaseni_rodicu():
+    rights = get_access_rights(current_user)
+    if "admin" in rights:
+        if request.method == "GET":
+            return render_template("admin_prohlaseni_rodicu.html", roles=rights)
+        else:
+            file = request.files.get("souhlas")
+            if file:
+                file.name = "prohlaseni_rodicu.docx"
+                file.save(prohlaseni_path())
+                flash("Souhlas rodičů aktualizován.", category="success")
+            else:
+                flash("Nenahrál jsi žádný soubor.", category="error")
+            return redirect(url_for("admin_views.admin_dashboard"))
 
     else:
         abort(401)

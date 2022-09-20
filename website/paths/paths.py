@@ -38,3 +38,6 @@ def poznamky_path() -> Path:
 
 def pohovory_path() -> Path:
     return Path.cwd() / "data" / "pohovory.json"
+
+def prohlaseni_path() -> Path:
+    return Path.cwd() / "data" / "prohlaseni_rodicu.docx"

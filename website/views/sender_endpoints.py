@@ -5,7 +5,7 @@ from website.models.chyba import Chyba
 from website.models.user import User
 from website.json_handlers.logs_handling import get_logs, get_alogs
 from website.roles.role_handler import get_access_rights, dostupna_omezeni
-from website.paths.paths import terminy_path, faze_path, velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path, poznamky_path
+from website.paths.paths import terminy_path, faze_path, velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path, poznamky_path, prohlaseni_path
 from website.helpers.mailing_list import get_mails_from_mailing_list
 from website.helpers.get_user_files import get_motivak_by_id, get_prace_filenames, get_profilovka_by_id
 from website.json_handlers.pohovory_handling import get_pohovory, get_neobsazene_pohovory
@@ -163,6 +163,11 @@ def send_admin(query):
             return json.dumps(result)
         else:
             abort(401)
+    elif query == "prohlaseni_rodicu_existuje":
+        if "admin" in rights:
+            return json.dumps({"existuje": prohlaseni_path().exists()})
+        else:
+            abort(401)
 
 
 
@@ -208,6 +213,11 @@ def send_user(query: str):
                 zaznam["pretty"] = pretty_date(p["iso"])
                 result.append(zaznam)
             return json.dumps(result)
+        else:
+            abort(401)
+    elif query == "prohlaseni_rodicu":
+        if "user" in rights or "admin" in rights:
+            return send_file(prohlaseni_path())
         else:
             abort(401)
 
