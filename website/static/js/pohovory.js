@@ -1,7 +1,15 @@
 import httpGet from "./httpGet.js"
-let pohovory = JSON.parse(httpGet("/send_user/pohovory"))
+let pohovory = JSON.parse(httpGet("/send_user/volne_pohovory"))
+let aktualne = JSON.parse(httpGet("/send_user/datum_pohovoru"))
 let aktualne_div = document.getElementById("aktualne")
 let pohovory_div = document.getElementById("pohovory")
+
+if (aktualne["datum"]) {
+    aktualne_div.innerHTML = "Momentálně máš vybrané tohle datum: " + aktualne["datum"]
+} else {
+    aktualne_div.innerHTML = "Momentálně nemáš vybrané žádné datum pohovoru."
+}
+
 
 function generator(iso, pretty) {
     let row = document.createElement("div")
@@ -14,7 +22,7 @@ function generator(iso, pretty) {
     zapsat_button.innerHTML = "Zapsat tenhle termín"
     zapsat_button.classList.add("btn", "btn-primary", "my-1")
     zapsat_button.type="submit"
-    zapsat_button.name = "smazat"
+    zapsat_button.name = "vybrat"
     zapsat_button.value = iso
 
     col1.innerHTML = pretty
@@ -24,6 +32,13 @@ function generator(iso, pretty) {
     pohovory_div.appendChild(row)
 }
 
-for (let p of pohovory) {
-    generator(p["iso"], p["pretty"])
+if (pohovory.length == 0) {
+    pohovory_div.innerHTML = "Nejsou vypsané žádné termíny pohovorů."
+} else {
+    let p = document.createElement("p")
+    p.innerHTML = "Vypsané termíny na výběr:"
+    pohovory_div.appendChild(p)
+    for (let p of pohovory) {
+        generator(p["iso"], p["pretty"])
+    }
 }

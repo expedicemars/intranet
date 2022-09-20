@@ -108,7 +108,6 @@ function vyhodnotit() {
 
 function vypsat(data) {
     data = JSON.parse(data)
-    console.log(data)
     document.getElementById("emaily_vybranych").innerHTML = data["emails"].join(", ")
     let tr = document.getElementById("tr")
     let tbody = document.getElementById("tbody")

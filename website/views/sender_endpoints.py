@@ -8,7 +8,7 @@ from website.roles.role_handler import get_access_rights, dostupna_omezeni
 from website.paths.paths import terminy_path, faze_path, velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path, poznamky_path
 from website.helpers.mailing_list import get_mails_from_mailing_list
 from website.helpers.get_user_files import get_motivak_by_id, get_prace_filenames, get_profilovka_by_id
-from website.json_handlers.pohovory_handling import get_pohovory
+from website.json_handlers.pohovory_handling import get_pohovory, get_neobsazene_pohovory
 from website.helpers.pretty_date import pretty_date
 
 sender = Blueprint("sender", __name__)
@@ -143,6 +143,18 @@ def send_admin(query):
                 return json.dumps(json.load(file))
         else:
             abort(401)
+    elif query == "pohovory":
+        if "editing_pohovory" in rights:
+            result = []
+            for p in get_pohovory():
+                zaznam = {}
+                zaznam["iso"] = p["iso"]
+                zaznam["pretty"] = pretty_date(p["iso"])
+                zaznam["user"] = p["user"]
+                result.append(zaznam)
+            return json.dumps(result)
+        else:
+            abort(401)
 
 
 
@@ -170,13 +182,19 @@ def send_user(query: str):
                 return file[current_user.odbornost]
         else:
             abort(401)
-    elif query == "pohovory":
-        if "editing_pohovory" in rights or "user" in rights: 
+    elif query == "datum_pohovoru":
+        if "user" in rights: 
+            result = {"datum": pretty_date(current_user.datum_pohovoru)}
+            return json.dumps(result)
+        else:
+            abort(401)
+    elif query == "volne_pohovory":
+        if "user" in rights: 
             result = []
-            for p in get_pohovory():
+            for p in get_neobsazene_pohovory():
                 zaznam = {}
-                zaznam["iso"] = p.isoformat()
-                zaznam["pretty"] = pretty_date(p.isoformat())
+                zaznam["iso"] = p["iso"]
+                zaznam["pretty"] = pretty_date(p["iso"])
                 result.append(zaznam)
             return json.dumps(result)
         else:
