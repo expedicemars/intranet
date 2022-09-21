@@ -153,3 +153,11 @@ def check_pohovory() -> None:
         with open(path, "w") as file:
             file.write(json.dumps([], indent=4))
         log("Založen soubor na pohovory na " + str(path))
+
+def check_exporty() -> None:
+    path = p.exporty_path()
+    if path.exists():
+        log("Složka pro export už existuje.")
+    else:
+        path.mkdir()
+        log("Vytvořena složka pro export na "+str(path))

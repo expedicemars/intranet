@@ -1,5 +1,6 @@
 import json
 import datetime
+from shutil import rmtree
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
 from flask_login import current_user
 from website import db
@@ -7,11 +8,13 @@ from website.models.chyba import Chyba
 from website.models.user import User
 from website.helpers.mailing_list import promazat_mailing_list
 from website.helpers.user_filter import user_filter, seznam_generator
+from website.helpers.exporty import exportovat
+from website.helpers.pretty_date import pretty_date
 from website.roles.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
-from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path
+from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path
 
 
 admin_views = Blueprint("admin_views",__name__)
@@ -428,3 +431,29 @@ def prohlaseni_rodicu():
 
     else:
         abort(401)
+
+@admin_views.route("/export", methods=["GET","POST"])
+def export():
+    rights = get_access_rights(current_user)
+    if "prepinani_fazi_allowed" in rights:
+        if request.method == "GET":
+            return render_template("admin_export.html", roles=rights)
+        else:
+            if request.form.get("generovat"):
+                exportovat()
+                flash("Export vytvořen, najdeš ho v seznamu starších exportů.", category="success")
+                alog("Vygenerování exportu.")
+                return redirect(url_for("admin_views.export"))
+            elif request.form.get("smazat"):
+                name: str = request.form.get("smazat")
+                p = exporty_path() / name
+                print(p)
+                print(p.exists())
+                rmtree(p)
+                flash("Export byl smazán.", category="success")
+                alog("Smazání exportu z "+ pretty_date(name))
+                return redirect(url_for("admin_views.export"))
+
+    else:
+        abort(401)
+
