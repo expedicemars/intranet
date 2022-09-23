@@ -24,75 +24,7 @@
     <h3>Počet neřešených bugů: {{pocet_bugu}}</h3>
     Pokud nemáš práva je upravovat, řekni to adminovi, kterej to umí. Jsem ale línej je sem vypisovat.
 </div>
-<hr>
-<div>
-    <h3>Texty hromadných mailů</h3>
-</div>
-<hr>
-<div>
-    <h3>Přehled fíčur systému</h3>
-    <h4>Fáze Expedice</h3>
-    <ul>
-        <li>Fázování expedice je způsob, jak udržet stránky užitečné po celý rok. Dají se přepínat v admin prostředí. Je možné se ve fázích vracet zpět, pokud to dává smysl. Ovlivňují např. registrační formulář nebo přístup k zadáním.</li>
-        <li>Jsou zatím 4:</li>
-        <ul>
-            <li>Otevřené registrace. Na homepage se zobrazuje datum uzavření registrací, zadání domácích kol nejsou přístupná. Noví uživatelé se smí registrovat, upravovat své profily, nahrávat motiváky.</li>
-            <li>Zpřístupněná zadání. Noví uživatelé se stále smí registrovat, registrovaní uživatelé můžou zvolit odbornost, nahlížet do zadání domácích kol nebo na deadliny.</li>
-            <li>Uzavřené registrace. Noví uživatelé už se nemohou registrovat. Při registraci je to hodí na mailing_list, kterej bude důležitej potom. V této fázi běží semi, finále, simulace, balón i eurotrip.</li>
-            <li>Ukončený ročník. Čas pro zálohu dat, vyčištění systému.</li>
-        </ul>
-    </ul>
-    <h4>Role uživatelů</h3>
-    <ul>
-        <li>Každý registrovaný uživatel má nějaké role.</li>
-        <li>Účastníci se spokojí s <code>user</code>. Vyplyne-li potřeba nového admina, musí se tento předem registrovat a nějaký další admin ho poté povýší.</li>
-        <li>Zatímco <code>user</code> je "jen jeden", rolí adminů je řada. Každá položka v admin sekci je přístupná s určitou rolí. Vypisovat je tu nebudu, protože sem tam přibyde další a tady bych to stopro zapomněl aktualizovat.</li>
-        <li>Mezi ty hlavní patří ale určitě:</li>
-        <ul>
-            <li><code>stanovit_terminy_allowed</code> - oprávnění přidávat a měnit deadliny</li>
-            <li><code>prepinani_fazi_allowed</code> - docela jasný snad</li>
-            <li><code>editing_bugs_allowed</code> - možnost odpovídat na připomínky na bugtrackeru</li>
-            <li><code>editing_users_allowed</code> - možnost nahlížet na registrované uživatele</li>
-            <li><code>velitel_odbornosti_/odbornost/</code> - možnost upravovat zadání, kontakty na sebe, nahlížet na svoje svěřence</li>
-            <li><code>editing_admins_allowed</code> - oprávnění jmenovat adminy a upravovat jejich role (dětem a blbcům vstup zakázán :P )</li>
-        </ul>
-    </ul>
-    <h4>Termíny</h3>
-    <ul>
-        <li>Admini s patřičným oprávněním smí přidávat deadliny.</li>
-        <li>Nastavený deadline nic nevynucuje, ale zobrazuje se kidům v sekci Termíny</li>
-    </ul>
-    <h4>Výběr odbornosti</h3>
-    <ul>
-        <li>Je definovaných našich 5 obvyklých odborností.</li>
-        <li>Uživatelé:</li>
-        <ul>
-            <li>Před zveřejněním zadání vidí pouze popis odborností.</li>
-            <li>Po zveřejnění zadání je možnost se na ně podívat a zvolit si odbornost.</li>
-            <li>Po zvolení odbornosti je vidět zadání jen své odbornosti, kontakt na velitele odbornosti, pole pro odevzdání.</li>
-        </ul>
-        <li>Velittelé odborností:</li>
-        <ul>
-            <li>Potřebujou roli velitel_odbornosti + velitel_odbornosti_konkrétních_odborností.</li>
-            <li>Můžou nahrát zadání internetového kola a zobrazuje se jim aktuálně nahraná verze zadání.</li>
-            <li>Můžou upravit pole, které slouží jako kontakt na velitele odbornosti / osooby, které slouží jako pomoc k projektům.</li>
-        </ul>
-        
-    </ul>
-    <h4>Data o uživateli</h4>
-    <ul>
-        <li>O každém uživateli se uchovává dost metadat.</li>
-        <li>Nebudu sem vypisovat všechny, protože bych pak přidal novou a tady bych jí zapomněl zmínit taky.</li>
-        <li>Každý to může vidět na stránce svého účtu.</li>
-    </ul>
-    <h4>Ostatní</h4>
-    <ul>
-        <li>Uživatelé musí po registraci ověřit mail, abychom měli spolehlivej komunikační kanál.</li>
-        <li>V případě zapomenutého hesla jde pomocí mailu obnovit.</li>
-        <li>Bugtracker - moožnost přidávat připomínky. Admini je můžou komentovat, popř. mazat.</li>
-        <li>Logs file - admin s oprávněním může nahlížet a mazat. Je basically k ničemu, je to debug tool pro pípa.</li>
-    </ul>
-</div>
+
 
 <script type="module" src="{{url_for('static', filename='js/admin_dashboard.js')}}"></script>
 {% endblock %}
