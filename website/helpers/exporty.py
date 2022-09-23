@@ -1,6 +1,7 @@
 from openpyxl import Workbook
 from website.paths.paths import exporty_path, mailing_list_path, pohovory_path, poznamky_path, terminy_path, velitel_odbornosti_data_path, zadani_folder_path, admin_logs_file_path, app_logs_file_path, prohlaseni_path, user_data_folder_path
 from website.helpers.pretty_date import pretty_date
+from website.roles.role_handler import get_access_rights
 from datetime import datetime
 from website.models.user import User
 import json
@@ -135,7 +136,44 @@ def promazat() -> None:
     """
     Promaže vše, co bylo exportováno
     """
-    pass
+    for folder in zadani_folder_path().iterdir():
+        if folder.name == ".DS_Store":
+            pass
+        else:
+            for file in folder.iterdir():
+                if file.name == ".DS_Store":
+                    pass
+                else:
+                    file.unlink()
+    with open(admin_logs_file_path(), "w") as file:
+        file.write("")
+    with open(mailing_list_path(), "w") as file:
+        file.write(json.dumps([], indent=4))
+    with open(pohovory_path(), "w") as file:
+        file.write(json.dumps([], indent=4))
+    with open(poznamky_path(), "w") as file:
+        file.write(json.dumps([], indent=4))
+    with open(terminy_path(),"w") as file:
+        file.write(json.dumps([
+            {
+                "popis": "registrace",
+                "date": "2022-01-01"
+            }
+        ]))
+    with open(velitel_odbornosti_data_path(), "w") as file:
+        file.write(json.dumps({
+            "biolog": "",
+            "fyzik": "",
+            "konstrukter": "",
+            "inzenyr": "",
+            "popularizator": ""
+        }, indent=4))
+    
+    for u in User.query.all():
+        u: User
+        rights = get_access_rights(u)
+        if len(rights) == 1 and "user" in rights:
+            u.odstranit()
         
 
 

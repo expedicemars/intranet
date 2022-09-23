@@ -8,7 +8,7 @@ from website.models.chyba import Chyba
 from website.models.user import User
 from website.helpers.mailing_list import promazat_mailing_list
 from website.helpers.user_filter import user_filter, seznam_generator
-from website.helpers.exporty import exportovat
+from website.helpers.exporty import exportovat, promazat
 from website.helpers.pretty_date import pretty_date
 from website.roles.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
@@ -272,6 +272,9 @@ def prepinat_faze():
                 nova_faze["active"] = True
                 with open(faze_path(), "w") as file:
                     file.write(json.dumps(faze, indent=4))
+                if nova_faze["nazev"] == "ukonceny_rocnik":
+                    promazat()
+                    alog("Promazání systému.")
                 return redirect(url_for("admin_views.prepinat_faze"))
     else:
         abort(401)
@@ -440,15 +443,13 @@ def export():
             return render_template("admin_export.html", roles=rights)
         else:
             if request.form.get("generovat"):
+                alog("Vygenerování exportu.")
                 exportovat()
                 flash("Export vytvořen, najdeš ho v seznamu starších exportů.", category="success")
-                alog("Vygenerování exportu.")
                 return redirect(url_for("admin_views.export"))
             elif request.form.get("smazat"):
                 name: str = request.form.get("smazat")
                 p = exporty_path() / name
-                print(p)
-                print(p.exists())
                 rmtree(p)
                 flash("Export byl smazán.", category="success")
                 alog("Smazání exportu z "+ pretty_date(name))
@@ -457,3 +458,10 @@ def export():
     else:
         abort(401)
 
+@admin_views.route("/featury")
+def featury():
+    rights = get_access_rights(current_user)
+    if "admin" in rights:
+        return render_template("admin_featury.html", roles=rights)
+    else:
+        abort(401)
