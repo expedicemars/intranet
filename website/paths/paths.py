@@ -44,3 +44,6 @@ def prohlaseni_path() -> Path:
 
 def exporty_path() -> Path:
     return Path.cwd() / "exporty"
+
+def env_path() -> Path:
+    return Path.cwd() / ".env"

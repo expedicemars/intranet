@@ -97,7 +97,7 @@ def register():
 def logout():
 	if current_user.is_authenticated:
 		logout_user()
-		flash("You have been odhlášen.", category="info")
+		flash("Odhlášení proběhlo úspěšně :)", category="info")
 		return redirect(url_for("default_views.home"))
 	else:
 		flash("HA! slídil :)", category="success")

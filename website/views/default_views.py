@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user
 from website.models.chyba import Chyba
@@ -38,4 +39,6 @@ def known_bugs():
 def info():
     return render_template("info.html", roles = get_access_rights(current_user))
 
-        
+@default_views.route("/environ_test")
+def environ_test():
+    return str(os.environ)
