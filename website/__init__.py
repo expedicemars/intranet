@@ -20,14 +20,14 @@ def create_app():
     check_logs_files()
     log("=== START appky ===")
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = "5aaad9a24b756347536be2fc4b4a2c40a876cd0bd0dd782ecd7303bb1ba0dbbc"
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
     app.config["MAIL_SERVER"] = "smtp.googlemail.com"
     app.config["MAIL_PORT"] = "587"
     app.config["MAIL_USE_TLS"] = True
-    app.config["MAIL_USERNAME"] = "josef.latj@gmail.com"
-    app.config["MAIL_PASSWORD"] = "gewfrzvyateqfoya"
+    app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
+    app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
 
 
     db.init_app(app)

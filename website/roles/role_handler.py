@@ -4,6 +4,7 @@ import json
 dostupna_omezeni = ["user", "admin", "editing_bugs_allowed", "editing_logs_allowed", "editing_users_allowed", "editing_admins_allowed", "stanovit_terminy_allowed", "prepinani_fazi_allowed", "velitel_odbornosti", "velitel_odbornosti_biolog", "velitel_odbornosti_konstrukter", "velitel_odbornosti_fyzik", "velitel_odbornosti_inzenyr","velitel_odbornosti_popularizator", "editing_pohovory"]
 
 def get_access_rights(userobj: User) -> list:
+    print("HEREEEEEEEEEEE", userobj)
     if userobj.is_authenticated:
         role = json.loads(userobj.role)
         # prihlasen - proto, aby se mohli logoutnout i user i admin

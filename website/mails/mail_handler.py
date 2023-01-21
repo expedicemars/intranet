@@ -9,14 +9,14 @@ def mail_sender(mail_identifier, target, data) -> None:
     Will send email, if parameters filled correctly
     """
     if mail_identifier == "reset_password":
-        msg = Message("Změna hesla na 3D Portálu",
+        msg = Message("Změna hesla pro Expedici Mars",
                       sender="josef.latj@gmail.com",
                       recipients=[target])
         msg.html = render_template("mails/reset_password.html", url=url_for("auth_views.reset_password", token = data, _external = True))
         mail.send(msg)
 
     if mail_identifier == "potvrzeni_emailu":
-        msg = Message("Potvrzení e-mailu na 3D Portálu",
+        msg = Message("Potvrzení e-mailu Expedice Mars",
                       sender="josef.latj@gmail.com",
                       recipients=[target])
         msg.html = render_template("mails/potvrzeni_emailu.html", url=url_for("user_views.ucet_overeny", token = data, _external = True))
