@@ -38,7 +38,3 @@ def known_bugs():
 @default_views.route("/info")
 def info():
     return render_template("info.html", roles = get_access_rights(current_user))
-
-@default_views.route("/environ_test")
-def environ_test():
-    return str(os.environ)

@@ -6,7 +6,7 @@ from flask_login import current_user
 from website import db
 from website.models.chyba import Chyba
 from website.models.user import User
-from website.helpers.mailing_list import promazat_mailing_list
+from website.helpers.mailing_list import promazat_mailing_list, set_mailing_list
 from website.helpers.user_filter import user_filter, seznam_generator
 from website.helpers.exporty import exportovat, promazat
 from website.helpers.pretty_date import pretty_date
@@ -19,12 +19,19 @@ from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_
 
 admin_views = Blueprint("admin_views",__name__)
 
-@admin_views.route("/")
-@admin_views.route("/dashboard")
+@admin_views.route("/", methods=["GET","POST"])
+@admin_views.route("/dashboard", methods=["GET","POST"])
 def admin_dashboard():
     rights = get_access_rights(current_user)
     if "admin" in rights:
-        return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych(), roles=rights)
+        if request.method == "GET":
+            return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych(), roles=rights)
+        else:
+            mailing_list = request.form.get("mailing_list")
+            set_mailing_list(mailing_list)
+            flash("Změna mailing listu uložena.", category="success")
+            alog("Úprava mailing listu.")
+            return redirect(url_for("admin_views.admin_dashboard"))
     else:
         abort(401)
 

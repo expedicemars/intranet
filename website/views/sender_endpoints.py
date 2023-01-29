@@ -80,7 +80,7 @@ def send_admin(query):
         else:
             abort(401)
     elif query == "mailing_list":
-        if "prepinani_fazi_allowed" in rights:
+        if "admin" in rights:
             return json.dumps(get_mails_from_mailing_list())
         else:
             abort(401)

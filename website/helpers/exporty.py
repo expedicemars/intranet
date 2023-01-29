@@ -134,7 +134,7 @@ def exportovat() -> None:
 
 def promazat() -> None:
     """
-    Promaže vše, co bylo exportováno
+    Promaže vše, co bylo exportováno, krom mailing listu.
     """
     for folder in zadani_folder_path().iterdir():
         if folder.name == ".DS_Store":
@@ -147,8 +147,6 @@ def promazat() -> None:
                     file.unlink()
     with open(admin_logs_file_path(), "w") as file:
         file.write("")
-    with open(mailing_list_path(), "w") as file:
-        file.write(json.dumps([], indent=4))
     with open(pohovory_path(), "w") as file:
         file.write(json.dumps([], indent=4))
     with open(poznamky_path(), "w") as file:
@@ -170,9 +168,7 @@ def promazat() -> None:
         }, indent=4))
     
     for u in User.query.all():
-        u: User
-        rights = get_access_rights(u)
-        if len(rights) == 1 and "user" in rights:
+        if "admin" not in get_access_rights(u):
             u.odstranit()
         
 
