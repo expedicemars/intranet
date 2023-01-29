@@ -20,6 +20,7 @@
   - data/terminy.json
   - data/velitele_odbornosti_data.json
   - zadani
+- soubor .env se sám nevytváří, je nutné ho založit ručně. Obsahuje secret key k flask appce, jmeno a heslo pro odesilani mailu.
 
 
 ## Použité knihovny

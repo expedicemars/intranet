@@ -55,7 +55,7 @@ def check_faze() -> None:
         faze_default = [
             {
                 "nazev": "otevrene_registrace",
-                "popis": "Nov\u00ed u\u017eivatel\u00e9 se sm\u00ed registrovat, upravovat sv\u00e9 profily, nahr\u00e1vat motiv\u00e1ky. Roze\u0161le e-mail lidem, co \u010dekaj v mailing_listu",
+                "popis": "Noví uživatel\u00e9 se sm\u00ed registrovat, upravovat sv\u00e9 profily, nahr\u00e1vat motiv\u00e1ky. Roze\u0161le e-mail lidem, co \u010dekaj v mailing_listu",
                 "nasledujici": "zpristupnena_zadani",
                 "active": True
             },
