@@ -4,6 +4,7 @@ from website.helpers.pretty_date import pretty_date
 from website.roles.role_handler import get_access_rights
 from datetime import datetime
 from website.models.user import User
+from website import db
 import json
 from zipfile import ZipFile
 
@@ -168,8 +169,13 @@ def promazat() -> None:
         }, indent=4))
     
     for u in User.query.all():
+        u: User
         if "admin" not in get_access_rights(u):
             u.odstranit()
+        else:
+            u.datum_pohovoru = ""
+            db.session.add(u)
+            db.session.commit()
         
 
 

@@ -141,6 +141,15 @@ def detail_usera(id):
                 alog("Smazání usera " + str(id) + ".")
                 flash("User byl smazán", category="success")
                 return redirect(url_for("admin_views.registrovani_uzivatele"))
+            elif request.form.get("odebrat_odbornost"):
+                u: User
+                u = User.query.get(id)
+                u.odbornost = "zatím nevybraná"
+                db.session.add(u)
+                db.session.commit()
+                flash("Odbornost byla odebrána", category="success")
+                return redirect(url_for("admin_views.detail_usera", id=id))
+                
             elif request.form.get("result"):
                 data = json.loads(request.form.get("result"))
                 if len(data["admin_poznamka"]) > 1000:
@@ -349,8 +358,7 @@ def generovat_seznamy():
         else:
             alog("Generování seznamu účastníků podle: " + request.form.get("result") + ".")
             kriteria = json.loads(request.form.get("result"))
-            users = user_filter(kriteria)
-            data = seznam_generator(users, kriteria["vypsat"])
+            data = seznam_generator(kriteria)
             return json.dumps(data)
     else:
         abort(401)
