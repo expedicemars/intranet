@@ -2,26 +2,23 @@
 {% block content %}
 <input hidden value="{{odbornost}}" id="odbornost">
     {% if not odbornost %}
-        <h2>Přehled odborností</h2>
-        <div class="border rounded-2 border-primary biolog-div my-2 p-2" >
-            <h3>Biolog</h3>
-            Se stará o kytičky.
-        </div>
-        <div class="border rounded-2 border-primary fyzik-div my-2 p-2" >
-            <h3>Fyzik</h3>
-            Počítá interferenci.
-        </div>
-        <div class="border rounded-2 border-primary konstrukter-div my-2 p-2" >
-            <h3>Konstruktér</h3>
-            Skládá vlaštovky.
-        </div>
-        <div class="border rounded-2 border-primary inzenyr-div my-2 p-2" >
-            <h3>Inženýr</h3>
-            Si hraje se všim.
-        </div>
-        <div class="border rounded-2 border-primary popularizator-div my-2 p-2" >
-            <h3>Popularizátor</h3>
-            Zajišťuje lichej počet odborností.
+    <h2>Přehled odborností</h2>
+    <div class="row p-4">
+            <div class="col-sm mx-2 border rounded-2 border-primary biolog-div my-2 p-2" >
+                <h3>Biolog</h3>
+            </div>
+            <div class=" col-sm mx-2 border rounded-2 border-primary fyzik-div my-2 p-2" >
+                <h3>Fyzik</h3>
+            </div>
+            <div class="col-sm mx-2 border rounded-2 border-primary konstrukter-div my-2 p-2" >
+                <h3>Konstruktér</h3>
+            </div>
+            <div class="col-sm mx-2 border rounded-2 border-primary inzenyr-div my-2 p-2" >
+                <h3>Inženýr</h3>
+            </div>
+            <div class="col-sm mx-2 border rounded-2 border-primary popularizator-div my-2 p-2" >
+                <h3>Popularizátor</h3>
+            </div>
         </div>
     {% endif %}
 
@@ -30,6 +27,7 @@
     {% else %}
         {% if not odbornost %}
             <h2>Zadání a výběr odbornosti</h2>
+            Zde si vyber odbornost a můžeš začít pracovat na domácí práci. Co se bude v Expedici dít dál? Očekávej od nás E-mail o tom, kdy budou termíny pohovorů. Tím, že si v budoucnu jeden termín vybereš, zároveň budeš mít stanoveno, do kdy čekáme, že bude domácí práce hotova.
             <div class="border rounded-2 border-primary biolog-div my-2 p-2" >
                 <h3>Zadání pro biology</h3>
                 <div class="row">
@@ -109,7 +107,7 @@
                 <h2>Nahraj vypracované soubory</h2>
                 Sem nahraj všechny soubory, které souvisí s tvou prací na domácím kole. Způsob odevdzání by měl být napsán v zadání, ale mělo by jít především o:
                 <ul>
-                    <li>Prezentaci k pohovoru. Ten bude trvat asi 20 minut, prezentace by měla trvat kolem 10. </li>
+                    <li>Prezentaci k pohovoru. Ten bude trvat 15 minut, prezentace by měla trvat kolem 7. </li>
                     <li>Shrnutí práce na jednu A4</li>
                     <li>Jakékoli další protokoly z měření nebo o postupu práce</li>
                     <li>Obrázky, pokud nejsou v protokolech</li>

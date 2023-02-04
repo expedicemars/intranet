@@ -1,0 +1,41 @@
+Testing začal 3. 2. 2023, jde mi po pohled uživatele:
+
+U každý fáze kontroluj vzhled všech stránek.
+
+Fáze = ukončený ročník:
+User: přidání do mailing listu
+Admin: ok. otevře:
+
+Fáze = otevřené registrace.
+User:
+- registrace
+- ověření mailu
+- úprava informací
+- - úprava mailu vyžádá novej mail
+- funkční reset hesla
+- nahrání motiváku a fotky
+- prohlášení rodičů
+
+Admin:
+- všechno vidim
+
+Fáze = zpřístupněná zadání.
+
+User:
+- v odbornostech může zvolit odbornost.
+- vidí nahraná zadání.
+- můžu odevzdávat řešení
+- můžu vybírat pohovory
+
+Admin:
+- můžu přidávat zadání
+- můžu vypisovat termíny pohovorů, přidávat linky na ně
+
+Fáze = uzavřené registrace
+User:
+- nově příchozí user musí na mailing list.
+
+Fáze = ukončený ročník
+User:
+- neexistuje :)
+- může do mailing_listu

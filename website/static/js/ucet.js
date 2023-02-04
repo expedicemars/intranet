@@ -1,5 +1,7 @@
 import httpGet from "./httpGet.js"
 let info = JSON.parse(httpGet("/send_user/info"))
+let confirmed = JSON.parse(httpGet("/send_user/confirmed"))["confirmation_status"]
+let soucasna_faze = JSON.parse(httpGet("/send_user/faze"))["aktualni_faze"]
 let zmeny_button = document.getElementById("zmeny")
 let form = document.getElementById("form")
 let ids_list = ["jmeno", "email", "adresa", "telcislo", "datum_narozeni", "mail_rodicu", "dozvedeli", "alergie", "skola"]
@@ -8,6 +10,8 @@ let show_img_input_button = document.getElementById("show_img_input")
 let img = document.getElementById("img_file");
 let motivak = JSON.parse(httpGet("/send_motivak/" + info["id"] + "/name"))
 let motivak_div = document.getElementById("nahrany_motivak")
+let not_confirmed_div = document.getElementById("not_confirmed_div")
+let confirmed_div = document.getElementById("confirmed_div")
 
 
 
@@ -29,6 +33,24 @@ if (motivak["existuje"]) {
     a.innerHTML = "Stáhnout stávající verzi motiváku"
     a.download = motivak["filename"]
 }
+// ovládá viditelnost divu co žádá o e-mail
+if (confirmed) {
+    not_confirmed_div.hidden = true
+    confirmed_div.hidden = false
+} else {
+    not_confirmed_div.hidden = false
+    confirmed_div.hidden = true
+}
+
+// ovládání povolení úprav
+if (soucasna_faze == "ukonceny_rocnik") {
+    zmeny_button.hidden = true
+    show_img_input_button.hidden = true
+} else {
+    zmeny_button.hidden = false
+    show_img_input_button.hidden = false
+}
+
 
 
 

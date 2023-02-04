@@ -10,6 +10,7 @@ from website.helpers.mailing_list import get_mails_from_mailing_list
 from website.helpers.get_user_files import get_motivak_by_id, get_prace_filenames, get_profilovka_by_id
 from website.json_handlers.pohovory_handling import get_pohovory, get_neobsazene_pohovory
 from website.helpers.pretty_date import pretty_date
+from website.helpers.get_aktualni_faze import get_aktualni_faze
 
 sender = Blueprint("sender", __name__)
 
@@ -111,7 +112,7 @@ def send_admin(query):
         if "editing_users_allowed" in rights:
 
             """
-            Getne seznam uživatelů, jejich ID, data o tom, zda maj motivák, jména souborů prací a hodnocoení motiváku
+            Getne seznam uživatelů, jejich ID, data o tom, zda maj motivák, jména souborů prací a hodnocení motiváku
             """
             result = []
             for u in User.query.all():
@@ -155,6 +156,9 @@ def send_admin(query):
                     u = User.query.get(int(p["user"]))
                     zaznam["jmeno"] = u.jmeno
                     zaznam["link"] = u.meeting_link
+                    # aby bylo clickable, i když nemá jméno ještě:
+                    if u.jmeno == "":
+                        zaznam["jmeno"] = "Dosud nevyplnil jméno"
                 else:
                     zaznam["jmeno"] = None
                     zaznam["link"] = None
@@ -235,6 +239,22 @@ def send_user(query: str):
     elif query == "prohlaseni_rodicu":
         if "user" in rights or "admin" in rights:
             return send_file(prohlaseni_path())
+        else:
+            abort(401)
+    elif query == "confirmed":
+        if "user" in rights:
+            return json.dumps({
+                "confirmation_status": current_user.confirmed
+            })
+        else:
+            abort(401)
+    elif query == "faze":
+        if "user" in rights:
+            return json.dumps(
+                {
+                    "aktualni_faze": get_aktualni_faze()
+                }
+            )
         else:
             abort(401)
 

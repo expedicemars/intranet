@@ -3,12 +3,13 @@
 
 <h2>Vítej na stránce svého účtu</h2>
 <div>
-    {% if not current_user.confirmed %}
+    <div id="not_confirmed_div">
         Protože veškerá komunikace s Vámi bude probíhat mailem, je nutné, abychom měli jistotu, že vám maily chodí.
         <form method="post" enctype="multipart/form-data">
             <button type="submit" class="btn btn-primary" name="overeni_emailu" value="whatever">Odeslat E-mail k ověření Vaší e-mailové adresy </button>
         </form>
-    {% else %} 
+    </div>
+    <div id="confirmed_div">
         <hr>
         <h3>Nastavitelné údaje</h3>
         <div class="container">
@@ -102,9 +103,7 @@
             </div>
             
         </div>
-        {% if faze != "ukonceny_rocnik" %}
-            <button type="button" class="btn btn-outline-primary" id="zmeny" value="zamknuto">Odemknout úpravy</button>
-        {% endif %}
+        <button type="button" class="btn btn-outline-primary" id="zmeny" value="zamknuto">Odemknout úpravy</button>
         <hr>
         <h3>Pevné údaje</h3>
         <div class="container">
@@ -180,19 +179,17 @@
         <img src="/send_profilovka" alt="profilovka" width="20%" class="my-2">
         
         <div></div>
-        {% if faze != "ukonceny_rocnik"%}
-            <button type="button" id="show_img_input" class="btn btn-outline-primary">Nahrát fotku</button>
-        {% endif %}
+        <button type="button" id="show_img_input" class="btn btn-outline-primary">Nahrát fotku</button>
         <div id="img_input_div" hidden>
             <form  method="post" enctype="multipart/form-data">
-                 <input type="file" class="form-control my-2" accept="image/*" name="img_file" id="img_file">
+                <input type="file" class="form-control my-2" accept="image/*" name="img_file" id="img_file">
                 <button type="submit" class="btn btn-outline-primary" name="img" value="1">Uložit</button>
             </form>
         </div>
         <hr>
         <h3>Prohlášení rodičů</h3>
         Prohlášení rodičů účastníka semifinále Expedice Mars je dokument, který musíš v případě postupu do semifinále vyplněný přinést. Jde v něm o bezinfekčnost a souhlas s pořizováním fotografií a stáhnout lze <a href="/send_user/prohlaseni_rodicu" download="prohlaseni_rodicu.docx">tady.</a>
-    {% endif %}
+    </div>
 </div>
 
 <form method="post" id="form">
