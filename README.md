@@ -37,6 +37,7 @@
   - [datetime](https://docs.python.org/3/library/datetime.html) - pro získávání informací o aktuálním čase
   - [shutil](https://docs.python.org/3/library/shutil.html) - pro manipulaci se složkami a soubory (zde využíváno k odstraňování složek při mazání odhadů)
   - [uuid](https://docs.python.org/3/library/uuid.html) - pro generování Universaly Unique IDentifierů = id odhadů
+
 # Pár slov k rolím
 
 Vedle rolí user a admin je hromada  dalších rolí, které plní svůj účel. Všechny ostatní jsou vždy mutace admina. Omezují, kam admin může a co všechno smí.
