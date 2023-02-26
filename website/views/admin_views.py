@@ -25,6 +25,7 @@ def admin_dashboard():
     rights = get_access_rights(current_user)
     if "admin" in rights:
         if request.method == "GET":
+            flash("Vítej a porozhlédni se tu. Zatím nejlépe shrnuté a popsané fíčury jsou dole v patičce v Přehledu fíčur systému.", category="success")
             return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych(), roles=rights)
         else:
             mailing_list = request.form.get("mailing_list")
