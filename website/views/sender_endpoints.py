@@ -4,6 +4,7 @@ import json
 from website.models.chyba import Chyba
 from website.models.user import User
 from website.json_handlers.logs_handling import get_logs, get_alogs
+from website.json_handlers.odkazy_handling import get_odkazy
 from website.roles.role_handler import get_access_rights, dostupna_omezeni
 from website.paths.paths import terminy_path, faze_path, velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path, poznamky_path, prohlaseni_path, exporty_path
 from website.helpers.mailing_list import get_mails_from_mailing_list
@@ -187,6 +188,11 @@ def send_admin(query):
                             zaznam["filename"] = file.name
                     result.append(zaznam)
             return json.dumps(result)
+        else:
+            abort(401)
+    elif query == "odkazy":
+        if "admin" in rights:
+            return get_odkazy()
         else:
             abort(401)
 

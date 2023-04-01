@@ -47,3 +47,6 @@ def exporty_path() -> Path:
 
 def env_path() -> Path:
     return Path.cwd() / ".env"
+
+def odkazy_path() -> Path:
+    return Path.cwd() / "data" / "odkazy.json"

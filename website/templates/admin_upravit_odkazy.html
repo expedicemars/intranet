@@ -1,0 +1,20 @@
+{% extends "admin_navbar.html" %}
+{% block content %}
+
+<h2>Úprava odkazů v Admin sekci</h2>
+
+
+<form method="post" id="form">
+    <div id="content">
+
+    </div>
+    <hr>
+    <form method="post">
+        <input class="form-control my-2" placeholder="Popisek" name="popis"/>
+        <input class="form-control my-2" placeholder="odkaz" name="odkaz"/>
+        <button class="btn btn-success">Přidat</button>
+    </form>
+</form>
+
+<script type="module" src="{{url_for('static', filename='js/admin_upravit_odkazy.js')}}"></script>
+{% endblock %}
