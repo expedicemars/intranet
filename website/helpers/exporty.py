@@ -97,29 +97,15 @@ def exportovat() -> None:
         ws4.cell(i+2,2,zaznam["datum"])
         ws4.cell(i+2,3,zaznam["msg"])
     
-    ws5 = wb.create_sheet("Termíny")
-    with open(terminy_path()) as file:
-        file = json.load(file)
-    ws5.cell(1,1,"Popis")
-    ws5.cell(1,2,"Datum")
-    ws5.cell(1,3,"Čas")
-    for i, zaznam in enumerate(file):
-        ws5.cell(i+2,1,zaznam["popis"])
-        ws5.cell(i+2,2,zaznam["date"])
-        try:
-            ws5.cell(i+2,3,zaznam["time"])
-        except KeyError:
-            #registrace nema cas
-            pass
     
-    ws6 = wb.create_sheet("Kontakty na velitele odborností")
+    ws5 = wb.create_sheet("Kontakty na velitele odborností")
     with open(velitel_odbornosti_data_path()) as file:
         file = json.load(file)
-    ws6.cell(1,1,"Odbornost")
-    ws6.cell(1,2,"Kontakt")
+    ws5.cell(1,1,"Odbornost")
+    ws5.cell(1,2,"Kontakt")
     for i, key in enumerate(file.keys()):
-        ws6.cell(i+2,1,key)
-        ws6.cell(i+2,2,file[key])
+        ws5.cell(i+2,1,key)
+        ws5.cell(i+2,2,file[key])
 
     wb.save(xlsx_path)
 
@@ -128,6 +114,7 @@ def exportovat() -> None:
         archive.write(admin_logs_file_path(), arcname=admin_logs_file_path().name)
         archive.write(app_logs_file_path(), arcname=app_logs_file_path().name)
         archive.write(prohlaseni_path(), arcname=prohlaseni_path().name)
+        archive.write(terminy_path(), arcname=terminy_path().name)
         for p in user_data_folder_path().rglob("*"):
             archive.write(p, arcname=p.relative_to(user_data_folder_path().parent))
         for p in zadani_folder_path().rglob("*"):

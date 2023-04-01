@@ -6,7 +6,6 @@
             <li class="nav-item"><a class="nav-link active" href="{{url_for('user_views.ucet')}}">Účet</a></li>
             {% if "confirmed" in roles %}
                 <li class="nav-item"><a class="nav-link active" href="{{url_for('default_views.info')}}">Info</a></li>
-                <li class="nav-item"><a class="nav-link active" href="{{url_for('user_views.terminy')}}">Termíny</a></li>
                 <li class="nav-item"><a class="nav-link active" href="{{url_for('user_views.odbornost')}}">Odbornost</a></li>
                 <li class="nav-item"><a class="nav-link active" href="{{url_for('user_views.pohovory')}}">Pohovory</a></li>
             {% endif %}

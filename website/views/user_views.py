@@ -104,15 +104,7 @@ def ucet_overeny(token):
             return redirect(url_for("user_views.ucet"))
     else:
         abort(401)
-
-@user_views.route("/terminy")
-def terminy():
-    if get_aktualni_faze() == "ukonceny_rocnik":
-        flash("Tento ročník je ukončený, proto tu nejde nic upravovat. Brzy restartujeme systém a půjde se registrovat do nového.", category="error")
-    if "user" in get_access_rights(current_user):
-        return render_template("terminy.html", roles=get_access_rights(current_user))
-    else:
-        abort(401)
+        
 
 @user_views.route("/odbornost", methods=["GET","POST"])
 def odbornost():

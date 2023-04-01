@@ -248,17 +248,18 @@ def vybrat_role_adminovi(id):
         abort(401)
 
 
-@admin_views.route("/stanovit_terminy", methods=["GET","POST"])
-def stanovit_terminy():
+@admin_views.route("/ukoncit_registraci_termin", methods=["GET","POST"])
+def ukoncit_registraci_termin():
     rights = get_access_rights(current_user)
-    if "stanovit_terminy_allowed" in rights:
+    if "admin" in rights:
         if request.method == "GET":
-            return render_template("admin_stanovit_terminy.html", roles=rights)
+            return render_template("admin_ukoncit_registraci_termin.html", roles=rights)
         else:
             with open(terminy_path(), "w") as file:
-                file.write(json.dumps(json.loads(request.form.get("result")), indent=4))
-            alog("Úprava termínů.")
-            flash("Termíny byly upraveny.", category="success")
+                datum = request.form.get("registrace_date")
+                file.write(datum)
+            alog(f"Úprava temrínu konce registrace na {datum}.")
+            flash("Termín konce registrace byl upraven.", category="success")
             return redirect(url_for("admin_views.admin_dashboard"))
     else:
         abort(401)

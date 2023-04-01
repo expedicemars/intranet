@@ -1,6 +1,7 @@
 import json
 import website.paths.paths as p
 from website.json_handlers.logs_handling import log
+from datetime import date
 
 
 """
@@ -90,13 +91,7 @@ def check_terminy() -> None:
     else:
         terminy_path.touch()
         with open(terminy_path, "w") as file:
-            # registrace tu bude vždycky
-            file.write(json.dumps([
-                {
-                    "popis": "registrace",
-                    "date": "2022-01-01"
-                }
-            ]))
+            file.write(str(date.today()))
         log("Zakládam soubor na termíny na " + str(terminy_path))
 
 def check_velitel_odbornosti_data() -> None:
