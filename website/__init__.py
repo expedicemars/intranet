@@ -34,9 +34,10 @@ def create_app():
     login_manager.init_app(app)
     mail.init_app(app)
 
-    def check_if_database_exists_else_create(app):
+    from .models.user import User
+    with app.app_context():
         if not user_database_path().exists():
-            db.create_all(app=app)
+            db.create_all()
             log("Vytvořena databáze na " + str(user_database_path()))
         else:
             log("Databáze uživatelů už existuje.")
@@ -54,10 +55,7 @@ def create_app():
     app.register_blueprint(admin_views, url_prefix = "/admin")
     app.register_blueprint(sender, url_prefix="/")
     app.register_blueprint(trigger, url_prefix="/trigger")
-
-    from .models.user import User
     
-    check_if_database_exists_else_create(app)
     check_known_bugs_file()
     check_mailing_list()
     check_faze()

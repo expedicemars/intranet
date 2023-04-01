@@ -4,27 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-blinker = "==1.4"
-certifi = "==2021.10.8"
-charset-normalizer = "==2.0.7"
-click = "==8.0.3"
-greenlet = "==1.1.2"
-idna = "==3.3"
-itsdangerous = "==2.0.1"
-requests = "==2.26.0"
-urllib3 = "==1.26.7"
-Flask = "==2.0.2"
-Flask-Login = "==0.5.0"
-Flask-Mail = "==0.9.1"
-Flask-SQLAlchemy = "==2.5.1"
-Jinja2 = "==3.0.3"
-MarkupSafe = "==2.0.1"
-SQLAlchemy = "==1.4.31"
-Werkzeug = "==2.0.2"
+flask-sqlalchemy = "*"
+flask-mail = "*"
+flask-login = "*"
 openpyxl = "*"
 python-dotenv = "*"
+pyjwt = "*"
 
 [dev-packages]
+autopep8 = "*"
 
 [requires]
 python_version = "3.9"
+python_full_version = "3.9.6"
