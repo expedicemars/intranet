@@ -52,7 +52,7 @@ def register():
 				if len(email) > 100:
 					flash("Zadaný e-mail byl delší než 100 znaků. Vyberte prosím kratší.", category="error")
 					return redirect(url_for("auth_views.register"))
-				if len(password) > 300 or len(password) <= 8:    
+				if len(password) > 300 or len(password) <= 7:    
 					flash("Zvolené heslo nemělo vyhovující délku. Vyberte prosím nějaké mezi 8 a 300 znaky.", category="error")
 					return redirect(url_for("auth_views.register"))
 				if souhlas != "on":

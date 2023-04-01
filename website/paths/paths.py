@@ -1,7 +1,7 @@
 from pathlib import Path
 
 def user_database_path() -> Path:
-    return Path.cwd() / "website" / "database.db"
+    return Path.cwd() / "instance" / "database.db"
 
 def known_bugs_path() -> Path:
     return Path.cwd() / "data" / "known_bugs.json"

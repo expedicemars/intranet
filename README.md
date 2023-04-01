@@ -1,6 +1,6 @@
 # Intranet Expedice Mars
 
-
+ 
 ## Hosting
 
 - používám hosting na [python anywhere](https://eu.pythonanywhere.com).
@@ -22,6 +22,10 @@
   - data/velitele_odbornosti_data.json
   - zadani
 - soubor .env se sám nevytváří, je nutné ho založit ručně. Obsahuje secret key k flask appce, jmeno a heslo pro odesilani mailu.
+
+## Spuštění
+
+růčo založit `.env` soubor v root složce, populate SECRET_KEY, MAIL_USERNAME, MAIL_PASSWORD
 
 
 ## Použité knihovny
