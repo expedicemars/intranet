@@ -12,15 +12,16 @@
 - Při programování byl používán [PEP 8](https://www.python.org/dev/peps/pep-0008/) styl pro formátování python kódu.
 - Komentáře v kódu často vedou k nepřesnostem. Zastarávají a stávají se irelevantními. V případě Pythonu se správně napsaný kód dá číst (s trochou nadsázky) jako kniha. O to se také snažím, tedy dokumentace v kódu místo nemá. Jedinou výjimou jsou TypeHints, které v kódu pomáhají mimojiné nahlédnout na typ proměnných.
 - Řada souborů se sama vytváří při spuštění a nejsou součástí version control. Jsou to:
-  - website/database.db
-  - user_data
-  - data/known_bugs.json
-  - data/logs.txt
-  - data/faze.json
-  - data/mailing_list.json
-  - data/terminy.json
-  - data/velitele_odbornosti_data.json
-  - zadani
+    - instance/database.db
+    - user_data
+    - data/known_bugs.json
+    - data/logs.txt
+    - data/faze.json
+    - data/mailing_list.json
+    - data/terminy.json
+    - data/velitele_odbornosti_data.json
+    - data/odkazy.json
+    - zadani
 - soubor .env se sám nevytváří, je nutné ho založit ručně. Obsahuje secret key k flask appce, jmeno a heslo pro odesilani mailu.
 
 ## Spuštění
@@ -31,17 +32,18 @@ růčo založit `.env` soubor v root složce, populate SECRET_KEY, MAIL_USERNAME
 ## Použité knihovny
 
 - instalované přes pip
-  - [Flask](https://flask.palletsprojects.com/en/2.0.x/) - framework pro web development
-  - [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) - extension Flasku pro práci s databázemi
-  - [Flask-Login](https://flask-login.readthedocs.io/en/latest/) - extension flasku pro podporu přihlašování userů
-  - [Requests](https://docs.python-requests.org/en/latest/) - Pro vytváření HTTP requestů a jejich obsahu
+    - [Flask](https://flask.palletsprojects.com/en/2.0.x/) - framework pro web development
+    - [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) - extension Flasku pro práci s databázemi
+    - [Flask-Login](https://flask-login.readthedocs.io/en/latest/) - extension flasku pro podporu přihlašování userů
+    - [Requests](https://docs.python-requests.org/en/latest/) - Pro vytváření HTTP requestů a jejich obsahu
+    -[PyJWT](https://pyjwt.readthedocs.io/en/stable/) - Pro vytváření Timed tokenů
 - součástí standard library:
-  - [json](https://docs.python.org/3/library/json.html) - pomáhá správně zapisovat dict proměnné do souborů
-  - [typing](https://docs.python.org/3/library/typing.html) - pomáhá mít pořádek v typech proměnných nebo třeba v return values funkcí
-  - [pathlib](https://docs.python.org/3/library/pathlib.html) - lepší práce s cestami k souborům než jen "/path/to/file". Hlavně má zaručit funkčnost na různých OS.
-  - [datetime](https://docs.python.org/3/library/datetime.html) - pro získávání informací o aktuálním čase
-  - [shutil](https://docs.python.org/3/library/shutil.html) - pro manipulaci se složkami a soubory (zde využíváno k odstraňování složek při mazání odhadů)
-  - [uuid](https://docs.python.org/3/library/uuid.html) - pro generování Universaly Unique IDentifierů = id odhadů
+    - [json](https://docs.python.org/3/library/json.html) - pomáhá správně zapisovat dict proměnné do souborů
+    - [typing](https://docs.python.org/3/library/typing.html) - pomáhá mít pořádek v typech proměnných nebo třeba v return values funkcí
+    - [pathlib](https://docs.python.org/3/library/pathlib.html) - lepší práce s cestami k souborům než jen "/path/to/file". Hlavně má zaručit funkčnost na různých OS.
+    - [datetime](https://docs.python.org/3/library/datetime.html) - pro získávání informací o aktuálním čase
+    - [shutil](https://docs.python.org/3/library/shutil.html) - pro manipulaci se složkami a soubory (zde využíváno k odstraňování složek při mazání odhadů)
+    - [uuid](https://docs.python.org/3/library/uuid.html) - pro generování Universaly Unique IDentifierů = id odhadů
 
 # Pár slov k rolím
 

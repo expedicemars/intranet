@@ -161,3 +161,13 @@ def check_exporty() -> None:
     else:
         path.mkdir()
         log("Vytvořena složka pro export na "+str(path))
+        
+def check_odkazy() -> None:
+    path = p.odkazy_path()
+    if path.exists():
+        log("Soubor na odkazy už existuje.")
+    else:
+        path.touch()
+        with open(path, "w") as file:
+            file.write(json.dumps([], indent=4))
+        log("Založen soubor na pohovory na " + str(path))

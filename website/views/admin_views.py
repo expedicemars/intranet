@@ -14,6 +14,7 @@ from website.roles.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
+from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
 from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path
 
 
@@ -479,5 +480,27 @@ def featury():
     rights = get_access_rights(current_user)
     if "admin" in rights:
         return render_template("admin_featury.html", roles=rights)
+    else:
+        abort(401)
+    
+@admin_views.route("/upravit_odkazy", methods=["GET","POST"])
+def upravit_odkazy():
+    rights = get_access_rights(current_user)
+    if "admin" in rights:
+        if request.method == "GET":
+            return render_template("admin_upravit_odkazy.html", roles=rights)
+        else:
+            if request.form.get("smazat"):
+                i = request.form.get("smazat")
+                smazat_odkaz_by_id(i)
+                flash("Odkaz odebrán", category="success")
+                alog(f"Odebrán odkaz.")
+            else:
+                popis = request.form.get("popis")
+                odkaz = request.form.get("odkaz")
+                pridat_odkaz(popis=popis, odkaz=odkaz)
+                flash("Odkaz přidán", category="success")
+                alog(f"Přidán užitečný odkaz {odkaz}")
+            return redirect(url_for("admin_views.upravit_odkazy"))
     else:
         abort(401)
