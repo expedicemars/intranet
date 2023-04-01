@@ -6,6 +6,7 @@ let odkazy_list = document.getElementById("odkazy")
 
 document.getElementById("emails").innerHTML = emaily
 document.getElementById("mailing_list").innerHTML = JSON.parse(mailing_list)
+document.getElementById("datum_konce_registrace").innerHTML = httpGet("/send_noauth/registrace_pretty")
 
 for (let o of odkazy) {
     let li = document.createElement("li")

@@ -13,7 +13,7 @@ def admin_logs_file_path() -> Path:
     return Path.cwd() / "data" / "admin_logs.txt"
 
 def terminy_path() -> Path:
-    return Path.cwd() / "data" / "terminy.json"
+    return Path.cwd() / "data" / "terminy.txt"
 
 def faze_path() -> Path:
     return Path.cwd() / "data" /  "faze.json"

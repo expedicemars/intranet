@@ -22,10 +22,10 @@ def send_noauth(query):
         return json.dumps(Chyba.get_all())
     elif query == "registrace":
         with open(terminy_path()) as file:
-            file = json.load(file)
-            for t in file:
-                if t["popis"] == "registrace":
-                    return json.dumps(t)
+            return file.read()
+    elif query == "registrace_pretty":
+        with open(terminy_path()) as file:
+            return pretty_date(file.read())
     else:
         return f"Query {query} not found."
 
@@ -201,13 +201,7 @@ def send_admin(query):
 @sender.route("/send_user/<string:query>")
 def send_user(query: str):
     rights = get_access_rights(current_user)
-    if query == "terminy":
-        if "user" in rights or "admin" in rights: # připouštim oba, protože i úpravy termínů posílaj request sem
-            with open(terminy_path()) as file:
-                return json.dumps(json.load(file))
-        else:
-            abort(401)
-    elif query == "info":
+    if query == "info":
         if "user" in rights:
             return current_user.get_basic_info()
         else:

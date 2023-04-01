@@ -18,7 +18,7 @@
     - data/logs.txt
     - data/faze.json
     - data/mailing_list.json
-    - data/terminy.json
+    - data/terminy.txt
     - data/velitele_odbornosti_data.json
     - data/odkazy.json
     - zadani
