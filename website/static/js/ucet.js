@@ -1,6 +1,6 @@
 import httpGet from "./httpGet.js"
-let info = JSON.parse(httpGet("/send_user/info"))
-let confirmed = JSON.parse(httpGet("/send_user/confirmed"))["confirmation_status"]
+let info = JSON.parse(httpGet("/user_api/info"))
+let confirmed = JSON.parse(httpGet("/user_api/confirmed"))["confirmation_status"]
 let zmeny_button = document.getElementById("zmeny")
 let form = document.getElementById("form")
 let ids_list = ["jmeno", "email", "adresa", "telcislo", "datum_narozeni", "mail_rodicu", "dozvedeli", "alergie", "skola"]

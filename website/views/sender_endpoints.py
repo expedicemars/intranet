@@ -2,64 +2,10 @@ from flask import Blueprint, abort, send_file, flash, redirect, url_for
 from flask_login import current_user
 import json
 from website.roles.role_handler import get_access_rights
-from website.paths.paths import velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, prohlaseni_path, exporty_path
-from website.helpers.pretty_date import pretty_date
+from website.paths.paths import user_data_folder_path, zadani_folder_path, prohlaseni_path, exporty_path
 from website.helpers.get_user_files import get_motivak_by_id, get_prace_filenames, get_profilovka_by_id
-from website.json_handlers.pohovory_handling import get_neobsazene_pohovory
 
 sender = Blueprint("sender", __name__)
-
-@sender.route("/send_user/<string:query>")
-def send_user(query: str):
-    rights = get_access_rights(current_user)
-    if query == "info":
-        if "user" in rights:
-            return current_user.get_basic_info()
-        else:
-            abort(401)
-    elif query == "kontakt_na_meho_velitele_odbornosti":
-        if "user" in rights:
-            if current_user.odbornost == "zatím nevybraná":
-                return "nevybrano"
-            else:
-                with open(velitel_odbornosti_data_path()) as file:
-                    file = json.load(file)
-                return file[current_user.odbornost]
-        else:
-            abort(401)
-    elif query == "datum_pohovoru":
-        if "user" in rights: 
-            result = {
-                "datum": pretty_date(current_user.datum_pohovoru),
-                "link": current_user.meeting_link
-                }
-            return json.dumps(result)
-        else:
-            abort(401)
-    elif query == "volne_pohovory":
-        if "user" in rights: 
-            result = []
-            for p in get_neobsazene_pohovory():
-                zaznam = {}
-                zaznam["iso"] = p["iso"]
-                zaznam["pretty"] = pretty_date(p["iso"])
-                result.append(zaznam)
-            return json.dumps(result)
-        else:
-            abort(401)
-    elif query == "prohlaseni_rodicu":
-        if "user" in rights or "admin" in rights:
-            return send_file(prohlaseni_path())
-        else:
-            abort(401)
-    elif query == "confirmed":
-        if "user" in rights:
-            return json.dumps({
-                "confirmation_status": current_user.confirmed
-            })
-        else:
-            abort(401)
-
 
 
 @sender.route("/send_profilovka")

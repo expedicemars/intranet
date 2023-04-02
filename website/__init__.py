@@ -50,6 +50,9 @@ def create_app():
     from .views.trigger_endpoints import trigger
     from .api.admin_api import admin_api
     from .api.noauth_api import noauth_api
+    from .api.user_api import user_api
+    from .api.file_api import file_api
+
 
     app.register_blueprint(default_views, url_prefix="/")
     app.register_blueprint(user_views, url_prefix="/")
@@ -59,6 +62,8 @@ def create_app():
     app.register_blueprint(trigger, url_prefix="/trigger")
     app.register_blueprint(admin_api, url_prefix="/admin_api")
     app.register_blueprint(noauth_api, url_prefix="/noauth_api")
+    app.register_blueprint(user_api, url_prefix="/user_api")
+    app.register_blueprint(file_api, url_prefix="/file_api")
 
     
     check_known_bugs_file()
