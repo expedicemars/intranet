@@ -16,11 +16,10 @@
     - user_data
     - data/known_bugs.json
     - data/logs.txt
-    - data/faze.json
     - data/mailing_list.json
-    - data/terminy.txt
     - data/velitele_odbornosti_data.json
     - data/odkazy.json
+    - data/prubeh_rocniku.json
     - zadani
 - soubor .env se sám nevytváří, je nutné ho založit ručně. Obsahuje secret key k flask appce, jmeno a heslo pro odesilani mailu.
 
@@ -60,12 +59,3 @@ Pro jmenování prvního admina s rolí editing_admins_allowed:
 2. v Pythonanywhere najít skript "jmenovani_admina_editing_admins_allowed.py"s
 3. upravit v něm email_na_jmenovani
 4. v konzoli to pustit
-
-# Pár slov k fázím
-
-Expedice mars má (zatím) 4 fáze: 
-- otevřená registrace
-- zpřístupněné zadání
-- uzavřená registrace
-- ukončený ročník
-Admini s povolením prepinani_fazi_allowed může hru posouvat do dalších fází, nebo zpět, je-li to možné.

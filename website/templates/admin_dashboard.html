@@ -13,7 +13,7 @@
 <div>
     <h3>Co všechno musí být udržováno up-to-date</h3>
     <ul>
-        <li>Datum ukončení registrace <code id="datum_konce_registrace"></code>, <a href="{{url_for('admin_views.ukoncit_registraci_termin')}}">upravit jde tady</a>.</li>
+        <li>Datum ukončení registrace <code id="datum_konce_registrace"></code>, <a href="{{url_for('admin_views.prubeh_rocniku')}}">upravit jde tady</a>.</li>
         <li>Reakce na bugtracker</li>
         <li>Kontakty na velitele odborností</li>
         <li>prohlášení rodičů, nahrát nové verze jde <a href="{{url_for('admin_views.prohlaseni_rodicu')}}">tady</a>.</li>
@@ -32,21 +32,6 @@
 <div>
     <h3>Počet neřešených bugů: {{pocet_bugu}}</h3>
     Pokud nemáš práva je upravovat, řekni to adminovi, kterej to umí. Jsem ale línej je sem vypisovat.
-</div>
-<hr>
-<div>
-    <h3>Náhled na mailing list</h3>
-    Tady je vidět, kdo se předregistroval.
-    <form method="post">
-    <div class="row">
-        <div class="col">
-            <textarea class="form-control" rows="2" id="mailing_list" name="mailing_list"></textarea>
-        </div>
-        <div class="col-auto">
-            <button class="btn btn-success">Uložit mailing list</button>
-        </div>
-    </div>
-    </form>
 </div>
 
 

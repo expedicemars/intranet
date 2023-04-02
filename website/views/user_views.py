@@ -6,7 +6,6 @@ from website import db
 from website.roles.role_handler import get_access_rights
 import json
 from website.paths.paths import user_data_folder_path
-from website.helpers.get_aktualni_faze import je_zadani_pristupne, get_aktualni_faze
 from website.json_handlers.pohovory_handling import zapsat_na_pohovor
 
 user_views = Blueprint("user_views", __name__)
@@ -17,9 +16,7 @@ user_views = Blueprint("user_views", __name__)
 def ucet():
     if "user" in get_access_rights(current_user):
         if request.method == "GET":
-            if get_aktualni_faze() == "ukonceny_rocnik":
-                flash("Tento ročník je ukončený, proto tu nejde nic upravovat. Brzy restartujeme systém a půjde se registrovat do nového.", category="error")
-            return render_template("ucet.html", current_user = current_user, roles = get_access_rights(current_user), faze = get_aktualni_faze(), uzamcene_zmeny = current_user.uzamcene_zmeny)
+            return render_template("ucet.html", current_user = current_user, roles = get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny)
         else:
             if request.form.get("overeni_emailu"):
                 token = current_user.get_reset_token()
@@ -110,13 +107,11 @@ def ucet_overeny(token):
 def odbornost():
     if "user" in get_access_rights(current_user):
         if request.method == "GET":
-            if get_aktualni_faze() == "ukonceny_rocnik":
-                flash("Tento ročník je ukončený, proto tu nejde nic upravovat. Brzy restartujeme systém a půjde se registrovat do nového.", category="error")
             if current_user.odbornost == "zatím nevybraná":
                 odbornost = False
             else:
                 odbornost = current_user.odbornost
-            return render_template("odbornost.html", zadani_pristupne =je_zadani_pristupne() , odbornost=odbornost, roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny)
+            return render_template("odbornost.html", odbornost=odbornost, roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny)
         else:
             if request.form.get("result"):
                 current_user.odbornost = request.form["result"]

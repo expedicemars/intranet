@@ -12,14 +12,13 @@ logs.txt
 admin_logs.txt
 app_logs.txt
 mailing_list.json
-faze.json
-terminy.txt
 velitel_odbornosti_data.json
 user_data/*
 poznamky.json
 pohovory.json
 prohlaseni_rodicu.docx
 odkazy.json
+prubeh_rocniku.json
 exporty/*
 .env
 

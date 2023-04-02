@@ -1,10 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import login_required, login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from website import db
 from website.models.user import User
 from website.mails.mail_handler import mail_sender
-from website.helpers.get_aktualni_faze import je_registrace_otevrena
 from website.helpers.mailing_list import get_mails_from_mailing_list, pridat_mail_do_mailing_listu
 from website.paths.paths import user_data_folder_path
 
@@ -40,57 +39,53 @@ def register():
 		return redirect(url_for("user_views.ucet"))
 	else:
 		if request.method == "GET":
-			if je_registrace_otevrena():
 				return render_template("auth_register.html")
-			else:
 				return render_template("auth_registrace_uzavrene.html")
-		else:
-			if je_registrace_otevrena():
-				email = request.form.get("email")
-				password = request.form.get("password")
-				souhlas = request.form.get("souhlas")
-				if len(email) > 100:
-					flash("Zadaný e-mail byl delší než 100 znaků. Vyberte prosím kratší.", category="error")
-					return redirect(url_for("auth_views.register"))
-				if len(password) > 300 or len(password) <= 7:    
-					flash("Zvolené heslo nemělo vyhovující délku. Vyberte prosím nějaké mezi 8 a 300 znaky.", category="error")
-					return redirect(url_for("auth_views.register"))
-				if souhlas != "on":
-					flash("Nesouhlasil jsi s podmínkama uchovávání dat.", category="error")
-					return redirect(url_for("auth_views.register"))
+		else:  # HODNĚ TÉHLE LOGIKY PŘENÉST DO DEDICATED FCÍ
+			email = request.form.get("email")
+			password = request.form.get("password")
+			souhlas = request.form.get("souhlas")
+			if len(email) > 100:
+				flash("Zadaný e-mail byl delší než 100 znaků. Vyberte prosím kratší.", category="error")
+				return redirect(url_for("auth_views.register"))
+			if len(password) > 300 or len(password) <= 7:    
+				flash("Zvolené heslo nemělo vyhovující délku. Vyberte prosím nějaké mezi 8 a 300 znaky.", category="error")
+				return redirect(url_for("auth_views.register"))
+			if souhlas != "on":
+				flash("Nesouhlasil jsi s podmínkama uchovávání dat.", category="error")
+				return redirect(url_for("auth_views.register"))
 
-				
-				user = User.query.filter_by(email=email).first()
-				if user:
-					flash("Tento email je už zaregistrovaný. Použij prosím jiný", category="error")
-					return redirect(url_for("auth_views.register"))
-				else:
-					user = User(email=email, password=generate_password_hash(password, method="sha256"))
-					db.session.add(user)
-					db.session.commit()
-					login_user(user, remember=True)
-					flash("Úspěšná registrace.", category="info")
-					# create files
-					user_folder_path = user_data_folder_path() / str(user.id)
-					prace_path = user_folder_path / "prace"
-					user_folder_path.mkdir()
-					prace_path.mkdir()
-					return redirect(url_for("default_views.home"))
+			
+			user = User.query.filter_by(email=email).first()
+			if user:
+				flash("Tento email je už zaregistrovaný. Použij prosím jiný", category="error")
+				return redirect(url_for("auth_views.register"))
 			else:
-				email = request.form.get("email")
-				if len(email) > 100:
-					flash("Zadaný e-mail byl delší než 100 znaků. Vyberte prosím kratší.", category="error")
-					return redirect(url_for("auth_views.register"))
-				user = User.query.filter_by(email=email).first()
-				if user:
-					flash("Tento email je už zaregistrovaný. Použij prosím jiný", category="error")
-					return redirect(url_for("auth_views.register"))
-				if email in get_mails_from_mailing_list():
-					flash("Tenhle mail už v mailing listu máme - upozorníme tě, až to bude potřeba :).", category="info")
-					return redirect(url_for("default_views.home"))
-				pridat_mail_do_mailing_listu(email)
-				flash("Tvůj e-mail byl přidán do mailing-listu. Dáme ti vědět, až začne další ročník.", category="success")
+				user = User(email=email, password=generate_password_hash(password, method="sha256"))
+				db.session.add(user)
+				db.session.commit()
+				login_user(user, remember=True)
+				flash("Úspěšná registrace.", category="info")
+				# create files
+				user_folder_path = user_data_folder_path() / str(user.id)
+				prace_path = user_folder_path / "prace"
+				user_folder_path.mkdir()
+				prace_path.mkdir()
 				return redirect(url_for("default_views.home"))
+			email = request.form.get("email")
+			if len(email) > 100:
+				flash("Zadaný e-mail byl delší než 100 znaků. Vyberte prosím kratší.", category="error")
+				return redirect(url_for("auth_views.register"))
+			user = User.query.filter_by(email=email).first()
+			if user:
+				flash("Tento email je už zaregistrovaný. Použij prosím jiný", category="error")
+				return redirect(url_for("auth_views.register"))
+			if email in get_mails_from_mailing_list():
+				flash("Tenhle mail už v mailing listu máme - upozorníme tě, až to bude potřeba :).", category="info")
+				return redirect(url_for("default_views.home"))
+			pridat_mail_do_mailing_listu(email)
+			flash("Tvůj e-mail byl přidán do mailing-listu. Dáme ti vědět, až začne další ročník.", category="success")
+			return redirect(url_for("default_views.home"))
 			
 
 @auth_views.route("/logout")

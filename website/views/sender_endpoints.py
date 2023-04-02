@@ -3,15 +3,15 @@ from flask_login import current_user
 import json
 from website.models.chyba import Chyba
 from website.models.user import User
-from website.json_handlers.logs_handling import get_logs, get_alogs
-from website.json_handlers.odkazy_handling import get_odkazy
 from website.roles.role_handler import get_access_rights, dostupna_omezeni
-from website.paths.paths import terminy_path, faze_path, velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path, poznamky_path, prohlaseni_path, exporty_path
+from website.paths.paths import velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path, poznamky_path, prohlaseni_path, exporty_path, prubeh_rocniku_path
+from website.helpers.pretty_date import pretty_date
 from website.helpers.mailing_list import get_mails_from_mailing_list
 from website.helpers.get_user_files import get_motivak_by_id, get_prace_filenames, get_profilovka_by_id
+from website.json_handlers.logs_handling import get_logs, get_alogs
+from website.json_handlers.odkazy_handling import get_odkazy
 from website.json_handlers.pohovory_handling import get_pohovory, get_neobsazene_pohovory
-from website.helpers.pretty_date import pretty_date
-from website.helpers.get_aktualni_faze import get_aktualni_faze
+from website.json_handlers.prubeh_rocniku_handling import get_datum_konce_registrace, get_registrace_otevrena
 
 sender = Blueprint("sender", __name__)
 
@@ -21,11 +21,9 @@ def send_noauth(query):
     if query == "chyby":
         return json.dumps(Chyba.get_all())
     elif query == "registrace":
-        with open(terminy_path()) as file:
-            return file.read()
+        return get_datum_konce_registrace()
     elif query == "registrace_pretty":
-        with open(terminy_path()) as file:
-            return pretty_date(file.read())
+        return pretty_date(get_datum_konce_registrace())
     else:
         return f"Query {query} not found."
 
@@ -75,12 +73,6 @@ def send_admin(query):
             return result
         else:
             abort(401)
-    elif query == "faze":
-        if "prepinani_fazi_allowed" in rights:
-            with open(faze_path()) as file:
-                return json.dumps(json.load(file))
-        else:
-            abort(401)
     elif query == "mailing_list":
         if "admin" in rights:
             return json.dumps(get_mails_from_mailing_list())
@@ -90,18 +82,6 @@ def send_admin(query):
         if "velitel_odbornosti" in rights:
             with open(velitel_odbornosti_data_path()) as file:
                 return json.dumps(json.load(file))
-        else:
-            abort(401)
-    elif query == "upozornit_na_zadani":
-        if "prepinani_fazi_allowed" in rights:
-                
-            # getne maily registrovanejch useru
-            result = []
-            for u in User.query.all():
-                u_rights = get_access_rights(u)
-                if "user" in u_rights and "admin" not in u_rights:
-                    result.append(u.email)
-            return json.dumps(result)
         else:
             abort(401)
     elif query == "odbornosti_kterym_velim":
@@ -174,7 +154,7 @@ def send_admin(query):
         else:
             abort(401)
     elif query == "exporty":
-        if "prepinani_fazi_allowed" in rights:
+        if "editing_prubeh_rocniku" in rights:
             result = []
             for p in exporty_path().iterdir():
                 zaznam = {}
@@ -193,6 +173,11 @@ def send_admin(query):
     elif query == "odkazy":
         if "admin" in rights:
             return get_odkazy()
+        else:
+            abort(401)
+    elif query == "je_registrace_otevrena":
+        if "editing_prubeh_rocniku" in rights:
+            return str(get_registrace_otevrena())
         else:
             abort(401)
 
@@ -246,15 +231,6 @@ def send_user(query: str):
             return json.dumps({
                 "confirmation_status": current_user.confirmed
             })
-        else:
-            abort(401)
-    elif query == "faze":
-        if "user" in rights:
-            return json.dumps(
-                {
-                    "aktualni_faze": get_aktualni_faze()
-                }
-            )
         else:
             abort(401)
 
@@ -370,7 +346,7 @@ def send_motivak(id, style):
 
 @sender.route("/send_zip/<string:filename>")
 def send_zip(filename):
-    if "prepinani_fazi_allowed" in get_access_rights(current_user):
+    if "editing_prubeh_rocniku" in get_access_rights(current_user):
         for p in exporty_path().rglob("*.zip"):
             if p.name == filename:
                 return send_file(p)

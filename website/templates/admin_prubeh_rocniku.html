@@ -1,0 +1,43 @@
+{% extends "admin_navbar.html" %}
+{% block content %}
+<form id="form" method="post">
+    <h2>Datum konce registrace a ukončení registrace</h2>
+    <div class="row">
+        <div class="col-auto">
+            <input type="date" name="registrace_date" id="registrace_date">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-success" id="ulozit" name="ulozit_datum" value="Whatever">Uložit datum</button>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary" name="toggle_registraci" value="whatever" id="toggle_registraci"></button>
+        </div>
+    </div>
+    <hr>
+    <h2>Náhled na mailing list</h2>
+    <div class="row">
+        <div class="col">
+            <textarea class="form-control" rows="2" id="mailing_list" name="mailing_list"></textarea>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-success" name="ulozit_mailing_list" value="whatever">Uložit mailing list</button>
+        </div>
+    </div>
+    <hr>
+    <h2>Export dat</h2>
+    Vygeneruje .zip soubor, kterej obsahuje všechno. Vesměs je to potřeba při ukončování ročníku. Neslouží a nikdy nebude sloužit jako záloha systému, k obnovení stavu z daného exportu. 
+        <button class="btn btn-primary" value="generovat" name="generovat">Vytvořit nový export</button>
+    <h2>Stáhnout starší exporty</h2>
+        <div id="content"></div>
+    <hr>
+    <h2>Ukončit ročník</h2>
+    <ul>
+        <li>Promaže to účastníky</li>
+        <li>Nechá to adminy a mailing-list</li>
+    </ul>
+    <button id="ukoncit_rocnik" class="btn btn-danger" name="ukoncit_rocnik">Projít otázkama a ukončit ročník</button>
+    <input type="text" hidden name="ukoncit_rocnik_input" id="ukoncit_rocnik_input" value="">
+</form>
+
+<script type="module" src="{{url_for('static', filename='js/admin_prubeh_rocniku.js')}}"></script>
+{% endblock %}

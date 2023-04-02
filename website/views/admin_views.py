@@ -6,8 +6,8 @@ from flask_login import current_user
 from website import db
 from website.models.chyba import Chyba
 from website.models.user import User
-from website.helpers.mailing_list import promazat_mailing_list, set_mailing_list
-from website.helpers.user_filter import user_filter, seznam_generator
+from website.helpers.mailing_list import set_mailing_list
+from website.helpers.user_filter import seznam_generator
 from website.helpers.exporty import exportovat, promazat
 from website.helpers.pretty_date import pretty_date
 from website.roles.role_handler import get_access_rights
@@ -15,7 +15,8 @@ from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
-from website.paths.paths import terminy_path,faze_path, velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path
+from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, toggle_registrace, get_registrace_otevrena
+from website.paths.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path
 
 
 admin_views = Blueprint("admin_views",__name__)
@@ -248,55 +249,42 @@ def vybrat_role_adminovi(id):
         abort(401)
 
 
-@admin_views.route("/ukoncit_registraci_termin", methods=["GET","POST"])
-def ukoncit_registraci_termin():
+@admin_views.route("/prubeh_rocniku", methods=["GET","POST"])
+def prubeh_rocniku():
     rights = get_access_rights(current_user)
-    if "admin" in rights:
+    if "editing_prubeh_rocniku" in rights:
         if request.method == "GET":
-            return render_template("admin_ukoncit_registraci_termin.html", roles=rights)
+            return render_template("admin_prubeh_rocniku.html", roles=rights)
         else:
-            with open(terminy_path(), "w") as file:
+            if request.form.get("ukoncit_rocnik_input"):
+                promazat()
+                alog("Byl promazán systém")
+                flash("Promazání systému bylo úspěšné.", category="success")
+                return redirect(url_for("admin_views.admin_dashboard"))
+            elif request.form.get("ulozit_datum"):
                 datum = request.form.get("registrace_date")
-                file.write(datum)
-            alog(f"Úprava temrínu konce registrace na {datum}.")
-            flash("Termín konce registrace byl upraven.", category="success")
-            return redirect(url_for("admin_views.admin_dashboard"))
-    else:
-        abort(401)
-
-
-@admin_views.route("/prepinat_faze", methods=["GET","POST"])
-def prepinat_faze():
-    rights = get_access_rights(current_user)
-    if "prepinani_fazi_allowed" in rights:
-        if request.method == "GET":
-            return render_template("admin_prepinat_faze.html", roles=rights)
-        else:
-            if request.form.get("smazat_mailing_list"):
-                flash("Mailing list byl promazán.", category="info")
-                promazat_mailing_list()
-                alog("Mailing list byl promazán.")
-                return redirect(url_for("admin_views.prepinat_faze"))
-            else:
-                with open(faze_path()) as file:
-                    faze = json.load(file)
-                aktualni_faze = list(filter(lambda x: x["active"], faze))[0]
-                aktualni_faze["active"] = False
-                pozadavek = request.form.get("result")
-                if pozadavek == "dalsi":
-                    nova_faze = list(filter(lambda x: x["nazev"] == aktualni_faze["nasledujici"], faze))[0]
-                else:
-                    nova_faze = list(filter(lambda x: x["nasledujici"] == aktualni_faze["nazev"], faze))[0]
-                alog("Změna fáze na " + nova_faze["nazev"] + ".")
-                nova_faze["active"] = True
-                with open(faze_path(), "w") as file:
-                    file.write(json.dumps(faze, indent=4))
-                if nova_faze["nazev"] == "ukonceny_rocnik":
-                    promazat()
-                    alog("Promazání systému.")
-                return redirect(url_for("admin_views.prepinat_faze"))
-    else:
-        abort(401)
+                set_nove_datum_konce_registrace(datum)
+                alog(f"Úprava temrínu konce registrace na {datum}.")
+                flash("Termín konce registrace byl upraven.", category="success")
+            elif request.form.get("toggle_registraci"):
+                toggle_registrace()
+                alog(f"Změna otevření registrace na {get_registrace_otevrena()}")
+                flash(f"Stav otevření registrace změnen na {get_registrace_otevrena()}", category="success")
+            elif request.form.get("ulozit_mailing_list"):
+                set_mailing_list(request.form.get("mailing_list"))
+                alog("Upraven mailing list.")
+                flash("Mailing list byl upraven.", category="success")
+            elif request.form.get("generovat"):
+                alog("Vygenerování exportu.")
+                exportovat()
+                flash("Export vytvořen, najdeš ho v seznamu starších exportů.", category="success")
+            elif request.form.get("smazat_export"):
+                name: str = request.form.get("smazat_export")
+                p = exporty_path() / name
+                rmtree(p)
+                flash("Export byl smazán.", category="success")
+                alog("Smazání exportu z "+ pretty_date(name))
+            return redirect(url_for("admin_views.prubeh_rocniku"))        
 
 @admin_views.route("/velitele_odbornosti", methods=["GET","POST"])
 def velitele_odbornosti():
@@ -449,29 +437,6 @@ def prohlaseni_rodicu():
             else:
                 flash("Nenahrál jsi žádný soubor.", category="error")
             return redirect(url_for("admin_views.admin_dashboard"))
-
-    else:
-        abort(401)
-
-@admin_views.route("/export", methods=["GET","POST"])
-def export():
-    rights = get_access_rights(current_user)
-    if "prepinani_fazi_allowed" in rights:
-        if request.method == "GET":
-            return render_template("admin_export.html", roles=rights)
-        else:
-            if request.form.get("generovat"):
-                alog("Vygenerování exportu.")
-                exportovat()
-                flash("Export vytvořen, najdeš ho v seznamu starších exportů.", category="success")
-                return redirect(url_for("admin_views.export"))
-            elif request.form.get("smazat"):
-                name: str = request.form.get("smazat")
-                p = exporty_path() / name
-                rmtree(p)
-                flash("Export byl smazán.", category="success")
-                alog("Smazání exportu z "+ pretty_date(name))
-                return redirect(url_for("admin_views.export"))
 
     else:
         abort(401)

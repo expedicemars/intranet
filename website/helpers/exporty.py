@@ -1,8 +1,8 @@
 from openpyxl import Workbook
-from website.paths.paths import exporty_path, mailing_list_path, pohovory_path, poznamky_path, terminy_path, velitel_odbornosti_data_path, zadani_folder_path, admin_logs_file_path, app_logs_file_path, prohlaseni_path, user_data_folder_path
+from website.paths.paths import exporty_path, mailing_list_path, pohovory_path, poznamky_path, velitel_odbornosti_data_path, zadani_folder_path, admin_logs_file_path, app_logs_file_path, prohlaseni_path, user_data_folder_path, prubeh_rocniku_path
 from website.helpers.pretty_date import pretty_date
 from website.roles.role_handler import get_access_rights
-from datetime import datetime
+from datetime import datetime, date
 from website.models.user import User
 from website import db
 import json
@@ -114,7 +114,7 @@ def exportovat() -> None:
         archive.write(admin_logs_file_path(), arcname=admin_logs_file_path().name)
         archive.write(app_logs_file_path(), arcname=app_logs_file_path().name)
         archive.write(prohlaseni_path(), arcname=prohlaseni_path().name)
-        archive.write(terminy_path(), arcname=terminy_path().name)
+        archive.write(prubeh_rocniku_path(), arcname=prubeh_rocniku_path().name)
         for p in user_data_folder_path().rglob("*"):
             archive.write(p, arcname=p.relative_to(user_data_folder_path().parent))
         for p in zadani_folder_path().rglob("*"):
@@ -122,7 +122,7 @@ def exportovat() -> None:
 
 def promazat() -> None:
     """
-    Promaže vše, co bylo exportováno, krom mailing listu.
+    Promaže vše, co bylo exportováno, krom mailing listu a prohlášení pro rodiče.
     """
     for folder in zadani_folder_path().iterdir():
         if folder.name == ".DS_Store":
@@ -139,13 +139,8 @@ def promazat() -> None:
         file.write(json.dumps([], indent=4))
     with open(poznamky_path(), "w") as file:
         file.write(json.dumps([], indent=4))
-    with open(terminy_path(),"w") as file:
-        file.write(json.dumps([
-            {
-                "popis": "registrace",
-                "date": "2022-01-01"
-            }
-        ]))
+    with open(prubeh_rocniku_path(),"w") as file:
+        file.write(json.dumps({"datum_konce_registrace":str(date.today()),"otevrena_registrace":False}, indent=4))
     with open(velitel_odbornosti_data_path(), "w") as file:
         file.write(json.dumps({
             "biolog": "",

@@ -34,10 +34,10 @@
     {% if "editing_admins_allowed" in roles %}
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.jmenovat_adminy')}}">Jmenovat adminy</a></li>
     {% endif %}
-    {% if "prepinani_fazi_allowed" in roles %}
-    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.prepinat_faze')}}">Přepínání fází</a></li>
-    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.export')}}">Export</a></li>
+    {% if "editing_prubeh_rocniku" in roles %}
+    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.prubeh_rocniku')}}">Průběh ročníku</a></li>
     {% endif %}
+
 {% endblock %}
 
 {% block footer %}

@@ -2,7 +2,7 @@ from website.models.user import User
 import json
 
 # jen pro moje info:
-dostupna_omezeni = ["user", "admin", "editing_bugs_allowed", "editing_logs_allowed", "editing_users_allowed", "editing_admins_allowed", "prepinani_fazi_allowed", "velitel_odbornosti", "velitel_odbornosti_biolog", "velitel_odbornosti_konstrukter", "velitel_odbornosti_fyzik", "velitel_odbornosti_inzenyr","velitel_odbornosti_popularizator", "editing_pohovory"]
+dostupna_omezeni = ["user", "admin", "editing_bugs_allowed", "editing_logs_allowed", "editing_users_allowed", "editing_admins_allowed", "editing_prubeh_rocniku", "velitel_odbornosti", "velitel_odbornosti_biolog", "velitel_odbornosti_konstrukter", "velitel_odbornosti_fyzik", "velitel_odbornosti_inzenyr","velitel_odbornosti_popularizator", "editing_pohovory"]
 
 def get_access_rights(userobj: User) -> list:
     role = []
