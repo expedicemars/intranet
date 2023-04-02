@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from website import db
 from website.models.user import User
 from website.mails.mail_handler import mail_sender
-from website.helpers.mailing_list import get_mails_from_mailing_list, pridat_mail_do_mailing_listu
+from website.json_handlers.mailing_list import get_mails_from_mailing_list, pridat_mail_do_mailing_listu
 from website.paths.paths import user_data_folder_path
 
 auth_views = Blueprint("auth_views",__name__)

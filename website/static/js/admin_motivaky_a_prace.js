@@ -1,6 +1,6 @@
 import httpGet from "./httpGet.js"
 
-let data = JSON.parse(httpGet("/send_admin/data_pro_motivaky_a_prace"))
+let data = JSON.parse(httpGet("/admin_api/data_pro_motivaky_a_prace"))
 let content_div = document.getElementById("content")
 let b1 = document.getElementById("b1")
 let b2 = document.getElementById("b2")

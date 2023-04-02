@@ -1,6 +1,6 @@
 import httpGet from "./httpGet.js"
 
-let chyby = JSON.parse(httpGet("/send_noauth/chyby"))
+let chyby = JSON.parse(httpGet("/noauth_api/chyby"))
 let content_div = document.getElementById("content")
 
 function generator(data) {

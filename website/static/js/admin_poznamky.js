@@ -5,7 +5,7 @@ let ulozit_button = document.getElementById("ulozit")
 let form = document.getElementById("form")
 let result_input = document.getElementById("result")
 let content_div = document.getElementById("poznamky")
-let poznamky = JSON.parse(httpGet("/send_admin/poznamky"))
+let poznamky = JSON.parse(httpGet("/admin_api/poznamky"))
 let username = document.getElementById("username").value
 let date = document.getElementById("date").value
 

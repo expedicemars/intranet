@@ -1,6 +1,6 @@
 import httpGet from "./httpGet.js"
 
-let users_from_db = JSON.parse(httpGet("/send_admin/users_from_db"))
+let users_from_db = JSON.parse(httpGet("/admin_api/users_from_db"))
 
 
 function detail_usera(id) {

@@ -1,6 +1,6 @@
 import httpGet from "./httpGet.js"
 let id_usera = document.getElementById("id").value
-let detail_usera = JSON.parse(httpGet("/send_admin/detail_usera_" + String(id_usera)))
+let detail_usera = JSON.parse(httpGet("/admin_api/detail_usera/" + String(id_usera)))
 let motivak = JSON.parse(httpGet("/send_motivak/" + String(id_usera) + "/name"))
 let prace_filenames = JSON.parse(httpGet("/send_prace_filenames/" + String(id_usera)))
 let ulozit_button = document.getElementById("ulozit_button")

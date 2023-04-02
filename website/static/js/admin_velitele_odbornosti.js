@@ -1,6 +1,6 @@
 import httpGet from "./httpGet.js"
-let odbornosti_kterym_velim = JSON.parse(httpGet("/send_admin/odbornosti_kterym_velim"))
-let data = JSON.parse(httpGet("/send_admin/velitel_odbornosti_data"))
+let odbornosti_kterym_velim = JSON.parse(httpGet("/admin_api/odbornosti_kterym_velim"))
+let data = JSON.parse(httpGet("/admin_api/velitel_odbornosti_data"))
 
 // za kazdou odbornost, ktery velim, getnu jeji data o zadani n stuff, skryju divy nebo vygeneruju a href linky
 for (let odbornost of odbornosti_kterym_velim) {

@@ -1,13 +1,13 @@
 import httpGet from "./httpGet.js"
 
-let registrace = httpGet("/send_noauth/registrace")
-let je_registrace_otevrena = httpGet("/send_admin/je_registrace_otevrena")
-let mailing_list = httpGet("/send_admin/mailing_list")
+let registrace = httpGet("/noauth_api/registrace")
+let je_registrace_otevrena = httpGet("/admin_api/je_registrace_otevrena")
+let mailing_list = httpGet("/admin_api/mailing_list")
 let ukoncit_rocnik_button = document.getElementById("ukoncit_rocnik")
 let ukoncit_rocnik_input = document.getElementById("ukoncit_rocnik_input")
 let toggle_registraci_button = document.getElementById("toggle_registraci")
 let registrace_date_input = document.getElementById("registrace_date")
-let exporty = JSON.parse(httpGet("/send_admin/exporty"))
+let exporty = JSON.parse(httpGet("/admin_api/exporty"))
 let content_div = document.getElementById("content")
 let form = document.getElementById("form")
 registrace_date_input.value=registrace

@@ -6,7 +6,7 @@ from flask_login import current_user
 from website import db
 from website.models.chyba import Chyba
 from website.models.user import User
-from website.helpers.mailing_list import set_mailing_list
+from website.json_handlers.mailing_list import set_mailing_list
 from website.helpers.user_filter import seznam_generator
 from website.helpers.exporty import exportovat, promazat
 from website.helpers.pretty_date import pretty_date
