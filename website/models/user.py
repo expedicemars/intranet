@@ -21,7 +21,7 @@ class User(db.Model, UserMixin):
     souhlas_rodicu = db.Column(db.Boolean, default=False)
     odbornost = db.Column(db.String(100), default="zatím nevybraná")
     datum_narozeni = db.Column(db.String(100))
-    progress = db.Column(db.String(100), default="Domácí kolo")
+    progress = db.Column(db.String(100), default="Registrován")
     role = db.Column(db.Text, default=json.dumps(["user"]))
     tricko = db.Column(db.String(100))
     dozvedeli = db.Column(db.String(100))
