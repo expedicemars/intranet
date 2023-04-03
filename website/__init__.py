@@ -2,8 +2,8 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_mail import Mail
-from website.helpers.check_files import check_known_bugs_file, check_logs_files, check_mailing_list, check_terminy, check_faze, check_velitel_odbornosti_data, check_user_data_folder, check_zadani_folders, check_poznamky, check_pohovory, check_exporty, check_odkazy
-from .paths.paths import user_database_path, env_path
+from website.helpers.check_files import check_known_bugs_file, check_logs_files, check_mailing_list, check_velitel_odbornosti_data, check_user_data_folder, check_zadani_folders, check_poznamky, check_pohovory, check_exporty, check_odkazy, check_prubeh_rocniku
+from .paths import user_database_path, env_path
 from .json_handlers.logs_handling import log
 import os
 from dotenv import load_dotenv
@@ -47,19 +47,25 @@ def create_app():
     from .views.admin_views import admin_views
     from .views.sender_endpoints import sender
     from .views.user_views  import user_views
-    from .views.trigger_endpoints import trigger
+    from .api.admin_api import admin_api
+    from .api.noauth_api import noauth_api
+    from .api.user_api import user_api
+    from .api.file_api import file_api
+
 
     app.register_blueprint(default_views, url_prefix="/")
     app.register_blueprint(user_views, url_prefix="/")
     app.register_blueprint(auth_views, url_prefix="/auth")
     app.register_blueprint(admin_views, url_prefix = "/admin")
     app.register_blueprint(sender, url_prefix="/")
-    app.register_blueprint(trigger, url_prefix="/trigger")
+    app.register_blueprint(admin_api, url_prefix="/admin_api")
+    app.register_blueprint(noauth_api, url_prefix="/noauth_api")
+    app.register_blueprint(user_api, url_prefix="/user_api")
+    app.register_blueprint(file_api, url_prefix="/file_api")
+
     
     check_known_bugs_file()
     check_mailing_list()
-    check_faze()
-    check_terminy()
     check_velitel_odbornosti_data()
     check_user_data_folder()
     check_zadani_folders()
@@ -67,15 +73,16 @@ def create_app():
     check_pohovory()
     check_exporty()
     check_odkazy()
+    check_prubeh_rocniku()
 
 
     login_manager.login_view = "auth_views.login"
 
     @login_manager.user_loader
     def load_user(id):
-        return User.query.get(int(id))
+        return db.session.get(User, 1)
     
-    from website.roles.role_handler import get_access_rights 
+    from website.role_handler import get_access_rights 
 
     @app.errorhandler(404)
     def not_found(e):

@@ -1,5 +1,5 @@
 import json
-from website.paths.paths import odkazy_path
+from website.paths import odkazy_path
 
 def pridat_odkaz(popis: str, odkaz: str) -> None:
     with open(odkazy_path()) as file:

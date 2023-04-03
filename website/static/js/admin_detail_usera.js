@@ -1,8 +1,8 @@
 import httpGet from "./httpGet.js"
 let id_usera = document.getElementById("id").value
-let detail_usera = JSON.parse(httpGet("/send_admin/detail_usera_" + String(id_usera)))
+let detail_usera = JSON.parse(httpGet("/admin_api/detail_usera/" + String(id_usera)))
 let motivak = JSON.parse(httpGet("/send_motivak/" + String(id_usera) + "/name"))
-let prace_filenames = JSON.parse(httpGet("/send_prace_filenames/" + String(id_usera)))
+let prace_filenames = JSON.parse(httpGet("/file_api/send_filenames_cizi_prace/" + String(id_usera)))
 let ulozit_button = document.getElementById("ulozit_button")
 let toggle_zmeny_button = document.getElementById("toggle_zmeny")
 let toggle_souhlas_button = document.getElementById("toggle_souhlas")
@@ -82,7 +82,7 @@ if (prace_filenames) {
         let a = document.createElement("a")
         a.innerHTML = filename
         a.download = filename
-        a.href = "/send_prace_file/" + String(id_usera) + "/" + filename
+        a.href = "/file_api/cizi_prace/" + String(id_usera) + "/" + filename
         prace_div.appendChild(a)
         prace_div.appendChild(document.createElement("br"))
     }

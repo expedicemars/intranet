@@ -1,6 +1,6 @@
 import httpGet from "./httpGet.js"
 
-let odkazy = JSON.parse(httpGet("/send_admin/odkazy"))
+let odkazy = JSON.parse(httpGet("/admin_api/odkazy"))
 let content_div = document.getElementById("content")
 
 for (let i = 0; i<odkazy.length;i++) {

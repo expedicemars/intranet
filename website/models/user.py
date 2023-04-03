@@ -3,7 +3,7 @@ from website import db
 from flask import current_app
 import jwt
 import json
-from website.paths.paths import user_data_folder_path
+from website.paths import user_data_folder_path
 from shutil import rmtree
 from website.helpers.pretty_date import pretty_date
 from datetime import datetime, timezone, timedelta
@@ -21,7 +21,7 @@ class User(db.Model, UserMixin):
     souhlas_rodicu = db.Column(db.Boolean, default=False)
     odbornost = db.Column(db.String(100), default="zatím nevybraná")
     datum_narozeni = db.Column(db.String(100))
-    progress = db.Column(db.String(100), default="Domácí kolo")
+    progress = db.Column(db.String(100), default="Registrován")
     role = db.Column(db.Text, default=json.dumps(["user"]))
     tricko = db.Column(db.String(100))
     dozvedeli = db.Column(db.String(100))
@@ -90,6 +90,11 @@ class User(db.Model, UserMixin):
         db.session.commit()
         osobni_slozka = user_data_folder_path() / str(self.id)
         rmtree(osobni_slozka)
+    
+    def odebrat_odbornost(self):
+        self.odbornost = "zatím nevybraná"
+        db.session.add(self)
+        db.session.commit()
 
     @staticmethod
     def generate_random() -> "User":
@@ -160,3 +165,28 @@ class User(db.Model, UserMixin):
         db.session.add(u)
         db.session.commit()
         return u
+
+    @staticmethod
+    def jmenovat_admina_by_email(email) -> "User":
+        u = User.get_by_email(email)
+        if u:
+            u.role = json.dumps(["admin", "editing_admins_allowed"])
+            db.session.add(u)
+            db.session.commit()
+            return "Success"
+        else:
+            return "Zadadný mail v db neexistuje"
+    
+    @staticmethod
+    def get_by_id(id) -> "User":
+        return db.session.get(User, int(id))
+    
+    @staticmethod
+    def get_by_email(email) -> "User":
+        return db.session.scalars(db.select(User).where(User.email == email)).first()
+
+    @staticmethod
+    def get_all():
+        return db.session.scalars(db.select(User)).all()
+    
+

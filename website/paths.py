@@ -12,12 +12,6 @@ def app_logs_file_path() -> Path:
 def admin_logs_file_path() -> Path:
     return Path.cwd() / "data" / "admin_logs.txt"
 
-def terminy_path() -> Path:
-    return Path.cwd() / "data" / "terminy.txt"
-
-def faze_path() -> Path:
-    return Path.cwd() / "data" /  "faze.json"
-
 def mailing_list_path() -> Path:
     return Path.cwd() / "data"  / "mailing_list.json"
 
@@ -50,3 +44,6 @@ def env_path() -> Path:
 
 def odkazy_path() -> Path:
     return Path.cwd() / "data" / "odkazy.json"
+
+def prubeh_rocniku_path() -> Path:
+    return Path.cwd() / "data" / "prubeh_rocniku.json"

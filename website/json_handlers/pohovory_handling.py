@@ -1,4 +1,4 @@
-from website.paths.paths import pohovory_path
+from website.paths import pohovory_path
 from datetime import datetime, timedelta
 import json
 from typing import List

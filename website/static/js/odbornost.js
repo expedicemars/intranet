@@ -3,7 +3,7 @@ import httpGet from "./httpGet.js"
 let button_ids = ["biolog", "fyzik", "konstrukter", "inzenyr", "popularizator"]
 let form = document.getElementById("form")
 let result = document.getElementById("result")
-let kontakt = httpGet("/send_user/kontakt_na_meho_velitele_odbornosti")
+let kontakt = httpGet("/user_api/kontakt_na_meho_velitele_odbornosti")
 
 
 // vybrani odbornosti
@@ -65,7 +65,7 @@ if (odbornost_current_usera) {
 
 // prace
 
-let prace = JSON.parse(httpGet("/send_prace_filenames"))
+let prace = JSON.parse(httpGet("/file_api/send_filenames_vlastni_prace"))
 let nahrat_praci_div = document.getElementById("nahrat_praci")
 let ukazat_praci_div = document.getElementById("ukazat_praci")
 let ukazat_praci_content_div = document.getElementById("ukazat_praci_content")
@@ -74,7 +74,7 @@ if (prace) {
     ukazat_praci_div.hidden = false
     for (let prace_file of prace) {
         let a = document.createElement("a")
-        a.href = "/send_prace_file/" + prace_file
+        a.href = "/file_api/vlastni_prace/" + prace_file
         a.download = prace_file
         a.innerHTML = prace_file
         ukazat_praci_content_div.appendChild(a)

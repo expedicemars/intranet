@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
 from flask_login import current_user
+from website.helpers.require_role_decorator import require_role_on_current_user
 from website.models.user import User
-from website.mails.mail_handler import mail_sender
+from website.mail_handler import mail_sender
 from website import db
-from website.roles.role_handler import get_access_rights
+from website.role_handler import get_access_rights
 import json
-from website.paths.paths import user_data_folder_path
-from website.helpers.get_aktualni_faze import je_zadani_pristupne, get_aktualni_faze
+from website.paths import user_data_folder_path
 from website.json_handlers.pohovory_handling import zapsat_na_pohovor
 
 user_views = Blueprint("user_views", __name__)
@@ -14,150 +14,138 @@ user_views = Blueprint("user_views", __name__)
 
 
 @user_views.route("/ucet", methods=["GET", "POST"])
+@require_role_on_current_user("user")
 def ucet():
-    if "user" in get_access_rights(current_user):
-        if request.method == "GET":
-            if get_aktualni_faze() == "ukonceny_rocnik":
-                flash("Tento ročník je ukončený, proto tu nejde nic upravovat. Brzy restartujeme systém a půjde se registrovat do nového.", category="error")
-            return render_template("ucet.html", current_user = current_user, roles = get_access_rights(current_user), faze = get_aktualni_faze(), uzamcene_zmeny = current_user.uzamcene_zmeny)
-        else:
-            if request.form.get("overeni_emailu"):
-                token = current_user.get_reset_token()
-                mail_sender(mail_identifier="potvrzeni_emailu", target=current_user.email, data=token)
-                flash("E-mail byl odeslán. Zkontrolujte si svou schránku.", category="info")
-                return redirect(url_for("user_views.ucet"))
-            elif request.form.get("img"):
-                #zkusit smazat starou
-                path = user_data_folder_path() / str(current_user.id)
-                for file in path.iterdir():
-                    if file.stem == "profilovka":
-                        profilovka_path = path / file.name
-                        profilovka_path.unlink()
-                        break
-                #nahrát novou
-                fotka = request.files.get("img_file")
-                if len(fotka.filename.split(".")) == 2:
-                    pripona = fotka.filename.split(".")[1]
-                    filename = "profilovka" + "." + pripona
-                    cesta = user_data_folder_path() / str(current_user.id) / filename
-                    cesta.touch()
-                    fotka.save(cesta)
-                    flash("Fotka nahrána.", category="success")
-                    return redirect(url_for("user_views.ucet"))
-                else:
-                    flash("Prosím, pojmenuj soubor tak, aby název obsahoval jen jednu tečku, a to u přípony.", category="info")
-                    return redirect(url_for("user_views.ucet"))
-            elif request.form.get("nahrat_motivak"):
-                #zkusit smazat stary
-                path = user_data_folder_path() / str(current_user.id)
-                for file in path.iterdir():
-                    if file.stem == "motivak":
-                        profilovka_path = path / file.name
-                        profilovka_path.unlink()
-                        break
-                #nahrát novy
-                file = request.files.get("motivak")
-                if len(file.filename.split(".")) == 2:
-                    pripona = file.filename.split(".")[1]
-                    filename = "motivak" + "." + pripona
-                    cesta = user_data_folder_path() / str(current_user.id) / filename
-                    cesta.touch()
-                    file.save(cesta)
-                    flash("Morivák nahrán.", category="success")
-                    return redirect(url_for("user_views.ucet"))
-                else:
-                    flash("Prosím, pojmenuj soubor tak, aby název obsahoval jen jednu tečku, a to u přípony.", category="info")
-                    return redirect(url_for("user_views.ucet"))
-            else:
-                data = json.loads(request.form.get("result"))
-                current_user.jmeno = data["jmeno"]
-                current_user.adresa = data["adresa"]
-                current_user.telcislo = data["telcislo"]
-                current_user.datum_narozeni = data["datum_narozeni"]
-                current_user.mail_rodicu = data["mail_rodicu"]
-                current_user.tricko = data["tricko"]
-                current_user.dozvedeli = data["dozvedeli"]
-                current_user.skola = data["skola"]
-                current_user.alergie = data["alergie"]
-                if current_user.email != data["email"]:
-                    current_user.email = data["email"]
-                    current_user.confirmed = False
-                    flash("Protože jsi změnil mail, musíš ho znovu ověřit.", category="info")
-                db.session.add(current_user)
-                db.session.commit()
-                flash("Změny byly uloženy.", category="success")
-                return redirect(url_for("user_views.ucet"))
+    if request.method == "GET":
+        return render_template("ucet.html", current_user = current_user, roles = get_access_rights(), uzamcene_zmeny = current_user.uzamcene_zmeny)
     else:
-        abort(401)
+        if request.form.get("overeni_emailu"):
+            token = current_user.get_reset_token()
+            mail_sender(mail_identifier="potvrzeni_emailu", target=current_user.email, data=token)
+            flash("E-mail byl odeslán. Zkontrolujte si svou schránku.", category="info")
+            return redirect(url_for("user_views.ucet"))
+        elif request.form.get("img"):
+            #zkusit smazat starou
+            path = user_data_folder_path() / str(current_user.id)
+            for file in path.iterdir():
+                if file.stem == "profilovka":
+                    profilovka_path = path / file.name
+                    profilovka_path.unlink()
+                    break
+            #nahrát novou
+            fotka = request.files.get("img_file")
+            if len(fotka.filename.split(".")) == 2:
+                pripona = fotka.filename.split(".")[1]
+                filename = "profilovka" + "." + pripona
+                cesta = user_data_folder_path() / str(current_user.id) / filename
+                cesta.touch()
+                fotka.save(cesta)
+                flash("Fotka nahrána.", category="success")
+                return redirect(url_for("user_views.ucet"))
+            else:
+                flash("Prosím, pojmenuj soubor tak, aby název obsahoval jen jednu tečku, a to u přípony.", category="info")
+                return redirect(url_for("user_views.ucet"))
+        elif request.form.get("nahrat_motivak"):
+            #zkusit smazat stary
+            path = user_data_folder_path() / str(current_user.id)
+            for file in path.iterdir():
+                if file.stem == "motivak":
+                    profilovka_path = path / file.name
+                    profilovka_path.unlink()
+                    break
+            #nahrát novy
+            file = request.files.get("motivak")
+            if len(file.filename.split(".")) == 2:
+                pripona = file.filename.split(".")[1]
+                filename = "motivak" + "." + pripona
+                cesta = user_data_folder_path() / str(current_user.id) / filename
+                cesta.touch()
+                file.save(cesta)
+                flash("Morivák nahrán.", category="success")
+                return redirect(url_for("user_views.ucet"))
+            else:
+                flash("Prosím, pojmenuj soubor tak, aby název obsahoval jen jednu tečku, a to u přípony.", category="info")
+                return redirect(url_for("user_views.ucet"))
+        else:
+            data = json.loads(request.form.get("result"))
+            current_user.jmeno = data["jmeno"]
+            current_user.adresa = data["adresa"]
+            current_user.telcislo = data["telcislo"]
+            current_user.datum_narozeni = data["datum_narozeni"]
+            current_user.mail_rodicu = data["mail_rodicu"]
+            current_user.tricko = data["tricko"]
+            current_user.dozvedeli = data["dozvedeli"]
+            current_user.skola = data["skola"]
+            current_user.alergie = data["alergie"]
+            if current_user.email != data["email"]:
+                current_user.email = data["email"]
+                current_user.confirmed = False
+                flash("Protože jsi změnil mail, musíš ho znovu ověřit.", category="info")
+            db.session.add(current_user)
+            db.session.commit()
+            flash("Změny byly uloženy.", category="success")
+            return redirect(url_for("user_views.ucet"))
 
 
 @user_views.route("/ucet/<token>", methods=["GET"])
+@require_role_on_current_user("user")
 def ucet_overeny(token):
-    if "user" in get_access_rights(current_user):
-        user = User.verify_reset_token(token)
-        if user is None:
-            flash("Obnovovací link vypršel, nebo je jinak neplatný.", category="info")
-            return redirect(url_for("user_views.ucet"))
-        else:
-            user.confirmed = True
-            db.session.commit()
-            return redirect(url_for("user_views.ucet"))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash("Obnovovací link vypršel, nebo je jinak neplatný.", category="info")
+        return redirect(url_for("user_views.ucet"))
     else:
-        abort(401)
+        user.confirmed = True
+        db.session.commit()
+        return redirect(url_for("user_views.ucet"))
         
 
 @user_views.route("/odbornost", methods=["GET","POST"])
+@require_role_on_current_user("user")
 def odbornost():
-    if "user" in get_access_rights(current_user):
-        if request.method == "GET":
-            if get_aktualni_faze() == "ukonceny_rocnik":
-                flash("Tento ročník je ukončený, proto tu nejde nic upravovat. Brzy restartujeme systém a půjde se registrovat do nového.", category="error")
-            if current_user.odbornost == "zatím nevybraná":
-                odbornost = False
-            else:
-                odbornost = current_user.odbornost
-            return render_template("odbornost.html", zadani_pristupne =je_zadani_pristupne() , odbornost=odbornost, roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny)
+    if request.method == "GET":
+        if current_user.odbornost == "zatím nevybraná":
+            odbornost = False
         else:
-            if request.form.get("result"):
-                current_user.odbornost = request.form["result"]
-                db.session.add(current_user)
-                db.session.commit()
-                flash("Odbornost vybrána!", category="success")
-                return redirect(url_for("user_views.ucet"))
-            elif request.form.get("ulozit_praci"):
-                if all(request.files.getlist("nahrana_prace")):
-                    for file in request.files.getlist("nahrana_prace"):
-                        prace_folder_path = user_data_folder_path() / str(current_user.id) / "prace"
-                        file.save(prace_folder_path / file.filename)
-                    flash("Práce nahrána.", category="success")
-                else:
-                    flash("Nenahrál jsi žádné soubory.", category="info")
-            elif request.form.get("smazat_praci"):
-                path = user_data_folder_path() / str(current_user.id) / "prace"
-                for file in path.iterdir():
-                    file.unlink()
-                flash("Svou nahranou práci jsi smazal. Nezapomeň nahrát novou verzi :)", category="success")
-            return redirect(url_for("user_views.odbornost"))
+            odbornost = current_user.odbornost
+        return render_template("odbornost.html", odbornost=odbornost, roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny)
     else:
-        abort(401)
+        if request.form.get("result"):
+            current_user.odbornost = request.form["result"]
+            db.session.add(current_user)
+            db.session.commit()
+            flash("Odbornost vybrána!", category="success")
+            return redirect(url_for("user_views.ucet"))
+        elif request.form.get("ulozit_praci"):
+            if all(request.files.getlist("nahrana_prace")):
+                for file in request.files.getlist("nahrana_prace"):
+                    prace_folder_path = user_data_folder_path() / str(current_user.id) / "prace"
+                    file.save(prace_folder_path / file.filename)
+                flash("Práce nahrána.", category="success")
+            else:
+                flash("Nenahrál jsi žádné soubory.", category="info")
+        elif request.form.get("smazat_praci"):
+            path = user_data_folder_path() / str(current_user.id) / "prace"
+            for file in path.iterdir():
+                file.unlink()
+            flash("Svou nahranou práci jsi smazal. Nezapomeň nahrát novou verzi :)", category="success")
+        return redirect(url_for("user_views.odbornost"))
 
 
 @user_views.route("/pohovory", methods=["GET","POST"])
+@require_role_on_current_user("user")
 def pohovory():
-    if "user" in get_access_rights(current_user):
-        if  request.method == "GET":
-            return render_template("pohovory.html", roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny)
-        else:
-            if request.form.get("vybrat"):
-                current_user.datum_pohovoru = request.form.get("vybrat")
-                db.session.add(current_user)
-                db.session.commit()
-                vysledek = zapsat_na_pohovor(current_user.datum_pohovoru, current_user.id)
-                if vysledek:
-                    flash("Termín vybrán.", category="success")
-                else:
-                    flash("Tento termín si mezitím vybral někdo jiný. Prosím, vyber si další.", category="error")
-                return redirect(url_for("user_views.pohovory"))
+    if  request.method == "GET":
+        return render_template("pohovory.html", roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny)
     else:
-        abort(401)
+        if request.form.get("vybrat"):
+            current_user.datum_pohovoru = request.form.get("vybrat")
+            db.session.add(current_user)
+            db.session.commit()
+            vysledek = zapsat_na_pohovor(current_user.datum_pohovoru, current_user.id)
+            if vysledek:
+                flash("Termín vybrán.", category="success")
+            else:
+                flash("Tento termín si mezitím vybral někdo jiný. Prosím, vyber si další.", category="error")
+            return redirect(url_for("user_views.pohovory"))
     
