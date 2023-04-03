@@ -53,7 +53,7 @@ function generator(zaznam_o_jednom) {
             let a = document.createElement("a")
             a.innerHTML = filename
             a.download = filename
-            a.href = "/send_prace_file/" + String(zaznam_o_jednom["id"]) + "/" + filename
+            a.href = "/file_api/cizi_prace/" + String(zaznam_o_jednom["id"]) + "/" + filename
             prace_col.appendChild(a)
             prace_col.appendChild(document.createElement("br"))
         }

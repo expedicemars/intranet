@@ -4,6 +4,7 @@ from shutil import rmtree
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
 from flask_login import current_user
 from website import db
+from website.helpers.require_role_decorator import require_role_on_current_user
 from website.models.chyba import Chyba
 from website.models.user import User
 from website.json_handlers.mailing_list import set_mailing_list
@@ -23,450 +24,389 @@ admin_views = Blueprint("admin_views",__name__)
 
 @admin_views.route("/", methods=["GET","POST"])
 @admin_views.route("/dashboard", methods=["GET","POST"])
+@require_role_on_current_user("admin")
 def admin_dashboard():
-    rights = get_access_rights(current_user)
-    if "admin" in rights:
-        if request.method == "GET":
-            flash("Vítej a porozhlédni se tu. Zatím nejlépe shrnuté a popsané fíčury jsou dole v patičce v Přehledu fíčur systému.", category="success")
-            return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych(), roles=rights)
-        else:
-            mailing_list = request.form.get("mailing_list")
-            set_mailing_list(mailing_list)
-            flash("Změna mailing listu uložena.", category="success")
-            alog("Úprava mailing listu.")
-            return redirect(url_for("admin_views.admin_dashboard"))
+    if request.method == "GET":
+        flash("Vítej a porozhlédni se tu. Zatím nejlépe shrnuté a popsané fíčury jsou dole v patičce v Přehledu fíčur systému.", category="success")
+        return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych(), roles=get_access_rights())
     else:
-        abort(401)
+        mailing_list = request.form.get("mailing_list")
+        set_mailing_list(mailing_list)
+        flash("Změna mailing listu uložena.", category="success")
+        alog("Úprava mailing listu.")
+        return redirect(url_for("admin_views.admin_dashboard"))
 
 
 @admin_views.route("/poznamky", methods=["GET","POST"])
+@require_role_on_current_user("admin")
 def poznamky():
-    rights = get_access_rights(current_user)
-    if "admin" in rights:
-        if request.method == "GET":
-            return render_template("admin_poznamky.html", roles=rights, username = current_user.jmeno, date=datetime.date.today())
-        else:
-            zapsat_poznamky(json.loads(request.form.get("result")))
-            flash("Změny uloženy.", category="success")
-            return redirect(url_for("admin_views.poznamky"))
+    if request.method == "GET":
+        return render_template("admin_poznamky.html", roles=get_access_rights(), username = current_user.jmeno, date=datetime.date.today())
     else:
-        abort(401)
+        zapsat_poznamky(json.loads(request.form.get("result")))
+        flash("Změny uloženy.", category="success")
+        return redirect(url_for("admin_views.poznamky"))
 
 
 @admin_views.route("/planovane_featury")
+@require_role_on_current_user("admin")
 def planovane_featury():
-    rights = get_access_rights(current_user)
-    if "admin" in rights:
-       return render_template("admin_planovane_featury.html", roles=rights)
-    else:
-        abort(401)
+       return render_template("admin_planovane_featury.html", roles=get_access_rights())
 
 
 @admin_views.route("/historie_verzi")
+@require_role_on_current_user("admin")
 def historie_verzi():
-    rights = get_access_rights(current_user)
-    if "admin" in rights:
-        return render_template("admin_historie_verzi.html", roles=rights)
-    else:
-        abort(401)
+        return render_template("admin_historie_verzi.html", roles=get_access_rights())
 
 
 @admin_views.route("/uprava_znamych_bugu", methods=["GET","POST"])
+@require_role_on_current_user("editing_bugs_allowed")
 def uprava_znamych_bugu():
-    rights = get_access_rights(current_user)
-    if "editing_bugs_allowed" in rights:
-        if request.method == "GET":
-            return render_template("admin_uprava_znamych_chyb.html", roles=rights)
-        else:
-            Chyba.save_po_upravach(json.loads(request.form.get("result")))
-            alog("Uprava záznamů na bugtrackeru.")
-            return redirect(url_for("admin_views.admin_dashboard"))
+    if request.method == "GET":
+        return render_template("admin_uprava_znamych_chyb.html", roles=get_access_rights())
     else:
-        abort(401)
+        Chyba.save_po_upravach(json.loads(request.form.get("result")))
+        alog("Uprava záznamů na bugtrackeru.")
+        return redirect(url_for("admin_views.admin_dashboard"))
     
 
 @admin_views.route("/app_logs", methods=["GET","POST"])
+@require_role_on_current_user("editing_logs_allowed")
 def app_logs():
-    rights = get_access_rights(current_user)
-    if "editing_logs_allowed" in rights:
-        if request.method == "GET":
-            return render_template("admin_app_logs.html", roles=rights)
-        else:
-            delete_logs()
-            alog("Vymazani app logu.")
-            flash("Soubor s app logy byl promazán.",category="success")
-            return redirect(url_for("admin_views.admin_dashboard"))
+    if request.method == "GET":
+        return render_template("admin_app_logs.html", roles=get_access_rights())
     else:
-        abort(401)
+        delete_logs()
+        alog("Vymazani app logu.")
+        flash("Soubor s app logy byl promazán.",category="success")
+        return redirect(url_for("admin_views.admin_dashboard"))
     
 
 @admin_views.route("/admin_logs", methods=["GET","POST"])
+@require_role_on_current_user("editing_logs_allowed")
 def admin_logs():
-    rights = get_access_rights(current_user)
-    if "editing_logs_allowed" in rights:
-        if request.method == "GET":
-            return render_template("admin_admin_logs.html", roles=rights)
-        else:
-            delete_alogs()
-            alog("Vymazani admin logu.")
-            flash("Soubor s admin logy byl promazán.",category="success")
-            return redirect(url_for("admin_views.admin_dashboard"))
+    if request.method == "GET":
+        return render_template("admin_admin_logs.html", roles=get_access_rights())
     else:
-        abort(401)
+        delete_alogs()
+        alog("Vymazani admin logu.")
+        flash("Soubor s admin logy byl promazán.",category="success")
+        return redirect(url_for("admin_views.admin_dashboard"))
 
 
 @admin_views.route("/registrovani_uzivatele", methods=["GET","POST"])
+@require_role_on_current_user("editing_users_allowed")
 def registrovani_uzivatele():
-    rights = get_access_rights(current_user)
-    if "editing_users_allowed" in rights:
-        if request.method == "GET":
-            return render_template("admin_registrovani_uzivatele.html", roles=rights)
-        else:
-            if request.form.get("dummy"):
-                u = User.generate_random()
-                alog("Generování nového dummy usera s id=" + str(u.id))
-                return redirect(url_for("admin_views.detail_usera", id=u.id))
-            else:
-                result = request.form.get("result")
-                return redirect(url_for("admin_views.detail_usera",id=int(result)))
+    if request.method == "GET":
+        return render_template("admin_registrovani_uzivatele.html", roles=get_access_rights())
     else:
-        abort(401)
+        if request.form.get("dummy"):
+            u = User.generate_random()
+            alog("Generování nového dummy usera s id=" + str(u.id))
+            return redirect(url_for("admin_views.detail_usera", id=u.id))
+        else:
+            result = request.form.get("result")
+            return redirect(url_for("admin_views.detail_usera",id=int(result)))
+        
     
 @admin_views.route("/detail_usera/<int:id>", methods=["GET","POST"])
+@require_role_on_current_user("editing_users_allowed")
 def detail_usera(id):
-    rights = get_access_rights(current_user)
-    if "editing_users_allowed" in rights:
-        if request.method == "GET":
-            return render_template("admin_detail_usera.html", roles = rights, id=id)
-        else:
-            if request.form.get("smazat"):
-                User.query.get(id).odstranit()
-                alog("Smazání usera " + str(id) + ".")
-                flash("User byl smazán", category="success")
-                return redirect(url_for("admin_views.registrovani_uzivatele"))
-            elif request.form.get("odebrat_odbornost"):
-                u: User
-                u = User.query.get(id)
-                u.odbornost = "zatím nevybraná"
-                db.session.add(u)
-                db.session.commit()
-                flash("Odbornost byla odebrána", category="success")
-                return redirect(url_for("admin_views.detail_usera", id=id))
-                
-            elif request.form.get("result"):
-                data = json.loads(request.form.get("result"))
-                if len(data["admin_poznamka"]) > 1000:
-                    flash("Admin poznámka je moc dlouhá, sori. Může bejt max 1000 znaků.", category="error")
-                    return redirect(url_for("admin_views.detail_usera", id=id))
-                if len(data["meeting_link"]) > 1000:
-                    flash("Meeting link je moc dlouhý, sori. Může bejt max 1000 znaků.", category="error")
-                    return redirect(url_for("admin_views.detail_usera", id=id))
-                if data["uzamcene_zmeny"] == "true":
-                    data["uzamcene_zmeny"] = True
-                if data["uzamcene_zmeny"] == "false":
-                    data["uzamcene_zmeny"] = False
-                
-                if data["souhlas_rodicu"] == "true":
-                    data["souhlas_rodicu"] = True
-                if data["souhlas_rodicu"] == "false":
-                    data["souhlas_rodicu"] = False
-
-                u = User.query.get(id)
-                if u.progress == data["progress"]:
-                    pass
-                else:
-                    u.progress = data["progress"]
-                    alog(f"Změna progressu uživatele {id} na { u.progress }.")
-
-                if u.uzamcene_zmeny == data["uzamcene_zmeny"]:
-                    pass
-                else:
-                    u.uzamcene_zmeny = data["uzamcene_zmeny"]
-                    alog(f"Změna uzamčení změn uživatele {id} na { u.uzamcene_zmeny }.")
-                
-                if u.admin_poznamka == data["admin_poznamka"]:
-                    pass
-                else:
-                    u.admin_poznamka = data["admin_poznamka"]
-                    alog(f"Změna admin poznámky uživatele {id}.")
-                
-                if u.souhlas_rodicu == data["souhlas_rodicu"]:
-                    pass
-                else:
-                    u.souhlas_rodicu = data["souhlas_rodicu"]
-                    alog(f"Změna souhlasu rodičů uživatele {id} na { u.souhlas_rodicu }.")
-
-                if u.meeting_link == data["meeting_link"]:
-                    pass
-                else:
-                    u.meeting_link = data["meeting_link"]
-                    alog(f"Změna meeting linku uživatele {id}.")
-                
-                db.session.add(u)
-                db.session.commit()
-                flash("Záznam o userovi upraven", category="success")
-                return redirect(url_for("admin_views.registrovani_uzivatele"))
-            else:
-                return "divna query"
+    if request.method == "GET":
+        return render_template("admin_detail_usera.html", roles=get_access_rights(), id=id)
     else:
-        abort(401)
+        if request.form.get("smazat"):
+            User.query.get(id).odstranit()
+            alog("Smazání usera " + str(id) + ".")
+            flash("User byl smazán", category="success")
+            return redirect(url_for("admin_views.registrovani_uzivatele"))
+        elif request.form.get("odebrat_odbornost"):
+            u: User
+            u = User.query.get(id)
+            u.odbornost = "zatím nevybraná"
+            db.session.add(u)
+            db.session.commit()
+            flash("Odbornost byla odebrána", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+            
+        elif request.form.get("result"):
+            data = json.loads(request.form.get("result"))
+            if len(data["admin_poznamka"]) > 1000:
+                flash("Admin poznámka je moc dlouhá, sori. Může bejt max 1000 znaků.", category="error")
+                return redirect(url_for("admin_views.detail_usera", id=id))
+            if len(data["meeting_link"]) > 1000:
+                flash("Meeting link je moc dlouhý, sori. Může bejt max 1000 znaků.", category="error")
+                return redirect(url_for("admin_views.detail_usera", id=id))
+            if data["uzamcene_zmeny"] == "true":
+                data["uzamcene_zmeny"] = True
+            if data["uzamcene_zmeny"] == "false":
+                data["uzamcene_zmeny"] = False
+            
+            if data["souhlas_rodicu"] == "true":
+                data["souhlas_rodicu"] = True
+            if data["souhlas_rodicu"] == "false":
+                data["souhlas_rodicu"] = False
+
+            u = User.query.get(id)
+            if u.progress == data["progress"]:
+                pass
+            else:
+                u.progress = data["progress"]
+                alog(f"Změna progressu uživatele {id} na { u.progress }.")
+
+            if u.uzamcene_zmeny == data["uzamcene_zmeny"]:
+                pass
+            else:
+                u.uzamcene_zmeny = data["uzamcene_zmeny"]
+                alog(f"Změna uzamčení změn uživatele {id} na { u.uzamcene_zmeny }.")
+            
+            if u.admin_poznamka == data["admin_poznamka"]:
+                pass
+            else:
+                u.admin_poznamka = data["admin_poznamka"]
+                alog(f"Změna admin poznámky uživatele {id}.")
+            
+            if u.souhlas_rodicu == data["souhlas_rodicu"]:
+                pass
+            else:
+                u.souhlas_rodicu = data["souhlas_rodicu"]
+                alog(f"Změna souhlasu rodičů uživatele {id} na { u.souhlas_rodicu }.")
+
+            if u.meeting_link == data["meeting_link"]:
+                pass
+            else:
+                u.meeting_link = data["meeting_link"]
+                alog(f"Změna meeting linku uživatele {id}.")
+            
+            db.session.add(u)
+            db.session.commit()
+            flash("Záznam o userovi upraven", category="success")
+            return redirect(url_for("admin_views.registrovani_uzivatele"))
     
 
 @admin_views.route("/jmenovat_adminy", methods=["GET","POST"])
+@require_role_on_current_user("editing_admins_allowed")
 def jmenovat_adminy():
-    rights = get_access_rights(current_user)
-    if "editing_admins_allowed" in rights:
         if request.method == "GET":
-            return render_template("admin_jmenovat_adminy.html", roles=rights)
+            return render_template("admin_jmenovat_adminy.html", roles=get_access_rights())
         else:
             return redirect(url_for("admin_views.vybrat_role_adminovi", id=int(request.form.get("result"))))
-    else:
-        abort(401)
 
 @admin_views.route("/jmenovat_adminy/<int:id>", methods=["GET","POST"])
+@require_role_on_current_user("editing_admins_allowed")
 def vybrat_role_adminovi(id):
-    rights = get_access_rights(current_user)
-    if "editing_admins_allowed" in rights:
-        if request.method == "GET":
-            return render_template("admin_vybrat_role_adminovi.html", user=User.query.get(id), roles=rights)
-        else:
-            if request.form.get("detail"):
-                return redirect(url_for("admin_views.detail_usera", id=request.form.get("detail")))
-            else:
-                nove_role = json.loads(request.form.get("result"))
-                u = User.query.get(id)
-                if u.role == json.dumps(nove_role):
-                    pass
-                else:
-                    u.role = json.dumps(nove_role)
-                    alog(f"Změněny role uživatele {id} na {json.dumps(nove_role)}")
-                db.session.add(u)
-                db.session.commit()
-                flash("Role byly upraveny.", category="success")
-                return redirect(url_for("admin_views.jmenovat_adminy"))
-            
+    if request.method == "GET":
+        return render_template("admin_vybrat_role_adminovi.html", user=User.query.get(id), roles=get_access_rights())
     else:
-        abort(401)
+        if request.form.get("detail"):
+            return redirect(url_for("admin_views.detail_usera", id=request.form.get("detail")))
+        else:
+            nove_role = json.loads(request.form.get("result"))
+            u = User.query.get(id)
+            if u.role == json.dumps(nove_role):
+                pass
+            else:
+                u.role = json.dumps(nove_role)
+                alog(f"Změněny role uživatele {id} na {json.dumps(nove_role)}")
+            db.session.add(u)
+            db.session.commit()
+            flash("Role byly upraveny.", category="success")
+            return redirect(url_for("admin_views.jmenovat_adminy"))
 
 
 @admin_views.route("/prubeh_rocniku", methods=["GET","POST"])
+@require_role_on_current_user("editing_prubeh_rocniku")
 def prubeh_rocniku():
-    rights = get_access_rights(current_user)
-    if "editing_prubeh_rocniku" in rights:
-        if request.method == "GET":
-            return render_template("admin_prubeh_rocniku.html", roles=rights)
-        else:
-            if request.form.get("ukoncit_rocnik_input"):
-                promazat()
-                alog("Byl promazán systém")
-                flash("Promazání systému bylo úspěšné.", category="success")
-                return redirect(url_for("admin_views.admin_dashboard"))
-            elif request.form.get("ulozit_datum"):
-                datum = request.form.get("registrace_date")
-                set_nove_datum_konce_registrace(datum)
-                alog(f"Úprava temrínu konce registrace na {datum}.")
-                flash("Termín konce registrace byl upraven.", category="success")
-            elif request.form.get("toggle_registraci"):
-                toggle_registrace()
-                alog(f"Změna otevření registrace na {get_registrace_otevrena()}")
-                flash(f"Stav otevření registrace změnen na {get_registrace_otevrena()}", category="success")
-            elif request.form.get("ulozit_mailing_list"):
-                set_mailing_list(request.form.get("mailing_list"))
-                alog("Upraven mailing list.")
-                flash("Mailing list byl upraven.", category="success")
-            elif request.form.get("generovat"):
-                alog("Vygenerování exportu.")
-                exportovat()
-                flash("Export vytvořen, najdeš ho v seznamu starších exportů.", category="success")
-            elif request.form.get("smazat_export"):
-                name: str = request.form.get("smazat_export")
-                p = exporty_path() / name
-                rmtree(p)
-                flash("Export byl smazán.", category="success")
-                alog("Smazání exportu z "+ pretty_date(name))
-            return redirect(url_for("admin_views.prubeh_rocniku"))        
+    if request.method == "GET":
+        return render_template("admin_prubeh_rocniku.html", roles=get_access_rights())
+    else:
+        if request.form.get("ukoncit_rocnik_input"):
+            promazat()
+            alog("Byl promazán systém")
+            flash("Promazání systému bylo úspěšné.", category="success")
+            return redirect(url_for("admin_views.admin_dashboard"))
+        elif request.form.get("ulozit_datum"):
+            datum = request.form.get("registrace_date")
+            set_nove_datum_konce_registrace(datum)
+            alog(f"Úprava temrínu konce registrace na {datum}.")
+            flash("Termín konce registrace byl upraven.", category="success")
+        elif request.form.get("toggle_registraci"):
+            toggle_registrace()
+            alog(f"Změna otevření registrace na {get_registrace_otevrena()}")
+            flash(f"Stav otevření registrace změnen na {get_registrace_otevrena()}", category="success")
+        elif request.form.get("ulozit_mailing_list"):
+            set_mailing_list(request.form.get("mailing_list"))
+            alog("Upraven mailing list.")
+            flash("Mailing list byl upraven.", category="success")
+        elif request.form.get("generovat"):
+            alog("Vygenerování exportu.")
+            exportovat()
+            flash("Export vytvořen, najdeš ho v seznamu starších exportů.", category="success")
+        elif request.form.get("smazat_export"):
+            name: str = request.form.get("smazat_export")
+            p = exporty_path() / name
+            rmtree(p)
+            flash("Export byl smazán.", category="success")
+            alog("Smazání exportu z "+ pretty_date(name))
+        return redirect(url_for("admin_views.prubeh_rocniku"))        
 
 @admin_views.route("/velitele_odbornosti", methods=["GET","POST"])
+@require_role_on_current_user("velitel_odbornosti")
 def velitele_odbornosti():
-    rights = get_access_rights(current_user)
-    if "velitel_odbornosti" in rights:
-        if request.method == "GET":
-            return render_template("admin_velitele_odbornosti.html", roles=rights)
-        else:
-            # mazani souboru
-            if request.form.get("smazat_zadani"):
-                odbornost = request.form.get("smazat_zadani")
-                path = zadani_folder_path() / odbornost
-                for file in path.iterdir():
-                    file.unlink()
-                alog(f"Smazání zadání odbornosti {odbornost}.")
-                flash(f"Zadání odborosti {odbornost} je smazaný.", category="success")
-            
-            # ukládání souborů
-            elif request.form.get("ulozit_zadani"):
-                odbornost = request.form.get("ulozit_zadani")
-                if all(request.files.getlist(f"{odbornost}_files")):
-                    for file in request.files.getlist(f"{odbornost}_files"):
-                        file.save(zadani_folder_path() / odbornost / file.filename)
-                    flash("Zadání nahráno.", category="success")
-                    alog(f"Nahrání nového zadání pro odbornost {odbornost}.")
-                else:
-                    flash("Nenahrál jsi žádné soubory.", category="info")
-
-
-            # zapisování kontaktních dat
+    if request.method == "GET":
+        return render_template("admin_velitele_odbornosti.html", roles=get_access_rights())
+    else:
+        # mazani souboru
+        if request.form.get("smazat_zadani"):
+            odbornost = request.form.get("smazat_zadani")
+            path = zadani_folder_path() / odbornost
+            for file in path.iterdir():
+                file.unlink()
+            alog(f"Smazání zadání odbornosti {odbornost}.")
+            flash(f"Zadání odborosti {odbornost} je smazaný.", category="success")
+        
+        # ukládání souborů
+        elif request.form.get("ulozit_zadani"):
+            odbornost = request.form.get("ulozit_zadani")
+            if all(request.files.getlist(f"{odbornost}_files")):
+                for file in request.files.getlist(f"{odbornost}_files"):
+                    file.save(zadani_folder_path() / odbornost / file.filename)
+                flash("Zadání nahráno.", category="success")
+                alog(f"Nahrání nového zadání pro odbornost {odbornost}.")
             else:
-                inputs_ids_list = ["biolog", "konstrukter", "fyzik", "inzenyr", "popularizator"]
-                zmeneno = []
-                with open(velitel_odbornosti_data_path()) as file:
-                    velitel_odbornosti_data = json.load(file)
-                for id in inputs_ids_list:
-                    res = request.form.get(id)
-                    if res is None:
+                flash("Nenahrál jsi žádné soubory.", category="info")
+
+
+        # zapisování kontaktních dat
+        else:
+            inputs_ids_list = ["biolog", "konstrukter", "fyzik", "inzenyr", "popularizator"]
+            zmeneno = []
+            with open(velitel_odbornosti_data_path()) as file:
+                velitel_odbornosti_data = json.load(file)
+            for id in inputs_ids_list:
+                res = request.form.get(id)
+                if res is None:
+                    pass
+                else:
+                    if velitel_odbornosti_data[id] == res:
                         pass
                     else:
-                        if velitel_odbornosti_data[id] == res:
-                            pass
-                        else:
-                            zmeneno.append(id)
-                            velitel_odbornosti_data[id] = res
-                with open(velitel_odbornosti_data_path(),"w") as file:
-                    file.write(json.dumps(velitel_odbornosti_data, indent=4))
-                alog("Úprava kontaktních údajů pro odbornosti: " + str(zmeneno))
-                flash("Data velitelů odborností byla upravena.", category="success")
-            return redirect(url_for("admin_views.velitele_odbornosti"))
-
-    else:
-        abort(401)
+                        zmeneno.append(id)
+                        velitel_odbornosti_data[id] = res
+            with open(velitel_odbornosti_data_path(),"w") as file:
+                file.write(json.dumps(velitel_odbornosti_data, indent=4))
+            alog("Úprava kontaktních údajů pro odbornosti: " + str(zmeneno))
+            flash("Data velitelů odborností byla upravena.", category="success")
+        return redirect(url_for("admin_views.velitele_odbornosti"))
 
 
 @admin_views.route("/generovat_seznamy/", methods=["GET","POST"])
+@require_role_on_current_user("editing_users_allowed")
 def generovat_seznamy():
-    rights = get_access_rights(current_user)
-    if "editing_users_allowed" in rights:
-        if request.method == "GET":
-            return render_template("admin_generovat_seznamy.html", roles=rights)
-        else:
-            alog("Generování seznamu účastníků podle: " + request.form.get("result") + ".")
-            kriteria = json.loads(request.form.get("result"))
-            data = seznam_generator(kriteria)
-            return json.dumps(data)
+    if request.method == "GET":
+        return render_template("admin_generovat_seznamy.html", roles=get_access_rights())
     else:
-        abort(401)
+        alog("Generování seznamu účastníků podle: " + request.form.get("result") + ".")
+        kriteria = json.loads(request.form.get("result"))
+        data = seznam_generator(kriteria)
+        return json.dumps(data)
 
 @admin_views.route("/motivaky_a_prace", methods=["GET","POST"])
+@require_role_on_current_user("editing_users_allowed")
 def motivaky_a_prace():
-    rights = get_access_rights(current_user)
-    if "editing_users_allowed" in rights:
-        if request.method == "GET":
-            return render_template("admin_motivaky_a_prace.html", roles=rights)
-        else:
-            result = json.loads(request.form.get("result"))
-            zmeneno = []
-            for zaznam in result:
-                user = User.query.get(zaznam["id"])
-                if user.hodnoceni_motivaku == zaznam["hodnoceni"]:
-                    pass
-                else:
-                    user.hodnoceni_motivaku = zaznam["hodnoceni"]
-                    db.session.add(user)
-                    db.session.commit()
-                    zmeneno.append(user.id)
-            alog(f"Změna hodnocení motiváku u uživatelů {str(zmeneno)}.")
-            flash("Hodnocení motiváků uložena.", category="success")
-            return redirect(url_for("admin_views.admin_dashboard"))
-
+    if request.method == "GET":
+        return render_template("admin_motivaky_a_prace.html", roles=get_access_rights())
     else:
-        abort(401)
-
+        result = json.loads(request.form.get("result"))
+        zmeneno = []
+        for zaznam in result:
+            user = User.query.get(zaznam["id"])
+            if user.hodnoceni_motivaku == zaznam["hodnoceni"]:
+                pass
+            else:
+                user.hodnoceni_motivaku = zaznam["hodnoceni"]
+                db.session.add(user)
+                db.session.commit()
+                zmeneno.append(user.id)
+        alog(f"Změna hodnocení motiváku u uživatelů {str(zmeneno)}.")
+        flash("Hodnocení motiváků uložena.", category="success")
+        return redirect(url_for("admin_views.admin_dashboard"))
 
 
 @admin_views.route("/pohovory", methods=["GET","POST"])
+@require_role_on_current_user("editing_pohovory")
 def pohovory():
-    rights = get_access_rights(current_user)
-    if "editing_pohovory" in rights:
-        if request.method == "GET":
-            return render_template("admin_pohovory.html", roles=rights)
-        else:
-            if request.form.get("pridat_termin"):
-                date = request.form.get("date")
-                start_time = request.form.get("start_time")
-                end_time = request.form.get("end_time")
-                start_datetime = date + " " + start_time
-                end_datetime = date + " " + end_time
-                try:
-                    start_datetime = datetime.datetime.strptime(start_datetime, "%Y-%m-%d %H:%M")
-                    end_datetime = datetime.datetime.strptime(end_datetime, "%Y-%m-%d %H:%M")
-                except ValueError:
-                    flash("Pravděpodobně nebylo zadáno datum.", category="error")
-                    return redirect(url_for("admin_views.pohovory"))
-                if start_datetime > end_datetime:
-                    flash("Časy, kkteré byly zadány, nedávaly smysl. Zkus to znova.", category="error")
-                    return redirect(url_for("admin_views.pohovory"))
-                else:
-                    pridat_pohovory(start_datetime=start_datetime, end_datetime=end_datetime)
-                    flash("Termíny vypsány.", category="success")
-                    alog(f"Vypsání nových termínů na pohovory mezi {start_datetime} a {end_datetime}")
-                    return redirect(url_for("admin_views.pohovory"))
-            elif request.form.get("smazat"):
-                isoformat = request.form.get("smazat")
-                vysledek = smazat_termin(datetime.datetime.fromisoformat(isoformat))
-                if vysledek:
-                    flash("Termín smazán.", category="success")
-                    alog(f"Smazání termínu pohovoru {isoformat}.")
-                else:
-                    flash("Tento termín si mezitím někdo zapsal, nejde tedy smazat.", category="error")
-                return redirect(url_for("admin_views.pohovory"))
+    if request.method == "GET":
+        return render_template("admin_pohovory.html", roles=get_access_rights())
     else:
-        abort(401)
+        if request.form.get("pridat_termin"):
+            date = request.form.get("date")
+            start_time = request.form.get("start_time")
+            end_time = request.form.get("end_time")
+            start_datetime = date + " " + start_time
+            end_datetime = date + " " + end_time
+            try:
+                start_datetime = datetime.datetime.strptime(start_datetime, "%Y-%m-%d %H:%M")
+                end_datetime = datetime.datetime.strptime(end_datetime, "%Y-%m-%d %H:%M")
+            except ValueError:
+                flash("Pravděpodobně nebylo zadáno datum.", category="error")
+                return redirect(url_for("admin_views.pohovory"))
+            if start_datetime > end_datetime:
+                flash("Časy, kkteré byly zadány, nedávaly smysl. Zkus to znova.", category="error")
+                return redirect(url_for("admin_views.pohovory"))
+            else:
+                pridat_pohovory(start_datetime=start_datetime, end_datetime=end_datetime)
+                flash("Termíny vypsány.", category="success")
+                alog(f"Vypsání nových termínů na pohovory mezi {start_datetime} a {end_datetime}")
+                return redirect(url_for("admin_views.pohovory"))
+        elif request.form.get("smazat"):
+            isoformat = request.form.get("smazat")
+            vysledek = smazat_termin(datetime.datetime.fromisoformat(isoformat))
+            if vysledek:
+                flash("Termín smazán.", category="success")
+                alog(f"Smazání termínu pohovoru {isoformat}.")
+            else:
+                flash("Tento termín si mezitím někdo zapsal, nejde tedy smazat.", category="error")
+            return redirect(url_for("admin_views.pohovory"))
 
 
 @admin_views.route("/prohlaseni_rodicu", methods=["GET","POST"])
+@require_role_on_current_user("admin")
 def prohlaseni_rodicu():
-    rights = get_access_rights(current_user)
-    if "admin" in rights:
-        if request.method == "GET":
-            return render_template("admin_prohlaseni_rodicu.html", roles=rights)
-        else:
-            file = request.files.get("souhlas")
-            if file:
-                file.name = "prohlaseni_rodicu.docx"
-                file.save(prohlaseni_path())
-                flash("Souhlas rodičů aktualizován.", category="success")
-                alog("Nahraný nový soubor souhlasu rodičů.")
-            else:
-                flash("Nenahrál jsi žádný soubor.", category="error")
-            return redirect(url_for("admin_views.admin_dashboard"))
-
+    if request.method == "GET":
+        return render_template("admin_prohlaseni_rodicu.html", roles=get_access_rights())
     else:
-        abort(401)
+        file = request.files.get("souhlas")
+        if file:
+            file.name = "prohlaseni_rodicu.docx"
+            file.save(prohlaseni_path())
+            flash("Souhlas rodičů aktualizován.", category="success")
+            alog("Nahraný nový soubor souhlasu rodičů.")
+        else:
+            flash("Nenahrál jsi žádný soubor.", category="error")
+        return redirect(url_for("admin_views.admin_dashboard"))
 
 @admin_views.route("/featury")
+@require_role_on_current_user("admin")
 def featury():
-    rights = get_access_rights(current_user)
-    if "admin" in rights:
-        return render_template("admin_featury.html", roles=rights)
-    else:
-        abort(401)
+    return render_template("admin_featury.html", roles=get_access_rights())
     
 @admin_views.route("/upravit_odkazy", methods=["GET","POST"])
+@require_role_on_current_user("admin")
 def upravit_odkazy():
-    rights = get_access_rights(current_user)
-    if "admin" in rights:
-        if request.method == "GET":
-            return render_template("admin_upravit_odkazy.html", roles=rights)
-        else:
-            if request.form.get("smazat"):
-                i = request.form.get("smazat")
-                smazat_odkaz_by_id(i)
-                flash("Odkaz odebrán", category="success")
-                alog(f"Odebrán odkaz.")
-            else:
-                popis = request.form.get("popis")
-                odkaz = request.form.get("odkaz")
-                pridat_odkaz(popis=popis, odkaz=odkaz)
-                flash("Odkaz přidán", category="success")
-                alog(f"Přidán užitečný odkaz {odkaz}")
-            return redirect(url_for("admin_views.upravit_odkazy"))
+    if request.method == "GET":
+        return render_template("admin_upravit_odkazy.html", roles=get_access_rights())
     else:
-        abort(401)
+        if request.form.get("smazat"):
+            i = request.form.get("smazat")
+            smazat_odkaz_by_id(i)
+            flash("Odkaz odebrán", category="success")
+            alog(f"Odebrán odkaz.")
+        else:
+            popis = request.form.get("popis")
+            odkaz = request.form.get("odkaz")
+            pridat_odkaz(popis=popis, odkaz=odkaz)
+            flash("Odkaz přidán", category="success")
+            alog(f"Přidán užitečný odkaz {odkaz}")
+        return redirect(url_for("admin_views.upravit_odkazy"))

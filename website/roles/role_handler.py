@@ -1,10 +1,11 @@
 from website.models.user import User
+from flask_login import current_user
 import json
 
 # jen pro moje info:
 dostupna_omezeni = ["user", "admin", "editing_bugs_allowed", "editing_logs_allowed", "editing_users_allowed", "editing_admins_allowed", "editing_prubeh_rocniku", "velitel_odbornosti", "velitel_odbornosti_biolog", "velitel_odbornosti_konstrukter", "velitel_odbornosti_fyzik", "velitel_odbornosti_inzenyr","velitel_odbornosti_popularizator", "editing_pohovory"]
 
-def get_access_rights(userobj: User) -> list:
+def get_access_rights(userobj: User = current_user) -> list:
     role = []
     if userobj.is_authenticated:
         role.extend(json.loads(userobj.role))
