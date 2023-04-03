@@ -157,24 +157,6 @@
             </div>
         </div>
         <hr>
-        <h3>Motivační dopis</h3>
-        {% if uzamcene_zmeny %}
-        Tvému účtu byly uzamčeny změny dokumentů, pravděpodobně proto, že se blíží nějaký důležitý termín. Níže si můžeš ještě stáhnout poslední verzi, kterou od tebe máme. Nebo nám napiš a my ti to ještě odemkneme.
-        {% else %}
-        Chceme po tobě, abys nám napsal motivační dopis. Co by v něm mělo být si můžeš přečíst <a href="https://www.expedice-mars.eu/co-by-mel-obsahovat-motivacni-dopis/">tady</a>.
-        <form method="post" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col">
-                    <input type="file" class="form-control" name="motivak">
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-outline-success" name="nahrat_motivak" value="1">Nahrát</button>
-                </div>
-            </div>
-        </form>
-        {% endif %}
-        <div id="nahrany_motivak" hidden></div>
-        <hr>
         <h3>Fotka</h3>
         <img src="/file_api/user_profilovka" alt="profilovka" width="20%" class="my-2">
         

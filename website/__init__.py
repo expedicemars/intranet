@@ -45,7 +45,6 @@ def create_app():
     from .views.default_views import default_views
     from .views.auth_views import auth_views
     from .views.admin_views import admin_views
-    from .views.sender_endpoints import sender
     from .views.user_views  import user_views
     from .api.admin_api import admin_api
     from .api.noauth_api import noauth_api
@@ -57,7 +56,6 @@ def create_app():
     app.register_blueprint(user_views, url_prefix="/")
     app.register_blueprint(auth_views, url_prefix="/auth")
     app.register_blueprint(admin_views, url_prefix = "/admin")
-    app.register_blueprint(sender, url_prefix="/")
     app.register_blueprint(admin_api, url_prefix="/admin_api")
     app.register_blueprint(noauth_api, url_prefix="/noauth_api")
     app.register_blueprint(user_api, url_prefix="/user_api")

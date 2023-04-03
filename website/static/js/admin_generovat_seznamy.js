@@ -62,7 +62,7 @@ function vyhodnotit() {
     if (nezalezi.checked) {
         result["udaj"] = "nezalezi"
     } else {
-        for (let udaj of ["jmeno", "telcislo", "adresa", "mail_rodicu", "odbornost", "datum_narozeni", "tricko", "dozvedeli", "skola", "alergie", "motivak", "prace", "profilovka"]) {
+        for (let udaj of ["jmeno", "telcislo", "adresa", "mail_rodicu", "odbornost", "datum_narozeni", "tricko", "dozvedeli", "skola", "alergie", "prace", "profilovka"]) {
             if (document.getElementById(udaj).checked) {
                 result["udaj"] = udaj
                 break

@@ -7,8 +7,6 @@ let ids_list = ["jmeno", "email", "adresa", "telcislo", "datum_narozeni", "mail_
 let fixni_info_ids_list = ["confirmed", "souhlas_rodicu", "odbornost", "progress", "datum_registrace", "datum_pohovoru"]
 let show_img_input_button = document.getElementById("show_img_input")
 let img = document.getElementById("img_file");
-let motivak = JSON.parse(httpGet("/send_motivak/" + info["id"] + "/name"))
-let motivak_div = document.getElementById("nahrany_motivak")
 let not_confirmed_div = document.getElementById("not_confirmed_div")
 let confirmed_div = document.getElementById("confirmed_div")
 
@@ -24,14 +22,6 @@ img.addEventListener("change", function() {
        this.value = "";
     };
 })
-if (motivak["existuje"]) {
-    motivak_div.hidden = false
-    let a = document.createElement("a")
-    motivak_div.appendChild(a)
-    a.href = "/send_motivak"
-    a.innerHTML = "Stáhnout stávající verzi motiváku"
-    a.download = motivak["filename"]
-}
 // ovládá viditelnost divu co žádá o e-mail
 if (confirmed) {
     not_confirmed_div.hidden = true

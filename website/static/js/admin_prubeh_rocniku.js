@@ -7,7 +7,7 @@ let ukoncit_rocnik_button = document.getElementById("ukoncit_rocnik")
 let ukoncit_rocnik_input = document.getElementById("ukoncit_rocnik_input")
 let toggle_registraci_button = document.getElementById("toggle_registraci")
 let registrace_date_input = document.getElementById("registrace_date")
-let exporty = JSON.parse(httpGet("/admin_api/exporty"))
+let exporty = JSON.parse(httpGet("/file_api/exporty_filenames"))
 let content_div = document.getElementById("content")
 let form = document.getElementById("form")
 registrace_date_input.value=registrace
@@ -26,7 +26,7 @@ if (je_registrace_otevrena == "True") {
 function ukoncit() {
     if (confirm("Chystáš se ukončit ročník, měj zazálohovaný data. Jseš si jistej?")) {
         if (confirm("Vážně? Tohle neni sranda, fakt se to promaže.")) {
-            if (confirm("Ještě se prosimtě ujisti, že máš přístup k odevzdanejm projektům a motivákům a tak.")) {
+            if (confirm("Ještě se prosimtě ujisti, že máš přístup k odevzdanejm projektům a tak.")) {
                 if (confirm("Je Michal nejepší?")) {
                     ukoncit_rocnik_input.value = "koncime"
                     console.log(ukoncit_rocnik_input.value)
@@ -50,7 +50,7 @@ function generator(isoformat ,pretty, filename) {
     let a = document.createElement("a")
     a.innerHTML = pretty
     a.download = filename
-    a.href = "/send_zip/" + filename
+    a.href = "/file_api/export/" + filename
     col1.appendChild(a)
 
     let col2 = document.createElement("div")

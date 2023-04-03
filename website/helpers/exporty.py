@@ -37,7 +37,6 @@ def exportovat() -> None:
         "Tričko",
         "Jak se o nás dozvěděli",
         "Admin poznámka",
-        "Hodnocení motiváku",
         "Uzamčené změny",
         "Alergie",
         "Škola",
@@ -63,13 +62,12 @@ def exportovat() -> None:
         ws1.cell(i+2,13,value=u.tricko)
         ws1.cell(i+2,14,value=u.dozvedeli)
         ws1.cell(i+2,15,value=u.admin_poznamka)
-        ws1.cell(i+2,16,value=u.hodnoceni_motivaku)
-        ws1.cell(i+2,17,value=u.uzamcene_zmeny)
-        ws1.cell(i+2,18,value=u.alergie)
-        ws1.cell(i+2,19,value=u.skola)
-        ws1.cell(i+2,20,value=u.datum_registrace)
-        ws1.cell(i+2,21,value=u.datum_pohovoru)
-        ws1.cell(i+2,22,value=u.meeting_link)
+        ws1.cell(i+2,16,value=u.uzamcene_zmeny)
+        ws1.cell(i+2,17,value=u.alergie)
+        ws1.cell(i+2,18,value=u.skola)
+        ws1.cell(i+2,19,value=u.datum_registrace)
+        ws1.cell(i+2,20,value=u.datum_pohovoru)
+        ws1.cell(i+2,21,value=u.meeting_link)
     
     ws2 = wb.create_sheet("Mailing list")
     with open(mailing_list_path()) as file:

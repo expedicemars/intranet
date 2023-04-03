@@ -3,8 +3,8 @@ from flask_login import current_user
 import json
 from website.helpers.require_role_decorator import require_role_on_current_user
 from website.paths import user_data_folder_path, zadani_folder_path, prohlaseni_path, exporty_path
-from website.helpers.get_user_files import get_motivak_by_id, get_prace_filenames, get_profilovka_by_id
-from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
+from website.helpers.get_user_files import get_prace_filenames, get_profilovka_by_id
+from website.helpers.pretty_date import pretty_date
 
 
 file_api = Blueprint("file_api", __name__)
@@ -69,3 +69,29 @@ def zadani_filenames_me_odbornosti():
 @require_role_on_current_user(["user","admin"])
 def zadani_file_me_odbornost(filename):
     return zadani_file(current_user.odbornost, filename)
+
+
+@file_api.route("/exporty_filenames")
+@require_role_on_current_user("editing_prubeh_rocniku")
+def exporty():
+    result = []
+    for p in exporty_path().iterdir():
+        zaznam = {}
+        if p.name == ".DS_Store":
+            pass
+        else:
+            zaznam["datum"] = pretty_date(p.name)
+            zaznam["iso"] = p.name
+            for file in p.iterdir():
+                if file.suffix == ".zip":
+                    zaznam["filename"] = file.name
+            result.append(zaznam)
+    return json.dumps(result)
+
+
+@file_api.route("/export/<string:filename>")
+@require_role_on_current_user("editing_users_allowed")
+def export(filename):
+    for p in exporty_path().rglob("*.zip"):
+            if p.name == filename:
+                return send_file(p)

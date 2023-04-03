@@ -74,3 +74,5 @@ def dostupne_odbornosti():
     return json.dumps(get_dostupne_odbornosti())
 
 
+
+

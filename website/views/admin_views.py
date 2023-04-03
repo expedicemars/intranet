@@ -310,26 +310,11 @@ def generovat_seznamy():
         data = seznam_generator(kriteria)
         return json.dumps(data)
 
-@admin_views.route("/motivaky_a_prace", methods=["GET","POST"])
+@admin_views.route("/prace", methods=["GET"])
 @require_role_on_current_user("editing_users_allowed")
-def motivaky_a_prace():
+def prace():
     if request.method == "GET":
-        return render_template("admin_motivaky_a_prace.html", roles=get_access_rights())
-    else:
-        result = json.loads(request.form.get("result"))
-        zmeneno = []
-        for zaznam in result:
-            user = User.get_by_id(zaznam["id"])
-            if user.hodnoceni_motivaku == zaznam["hodnoceni"]:
-                pass
-            else:
-                user.hodnoceni_motivaku = zaznam["hodnoceni"]
-                db.session.add(user)
-                db.session.commit()
-                zmeneno.append(user.id)
-        alog(f"Změna hodnocení motiváku u uživatelů {str(zmeneno)}.")
-        flash("Hodnocení motiváků uložena.", category="success")
-        return redirect(url_for("admin_views.admin_dashboard"))
+        return render_template("admin_prace.html", roles=get_access_rights())
 
 
 @admin_views.route("/pohovory", methods=["GET","POST"])
