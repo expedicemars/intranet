@@ -11,13 +11,13 @@ from website.json_handlers.mailing_list import set_mailing_list
 from website.helpers.user_filter import seznam_generator
 from website.helpers.exporty import exportovat, promazat
 from website.helpers.pretty_date import pretty_date
-from website.roles.role_handler import get_access_rights
+from website.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
 from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, toggle_registrace, get_registrace_otevrena
-from website.paths.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path
+from website.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path
 
 
 admin_views = Blueprint("admin_views",__name__)

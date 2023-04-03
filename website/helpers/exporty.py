@@ -1,7 +1,7 @@
 from openpyxl import Workbook
-from website.paths.paths import exporty_path, mailing_list_path, pohovory_path, poznamky_path, velitel_odbornosti_data_path, zadani_folder_path, admin_logs_file_path, app_logs_file_path, prohlaseni_path, user_data_folder_path, prubeh_rocniku_path
+from website.paths import exporty_path, mailing_list_path, pohovory_path, poznamky_path, velitel_odbornosti_data_path, zadani_folder_path, admin_logs_file_path, app_logs_file_path, prohlaseni_path, user_data_folder_path, prubeh_rocniku_path
 from website.helpers.pretty_date import pretty_date
-from website.roles.role_handler import get_access_rights
+from website.role_handler import get_access_rights
 from datetime import datetime, date
 from website.models.user import User
 from website import db

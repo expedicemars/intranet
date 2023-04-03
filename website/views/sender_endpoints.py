@@ -1,8 +1,8 @@
 from flask import Blueprint, abort, send_file, flash, redirect, url_for
 from flask_login import current_user
 import json
-from website.roles.role_handler import get_access_rights
-from website.paths.paths import user_data_folder_path, zadani_folder_path, prohlaseni_path, exporty_path
+from website.role_handler import get_access_rights
+from website.paths import user_data_folder_path, zadani_folder_path, prohlaseni_path, exporty_path
 from website.helpers.get_user_files import get_motivak_by_id, get_prace_filenames, get_profilovka_by_id
 
 sender = Blueprint("sender", __name__)

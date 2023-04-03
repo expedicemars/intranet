@@ -1,4 +1,4 @@
-from website.paths.paths import prubeh_rocniku_path
+from website.paths import prubeh_rocniku_path
 import json
 
 def set_nove_datum_konce_registrace(datum: str) -> None:

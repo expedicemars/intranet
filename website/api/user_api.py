@@ -4,7 +4,7 @@ import json
 from website.helpers.pretty_date import pretty_date
 from website.helpers.require_role_decorator import require_role_on_current_user
 from website.json_handlers.pohovory_handling import get_neobsazene_pohovory
-from website.paths.paths import velitel_odbornosti_data_path
+from website.paths import velitel_odbornosti_data_path
 
 
 

@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_mail import Mail
 from website.helpers.check_files import check_known_bugs_file, check_logs_files, check_mailing_list, check_velitel_odbornosti_data, check_user_data_folder, check_zadani_folders, check_poznamky, check_pohovory, check_exporty, check_odkazy, check_prubeh_rocniku
-from .paths.paths import user_database_path, env_path
+from .paths import user_database_path, env_path
 from .json_handlers.logs_handling import log
 import os
 from dotenv import load_dotenv
@@ -47,7 +47,6 @@ def create_app():
     from .views.admin_views import admin_views
     from .views.sender_endpoints import sender
     from .views.user_views  import user_views
-    from .views.trigger_endpoints import trigger
     from .api.admin_api import admin_api
     from .api.noauth_api import noauth_api
     from .api.user_api import user_api
@@ -59,7 +58,6 @@ def create_app():
     app.register_blueprint(auth_views, url_prefix="/auth")
     app.register_blueprint(admin_views, url_prefix = "/admin")
     app.register_blueprint(sender, url_prefix="/")
-    app.register_blueprint(trigger, url_prefix="/trigger")
     app.register_blueprint(admin_api, url_prefix="/admin_api")
     app.register_blueprint(noauth_api, url_prefix="/noauth_api")
     app.register_blueprint(user_api, url_prefix="/user_api")
@@ -84,7 +82,7 @@ def create_app():
     def load_user(id):
         return User.query.get(int(id))
     
-    from website.roles.role_handler import get_access_rights 
+    from website.role_handler import get_access_rights 
 
     @app.errorhandler(404)
     def not_found(e):

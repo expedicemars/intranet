@@ -1,5 +1,5 @@
 import json
-import website.paths.paths as p
+import website.paths as p
 from website.json_handlers.logs_handling import log
 from datetime import date
 

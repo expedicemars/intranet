@@ -1,4 +1,4 @@
-from website.paths.paths import user_data_folder_path, default_profilovka_path
+from website.paths import user_data_folder_path, default_profilovka_path
 from flask import send_file
 import json
 

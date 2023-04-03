@@ -11,7 +11,7 @@ stejne jsem pak smazal databazi, protoze user mel jeste pocet_odhadu a column ne
 """
 
 import sqlite3
-from website.paths.paths import user_database_path
+from website.paths import user_database_path
 connection = sqlite3.connect(user_database_path())
 cursor = connection.cursor()
 print(cursor)

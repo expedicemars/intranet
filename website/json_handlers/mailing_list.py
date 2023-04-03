@@ -1,4 +1,4 @@
-from website.paths.paths import mailing_list_path
+from website.paths import mailing_list_path
 import json
 
 def get_mails_from_mailing_list() -> list:

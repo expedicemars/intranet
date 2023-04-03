@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import abort
 from flask_login import current_user
-from website.roles import role_handler
+from website import role_handler
 
 
 def require_role_on_current_user(role: str, user = current_user):

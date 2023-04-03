@@ -3,7 +3,7 @@ from website import db
 from flask import current_app
 import jwt
 import json
-from website.paths.paths import user_data_folder_path
+from website.paths import user_data_folder_path
 from shutil import rmtree
 from website.helpers.pretty_date import pretty_date
 from datetime import datetime, timezone, timedelta

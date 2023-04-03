@@ -1,5 +1,5 @@
 import datetime
-from website.paths.paths import app_logs_file_path, admin_logs_file_path
+from website.paths import app_logs_file_path, admin_logs_file_path
 from flask_login import current_user
 
 def log(data: str) -> None:

@@ -1,6 +1,6 @@
 from website.models.user import User
 from typing import List
-from website.paths.paths import user_data_folder_path
+from website.paths import user_data_folder_path
 from website.helpers.pretty_date import pretty_date
 
 def user_filter(kriteria: dict) -> List[User]:

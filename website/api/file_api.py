@@ -2,7 +2,7 @@ from flask import Blueprint, send_file
 from flask_login import current_user
 import json
 from website.helpers.require_role_decorator import require_role_on_current_user
-from website.paths.paths import user_data_folder_path, zadani_folder_path, prohlaseni_path, exporty_path
+from website.paths import user_data_folder_path, zadani_folder_path, prohlaseni_path, exporty_path
 from website.helpers.get_user_files import get_motivak_by_id, get_prace_filenames, get_profilovka_by_id
 
 

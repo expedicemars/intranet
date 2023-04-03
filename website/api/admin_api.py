@@ -6,10 +6,10 @@ from website.json_handlers.logs_handling import get_logs, get_alogs
 from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena
 from website.json_handlers.odkazy_handling import get_odkazy
 from website.helpers.pretty_date import pretty_date
-from website.paths.paths import velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path, poznamky_path, prohlaseni_path, exporty_path, prubeh_rocniku_path
+from website.paths import velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path, poznamky_path, prohlaseni_path, exporty_path, prubeh_rocniku_path
 from website.models.user import User
 from website.json_handlers.pohovory_handling import get_pohovory, get_neobsazene_pohovory
-from website.roles.role_handler import get_access_rights, dostupna_omezeni
+from website.role_handler import get_access_rights, dostupna_omezeni
 from website.json_handlers.mailing_list import get_mails_from_mailing_list
 
 

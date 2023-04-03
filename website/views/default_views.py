@@ -2,7 +2,7 @@ import os
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user
 from website.models.chyba import Chyba
-from website.roles.role_handler import get_access_rights
+from website.role_handler import get_access_rights
 
 default_views = Blueprint("default_views", __name__)
 
