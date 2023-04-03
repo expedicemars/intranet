@@ -74,7 +74,7 @@ def pohovory():
         zaznam["pretty"] = pretty_date(p["iso"])
         zaznam["user"] = p["user"]
         if p["user"]:
-            u = User.query.get(int(p["user"]))
+            u = User.get_by_id(p["user"])
             zaznam["jmeno"] = u.jmeno
             zaznam["link"] = u.meeting_link
             #  aby bylo clickable, i když nemá jméno ještě:
@@ -99,7 +99,7 @@ def poznamky():
 @require_role_on_current_user("editing_users_allowed")
 def data_pro_motivaky_a_prace():
     result = []
-    for u in User.query.all():
+    for u in User.get_all():
         if "admin" in get_access_rights(u):
             pass
         else:
@@ -145,7 +145,7 @@ def mailing_list():
 @require_role_on_current_user("admin")
 def emaily_admin_editoru():
     result = ""
-    for u in User.query.all():
+    for u in User.get_all():
         if "editing_admins_allowed" in get_access_rights(u):
             result += u.email
             result += " "
@@ -161,17 +161,17 @@ def vsechny_omezeni():
 @admin_api.route("/role/<int:id>")
 @require_role_on_current_user("editing_admins_allowed")
 def role(id):
-    return json.dumps(get_access_rights(User.query.get(id)))
+    return json.dumps(get_access_rights(User.get_by_id(id)))
 
 
 @admin_api.route("/detail_usera/<int:id>")
 @require_role_on_current_user(["editing_users_allowed", "editing_admins_allowed"])
 def detail_usera(id):
-    u = User.query.get(id)
+    u = User.get_by_id(id)
     return u.get_full_info()
 
 
 @admin_api.route("/users_from_db")
 @require_role_on_current_user(["editing_users_allowed", "editing_admins_allowed"])
 def users_from_db():
-    return json.dumps([user.get_full_info() for user in User.query.all()])
+    return json.dumps([user.get_full_info() for user in User.get_all()])

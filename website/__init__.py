@@ -80,7 +80,7 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(id):
-        return User.query.get(int(id))
+        return db.session.get(User, 1)
     
     from website.role_handler import get_access_rights 
 

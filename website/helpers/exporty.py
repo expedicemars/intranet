@@ -47,7 +47,7 @@ def exportovat() -> None:
         ]
     for i, name in enumerate(names):
         ws1.cell(1,i+1, value=name)
-    for i, u in enumerate(User.query.all()):
+    for i, u in enumerate(User.get_all()):
         ws1.cell(i+2,1,value=u.id)
         ws1.cell(i+2,2,value=u.email)
         ws1.cell(i+2,3,value=u.confirmed)
@@ -150,7 +150,7 @@ def promazat() -> None:
             "popularizator": ""
         }, indent=4))
     
-    for u in User.query.all():
+    for u in User.get_all():
         u: User
         if "admin" not in get_access_rights(u):
             u.odstranit()

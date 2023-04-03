@@ -4,7 +4,7 @@ from website.paths import user_data_folder_path
 from website.helpers.pretty_date import pretty_date
 
 def user_filter(kriteria: dict) -> List[User]:
-    users = User.query.all()
+    users = User.get_all()
     users = filter(lambda x: "admin" not in x.role, users)
     if kriteria["odbornost"] == "jakakoli":
         pass

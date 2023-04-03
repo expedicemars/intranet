@@ -24,7 +24,7 @@ def login():
 		if len(password) > 300:    
 			flash("Zadané heslo bylo určitě příliš dlouhé.", category="error")
 			return redirect(url_for("auth_views.login"))
-		user = User.query.filter_by(email=email).first()
+		user = User.get_by_email(email)
 		if user and check_password_hash(user.password, password):
 			login_user(user, remember=True)
 			flash("úspěšné přihlášení", category="success")
@@ -41,7 +41,7 @@ def register():
 		if request.method == "GET":
 				return render_template("auth_register.html")
 				return render_template("auth_registrace_uzavrene.html")
-		else:  # HODNĚ TÉHLE LOGIKY PŘENÉST DO DEDICATED FCÍ
+		else:
 			email = request.form.get("email")
 			password = request.form.get("password")
 			souhlas = request.form.get("souhlas")
@@ -56,7 +56,7 @@ def register():
 				return redirect(url_for("auth_views.register"))
 
 			
-			user = User.query.filter_by(email=email).first()
+			user = User.get_by_email(email)
 			if user:
 				flash("Tento email je už zaregistrovaný. Použij prosím jiný", category="error")
 				return redirect(url_for("auth_views.register"))
@@ -76,7 +76,7 @@ def register():
 			if len(email) > 100:
 				flash("Zadaný e-mail byl delší než 100 znaků. Vyberte prosím kratší.", category="error")
 				return redirect(url_for("auth_views.register"))
-			user = User.query.filter_by(email=email).first()
+			user = User.get_by_email(email)
 			if user:
 				flash("Tento email je už zaregistrovaný. Použij prosím jiný", category="error")
 				return redirect(url_for("auth_views.register"))
@@ -110,7 +110,7 @@ def request_reset():
 		if len(email) > 100:
 			flash("Zadaný e-mail byl určitě moc dlouhý.", category="error")
 			return redirect(url_for("auth_views.request_reset"))
-		user = User.query.filter_by(email=email).first()
+		user = User.get_by_email(email)
 		if user:
 			mail_sender(mail_identifier="reset_password", target=email, data=user.get_reset_token())
 		flash("Pokud existuje uživatel s tímto e-mailem, byl mu odeslán ověřovací e-mail.", category="info")

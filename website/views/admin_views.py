@@ -117,16 +117,13 @@ def detail_usera(id):
         return render_template("admin_detail_usera.html", roles=get_access_rights(), id=id)
     else:
         if request.form.get("smazat"):
-            User.query.get(id).odstranit()
+            User.get_by_id(id).odstranit()
             alog("Smazání usera " + str(id) + ".")
             flash("User byl smazán", category="success")
             return redirect(url_for("admin_views.registrovani_uzivatele"))
         elif request.form.get("odebrat_odbornost"):
-            u: User
-            u = User.query.get(id)
-            u.odbornost = "zatím nevybraná"
-            db.session.add(u)
-            db.session.commit()
+            User.get_by_id(id).odebrat_odbornost()
+            alog(f"Odebrána odbornost userovi {User.get_by_id(id).email}")
             flash("Odbornost byla odebrána", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
             
@@ -148,7 +145,7 @@ def detail_usera(id):
             if data["souhlas_rodicu"] == "false":
                 data["souhlas_rodicu"] = False
 
-            u = User.query.get(id)
+            u = User.get_by_id(id)
             if u.progress == data["progress"]:
                 pass
             else:
@@ -197,13 +194,13 @@ def jmenovat_adminy():
 @require_role_on_current_user("editing_admins_allowed")
 def vybrat_role_adminovi(id):
     if request.method == "GET":
-        return render_template("admin_vybrat_role_adminovi.html", user=User.query.get(id), roles=get_access_rights())
+        return render_template("admin_vybrat_role_adminovi.html", user=User.get_by_id(id), roles=get_access_rights())
     else:
         if request.form.get("detail"):
             return redirect(url_for("admin_views.detail_usera", id=request.form.get("detail")))
         else:
             nove_role = json.loads(request.form.get("result"))
-            u = User.query.get(id)
+            u = User.get_by_id(id)
             if u.role == json.dumps(nove_role):
                 pass
             else:
@@ -321,7 +318,7 @@ def motivaky_a_prace():
         result = json.loads(request.form.get("result"))
         zmeneno = []
         for zaznam in result:
-            user = User.query.get(zaznam["id"])
+            user = User.get_by_id(zaznam["id"])
             if user.hodnoceni_motivaku == zaznam["hodnoceni"]:
                 pass
             else:
