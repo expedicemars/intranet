@@ -2,10 +2,11 @@ from flask import Blueprint
 from flask_login import current_user
 import json
 from website.helpers.pretty_date import pretty_date
-from website.helpers.require_role_decorator import require_role_on_current_user
+from website.helpers.require_role_decorator import require_progress_na_ucastnikovi, require_role_on_current_user
 from website.json_handlers.pohovory_handling import get_neobsazene_pohovory
 from website.json_handlers.info_handling import get_vsechny_informace
 from website.paths import velitel_odbornosti_data_path
+from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 
 
 
@@ -15,13 +16,12 @@ user_api = Blueprint("user_api", __name__)
 @user_api.route("/confirmed")
 @require_role_on_current_user("user")
 def confirmed():
-    return json.dumps({
-                "confirmation_status": current_user.confirmed
-            })
+    return json.dumps({"confirmation_status": current_user.confirmed})
 
 
 @user_api.route("/volne_pohovory")
 @require_role_on_current_user("user")
+@require_progress_na_ucastnikovi("Online setkání")
 def volne_pohovory():
     result = []
     for p in get_neobsazene_pohovory():
@@ -34,6 +34,7 @@ def volne_pohovory():
 
 @user_api.route("/datum_pohovoru")
 @require_role_on_current_user("user")
+@require_progress_na_ucastnikovi("Online setkání")
 def datum_pohovoru():
     result = {
         "datum": pretty_date(current_user.datum_pohovoru),
@@ -44,6 +45,7 @@ def datum_pohovoru():
 
 @user_api.route("/kontakt_na_meho_velitele_odbornosti")
 @require_role_on_current_user("user")
+@require_progress_na_ucastnikovi("Domácí projekt")
 def kontakt_na_meho_velitele_odbornosti():
     if current_user.odbornost == "zatím nevybraná":
         return "nevybrano"
@@ -65,5 +67,10 @@ def moje_info():
     vsechno = get_vsechny_informace()
     result = filter(lambda x: x["nadpis"] in [current_user.progress, "Obecné"], vsechno)
     return json.dumps(list(result))
+
+@user_api.route("/dostupne_odbornosti")
+@require_role_on_current_user("user")
+def dostupne_odbornosti():
+    return json.dumps(get_dostupne_odbornosti())
 
 

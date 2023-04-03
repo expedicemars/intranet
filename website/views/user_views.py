@@ -125,32 +125,42 @@ def pohovory():
     
 @user_views.route("/odbornost", methods=["GET","POST"])
 @require_role_on_current_user("user")
+@require_progress_na_ucastnikovi("Domácí projekt")
 def odbornost():
-    if request.method == "GET":
-        if current_user.odbornost == "zatím nevybraná":
-            odbornost = False
-        else:
-            odbornost = current_user.odbornost
-        return render_template("odbornost.html", odbornost=odbornost, roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=current_user.progress)
+    if current_user.odbornost == "zatím nevybraná":
+        return redirect(url_for("user_views.odbornost_vyber"))
     else:
-        if request.form.get("result"):
-            current_user.odbornost = request.form["result"]
+        if request.method == "GET":
+            return render_template("odbornost.html", roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=current_user.progress)
+        else:
+            if request.form.get("ulozit_praci"):
+                if all(request.files.getlist("nahrana_prace")):
+                    for file in request.files.getlist("nahrana_prace"):
+                        prace_folder_path = user_data_folder_path() / str(current_user.id) / "prace"
+                        file.save(prace_folder_path / file.filename)
+                    flash("Práce nahrána.", category="success")
+                else:
+                    flash("Nenahrál jsi žádné soubory.", category="info")
+            elif request.form.get("smazat_praci"):
+                path = user_data_folder_path() / str(current_user.id) / "prace"
+                for file in path.iterdir():
+                    file.unlink()
+                flash("Svou nahranou práci jsi smazal. Nezapomeň nahrát novou verzi :)", category="success")
+            return redirect(url_for("user_views.odbornost"))
+
+
+@user_views.route("/odbornost_vyber", methods=["GET","POST"])
+@require_role_on_current_user("user")
+@require_progress_na_ucastnikovi("Domácí projekt")
+def odbornost_vyber():
+    if current_user.odbornost in ["biolog", "fyzik", "konstrukter", "inzenyr", "popularizator"]:
+        return redirect(url_for("user_views.odbornost"))
+    else:
+        if request.method == "GET":
+            return render_template("odbornost_vyber.html", roles=get_access_rights(current_user), user_progress=current_user.progress)
+        else:
+            current_user.odbornost = request.form.get("odbornost")
             db.session.add(current_user)
             db.session.commit()
             flash("Odbornost vybrána!", category="success")
-            return redirect(url_for("user_views.ucet"))
-        elif request.form.get("ulozit_praci"):
-            if all(request.files.getlist("nahrana_prace")):
-                for file in request.files.getlist("nahrana_prace"):
-                    prace_folder_path = user_data_folder_path() / str(current_user.id) / "prace"
-                    file.save(prace_folder_path / file.filename)
-                flash("Práce nahrána.", category="success")
-            else:
-                flash("Nenahrál jsi žádné soubory.", category="info")
-        elif request.form.get("smazat_praci"):
-            path = user_data_folder_path() / str(current_user.id) / "prace"
-            for file in path.iterdir():
-                file.unlink()
-            flash("Svou nahranou práci jsi smazal. Nezapomeň nahrát novou verzi :)", category="success")
-        return redirect(url_for("user_views.odbornost"))
-
+            return redirect(url_for("user_views.odbornost"))

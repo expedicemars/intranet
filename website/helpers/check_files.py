@@ -3,6 +3,7 @@ import website.paths as p
 from website.json_handlers.logs_handling import log
 from website.json_handlers.dostupne_omezeni import get_dostupne_progressy
 from datetime import date
+from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 
 
 """
@@ -78,7 +79,7 @@ def check_zadani_folders() -> None:
         log("Složka pro zadání už existuje.")
     else:
         path.mkdir()
-        for odbornost in ["biolog", "konstrukter", "inzenyr", "fyzik", "popularizator"]:
+        for odbornost in get_dostupne_odbornosti():
             _path = path / odbornost
             _path.mkdir()
         log("Vytvořena složka pro zadání na "+str(path))

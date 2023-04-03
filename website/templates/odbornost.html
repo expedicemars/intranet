@@ -1,124 +1,40 @@
 {% extends "navbar.html" %}
 {% block content %}
-<input hidden value="{{odbornost}}" id="odbornost">
-    <h2>Přehled odborností</h2>
-    <div class="row p-4">
-            <div class="col-sm mx-2 border rounded-2 border-primary biolog-div my-2 p-2" >
-                <h3>Biolog</h3>
+<h2>Info o odbornosti</h2>
+Tady máš zadání internetováho kola Expedice Mars:
+<div id="zadani_single" class="border rounded-2 border-primary my-2 p-2"></div>
+<hr>
+Tady potom kontakt na velitele odbornosti. Neváhej se jich na cokoli ptát, všichni ti rádi odpoví :)
+<div id="kontakt" class="border rounded-2 border-primary my-2 p-2"></div>
+<hr>
+<div id="ukazat_praci">
+    <h2>Tvá práce</h2>
+    <form method="post">
+        <button type="submit" class="btn btn-danger" value="1" name="smazat_praci">Smazat nahrané soubory</button>
+    </form>
+    <div id="ukazat_praci_content" class="border rounded-2 border-primary my-2 p-2"></div>
+</div>
+<div id="nahrat_praci">
+    <h2>Nahraj vypracované soubory</h2>
+    Sem nahraj všechny soubory, které souvisí s tvou prací na domácím kole. Způsob odevdzání by měl být napsán v zadání, ale mělo by jít především o:
+    <ul>
+        <li>Prezentaci k pohovoru. Ten bude trvat 15 minut, prezentace by měla trvat kolem 7. </li>
+        <li>Shrnutí práce na jednu A4</li>
+        <li>Jakékoli další protokoly z měření nebo o postupu práce</li>
+        <li>Obrázky, pokud nejsou v protokolech</li>
+    </ul>
+    Pokud jsou nějaká tvoje data moc velká a nechce tě to nechat je nahrát, použij prosím jakékoli z tobě dostupných cloudových úožišť a sem odevzdej jednoduše texťák se sdílceím odkazem. To samé platí, používáš-li nějaké webové aplikace, například <code>prezi</code> pro prezentování.
+    <form  method="post" enctype="multipart/form-data" id="ulozit_praci_form">
+        <div class="row">
+            <div class="col">
+                <input type="file" multiple class="form-control" name="nahrana_prace" id="nahrana_prace">
             </div>
-            <div class=" col-sm mx-2 border rounded-2 border-primary fyzik-div my-2 p-2" >
-                <h3>Fyzik</h3>
-            </div>
-            <div class="col-sm mx-2 border rounded-2 border-primary konstrukter-div my-2 p-2" >
-                <h3>Konstruktér</h3>
-            </div>
-            <div class="col-sm mx-2 border rounded-2 border-primary inzenyr-div my-2 p-2" >
-                <h3>Inženýr</h3>
-            </div>
-            <div class="col-sm mx-2 border rounded-2 border-primary popularizator-div my-2 p-2" >
-                <h3>Popularizátor</h3>
+            <div class="col-auto">
+                <button type="submit" name="ulozit_praci" value="1" class="btn btn-outline-success">Nahrát</button>
             </div>
         </div>
+    </form>
 
-        <h2>Zadání ještě nebyla zveřejněna. Hned, jak se tak stane, ti dáme vědět.</h2>
-            <h2>Zadání a výběr odbornosti</h2>
-            Zde si vyber odbornost a můžeš začít pracovat na domácí práci. Co se bude v Expedici dít dál? Očekávej od nás E-mail o tom, kdy budou termíny pohovorů. Tím, že si v budoucnu jeden termín vybereš, zároveň budeš mít stanoveno, do kdy čekáme, že bude domácí práce hotova.
-            <div class="border rounded-2 border-primary biolog-div my-2 p-2" >
-                <h3>Zadání pro biology</h3>
-                <div class="row">
-                    <div class="col" id="biolog_zadani"></div>
-                    <div class="col-auto">
-                        <button class="btn btn-light" type="button" id="biolog">Zvolit odbornost</button>
-                    </div>
-                </div>
-            </div>
-            <div class="border rounded-2 border-primary fyzik-div my-2 p-2" >
-                <h3>Zadání pro fyziky</h3>
-                <div class="row">
-                    <div class="col" id="fyzik_zadani">
-                        
-                    </div>
-                    <div class="col-auto">
-                        <button class="btn btn-light" type="button" id="fyzik">Zvolit odbornost</button>
-                    </div>
-                </div>
-            </div>
-            <div class="border rounded-2 border-primary konstrukter-div my-2 p-2" >
-                <h3>Zadání pro konstruktéry</h3>
-                <div class="row">
-                    <div class="col" id="konstrukter_zadani">
-                        
-                    </div>
-                    <div class="col-auto">
-                        <button class="btn btn-light" type="button" id="konstrukter">Zvolit odbornost</button>
-                    </div>
-                </div>
-            </div>
-            <div class="border rounded-2 border-primary inzenyr-div my-2 p-2" >
-                <h3>Zadání pro inženýry</h3>
-                <div class="row">
-                    <div class="col" id="inzenyr_zadani">
-                        
-                    </div>
-                    <div class="col-auto">
-                        <button class="btn btn-light" type="button" id="inzenyr">Zvolit odbornost</button>
-                    </div>
-                </div>
-            </div>
-            <div class="border rounded-2 border-primary popularizator-div my-2 p-2" >
-                <h3>Zadání pro popularizátory</h3>
-                <div class="row">
-                    <div class="col" id="popularizator_zadani">
-                        
-                    </div>
-                    <div class="col-auto">
-                        <button class="btn btn-light" type="button" id="popularizator">Zvolit odbornost</button>
-                    </div>
-                </div>
-            </div>
-            <h2>Info o odbornosti</h2>
-            Tady máš zadání internetováho kola Expedice Mars:
-            <div id="zadani_single" class="border rounded-2 border-primary my-2 p-2">
-
-            </div>
-            <hr>
-            Tady potom kontakt na velitele odbornosti. Neváhej se jich na cokoli ptát, všichni ti rádi odpoví :)
-            <div id="kontakt" class="border rounded-2 border-primary my-2 p-2"></div>
-            <hr>
-            <div id="ukazat_praci">
-                <h2>Tvá práce</h2>
-                    Tvému účtu byly uzamčeny změny dokumentů, pravděpodobně proto, že se blíží nějaký důležitý termín. Níže si můžeš ještě stáhnout poslední verzi, kterou od tebe máme. Nebo nám napiš a my ti to ještě odemkneme.
-                Tady je vidět tebou nahraná práce, můžeš jí smazat a nahrát novou verzi.
-                <form method="post">
-                    <button type="submit" class="btn btn-danger" value="1" name="smazat_praci">Smazat nahrané soubory</button>
-                </form>
-                <div id="ukazat_praci_content" class="border rounded-2 border-primary my-2 p-2"></div>
-            </div>
-            <div id="nahrat_praci">
-                <h2>Nahraj vypracované soubory</h2>
-                Sem nahraj všechny soubory, které souvisí s tvou prací na domácím kole. Způsob odevdzání by měl být napsán v zadání, ale mělo by jít především o:
-                <ul>
-                    <li>Prezentaci k pohovoru. Ten bude trvat 15 minut, prezentace by měla trvat kolem 7. </li>
-                    <li>Shrnutí práce na jednu A4</li>
-                    <li>Jakékoli další protokoly z měření nebo o postupu práce</li>
-                    <li>Obrázky, pokud nejsou v protokolech</li>
-                </ul>
-                Pokud jsou nějaká tvoje data moc velká a nechce tě to nechat je nahrát, použij prosím jakékoli z tobě dostupných cloudových úožišť a sem odevzdej jednoduše texťák se sdílceím odkazem. To samé platí, používáš-li nějaké webové aplikace, například <code>prezi</code> pro prezentování.
-                <form  method="post" enctype="multipart/form-data" id="ulozit_praci_form">
-                    <div class="row">
-                        <div class="col">
-                            <input type="file" multiple class="form-control" name="nahrana_prace" id="nahrana_prace">
-                        </div>
-                        <div class="col-auto">
-                            <button type="submit" name="ulozit_praci" value="1" class="btn btn-outline-success">Nahrát</button>
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-
-        <form method="post" id="form">
-            <input type="text" hidden id="result" name="result"/>
-        </form>
+</div>
 <script type="module" src="{{url_for('static', filename='js/odbornost.js')}}"></script>
 {% endblock %}

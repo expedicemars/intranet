@@ -57,3 +57,6 @@ def dostupne_progressy_path() -> Path:
 def dostupne_role_path() -> Path:
     return Path.cwd() / "data" / "dostupne_role.json"
 
+def dostupne_odbornosti_path() -> Path:
+    return Path.cwd() / "data" / "dostupne_odbornosti.json"
+

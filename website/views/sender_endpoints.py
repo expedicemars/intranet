@@ -7,26 +7,6 @@ from website.helpers.get_user_files import get_motivak_by_id, get_prace_filename
 
 sender = Blueprint("sender", __name__)
 
-
-@sender.route("/send_zadani/<string:odbornost>/<string:name>")
-def send_zadani(odbornost, name):
-    rights = get_access_rights(current_user)
-    if "user" in rights or "admin" in rights: # připouštim oba, protože i úpravy termínů posílaj request sem
-        if name == "__jmena":
-            p = zadani_folder_path() / odbornost
-            res = []
-            for file in p.iterdir():
-                res.append(file.name)
-            if len(res) == 0:
-                return json.dumps(None)
-            else:
-                return json.dumps(res)
-        else:
-            return send_file(zadani_folder_path() / odbornost / name)
-    else:
-        abort(401)
-
-
 @sender.route("/send_motivak")
 def send_motivak_min():
     return send_motivak(current_user.id, "file")
