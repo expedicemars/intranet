@@ -4,6 +4,7 @@ import json
 from website.helpers.pretty_date import pretty_date
 from website.helpers.require_role_decorator import require_role_on_current_user
 from website.json_handlers.pohovory_handling import get_neobsazene_pohovory
+from website.json_handlers.info_handling import get_vsechny_informace
 from website.paths import velitel_odbornosti_data_path
 
 
@@ -58,9 +59,11 @@ def info():
     return current_user.get_basic_info()
 
 
-# @user_api.route("/confirmed")
-# @require_role_on_current_user("user")
-# def confirmed():
-#     return
+@user_api.route("/moje_info")
+@require_role_on_current_user("user")
+def moje_info():
+    vsechno = get_vsechny_informace()
+    result = filter(lambda x: x["nadpis"] in [current_user.progress, "Obecné"], vsechno)
+    return json.dumps(list(result))
 
 

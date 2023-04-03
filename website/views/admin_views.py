@@ -17,6 +17,7 @@ from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
 from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, toggle_registrace, get_registrace_otevrena
+from website.json_handlers.info_handling import ulozit_info
 from website.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path
 
 
@@ -407,3 +408,15 @@ def upravit_odkazy():
             flash("Odkaz přidán", category="success")
             alog(f"Přidán užitečný odkaz {odkaz}")
         return redirect(url_for("admin_views.upravit_odkazy"))
+    
+
+@admin_views.route("/info", methods=["GET","POST"])
+@require_role_on_current_user("admin")
+def info():
+    if request.method == "GET":
+        return render_template("admin_info.html", roles=get_access_rights())
+    else:
+        ulozit_info(request.form.to_dict())
+        alog("Nové info pro účastníky.")
+        flash("Informace byly uloženy.", category="success")
+        return redirect(url_for("admin_views.info"))

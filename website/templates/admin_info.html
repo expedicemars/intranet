@@ -1,0 +1,19 @@
+{% extends "admin_navbar.html" %}
+
+{% block content %}
+<h2>Informace pro účastníky</h2>
+Účastníkům se zobrazují informace v závislosti na tom, v jaké fázi postupu expedicí jsou. Zároveň se všem zobrazují <code>Obecné</code> informace. Při zápisu je možno použvat HTML, pro docílení nadpisů nebo odkazů.
+<br> 
+<form method="post">
+    <button type="submit" class="btn btn-success">Uložit informace</button>
+    <div id="content">
+        <hr>
+        <h3>Obecné</h3>
+        <textarea class="form-control" id="Obecné" name="Obecné"></textarea>
+    
+    </div>
+</form>
+
+<script type="module" src="{{url_for('static', filename='js/admin_info.js')}}"></script>
+
+{% endblock %}

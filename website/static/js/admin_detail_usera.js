@@ -1,6 +1,7 @@
 import httpGet from "./httpGet.js"
 let id_usera = document.getElementById("id").value
 let detail_usera = JSON.parse(httpGet("/admin_api/detail_usera/" + String(id_usera)))
+let progressy = JSON.parse(httpGet("/admin_api/vsechny_progressy"))
 let motivak = JSON.parse(httpGet("/send_motivak/" + String(id_usera) + "/name"))
 let prace_filenames = JSON.parse(httpGet("/file_api/send_filenames_cizi_prace/" + String(id_usera)))
 let ulozit_button = document.getElementById("ulozit_button")
@@ -9,6 +10,7 @@ let toggle_souhlas_button = document.getElementById("toggle_souhlas")
 let charcount_span = document.getElementById("charcount")
 let textarea = document.getElementById("admin_poznamka")
 let meeting_link_input = document.getElementById("meeting_link")
+let progress_select = document.getElementById("progress")
 
 
 ulozit_button.addEventListener("click", vyhodnotit)
@@ -48,6 +50,13 @@ function  vyhodnotit() {
     document.getElementById("form").submit()
 }
 
+for (let prog of progressy) {
+    let opt = document.createElement("option")
+    opt.value = prog
+    opt.id = prog
+    opt.innerText = prog
+    progress_select.appendChild(opt)
+}
 
 for (let key in detail_usera) {
     let node = document.getElementById(key)

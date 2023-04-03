@@ -47,3 +47,13 @@ def odkazy_path() -> Path:
 
 def prubeh_rocniku_path() -> Path:
     return Path.cwd() / "data" / "prubeh_rocniku.json"
+
+def info_path() -> Path:
+    return Path.cwd() / "data" / "info.json"
+
+def dostupne_progressy_path() -> Path:
+    return Path.cwd() / "data" / "dostupne_progressy.json"
+
+def dostupne_role_path() -> Path:
+    return Path.cwd() / "data" / "dostupne_role.json"
+

@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
 from flask_mail import Mail
-from website.helpers.check_files import check_known_bugs_file, check_logs_files, check_mailing_list, check_velitel_odbornosti_data, check_user_data_folder, check_zadani_folders, check_poznamky, check_pohovory, check_exporty, check_odkazy, check_prubeh_rocniku
+from website.helpers.check_files import check_known_bugs_file, check_logs_files, check_mailing_list, check_velitel_odbornosti_data, check_user_data_folder, check_zadani_folders, check_poznamky, check_pohovory, check_exporty, check_odkazy, check_prubeh_rocniku, check_informace
 from .paths import user_database_path, env_path
 from .json_handlers.logs_handling import log
 import os
@@ -74,6 +74,8 @@ def create_app():
     check_exporty()
     check_odkazy()
     check_prubeh_rocniku()
+    check_informace()
+    
 
 
     login_manager.login_view = "auth_views.login"

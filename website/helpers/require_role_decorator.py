@@ -25,3 +25,23 @@ def require_role_on_current_user(role: str, user = current_user):
             abort(401)
         return wrapper
     return what_should_i_name_this
+
+
+def require_progress_na_ucastnikovi(progress: str, user = current_user):
+    """Můj pokus o napsání login_required decoratoru
+
+    Args:
+        progress (str | list): tenhle progress se vyžaduje | jeden z tehle progressu se vyžaduje
+        user (_type_, optional): _description_. Defaults to current_user.
+    """
+    if type(progress) == str:
+        progress = [progress]
+    def what_should_i_name_this(original_function):
+        @wraps(original_function)
+        def wrapper(*args, **kwargs):
+            if current_user.progress in progress:
+                    result = original_function(*args, **kwargs)
+                    return result
+            abort(401)
+        return wrapper
+    return what_should_i_name_this

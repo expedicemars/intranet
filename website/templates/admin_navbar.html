@@ -3,6 +3,7 @@
     <li class="nav-item"><a class="nav-link active" href="{{url_for('default_views.home')}}">&lt-Zpět do uživatelské sekce</a></li>
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.admin_dashboard')}}">Admin dashboard</a></li>
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.poznamky')}}">Adminí poznámky</a></li>
+    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.info')}}">Info pro účastníky</a></li>
     {% if "velitel_odbornosti" in roles %}
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.velitele_odbornosti')}}">Velitelé odborností</a></li>
     {% endif %}
@@ -12,14 +13,8 @@
     {% if "editing_bugs_allowed" in roles %}
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.uprava_znamych_bugu')}}">Přehled známých bugů</a></li>
     {% endif %}
-    {% if "editing_logs_allowed" in roles %}
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Logs</a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.app_logs')}}">App logs</a></li>
-            <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.admin_logs')}}">Admin logs</a></li>
-        </ul>
-    </li>
+    {% if "editing_prubeh_rocniku" in roles %}
+    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.prubeh_rocniku')}}">Průběh ročníku</a></li>
     {% endif %}
     {% if "editing_users_allowed" in roles %}
     <li class="nav-item dropdown">
@@ -34,19 +29,25 @@
     {% if "editing_admins_allowed" in roles %}
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.jmenovat_adminy')}}">Jmenovat adminy</a></li>
     {% endif %}
-    {% if "editing_prubeh_rocniku" in roles %}
-    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.prubeh_rocniku')}}">Průběh ročníku</a></li>
+    {% if "editing_logs_allowed" in roles %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Logs</a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.app_logs')}}">App logs</a></li>
+            <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.admin_logs')}}">Admin logs</a></li>
+        </ul>
+    </li>
     {% endif %}
-
-{% endblock %}
-
-{% block footer %}
-<footer>
-    <ul>
-        <li><a href="{{url_for('default_views.nahlasit_bug')}}">Nahlásit bug, připomínku, nápad</a></li>
-        <li><a href="{{url_for('admin_views.featury')}}">Přehled fíčur systému</a></li>
-        <li><a href="{{url_for('admin_views.planovane_featury')}}">Plánované featury</a></li>
-        <li><a href="{{url_for('admin_views.historie_verzi')}}">Historie verzí</a></li>
+    
+    {% endblock %}
+    
+    {% block footer %}
+    <footer>
+        <ul>
+            <li><a href="{{url_for('default_views.nahlasit_bug')}}">Nahlásit bug, připomínku, nápad</a></li>
+            <li><a href="{{url_for('admin_views.featury')}}">Přehled fíčur systému</a></li>
+            <li><a href="{{url_for('admin_views.planovane_featury')}}">Plánované featury</a></li>
+            <li><a href="{{url_for('admin_views.historie_verzi')}}">Historie verzí</a></li>
         <li><a href="https://bitbucket.org/piipecek/em_intranet">Source na bitbucketu</a></li>
     </ul>
 </footer>

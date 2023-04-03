@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, send_file, flash, redirect, url_for
+from flask import Blueprint
 from flask_login import current_user
 import json
 from website.helpers.require_role_decorator import require_role_on_current_user
@@ -6,11 +6,13 @@ from website.json_handlers.logs_handling import get_logs, get_alogs
 from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena
 from website.json_handlers.odkazy_handling import get_odkazy
 from website.helpers.pretty_date import pretty_date
-from website.paths import velitel_odbornosti_data_path, user_data_folder_path, zadani_folder_path, default_profilovka_path, poznamky_path, prohlaseni_path, exporty_path, prubeh_rocniku_path
+from website.paths import velitel_odbornosti_data_path, user_data_folder_path, poznamky_path, prohlaseni_path, exporty_path
 from website.models.user import User
-from website.json_handlers.pohovory_handling import get_pohovory, get_neobsazene_pohovory
-from website.role_handler import get_access_rights, dostupna_omezeni
+from website.json_handlers.pohovory_handling import get_pohovory
+from website.role_handler import get_access_rights
+from website.json_handlers.dostupne_omezeni import get_dostupne_progressy, get_dostupne_role
 from website.json_handlers.mailing_list import get_mails_from_mailing_list
+from website.json_handlers.info_handling import get_vsechny_informace
 
 
 admin_api = Blueprint("admin_api", __name__)
@@ -155,7 +157,12 @@ def emaily_admin_editoru():
 @admin_api.route("/vsechny_omezeni")
 @require_role_on_current_user("editing_admins_allowed")
 def vsechny_omezeni():
-    return json.dumps(dostupna_omezeni)
+    return json.dumps(get_dostupne_role())
+
+@admin_api.route("/vsechny_progressy")
+@require_role_on_current_user(["editing_users_allowed", "editing_admins_allowed"])
+def vsechny_progressy():
+    return json.dumps(get_dostupne_progressy())
 
 
 @admin_api.route("/role/<int:id>")
@@ -175,3 +182,9 @@ def detail_usera(id):
 @require_role_on_current_user(["editing_users_allowed", "editing_admins_allowed"])
 def users_from_db():
     return json.dumps([user.get_full_info() for user in User.get_all()])
+
+@admin_api.route("/vsechny_informace")
+@require_role_on_current_user(["editing_users_allowed", "editing_admins_allowed"])
+def vsechny_informace():
+    return json.dumps(get_vsechny_informace())
+

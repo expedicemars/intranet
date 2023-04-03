@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
 from flask_login import current_user
-from website.helpers.require_role_decorator import require_role_on_current_user
+from website.helpers.require_role_decorator import require_role_on_current_user, require_progress_na_ucastnikovi
 from website.models.user import User
 from website.mail_handler import mail_sender
 from website import db
@@ -17,7 +17,7 @@ user_views = Blueprint("user_views", __name__)
 @require_role_on_current_user("user")
 def ucet():
     if request.method == "GET":
-        return render_template("ucet.html", current_user = current_user, roles = get_access_rights(), uzamcene_zmeny = current_user.uzamcene_zmeny)
+        return render_template("ucet.html", current_user = current_user, roles=get_access_rights(), uzamcene_zmeny=current_user.uzamcene_zmeny, user_progress=current_user.progress)
     else:
         if request.form.get("overeni_emailu"):
             token = current_user.get_reset_token()
@@ -85,6 +85,10 @@ def ucet():
             db.session.commit()
             flash("Změny byly uloženy.", category="success")
             return redirect(url_for("user_views.ucet"))
+        
+@user_views.route("/info")
+def info():
+    return render_template("info.html", roles = get_access_rights(current_user), user_progress=current_user.progress)
 
 
 @user_views.route("/ucet/<token>", methods=["GET"])
@@ -99,7 +103,26 @@ def ucet_overeny(token):
         db.session.commit()
         return redirect(url_for("user_views.ucet"))
         
-
+        
+@user_views.route("/pohovory", methods=["GET","POST"])
+@require_role_on_current_user("user")
+@require_progress_na_ucastnikovi("Online setkání")
+def pohovory():
+    if  request.method == "GET":
+        return render_template("pohovory.html", roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=current_user.progress)
+    else:
+        if request.form.get("vybrat"):
+            current_user.datum_pohovoru = request.form.get("vybrat")
+            db.session.add(current_user)
+            db.session.commit()
+            vysledek = zapsat_na_pohovor(current_user.datum_pohovoru, current_user.id)
+            if vysledek:
+                flash("Termín vybrán.", category="success")
+            else:
+                flash("Tento termín si mezitím vybral někdo jiný. Prosím, vyber si další.", category="error")
+            return redirect(url_for("user_views.pohovory"))
+    
+    
 @user_views.route("/odbornost", methods=["GET","POST"])
 @require_role_on_current_user("user")
 def odbornost():
@@ -108,7 +131,7 @@ def odbornost():
             odbornost = False
         else:
             odbornost = current_user.odbornost
-        return render_template("odbornost.html", odbornost=odbornost, roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny)
+        return render_template("odbornost.html", odbornost=odbornost, roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=current_user.progress)
     else:
         if request.form.get("result"):
             current_user.odbornost = request.form["result"]
@@ -131,21 +154,3 @@ def odbornost():
             flash("Svou nahranou práci jsi smazal. Nezapomeň nahrát novou verzi :)", category="success")
         return redirect(url_for("user_views.odbornost"))
 
-
-@user_views.route("/pohovory", methods=["GET","POST"])
-@require_role_on_current_user("user")
-def pohovory():
-    if  request.method == "GET":
-        return render_template("pohovory.html", roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny)
-    else:
-        if request.form.get("vybrat"):
-            current_user.datum_pohovoru = request.form.get("vybrat")
-            db.session.add(current_user)
-            db.session.commit()
-            vysledek = zapsat_na_pohovor(current_user.datum_pohovoru, current_user.id)
-            if vysledek:
-                flash("Termín vybrán.", category="success")
-            else:
-                flash("Tento termín si mezitím vybral někdo jiný. Prosím, vyber si další.", category="error")
-            return redirect(url_for("user_views.pohovory"))
-    
