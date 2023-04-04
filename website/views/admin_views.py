@@ -17,6 +17,7 @@ from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
 from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, toggle_registrace, get_registrace_otevrena
+from website.json_handlers.info_handling import ulozit_info
 from website.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path
 
 
@@ -309,26 +310,11 @@ def generovat_seznamy():
         data = seznam_generator(kriteria)
         return json.dumps(data)
 
-@admin_views.route("/motivaky_a_prace", methods=["GET","POST"])
+@admin_views.route("/prace", methods=["GET"])
 @require_role_on_current_user("editing_users_allowed")
-def motivaky_a_prace():
+def prace():
     if request.method == "GET":
-        return render_template("admin_motivaky_a_prace.html", roles=get_access_rights())
-    else:
-        result = json.loads(request.form.get("result"))
-        zmeneno = []
-        for zaznam in result:
-            user = User.get_by_id(zaznam["id"])
-            if user.hodnoceni_motivaku == zaznam["hodnoceni"]:
-                pass
-            else:
-                user.hodnoceni_motivaku = zaznam["hodnoceni"]
-                db.session.add(user)
-                db.session.commit()
-                zmeneno.append(user.id)
-        alog(f"Změna hodnocení motiváku u uživatelů {str(zmeneno)}.")
-        flash("Hodnocení motiváků uložena.", category="success")
-        return redirect(url_for("admin_views.admin_dashboard"))
+        return render_template("admin_prace.html", roles=get_access_rights())
 
 
 @admin_views.route("/pohovory", methods=["GET","POST"])
@@ -407,3 +393,15 @@ def upravit_odkazy():
             flash("Odkaz přidán", category="success")
             alog(f"Přidán užitečný odkaz {odkaz}")
         return redirect(url_for("admin_views.upravit_odkazy"))
+    
+
+@admin_views.route("/info", methods=["GET","POST"])
+@require_role_on_current_user("admin")
+def info():
+    if request.method == "GET":
+        return render_template("admin_info.html", roles=get_access_rights())
+    else:
+        ulozit_info(request.form.to_dict())
+        alog("Nové info pro účastníky.")
+        flash("Informace byly uloženy.", category="success")
+        return redirect(url_for("admin_views.info"))

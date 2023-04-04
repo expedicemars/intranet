@@ -103,7 +103,11 @@
             </div>
             
         </div>
-        <button type="button" class="btn btn-outline-primary" id="zmeny" value="zamknuto">Odemknout úpravy</button>
+        {% if uzamcene_zmeny %}
+        <p>Tvému účtu byly uzamčeny změny, pravděpodobně proto, že se blíží nějaký důležitý termín. Pokud ještě něco potřebuješ pozměnit, napiš nám a my ti změny ještě povolíme.</p>
+        {% else %}
+            <button type="button" class="btn btn-outline-primary" id="zmeny" value="zamknuto">Odemknout úpravy</button>
+        {% endif %}
         <hr>
         <h3>Pevné údaje</h3>
         <div class="container">
@@ -157,28 +161,13 @@
             </div>
         </div>
         <hr>
-        <h3>Motivační dopis</h3>
-        {% if uzamcene_zmeny %}
-        Tvému účtu byly uzamčeny změny dokumentů, pravděpodobně proto, že se blíží nějaký důležitý termín. Níže si můžeš ještě stáhnout poslední verzi, kterou od tebe máme. Nebo nám napiš a my ti to ještě odemkneme.
-        {% else %}
-        Chceme po tobě, abys nám napsal motivační dopis. Co by v něm mělo být si můžeš přečíst <a href="https://www.expedice-mars.eu/co-by-mel-obsahovat-motivacni-dopis/">tady</a>.
-        <form method="post" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col">
-                    <input type="file" class="form-control" name="motivak">
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-outline-success" name="nahrat_motivak" value="1">Nahrát</button>
-                </div>
-            </div>
-        </form>
-        {% endif %}
-        <div id="nahrany_motivak" hidden></div>
-        <hr>
         <h3>Fotka</h3>
         <img src="/file_api/user_profilovka" alt="profilovka" width="20%" class="my-2">
         
-        <div></div>
+        {% if uzamcene_zmeny %}
+        <p>Tvému účtu byly uzamčeny změny, pravděpodobně proto, že se blíží nějaký důležitý termín. Pokud ještě něco potřebuješ pozměnit, napiš nám a my ti změny ještě povolíme.</p>
+        {% else %}
+        <br>
         <button type="button" id="show_img_input" class="btn btn-outline-primary">Nahrát fotku</button>
         <div id="img_input_div" hidden>
             <form  method="post" enctype="multipart/form-data">
@@ -186,6 +175,7 @@
                 <button type="submit" class="btn btn-outline-primary" name="img" value="1">Uložit</button>
             </form>
         </div>
+        {% endif %}
         <hr>
         <h3>Prohlášení rodičů</h3>
         Prohlášení rodičů účastníka semifinále Expedice Mars je dokument, který musíš v případě postupu do semifinále vyplněný přinést. Jde v něm o bezinfekčnost a souhlas s pořizováním fotografií a stáhnout lze <a href="/file_api/prohlaseni_rodicu" download="prohlaseni_rodicu.docx">tady.</a>

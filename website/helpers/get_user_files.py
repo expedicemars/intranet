@@ -2,26 +2,6 @@ from website.paths import user_data_folder_path, default_profilovka_path
 from flask import send_file
 import json
 
-def get_motivak_by_id(id: int, style: str):
-    """
-    style = file or name
-    """
-    motivak_path = user_data_folder_path() / str(id)
-    result = {
-        "existuje": False,
-        "filename": None
-    }
-    for file in motivak_path.iterdir():
-        if file.stem == "motivak":
-            if style == "file":
-                return send_file(file)
-            else:
-                result["existuje"] = True
-                result["filename"] = file.name
-                return json.dumps(result)
-    else:
-        return json.dumps(result)
-
 
 def get_prace_filenames(id):
     """

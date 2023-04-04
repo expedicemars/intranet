@@ -15,16 +15,6 @@ def user_filter(kriteria: dict) -> List[User]:
     else:
         users = filter(lambda x: x.progress in kriteria["postup"], users)
 
-    if kriteria["udaj"] == "motivak":
-        def ma_motivak(user):
-            path = user_data_folder_path() / str(user.id)
-            for file in path.iterdir():
-                if file.stem == "motivak":
-                    return True
-            else:
-                return False
-        users = filter(lambda x: not ma_motivak(x), users)
-
     if kriteria["udaj"] == "prace":
         def ma_praci(user):
             path = user_data_folder_path() / str(user.id) / "prace"
@@ -131,8 +121,6 @@ def seznam_generator(kriteria: dict) -> dict:
             zaznam["skola_vypsat"] = u.skola
         if "admin_poznamka_vypsat" in vypsat_list:
             zaznam["admin_poznamka_vypsat"] = u.admin_poznamka
-        if "hodnoceni_vypsat" in vypsat_list:
-            zaznam["hodnoceni_vypsat"] = u.hodnoceni_motivaku
         if "registrace_vypsat" in vypsat_list:
             zaznam["registrace_vypsat"] = pretty_date(u.datum_registrace) 
         if "pohovor_vypsat" in vypsat_list:

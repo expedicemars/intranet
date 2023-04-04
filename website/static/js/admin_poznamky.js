@@ -50,7 +50,7 @@ function generator(autor, datum, msg) {
         this.parentElement.parentElement.parentElement.remove()
     })
     let p = document.createElement("p")
-    p.innerHTML = msg
+    p.innerText = msg
 
     content_div.appendChild(div)
     div.appendChild(row)

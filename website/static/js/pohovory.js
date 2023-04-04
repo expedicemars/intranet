@@ -44,10 +44,10 @@ function generator(iso, pretty) {
 }
 
 if (pohovory.length == 0) {
-    pohovory_div.innerHTML = "Nejsou vypsané žádné termíny pohovorů."
+    pohovory_div.innerHTML = "Nejsou vypsané žádné termíny online setkání."
 } else {
     let p = document.createElement("p")
-    p.innerHTML = "Vypsané termíny na výběr:"
+    p.innerHTML = "Tady si můžeš vybrat termín online setkání. Po výběu je možné svojí volbu změnit:"
     pohovory_div.appendChild(p)
     for (let p of pohovory) {
         generator(p["iso"], p["pretty"])

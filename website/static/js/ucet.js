@@ -1,36 +1,29 @@
 import httpGet from "./httpGet.js"
 let info = JSON.parse(httpGet("/user_api/info"))
 let confirmed = JSON.parse(httpGet("/user_api/confirmed"))["confirmation_status"]
+let uzamcene_zmeny = JSON.parse(httpGet("/user_api/uzamcene_zmeny"))["status"]
 let zmeny_button = document.getElementById("zmeny")
 let form = document.getElementById("form")
 let ids_list = ["jmeno", "email", "adresa", "telcislo", "datum_narozeni", "mail_rodicu", "dozvedeli", "alergie", "skola"]
 let fixni_info_ids_list = ["confirmed", "souhlas_rodicu", "odbornost", "progress", "datum_registrace", "datum_pohovoru"]
 let show_img_input_button = document.getElementById("show_img_input")
 let img = document.getElementById("img_file");
-let motivak = JSON.parse(httpGet("/send_motivak/" + info["id"] + "/name"))
-let motivak_div = document.getElementById("nahrany_motivak")
 let not_confirmed_div = document.getElementById("not_confirmed_div")
 let confirmed_div = document.getElementById("confirmed_div")
 
 
-
-zmeny_button.addEventListener("click", toggle_zmeny)
-show_img_input_button.addEventListener("click", function() {
-    document.getElementById("img_input_div").hidden = false
-})
-img.addEventListener("change", function() {
-    if(this.files[0].size > 1000000){
-       alert("Nahraj prosím  menší obrázek, limit je 1MB");
-       this.value = "";
-    };
-})
-if (motivak["existuje"]) {
-    motivak_div.hidden = false
-    let a = document.createElement("a")
-    motivak_div.appendChild(a)
-    a.href = "/send_motivak"
-    a.innerHTML = "Stáhnout stávající verzi motiváku"
-    a.download = motivak["filename"]
+if (uzamcene_zmeny) {
+} else {
+    zmeny_button.addEventListener("click", toggle_zmeny)
+    show_img_input_button.addEventListener("click", function() {
+        document.getElementById("img_input_div").hidden = false
+    })
+    img.addEventListener("change", function() {
+        if(this.files[0].size > 1000000){
+           alert("Nahraj prosím  menší obrázek, limit je 1MB");
+           this.value = "";
+        };
+    })
 }
 // ovládá viditelnost divu co žádá o e-mail
 if (confirmed) {

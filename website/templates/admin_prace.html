@@ -1,0 +1,10 @@
+{% extends "admin_navbar.html" %}
+{% block content %}
+
+    <h2>Práce</h2>
+    <div id="content"></div>
+    <hr>
+
+
+    <script type="module" src="{{url_for('static', filename='js/admin_prace.js')}}"></script>
+{% endblock %}

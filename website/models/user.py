@@ -58,7 +58,6 @@ class User(db.Model, UserMixin):
     def get_full_info(self) -> dict:
         info = self.get_basic_info()
         info["admin_poznamka"] = self.admin_poznamka
-        info["hodnoceni_motivaku"] = self.hodnoceni_motivaku
         info["uzamcene_zmeny"] = self.uzamcene_zmeny
         return info
 
@@ -147,9 +146,6 @@ class User(db.Model, UserMixin):
             u.alergie = "dummy_alergie"
         if biased_coin():
             u.skola = "dummy_skola"
-        if biased_coin():
-            motivak_path = user_data_folder_path() / str(u.id) / "motivak.txt"
-            motivak_path.touch()
         if biased_coin():
             prace_path = user_data_folder_path() / str(u.id) / "prace" / "pr.txt"
             prace_path.touch()

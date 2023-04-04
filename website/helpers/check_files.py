@@ -1,7 +1,9 @@
 import json
 import website.paths as p
 from website.json_handlers.logs_handling import log
+from website.json_handlers.dostupne_omezeni import get_dostupne_progressy
 from datetime import date
+from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 
 
 """
@@ -77,7 +79,7 @@ def check_zadani_folders() -> None:
         log("Složka pro zadání už existuje.")
     else:
         path.mkdir()
-        for odbornost in ["biolog", "konstrukter", "inzenyr", "fyzik", "popularizator"]:
+        for odbornost in get_dostupne_odbornosti():
             _path = path / odbornost
             _path.mkdir()
         log("Vytvořena složka pro zadání na "+str(path))
@@ -128,4 +130,17 @@ def check_prubeh_rocniku() -> None:
         path.touch()
         with open(path, "w") as file:
             file.write(json.dumps({"datum_konce_registrace":str(date.today()),"otevrena_registrace":False}, indent=4))
+        log("Založen soubor na pohovory na " + str(path))
+
+def check_informace() -> None:
+    path = p.info_path()
+    if path.exists():
+        log("Soubor na informace už existuje.")
+    else:
+        path.touch()
+        with open(path, "w") as file:
+            d = get_dostupne_progressy()
+            d.append("Obecné")
+            result = [{"nadpis": dp, "content": ""} for dp in d]
+            file.write(json.dumps(result, indent=4))
         log("Založen soubor na pohovory na " + str(path))
