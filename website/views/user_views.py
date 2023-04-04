@@ -143,3 +143,14 @@ def odbornost_vyber():
             db.session.commit()
             flash("Odbornost vybrána!", category="success")
             return redirect(url_for("user_views.odbornost"))
+        
+
+@user_views.route("/motivacni_formular", methods=["GET","POST"])
+@require_role_on_current_user("user")
+@require_progress_na_ucastnikovi("Registrován")
+def motivacni_formular():
+    if request.method == "GET":
+        return render_template("motivacni_formular.html", roles=get_access_rights(current_user), user_progress=current_user.progress)
+    else:
+        print(request.form.to_dict())
+        return redirect(url_for("user_views.ucet"))
