@@ -69,7 +69,7 @@ class User(db.Model, UserMixin):
             "telcislo": self.telcislo,
             "mail_rodicu": self.mail_rodicu,
             "odbornost": self.odbornost,
-            "datum_narozeni": self.datum_narozeni.isoformat(),
+            "datum_narozeni": self.datum_narozeni.isoformat() if self.datum_narozeni else None,
             "progress": self.progress,
             "role": self.role,
             "tricko": self.tricko,

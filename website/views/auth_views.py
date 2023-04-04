@@ -28,8 +28,10 @@ def login():
 			return redirect(url_for("auth_views.login"))
 		user = User.get_by_email(email)
 		if user and check_password_hash(user.password, password):
+			print(user, user.email)
 			login_user(user, remember=True)
 			flash("úspěšné přihlášení", category="success")
+			print(current_user, user)
 			return redirect(url_for("default_views.home"))
 		else:
 			flash("E-mail nebo heslo byly špatně", category="error")
@@ -66,7 +68,7 @@ def register():
 				user = User(email=email, password=generate_password_hash(password, method="sha256"))
 				db.session.add(user)
 				db.session.commit()
-				login_user(user, remember=True)
+				login_user(user, remember=False)
 				flash("Úspěšná registrace.", category="info")
 				# create files
 				user_folder_path = user_data_folder_path() / str(user.id)

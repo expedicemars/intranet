@@ -51,7 +51,7 @@ def ucet():
             current_user.jmeno = data["jmeno"]
             current_user.adresa = data["adresa"]
             current_user.telcislo = data["telcislo"]
-            current_user.datum_narozeni = datetime.datetime.fromisoformat(data["datum_narozeni"])
+            current_user.datum_narozeni = datetime.datetime.fromisoformat(data["datum_narozeni"]) if data["datum_narozeni"] else None
             current_user.mail_rodicu = data["mail_rodicu"]
             current_user.tricko = data["tricko"]
             current_user.dozvedeli = data["dozvedeli"]
@@ -80,6 +80,7 @@ def ucet_overeny(token):
         return redirect(url_for("user_views.ucet"))
     else:
         user.confirmed = True
+        db.session.add(user)
         db.session.commit()
         return redirect(url_for("user_views.ucet"))
         

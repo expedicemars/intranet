@@ -11,6 +11,7 @@ default_views = Blueprint("default_views", __name__)
 @default_views.route("/")
 @default_views.route("/home")
 def home():
+    print(current_user)
     return render_template("home.html", roles = get_access_rights(current_user), otevrena_registrace = get_registrace_otevrena(), user_progress=get_user_progress())
 
 
