@@ -118,10 +118,16 @@ def detail_usera(id):
         return render_template("admin_detail_usera.html", roles=get_access_rights(), id=id)
     else:
         if request.form.get("smazat"):
-            User.get_by_id(id).odstranit()
-            alog("Smazání usera " + str(id) + ".")
-            flash("User byl smazán", category="success")
-            return redirect(url_for("admin_views.registrovani_uzivatele"))
+            u = User.get_by_id(id)
+            if "admin" in json.loads(u.role):
+                alog(f"Pokus o smazání admina {u.email}")
+                flash("Nemůžeš mazat adminy!", category="error")
+                return redirect(url_for("admin_views.registrovani_uzivatele"))
+            else:
+                u.odstranit()
+                alog("Smazání usera " + str(id) + ".")
+                flash("User byl smazán", category="success")
+                return redirect(url_for("admin_views.registrovani_uzivatele"))
         elif request.form.get("odebrat_odbornost"):
             User.get_by_id(id).odebrat_odbornost()
             alog(f"Odebrána odbornost userovi {User.get_by_id(id).email}")

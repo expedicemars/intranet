@@ -150,14 +150,28 @@ def role(id):
 @require_role_on_current_user(["editing_users_allowed", "editing_admins_allowed"])
 def detail_usera(id):
     u = User.get_by_id(id)
-    return u.get_full_info()
+    return u.get_info_na_detail_usera()
 
 
-@admin_api.route("/users_from_db")
-@require_role_on_current_user(["editing_users_allowed", "editing_admins_allowed"])
-def users_from_db():
-    return json.dumps([user.get_full_info() for user in User.get_all()])
+@admin_api.route("/ucastnici")
+@require_role_on_current_user("editing_users_allowed")
+def ucastnici():
+    return json.dumps([{"id": u.id, "email": u.email, "jmeno": u.jmeno} for u in User.get_all() if "admin" not in json.loads(u.role)])
 
+@admin_api.route("/useri_na_jmenovani_adminu")
+@require_role_on_current_user("editing_admins_allowed")
+def useri_na_jmenovani_adminu():
+    result = {
+        "admins": [],
+        "users": []
+    }
+    for u in User.get_all():
+        if "admin" in json.loads(u.role):
+            result["admins"].append({"id": u.id,"email": u.email, "jmeno": u.jmeno})
+        else:
+            result["users"].append({"id": u.id,"email": u.email, "jmeno": u.jmeno})
+    return json.dumps(result)
+            
 @admin_api.route("/vsechny_informace")
 @require_role_on_current_user(["editing_users_allowed", "editing_admins_allowed"])
 def vsechny_informace():

@@ -2,6 +2,14 @@
 
 {% block content %}
 <h2>Detail uživatele</h2>
+
+<form method="post">
+    <button class="btn btn-success"  type="button" id="ulozit_button">Uložit</button>
+    <button class="btn btn-danger" type="submit" value="1" name="smazat">Smazat uživatele</button>
+    <button class="btn btn-primary" type="submit" value = "1" name="odebrat_odbornost">Odebrat údaj o odbornosti</button>
+</form>
+<hr>
+
 <input hidden id="id" value="{{id}}"/>
 <div class="container">
     <div class="row">
@@ -141,22 +149,16 @@
             <input type="text" id="meeting_link" class="form-control"></textarea>
         </div>
     </div>
-    <button class="btn btn-success" id="ulozit_button">Uložit</button>
     <form method="post" id="form">
         <input type="text" hidden id="result" name="result">
     </form>
     
 </div>
-    <hr>
-    <div  id="prace_div">
-        <h2>Práce</h2>
-        <p id="prace_disclaimer">Tento uživatel ještě práci nenahrál. Až se tak stane, půjde zde stáhnout.</p>
-    </div>
-    <hr>
-<form method="post">
-    <button class="btn btn-danger" type="submit" value="1" name="smazat">Smazat uživatele</button>
-    <button class="btn btn-primary" type="submit" value = "1" name="odebrat_odbornost">Odebrat údaj o odbornosti</button>
-</form>
+<hr>
+<div  id="prace_div">
+    <h2>Práce</h2>
+    <p id="prace_disclaimer">Tento uživatel ještě práci nenahrál. Až se tak stane, půjde zde stáhnout.</p>
+</div>
 
 <script type="module" src="{{url_for('static', filename='js/admin_detail_usera.js')}}"></script>
 {% endblock %}

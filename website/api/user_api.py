@@ -63,7 +63,7 @@ def kontakt_na_meho_velitele_odbornosti():
 @user_api.route("/info")
 @require_role_on_current_user("user")
 def info():
-    return current_user.get_basic_info()
+    return current_user.get_info_na_ucet_stranku()
 
 
 @user_api.route("/moje_info")

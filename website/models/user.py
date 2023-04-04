@@ -52,34 +52,49 @@ class User(db.Model, UserMixin):
         except:
             return None
         return db.session.get(User, data["user_id"])
-
-    def get_full_info(self) -> dict:
-        info = self.get_basic_info()
-        info["admin_poznamka"] = self.admin_poznamka
-        info["uzamcene_zmeny"] = self.uzamcene_zmeny
-        return info
-
-    def get_basic_info(self) -> dict:
+    
+    def get_info_na_ucet_stranku(self) -> dict:
         return {
-            "id": self.id,
-            "email": self.email,
-            "confirmed": self.confirmed,
             "jmeno": self.jmeno,
+            "email": self.email,
             "adresa": self.adresa,
             "telcislo": self.telcislo,
+            "datum_narozeni": self.datum_narozeni.isoformat() if self.datum_narozeni else None,
+            "mail_rodicu": self.mail_rodicu,
+            "dozvedeli": self.dozvedeli,
+            "alergie": self.alergie,
+            "skola": self.skola,
+            "confirmed": self.confirmed,
+            "odbornost": self.odbornost,
+            "progress": self.progress,
+            "tricko": self.tricko,
+            "datum_registrace": pretty_datetime(self.datum_registrace),
+            "datum_pohovoru": pretty_datetime(self.datum_pohovoru),
+        }
+    
+    def get_info_na_detail_usera(self) -> dict:
+        return {
+            "jmeno": self.jmeno,
+            "datum_narozeni": self.datum_narozeni.isoformat() if self.datum_narozeni else None,
+            "email": self.email,
+            "telcislo": self.telcislo,
+            "adresa": self.adresa,
+            "confirmed": self.confirmed,
+            "id": self.id,
+            "tricko": self.tricko,
             "mail_rodicu": self.mail_rodicu,
             "odbornost": self.odbornost,
-            "datum_narozeni": self.datum_narozeni.isoformat() if self.datum_narozeni else None,
-            "progress": self.progress,
-            "role": self.role,
-            "tricko": self.tricko,
             "dozvedeli": self.dozvedeli,
             "alergie": self.alergie,
             "skola": self.skola,
             "datum_registrace": pretty_datetime(self.datum_registrace),
             "datum_pohovoru": pretty_datetime(self.datum_pohovoru),
-            "meeting_link": self.meeting_link
+            "progress": self.progress,
+            "meeting_link": self.meeting_link,
+            "admin_poznamka": self.admin_poznamka,
+            "uzamcene_zmeny": self.uzamcene_zmeny
         }
+        
 
     def odstranit(self):
         db.session.delete(self)
