@@ -1,6 +1,7 @@
 import httpGet from "./httpGet.js"
 let info = JSON.parse(httpGet("/user_api/info"))
 let confirmed = JSON.parse(httpGet("/user_api/confirmed"))["confirmation_status"]
+let uzamcene_zmeny = JSON.parse(httpGet("/user_api/uzamcene_zmeny"))["status"]
 let zmeny_button = document.getElementById("zmeny")
 let form = document.getElementById("form")
 let ids_list = ["jmeno", "email", "adresa", "telcislo", "datum_narozeni", "mail_rodicu", "dozvedeli", "alergie", "skola"]
@@ -11,17 +12,19 @@ let not_confirmed_div = document.getElementById("not_confirmed_div")
 let confirmed_div = document.getElementById("confirmed_div")
 
 
-
-zmeny_button.addEventListener("click", toggle_zmeny)
-show_img_input_button.addEventListener("click", function() {
-    document.getElementById("img_input_div").hidden = false
-})
-img.addEventListener("change", function() {
-    if(this.files[0].size > 1000000){
-       alert("Nahraj prosím  menší obrázek, limit je 1MB");
-       this.value = "";
-    };
-})
+if (uzamcene_zmeny) {
+} else {
+    zmeny_button.addEventListener("click", toggle_zmeny)
+    show_img_input_button.addEventListener("click", function() {
+        document.getElementById("img_input_div").hidden = false
+    })
+    img.addEventListener("change", function() {
+        if(this.files[0].size > 1000000){
+           alert("Nahraj prosím  menší obrázek, limit je 1MB");
+           this.value = "";
+        };
+    })
+}
 // ovládá viditelnost divu co žádá o e-mail
 if (confirmed) {
     not_confirmed_div.hidden = true

@@ -9,9 +9,13 @@ Tady potom kontakt na velitele odbornosti. Neváhej se jich na cokoli ptát, vš
 <hr>
 <div id="ukazat_praci">
     <h2>Tvá práce</h2>
+    {% if uzamcene_zmeny %}
+        <p>Tvému účtu byly uzamčeny změny, pravděpodobně proto, že se blíží nějaký důležitý termín. Pokud ještě něco potřebuješ pozměnit, napiš nám a my ti změny ještě povolíme.</p>
+    {% else %}
     <form method="post">
         <button type="submit" class="btn btn-danger" value="1" name="smazat_praci">Smazat nahrané soubory</button>
     </form>
+    {% endif %}
     <div id="ukazat_praci_content" class="border rounded-2 border-primary my-2 p-2"></div>
 </div>
 <div id="nahrat_praci">

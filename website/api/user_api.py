@@ -18,6 +18,11 @@ user_api = Blueprint("user_api", __name__)
 def confirmed():
     return json.dumps({"confirmation_status": current_user.confirmed})
 
+@user_api.route("/uzamcene_zmeny")
+@require_role_on_current_user("user")
+def uzamcene_zmeny():
+    return json.dumps({"status": current_user.uzamcene_zmeny})
+
 
 @user_api.route("/volne_pohovory")
 @require_role_on_current_user("user")
