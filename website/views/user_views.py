@@ -4,10 +4,11 @@ from website.helpers.require_role_decorator import require_role_on_current_user,
 from website.models.user import User
 from website.mail_handler import mail_sender
 from website import db
-from website.role_handler import get_access_rights
+from website.role_handler import get_access_rights, get_user_progress
 import json
 from website.paths import user_data_folder_path
 from website.json_handlers.pohovory_handling import zapsat_na_pohovor
+import datetime
 
 user_views = Blueprint("user_views", __name__)
 
@@ -17,7 +18,7 @@ user_views = Blueprint("user_views", __name__)
 @require_role_on_current_user("user")
 def ucet():
     if request.method == "GET":
-        return render_template("ucet.html", current_user = current_user, roles=get_access_rights(), uzamcene_zmeny=current_user.uzamcene_zmeny, user_progress=current_user.progress)
+        return render_template("ucet.html", current_user = current_user, roles=get_access_rights(), uzamcene_zmeny=current_user.uzamcene_zmeny, user_progress=get_user_progress())
     else:
         if request.form.get("overeni_emailu"):
             token = current_user.get_reset_token()
@@ -50,7 +51,7 @@ def ucet():
             current_user.jmeno = data["jmeno"]
             current_user.adresa = data["adresa"]
             current_user.telcislo = data["telcislo"]
-            current_user.datum_narozeni = data["datum_narozeni"]
+            current_user.datum_narozeni = datetime.datetime.fromisoformat(data["datum_narozeni"])
             current_user.mail_rodicu = data["mail_rodicu"]
             current_user.tricko = data["tricko"]
             current_user.dozvedeli = data["dozvedeli"]
@@ -67,7 +68,7 @@ def ucet():
         
 @user_views.route("/info")
 def info():
-    return render_template("info.html", roles = get_access_rights(current_user), user_progress=current_user.progress)
+    return render_template("info.html", roles = get_access_rights(current_user), user_progress=get_user_progress())
 
 
 @user_views.route("/ucet/<token>", methods=["GET"])
@@ -88,10 +89,11 @@ def ucet_overeny(token):
 @require_progress_na_ucastnikovi("Online setkání")
 def pohovory():
     if  request.method == "GET":
-        return render_template("pohovory.html", roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=current_user.progress)
+        return render_template("pohovory.html", roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=get_user_progress())
     else:
         if request.form.get("vybrat"):
-            current_user.datum_pohovoru = request.form.get("vybrat")
+            current_user.datum_pohovoru =  datetime.datetime.fromisoformat(request.form.get("vybrat"))
+
             db.session.add(current_user)
             db.session.commit()
             vysledek = zapsat_na_pohovor(current_user.datum_pohovoru, current_user.id)
@@ -110,7 +112,7 @@ def odbornost():
         return redirect(url_for("user_views.odbornost_vyber"))
     else:
         if request.method == "GET":
-            return render_template("odbornost.html", roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=current_user.progress)
+            return render_template("odbornost.html", roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=get_user_progress())
         else:
             if request.form.get("ulozit_praci"):
                 if all(request.files.getlist("nahrana_prace")):
@@ -136,7 +138,7 @@ def odbornost_vyber():
         return redirect(url_for("user_views.odbornost"))
     else:
         if request.method == "GET":
-            return render_template("odbornost_vyber.html", roles=get_access_rights(current_user), user_progress=current_user.progress)
+            return render_template("odbornost_vyber.html", roles=get_access_rights(current_user), user_progress=get_user_progress())
         else:
             current_user.odbornost = request.form.get("odbornost")
             db.session.add(current_user)
@@ -150,7 +152,7 @@ def odbornost_vyber():
 @require_progress_na_ucastnikovi("Registrován")
 def motivacni_formular():
     if request.method == "GET":
-        return render_template("motivacni_formular.html", roles=get_access_rights(current_user), user_progress=current_user.progress)
+        return render_template("motivacni_formular.html", roles=get_access_rights(current_user), user_progress=get_user_progress())
     else:
         print(request.form.to_dict())
         return redirect(url_for("user_views.ucet"))

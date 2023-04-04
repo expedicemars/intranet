@@ -10,7 +10,7 @@ from website.models.user import User
 from website.json_handlers.mailing_list import set_mailing_list
 from website.helpers.user_filter import seznam_generator
 from website.helpers.exporty import exportovat, promazat
-from website.helpers.pretty_date import pretty_date
+from website.helpers.pretty_date import pretty_date, pretty_datetime
 from website.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
@@ -140,11 +140,6 @@ def detail_usera(id):
                 data["uzamcene_zmeny"] = True
             if data["uzamcene_zmeny"] == "false":
                 data["uzamcene_zmeny"] = False
-            
-            if data["souhlas_rodicu"] == "true":
-                data["souhlas_rodicu"] = True
-            if data["souhlas_rodicu"] == "false":
-                data["souhlas_rodicu"] = False
 
             u = User.get_by_id(id)
             if u.progress == data["progress"]:
@@ -164,12 +159,6 @@ def detail_usera(id):
             else:
                 u.admin_poznamka = data["admin_poznamka"]
                 alog(f"Změna admin poznámky uživatele {id}.")
-            
-            if u.souhlas_rodicu == data["souhlas_rodicu"]:
-                pass
-            else:
-                u.souhlas_rodicu = data["souhlas_rodicu"]
-                alog(f"Změna souhlasu rodičů uživatele {id} na { u.souhlas_rodicu }.")
 
             if u.meeting_link == data["meeting_link"]:
                 pass
@@ -246,7 +235,7 @@ def prubeh_rocniku():
             p = exporty_path() / name
             rmtree(p)
             flash("Export byl smazán.", category="success")
-            alog("Smazání exportu z "+ pretty_date(name))
+            alog("Smazání exportu z "+ pretty_datetime(name))
         return redirect(url_for("admin_views.prubeh_rocniku"))        
 
 @admin_views.route("/velitele_odbornosti", methods=["GET","POST"])

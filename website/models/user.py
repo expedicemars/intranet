@@ -5,7 +5,7 @@ import jwt
 import json
 from website.paths import user_data_folder_path
 from shutil import rmtree
-from website.helpers.pretty_date import pretty_date
+from website.helpers.pretty_date import pretty_date, pretty_datetime
 from datetime import datetime, timezone, timedelta
 
 
@@ -18,22 +18,20 @@ class User(db.Model, UserMixin):
     adresa = db.Column(db.String(100))
     telcislo = db.Column(db.String(100))
     mail_rodicu = db.Column(db.String(100))
-    souhlas_rodicu = db.Column(db.Boolean, default=False)
     odbornost = db.Column(db.String(100), default="zatím nevybraná")
-    datum_narozeni = db.Column(db.String(100))
+    datum_narozeni = db.Column(db.Date)
     progress = db.Column(db.String(100), default="Registrován")
     role = db.Column(db.Text, default=json.dumps(["user"]))
     tricko = db.Column(db.String(100))
     dozvedeli = db.Column(db.String(100))
     admin_poznamka = db.Column(db.String(1000))
-    hodnoceni_motivaku = db.Column(db.String(5000))
     uzamcene_zmeny = db.Column(db.Boolean, default=False)
     alergie = db.Column(db.String(1000))
     skola = db.Column(db.String(1000))
-    datum_registrace = db.Column(
-        db.String(100), default=datetime.now().isoformat())
-    datum_pohovoru = db.Column(db.String(100))
+    datum_registrace = db.Column((db.DateTime), default=datetime.now())
+    datum_pohovoru = db.Column(db.DateTime)
     meeting_link = db.Column(db.String(1000))
+    motivacni_dotaznik = db.Column(db.Text)
 
     def get_reset_token(self, expires_sec=9000) -> str:
         reset_token = jwt.encode(
@@ -70,17 +68,16 @@ class User(db.Model, UserMixin):
             "adresa": self.adresa,
             "telcislo": self.telcislo,
             "mail_rodicu": self.mail_rodicu,
-            "souhlas_rodicu": self.souhlas_rodicu,
             "odbornost": self.odbornost,
-            "datum_narozeni": self.datum_narozeni,
+            "datum_narozeni": self.datum_narozeni.isoformat(),
             "progress": self.progress,
             "role": self.role,
             "tricko": self.tricko,
             "dozvedeli": self.dozvedeli,
             "alergie": self.alergie,
             "skola": self.skola,
-            "datum_registrace": pretty_date(self.datum_registrace),
-            "datum_pohovoru": pretty_date(self.datum_pohovoru),
+            "datum_registrace": pretty_datetime(self.datum_registrace),
+            "datum_pohovoru": pretty_datetime(self.datum_pohovoru),
             "meeting_link": self.meeting_link
         }
 
@@ -95,72 +92,6 @@ class User(db.Model, UserMixin):
         db.session.add(self)
         db.session.commit()
 
-    @staticmethod
-    def generate_random() -> "User":
-        import random
-        import datetime
-
-        def biased_coin() -> bool:
-            return random.randint(0, 100) < 70
-
-        # povinne veci
-        u = User()
-        db.session.add(u)
-        db.session.commit()
-        user_folder_path = user_data_folder_path() / str(u.id)
-        prace_path = user_folder_path / "prace"
-        user_folder_path.mkdir()
-        prace_path.mkdir()
-        u.email = "dummy_email_" + str(u.id)
-        u.confirmed = True
-        u.role = json.dumps(["user"])
-
-        # veci co muzou byt nahodne
-        if biased_coin():
-            u.jmeno = "dummy_jmeno_" + str(u.id)
-        if biased_coin():
-            u.adresa = "dummy_adresa_" + str(u.id)
-        if biased_coin():
-            u.telcislo = "dummy_telcislo_" + str(u.id)
-        if biased_coin():
-            u.mail_rodicu = "dummy_mail_rodicu_" + str(u.id)
-        if biased_coin():
-            u.odbornost = random.choice(
-                ["biolog", "konstrukter", "inzenyr", "fyzik", "popularizator"])
-        if biased_coin():
-            u.datum_narozeni = datetime.date.today().isoformat()
-        if biased_coin():
-            u.progress = random.choice(
-                ["Domácí kolo", "Semifinále", "Finále", "Simulace"])
-        if biased_coin():
-            u.tricko = random.choice(["XS", "S", "M", "L", "XL"])
-        if biased_coin():
-            u.dozvedeli = "dummy_dozvedeli"
-        if biased_coin():
-            u.admin_poznamka = "dummy_admin_poznamka"
-        if biased_coin():
-            u.hodnoceni_motivaku = "dummy_hodnoceni_motivaku"
-        if biased_coin():
-            u.uzamcene_zmeny = random.choice([True, False])
-        if biased_coin():
-            u.alergie = "dummy_alergie"
-        if biased_coin():
-            u.skola = "dummy_skola"
-        if biased_coin():
-            prace_path = user_data_folder_path() / str(u.id) / "prace" / "pr.txt"
-            prace_path.touch()
-        if biased_coin():
-            profilovka = user_data_folder_path() / str(u.id) / "profilovka.jpg"
-            profilovka.touch()
-        if biased_coin():
-            u.datum_pohovoru = datetime.datetime.utcnow().isoformat()
-        if biased_coin():
-            u.datum_registrace = (datetime.datetime.utcnow(
-            ) - datetime.timedelta(days=365)).isoformat()
-
-        db.session.add(u)
-        db.session.commit()
-        return u
 
     @staticmethod
     def jmenovat_admina_by_email(email) -> "User":

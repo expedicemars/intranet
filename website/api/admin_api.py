@@ -5,7 +5,7 @@ from website.helpers.require_role_decorator import require_role_on_current_user
 from website.json_handlers.logs_handling import get_logs, get_alogs
 from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena
 from website.json_handlers.odkazy_handling import get_odkazy
-from website.helpers.pretty_date import pretty_date
+from website.helpers.pretty_date import pretty_date, pretty_datetime
 from website.paths import velitel_odbornosti_data_path, user_data_folder_path, poznamky_path, prohlaseni_path
 from website.models.user import User
 from website.json_handlers.pohovory_handling import get_pohovory
@@ -55,7 +55,7 @@ def pohovory():
     for p in get_pohovory():
         zaznam = {}
         zaznam["iso"] = p["iso"]
-        zaznam["pretty"] = pretty_date(p["iso"])
+        zaznam["pretty"] = pretty_datetime(p["iso"])
         zaznam["user"] = p["user"]
         if p["user"]:
             u = User.get_by_id(p["user"])

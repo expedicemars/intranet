@@ -64,13 +64,13 @@ def get_pohovory() -> List[dict]:
         file = json.load(file)
     return file
 
-def zapsat_na_pohovor(isoformat: str, id: int) -> bool:
+def zapsat_na_pohovor(isoformat: datetime, id: int) -> bool:
     with open(pohovory_path()) as file:
         file = json.load(file)
     #zda je zvoleny furt volny
     volny = False
     for f in file:
-        if f["iso"] == isoformat and f["user"] is None:
+        if f["iso"] == isoformat.isoformat() and f["user"] is None:
             volny = True
     if volny:
         #smazu stary
@@ -79,7 +79,7 @@ def zapsat_na_pohovor(isoformat: str, id: int) -> bool:
                 f["user"] = None
         #zapisu novy
         for f in file:
-            if f["iso"] == isoformat:
+            if f["iso"] == isoformat.isoformat():
                 f["user"] = id
                 break
         with open(pohovory_path(),"w") as new:

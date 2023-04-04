@@ -12,3 +12,9 @@ def get_access_rights(userobj: User = current_user) -> list:
         if userobj.confirmed:
             role.append("confirmed")
     return role
+
+def get_user_progress(userObj: User = current_user) -> str:
+    if userObj.is_authenticated:
+        return userObj.progress
+    else:
+        return None

@@ -1,6 +1,6 @@
 from openpyxl import Workbook
 from website.paths import exporty_path, mailing_list_path, pohovory_path, poznamky_path, velitel_odbornosti_data_path, zadani_folder_path, admin_logs_file_path, app_logs_file_path, prohlaseni_path, user_data_folder_path, prubeh_rocniku_path
-from website.helpers.pretty_date import pretty_date
+from website.helpers.pretty_date import pretty_date, pretty_datetime
 from website.role_handler import get_access_rights
 from datetime import datetime, date
 from website.models.user import User
@@ -54,20 +54,19 @@ def exportovat() -> None:
         ws1.cell(i+2,5,value=u.adresa)
         ws1.cell(i+2,6,value=u.telcislo)
         ws1.cell(i+2,7,value=u.mail_rodicu)
-        ws1.cell(i+2,8,value=u.souhlas_rodicu)
-        ws1.cell(i+2,9,value=u.odbornost)
-        ws1.cell(i+2,10,value=u.datum_narozeni)
-        ws1.cell(i+2,11,value=u.progress)
-        ws1.cell(i+2,12,value=u.role)
-        ws1.cell(i+2,13,value=u.tricko)
-        ws1.cell(i+2,14,value=u.dozvedeli)
-        ws1.cell(i+2,15,value=u.admin_poznamka)
-        ws1.cell(i+2,16,value=u.uzamcene_zmeny)
-        ws1.cell(i+2,17,value=u.alergie)
-        ws1.cell(i+2,18,value=u.skola)
-        ws1.cell(i+2,19,value=u.datum_registrace)
-        ws1.cell(i+2,20,value=u.datum_pohovoru)
-        ws1.cell(i+2,21,value=u.meeting_link)
+        ws1.cell(i+2,8,value=u.odbornost)
+        ws1.cell(i+2,11,value=pretty_date(u.datum_narozeni))
+        ws1.cell(i+2,12,value=u.progress)
+        ws1.cell(i+2,13,value=u.role)
+        ws1.cell(i+2,14,value=u.tricko)
+        ws1.cell(i+2,15,value=u.dozvedeli)
+        ws1.cell(i+2,16,value=u.admin_poznamka)
+        ws1.cell(i+2,17,value=u.uzamcene_zmeny)
+        ws1.cell(i+2,18,value=u.alergie)
+        ws1.cell(i+2,19,value=u.skola)
+        ws1.cell(i+2,20,value=pretty_datetime(u.datum_registrace))
+        ws1.cell(i+2,21,value=pretty_datetime(u.datum_pohovoru))
+        ws1.cell(i+2,22,value=u.meeting_link)
     
     ws2 = wb.create_sheet("Mailing list")
     with open(mailing_list_path()) as file:
@@ -81,7 +80,7 @@ def exportovat() -> None:
     ws3.cell(1,1,"Datum")
     ws3.cell(1,2,"Účastník")
     for i, zaznam in enumerate(file):
-        ws3.cell(i+2,1,pretty_date(zaznam["iso"]))
+        ws3.cell(i+2,1,pretty_datetime(zaznam["iso"]))
         ws3.cell(i+2,2,zaznam["user"])
     
     ws4 = wb.create_sheet("Poznámky")
@@ -153,7 +152,7 @@ def promazat() -> None:
         if "admin" not in get_access_rights(u):
             u.odstranit()
         else:
-            u.datum_pohovoru = ""
+            u.datum_pohovoru = None
             db.session.add(u)
             db.session.commit()
         
