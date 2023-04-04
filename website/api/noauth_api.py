@@ -2,7 +2,7 @@ from flask import Blueprint
 import json
 from website.models.chyba import Chyba
 from website.json_handlers.prubeh_rocniku_handling import get_datum_konce_registrace
-from website.helpers.pretty_date import pretty_date
+from website.helpers.pretty_date import pretty_datetime
 
 
 
@@ -18,6 +18,6 @@ def registrace():
 
 @noauth_api.route("/registrace_pretty")
 def registrace_pretty():
-    return pretty_date(get_datum_konce_registrace())
+    return pretty_datetime(get_datum_konce_registrace())
 
 

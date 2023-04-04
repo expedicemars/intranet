@@ -4,7 +4,7 @@ import json
 from website.helpers.require_role_decorator import require_role_on_current_user
 from website.paths import user_data_folder_path, zadani_folder_path, prohlaseni_path, exporty_path
 from website.helpers.get_user_files import get_prace_filenames, get_profilovka_by_id
-from website.helpers.pretty_date import pretty_date
+from website.helpers.pretty_date import pretty_date, pretty_datetime
 
 
 file_api = Blueprint("file_api", __name__)
@@ -80,7 +80,7 @@ def exporty():
         if p.name == ".DS_Store":
             pass
         else:
-            zaznam["datum"] = pretty_date(p.name)
+            zaznam["datum"] = pretty_datetime(p.name)
             zaznam["iso"] = p.name
             for file in p.iterdir():
                 if file.suffix == ".zip":

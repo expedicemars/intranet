@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_login import current_user
 import json
-from website.helpers.pretty_date import pretty_date
+from website.helpers.pretty_date import pretty_date, pretty_datetime
 from website.helpers.require_role_decorator import require_progress_na_ucastnikovi, require_role_on_current_user
 from website.json_handlers.pohovory_handling import get_neobsazene_pohovory
 from website.json_handlers.info_handling import get_vsechny_informace
@@ -32,7 +32,7 @@ def volne_pohovory():
     for p in get_neobsazene_pohovory():
         zaznam = {}
         zaznam["iso"] = p["iso"]
-        zaznam["pretty"] = pretty_date(p["iso"])
+        zaznam["pretty"] = pretty_datetime(p["iso"])
         result.append(zaznam)
     return json.dumps(result)
 
@@ -42,7 +42,7 @@ def volne_pohovory():
 @require_progress_na_ucastnikovi("Online setkání")
 def datum_pohovoru():
     result = {
-        "datum": pretty_date(current_user.datum_pohovoru),
+        "datum": pretty_datetime(current_user.datum_pohovoru),
         "link": current_user.meeting_link
         }
     return json.dumps(result)
