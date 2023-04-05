@@ -8,10 +8,7 @@
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.velitele_odbornosti')}}">Velitelé odborností</a></li>
     {% endif %}
     {% if "editing_pohovory" in roles%}
-    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.pohovory')}}">Pohovory</a></li>
-    {% endif %}
-    {% if "editing_bugs_allowed" in roles %}
-    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.uprava_znamych_bugu')}}">Přehled známých bugů</a></li>
+    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.pohovory')}}">Online setkání</a></li>
     {% endif %}
     {% if "editing_prubeh_rocniku" in roles %}
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.prubeh_rocniku')}}">Průběh ročníku</a></li>
@@ -27,6 +24,9 @@
     {% endif %}
     {% if "editing_admins_allowed" in roles %}
     <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.jmenovat_adminy')}}">Jmenovat adminy</a></li>
+    {% endif %}
+    {% if "editing_bugs_allowed" in roles %}
+    <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.uprava_znamych_bugu')}}">Přehled známých bugů</a></li>
     {% endif %}
     {% if "editing_logs_allowed" in roles %}
     <li class="nav-item dropdown">
