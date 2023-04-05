@@ -1,0 +1,27 @@
+[
+    {
+        "nadpis":"Tvé volnočasové aktivity",
+        "popis":"Čemu se věnuješ mimo školu? Napiš nám o svých zájmech, o tom, co tě baví, fascinuje. Děláš nějaký sport?",
+        "name": "konicky"
+    },
+    {
+        "nadpis":"Tvé úspěchy",
+        "popis":"Povedlo se ti něco skvělého, na co by mohl každý být hrdý? Může se jednat o účast na olympiádách, ale i na jiných soutěžích. Nebo nemusí vůbec jít o soutěž. Někdo může být hrdý na to, že dokázal tento rok více číst.",
+        "name": "uspechy"
+    },
+    {
+        "nadpis":"Tvá očekávání",
+        "popis":"Co od Expedice Mars očekáváš? Co očekáváš od sebe? Jaké máš plány do budoucna?",
+        "name": "ocekavani"
+    },
+    {
+        "nadpis":"Proč tě Expedice potřebuje?",
+        "popis":"Teď se můžeš konečně pořádně vychválit. Proč si myslíš, že se do soutěže hodíš? Jde ti týmová práce? Umíš pracovat i samostatně? Jsi přirozený vůdce party? Máš vynikající znalosti? Neboj se, pořádně se vychval a dokaž, že se bez tebe Expedice neobejde.",
+        "name": "proc"
+    },
+    {
+        "nadpis":"Máš na nás nějaké otázky?",
+        "popis":"",
+        "name": "otazky"
+    }
+]

@@ -39,7 +39,7 @@ def require_progress_na_ucastnikovi(progress: str, user = current_user):
     def what_should_i_name_this(original_function):
         @wraps(original_function)
         def wrapper(*args, **kwargs):
-            if current_user.progress in progress:
+            if user.progress in progress or "admin" in role_handler.get_access_rights(user):
                     result = original_function(*args, **kwargs)
                     return result
             abort(401)

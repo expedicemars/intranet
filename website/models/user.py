@@ -92,7 +92,8 @@ class User(db.Model, UserMixin):
             "progress": self.progress,
             "meeting_link": self.meeting_link,
             "admin_poznamka": self.admin_poznamka,
-            "uzamcene_zmeny": self.uzamcene_zmeny
+            "uzamcene_zmeny": self.uzamcene_zmeny,
+            "motivacni_formular": json.loads(self.motivacni_dotaznik) if self.motivacni_dotaznik else None
         }
         
 
@@ -106,6 +107,15 @@ class User(db.Model, UserMixin):
         self.odbornost = "zatím nevybraná"
         db.session.add(self)
         db.session.commit()
+        
+    def odebrat_motivacni_formular(self):
+        self.motivacni_dotaznik = None
+        db.session.add(self)
+        db.session.commit()
+        
+    def has_vyplneny_formular(self) -> bool:
+        print(self.motivacni_dotaznik)
+        return True if self.motivacni_dotaznik else False
 
 
     @staticmethod

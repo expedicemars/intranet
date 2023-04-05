@@ -86,10 +86,10 @@ def create_app():
 
     @app.errorhandler(404)
     def not_found(e):
-        return render_template("not_found.html", roles = get_access_rights(current_user)), 404
+        return render_template("not_found.html", roles = get_access_rights()), 404
 
     @app.errorhandler(401)
     def not_authorised(e):
-        return render_template("not_authorised.html", roles = get_access_rights(current_user)), 401
+        return render_template("not_authorised.html", roles = get_access_rights()), 401
 
     return app

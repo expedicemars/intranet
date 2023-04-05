@@ -7,11 +7,13 @@
     <button class="btn btn-success"  type="button" id="ulozit_button">Uložit</button>
     <button class="btn btn-danger" type="submit" value="1" name="smazat">Smazat uživatele</button>
     <button class="btn btn-primary" type="submit" value = "1" name="odebrat_odbornost">Odebrat údaj o odbornosti</button>
+    <button class="btn btn-primary" type="submit" value = "1" name="odebrat_motivacni_formular">Vymazat motivační formulář</button>
 </form>
 <hr>
 
 <input hidden id="id" value="{{id}}"/>
 <div class="container">
+    <h3>Informace</h3>
     <div class="row">
         <div class="col-lg-9">
             <div class="row">
@@ -112,6 +114,7 @@
 </div>
 <hr>
 <div class="container">
+    <h3>Nastavení</h3>
     <div class="row">
         <div class="col">
             Progress:
@@ -155,8 +158,12 @@
     
 </div>
 <hr>
+<div id="formular_div">
+    <h3>Motivační formulář</h3>
+</div>
+<hr>
 <div  id="prace_div">
-    <h2>Práce</h2>
+    <h3>Práce</h3>
     <p id="prace_disclaimer">Tento uživatel ještě práci nenahrál. Až se tak stane, půjde zde stáhnout.</p>
 </div>
 

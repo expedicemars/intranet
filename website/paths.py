@@ -60,3 +60,6 @@ def dostupne_role_path() -> Path:
 def dostupne_odbornosti_path() -> Path:
     return Path.cwd() / "data" / "dostupne_odbornosti.json"
 
+def motivacni_formular_otazky_path() -> Path:
+    return Path.cwd() / "data" / "motivacni_formular_otazky.json"
+

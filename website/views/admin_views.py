@@ -133,7 +133,13 @@ def detail_usera(id):
             alog(f"Odebrána odbornost userovi {User.get_by_id(id).email}")
             flash("Odbornost byla odebrána", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
-            
+        
+        elif request.form.get("odebrat_motivacni_formular"):
+            User.get_by_id(id).odebrat_motivacni_formular()
+            alog(f"Vymazán motivační formulář usera {User.get_by_id(id).email}")
+            flash("Motivační formulář byl promazán.", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+    
         elif request.form.get("result"):
             data = json.loads(request.form.get("result"))
             if len(data["admin_poznamka"]) > 1000:
@@ -175,7 +181,7 @@ def detail_usera(id):
             db.session.add(u)
             db.session.commit()
             flash("Záznam o userovi upraven", category="success")
-            return redirect(url_for("admin_views.registrovani_uzivatele"))
+            return redirect(url_for("admin_views.detail_usera", id=id))
     
 
 @admin_views.route("/jmenovat_adminy", methods=["GET","POST"])
