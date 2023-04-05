@@ -7,6 +7,7 @@ from website.json_handlers.pohovory_handling import get_neobsazene_pohovory
 from website.json_handlers.info_handling import get_vsechny_informace
 from website.paths import velitel_odbornosti_data_path
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
+from website.json_handlers.motivacni_formular_handling import get_motivacni_formular_otazky
 
 
 
@@ -63,7 +64,7 @@ def kontakt_na_meho_velitele_odbornosti():
 @user_api.route("/info")
 @require_role_on_current_user("user")
 def info():
-    return current_user.get_basic_info()
+    return current_user.get_info_na_ucet_stranku()
 
 
 @user_api.route("/moje_info")
@@ -74,10 +75,13 @@ def moje_info():
     return json.dumps(list(result))
 
 @user_api.route("/dostupne_odbornosti")
+@require_progress_na_ucastnikovi("Domácí projekt")
 @require_role_on_current_user("user")
 def dostupne_odbornosti():
     return json.dumps(get_dostupne_odbornosti())
 
-
-
-
+@user_api.route("/motivacni_formular_otazky")
+@require_role_on_current_user(["user","admin"])
+@require_progress_na_ucastnikovi("Registrován")
+def motivacni_formular_otazky():
+    return json.dumps(get_motivacni_formular_otazky())

@@ -1,6 +1,6 @@
 import httpGet from "./httpGet.js"
 
-let users_from_db = JSON.parse(httpGet("/admin_api/users_from_db"))
+let ucastnici = JSON.parse(httpGet("/admin_api/ucastnici"))
 
 
 function detail_usera(id) {
@@ -40,8 +40,6 @@ function generator_from_db(id, email, jmeno) {
     col6.appendChild(button)
 }
 
-for (let i=0;i<users_from_db.length;i++) {
-    if (JSON.parse(users_from_db[i]["role"]).length ==  1 && users_from_db[i]["role"].includes("user")) {
-        generator_from_db(users_from_db[i]["id"], String(users_from_db[i]["email"]), users_from_db[i]["jmeno"])
-    }
+for (let u of ucastnici) {
+    generator_from_db(u["id"], String(u["email"]), u["jmeno"])
 }

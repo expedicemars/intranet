@@ -68,7 +68,7 @@ def ucet():
         
 @user_views.route("/info")
 def info():
-    return render_template("info.html", roles = get_access_rights(current_user), user_progress=get_user_progress())
+    return render_template("info.html", roles = get_access_rights(), user_progress=get_user_progress())
 
 
 @user_views.route("/ucet/<token>", methods=["GET"])
@@ -90,7 +90,7 @@ def ucet_overeny(token):
 @require_progress_na_ucastnikovi("Online setkání")
 def pohovory():
     if  request.method == "GET":
-        return render_template("pohovory.html", roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=get_user_progress())
+        return render_template("pohovory.html", roles=get_access_rights(), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=get_user_progress())
     else:
         if request.form.get("vybrat"):
             current_user.datum_pohovoru =  datetime.datetime.fromisoformat(request.form.get("vybrat"))
@@ -113,7 +113,7 @@ def odbornost():
         return redirect(url_for("user_views.odbornost_vyber"))
     else:
         if request.method == "GET":
-            return render_template("odbornost.html", roles=get_access_rights(current_user), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=get_user_progress())
+            return render_template("odbornost.html", roles=get_access_rights(), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=get_user_progress())
         else:
             if request.form.get("ulozit_praci"):
                 if all(request.files.getlist("nahrana_prace")):
@@ -139,7 +139,7 @@ def odbornost_vyber():
         return redirect(url_for("user_views.odbornost"))
     else:
         if request.method == "GET":
-            return render_template("odbornost_vyber.html", roles=get_access_rights(current_user), user_progress=get_user_progress())
+            return render_template("odbornost_vyber.html", roles=get_access_rights(), user_progress=get_user_progress())
         else:
             current_user.odbornost = request.form.get("odbornost")
             db.session.add(current_user)
@@ -153,7 +153,10 @@ def odbornost_vyber():
 @require_progress_na_ucastnikovi("Registrován")
 def motivacni_formular():
     if request.method == "GET":
-        return render_template("motivacni_formular.html", roles=get_access_rights(current_user), user_progress=get_user_progress())
+        return render_template("motivacni_formular.html", roles=get_access_rights(), user_progress=get_user_progress(), vyplneny_formular = current_user.has_vyplneny_formular())
     else:
-        print(request.form.to_dict())
+        current_user.motivacni_dotaznik = json.dumps(request.form.to_dict())
+        db.session.add(current_user)
+        db.session.commit()
+        flash("Motivační formulář byl odeslán.", category="success")
         return redirect(url_for("user_views.ucet"))

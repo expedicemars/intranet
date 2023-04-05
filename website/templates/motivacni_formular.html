@@ -1,5 +1,17 @@
 {% extends "navbar.html" %}
 {% block content %}
 <h2>Motivační formulář</h2>
+
+{% if vyplneny_formular %}
+    Formulář už od tebe máme vyplněný.
+{% else %}
+    Napiš nám o sobě, prodej se.
+    <hr>
+    <form method="post">
+        <div id="content"></div>
+        <button class="btn btn-primary" type="submit">Odeslat</button>    
+    </form>
+{% endif %}
+
 <script type="module" src="{{url_for('static', filename='js/motivacni_formular.js')}}"></script>
 {% endblock %}

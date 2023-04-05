@@ -12,13 +12,13 @@ default_views = Blueprint("default_views", __name__)
 @default_views.route("/home")
 def home():
     print(current_user)
-    return render_template("home.html", roles = get_access_rights(current_user), otevrena_registrace = get_registrace_otevrena(), user_progress=get_user_progress())
+    return render_template("home.html", roles = get_access_rights(), otevrena_registrace = get_registrace_otevrena(), user_progress=get_user_progress())
 
 
 @default_views.route("/nahlasit_bug", methods=["GET", "POST"])
 def nahlasit_bug():
     if request.method == "GET":
-        return render_template("nahlasit_chybu.html", roles = get_access_rights(current_user), user_progress=get_user_progress())
+        return render_template("nahlasit_chybu.html", roles = get_access_rights(), user_progress=get_user_progress())
     else:
         popis=request.form.get("popis")
         if len(popis) > 1000:
@@ -35,4 +35,4 @@ def nahlasit_bug():
 
 @default_views.route("/known_bugs")
 def known_bugs():
-    return render_template("zname_chyby.html", roles = get_access_rights(current_user), user_progress=get_user_progress())
+    return render_template("zname_chyby.html", roles = get_access_rights(), user_progress=get_user_progress())

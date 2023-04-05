@@ -1,6 +1,6 @@
 import httpGet from "./httpGet.js"
 
-let users_from_db = JSON.parse(httpGet("/admin_api/users_from_db"))
+let useri_na_jmenovani_adminu = JSON.parse(httpGet("/admin_api/useri_na_jmenovani_adminu"))
 
 
 function vybrat_usera(id) {
@@ -8,7 +8,7 @@ function vybrat_usera(id) {
     document.getElementById("form").submit()
 }
 
-function generator_from_db(target, id, email) {
+function generator_from_db(target, id, email, jmeno) {
     let row = document.createElement("div")
     row.classList.add("row", "my-2")
     document.getElementById(target).appendChild(row)
@@ -16,17 +16,22 @@ function generator_from_db(target, id, email) {
     let col1 = document.createElement("div")
     col1.classList.add("col-auto")
     row.appendChild(col1)
-    col1.innerHTML = id
+    col1.innerText = id
 
     let col2 = document.createElement("div")
     col2.classList.add("col")
     row.appendChild(col2)
-    col2.innerHTML = email
+    col2.innerText = jmeno
+
+    let col3 = document.createElement("div")
+    col3.classList.add("col")
+    row.appendChild(col3)
+    col3.innerText = email
 
     let button = document.createElement("button")
     button.classList.add("btn", "btn-primary")
     button.type = "button"
-    button.innerHTML = "vybrat..."
+    button.innerText = "vybrat..."
     button.addEventListener("click", function() {vybrat_usera(id)})
 
     let col6 = document.createElement("div")
@@ -36,13 +41,9 @@ function generator_from_db(target, id, email) {
 }
 
 
-// targety: "admins" a "users"
-for (let i=0;i<users_from_db.length;i++) {
-    let target
-    if (users_from_db[i]["role"].includes("admin")) {
-        target = "admins"
-    } else {
-        target = "users"
-    }
-    generator_from_db(target, users_from_db[i]["id"], String(users_from_db[i]["email"]))
+for (let u of useri_na_jmenovani_adminu["admins"]) {
+    generator_from_db("admins", u["id"], String(u["email"]), u["jmeno"])
+}
+for (let u of useri_na_jmenovani_adminu["users"]) {
+    generator_from_db("users", u["id"], String(u["email"]), u["jmeno"])
 }

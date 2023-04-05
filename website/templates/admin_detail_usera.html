@@ -2,8 +2,18 @@
 
 {% block content %}
 <h2>Detail uživatele</h2>
+
+<form method="post">
+    <button class="btn btn-success"  type="button" id="ulozit_button">Uložit</button>
+    <button class="btn btn-danger" type="submit" value="1" name="smazat">Smazat uživatele</button>
+    <button class="btn btn-primary" type="submit" value = "1" name="odebrat_odbornost">Odebrat údaj o odbornosti</button>
+    <button class="btn btn-primary" type="submit" value = "1" name="odebrat_motivacni_formular">Vymazat motivační formulář</button>
+</form>
+<hr>
+
 <input hidden id="id" value="{{id}}"/>
 <div class="container">
+    <h3>Informace</h3>
     <div class="row">
         <div class="col-lg-9">
             <div class="row">
@@ -104,6 +114,7 @@
 </div>
 <hr>
 <div class="container">
+    <h3>Nastavení</h3>
     <div class="row">
         <div class="col">
             Progress:
@@ -141,22 +152,20 @@
             <input type="text" id="meeting_link" class="form-control"></textarea>
         </div>
     </div>
-    <button class="btn btn-success" id="ulozit_button">Uložit</button>
     <form method="post" id="form">
         <input type="text" hidden id="result" name="result">
     </form>
     
 </div>
-    <hr>
-    <div  id="prace_div">
-        <h2>Práce</h2>
-        <p id="prace_disclaimer">Tento uživatel ještě práci nenahrál. Až se tak stane, půjde zde stáhnout.</p>
-    </div>
-    <hr>
-<form method="post">
-    <button class="btn btn-danger" type="submit" value="1" name="smazat">Smazat uživatele</button>
-    <button class="btn btn-primary" type="submit" value = "1" name="odebrat_odbornost">Odebrat údaj o odbornosti</button>
-</form>
+<hr>
+<div id="formular_div">
+    <h3>Motivační formulář</h3>
+</div>
+<hr>
+<div  id="prace_div">
+    <h3>Práce</h3>
+    <p id="prace_disclaimer">Tento uživatel ještě práci nenahrál. Až se tak stane, půjde zde stáhnout.</p>
+</div>
 
 <script type="module" src="{{url_for('static', filename='js/admin_detail_usera.js')}}"></script>
 {% endblock %}

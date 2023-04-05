@@ -17,7 +17,7 @@ def delete_logs() -> str:
 
 def alog(data: str) -> None:
     with open(admin_logs_file_path(), "a") as file:
-        file.write(str(datetime.datetime.now()) + ", user_id: " + str(current_user.id) + ": "+ data + "\n")
+        file.write(str(datetime.datetime.now()) + ", " + str(current_user.email) + ": "+ data + "\n")
 
 def get_alogs() -> str:
     with open(admin_logs_file_path()) as file:
