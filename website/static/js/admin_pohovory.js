@@ -61,6 +61,7 @@ function generator_prihlasenych(jmeno, pretty, id, link) {
     col2.appendChild(a)
     a.href = "/admin/detail_usera/" + String(id)
     a.innerHTML = jmeno
+    a.classList.add("link")
     let col3 = document.createElement("div")
     row.appendChild(col3)
     col3.classList.add("col")
@@ -70,6 +71,7 @@ function generator_prihlasenych(jmeno, pretty, id, link) {
         a2.innerHTML = "Odkaz na meeting"
         a2.href = link
         a2.target = "blank"
+        a2.classList.add("link")
     } else {
         col3.innerHTML = "Tady link ještě není"
     }

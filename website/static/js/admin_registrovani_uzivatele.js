@@ -29,7 +29,7 @@ function generator_from_db(id, email, jmeno) {
     col3.innerHTML = email
 
     let button = document.createElement("button")
-    button.classList.add("btn", "btn-primary")
+    button.classList.add("btn", "em-button")
     button.type = "button"
     button.innerHTML = "Detail"
     button.addEventListener("click", function() {detail_usera(id)})

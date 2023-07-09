@@ -1,12 +1,18 @@
 /* neumim css */
 .alertcolor-info {
     background-color: rgb(253, 235, 138  );
+    border: 1px solid;
+    border-color: rgb(255,215,0);
 }
 .alertcolor-error  {
     background-color: rgb(255, 121, 121);
+    border: 1px solid;
+    border-color: red;
 }
 .alertcolor-success {
     background-color: rgb(138, 253, 138  );
+    border: 1px solid;
+    border-color: rgb(67,187,67);
 }
 
 .fyzik-div {
@@ -44,4 +50,35 @@ section {
 
 .bug {
     background-color: white;
+}
+
+body{
+    background-color: rgb(33,37,41) !important;
+}
+.dropdown-menu{
+    background-color: rgb(33,37,41) !important;
+}
+
+.border-orange{
+    border: 1px solid;
+    border-color: rgb(243,133,8);
+}
+
+.content-section{
+    background-color: rgb(243,234,224);
+}
+
+.link {
+    color: rgb(243,133,8);
+}
+
+.em-button{
+    background-color: rgb(243,133,8);
+    color: white;
+}
+
+.em-button:hover{
+    background-color: rgb(243,234,224);
+    color: rgb(243,133,8);
+    border-color: rgb(243,133,8);
 }

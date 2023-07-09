@@ -14,4 +14,5 @@ for (let o of odkazy) {
     a.innerHTML = o["popis"]
     a.href = o["odkaz"]
     a.target = "_blank"
+    a.classList.add("link")
 }

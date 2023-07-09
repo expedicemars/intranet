@@ -29,7 +29,7 @@ function generator_from_db(target, id, email, jmeno) {
     col3.innerText = email
 
     let button = document.createElement("button")
-    button.classList.add("btn", "btn-primary")
+    button.classList.add("btn", "em-button")
     button.type = "button"
     button.innerText = "vybrat..."
     button.addEventListener("click", function() {vybrat_usera(id)})
