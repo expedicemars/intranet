@@ -18,6 +18,7 @@ for (let i = 0; i<odkazy.length;i++) {
     a.href = o["odkaz"]
     a.innerHTML = o["popis"]
     a.target="_blank"
+    a.classList.add("link")
     col1.appendChild(a)
     let button = document.createElement("button")
     button.classList.add("btn", "btn-danger")

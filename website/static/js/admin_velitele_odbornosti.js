@@ -15,6 +15,7 @@ for (let odbornost of odbornosti_kterym_velim) {
             a.href = "/file_api/zadani_file/"+ odbornost + "/" + zadani_file
             a.download = zadani_file
             a.innerHTML = zadani_file
+            a.classList.add("link")
             ukazat_zadani_div.appendChild(a)
             ukazat_zadani_div.appendChild(document.createElement("br"))
         }

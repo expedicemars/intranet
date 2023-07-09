@@ -13,6 +13,7 @@ if (aktualne["datum"]) {
 
 if (aktualne["link"]) {
     let a = document.createElement("a")
+    a.classList.add("link")
     a.innerHTML = "Odkaz na meeting"
     a.href = aktualne["link"]
     a.target = "blank"
@@ -31,7 +32,7 @@ function generator(iso, pretty) {
     col2.classList.add("col")
     let zapsat_button = document.createElement("button")
     zapsat_button.innerHTML = "Zapsat tenhle termín"
-    zapsat_button.classList.add("btn", "btn-primary", "my-1")
+    zapsat_button.classList.add("btn", "em-button", "my-1")
     zapsat_button.type="submit"
     zapsat_button.name = "vybrat"
     zapsat_button.value = iso

@@ -8,6 +8,7 @@ if (existuje["existuje"]) {
     a.href = "/file_api/prohlaseni_rodicu"
     a.download = "prohlaseni_rodicu.docx"
     existuje_div.appendChild(a)
+    a.classList.add("link")
 } else {
     existuje_div.innerHTML = "Žádné prohlášení tu ještě nahrané není."
 }

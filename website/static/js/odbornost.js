@@ -7,6 +7,7 @@ let zadani = JSON.parse(httpGet("/file_api/zadani_filenames_me_odbornosti"))
 if (zadani.length != 0) {
     for (let zadani_file of zadani) {
         let a = document.createElement("a")
+        a.classList.add("link")
         a.href = "/file_api/zadani_file_me_odbornosti/" + zadani_file
         a.download = zadani_file
         a.innerHTML = zadani_file
@@ -27,6 +28,7 @@ if (prace) {
     ukazat_praci_div.hidden = false
     for (let prace_file of prace) {
         let a = document.createElement("a")
+        a.classList.add("link")
         a.href = "/file_api/vlastni_prace/" + prace_file
         a.download = prace_file
         a.innerHTML = prace_file

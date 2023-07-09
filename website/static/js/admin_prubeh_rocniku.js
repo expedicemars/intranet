@@ -51,6 +51,7 @@ function generator(isoformat ,pretty, filename) {
     a.innerHTML = pretty
     a.download = filename
     a.href = "/file_api/export/" + filename
+    a.classList.add("link")
     col1.appendChild(a)
 
     let col2 = document.createElement("div")

@@ -70,6 +70,7 @@ if (prace_filenames) {
         let a = document.createElement("a")
         a.innerHTML = filename
         a.download = filename
+        a.classList.add("link")
         a.href = "/file_api/cizi_prace/" + String(id_usera) + "/" + filename
         prace_div.appendChild(a)
         prace_div.appendChild(document.createElement("br"))
@@ -84,7 +85,7 @@ if (detail_usera["motivacni_formular"]) {
         let p = document.createElement("p")
         p.innerText = t["popis"]
         let odpoved = document.createElement("div")
-        odpoved.classList.add("border", "rounded-2", "border-primary", "m-2", "p-2")
+        odpoved.classList.add("border-orange", "rounded-2", "m-2", "p-2")
         odpoved.innerText = detail_usera.motivacni_formular[t.name]
         let br = document.createElement("br")
         formular_div.appendChild(h)

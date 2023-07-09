@@ -132,6 +132,7 @@ function vypsat(data) {
             if (key == "jmeno_vypsat") {
                 let td = document.createElement("td")
                 let a = document.createElement("a")
+                a.classList.add("link")
                 a.href = "/admin/detail_usera/" + String(u["id"])
                 a.innerHTML = u[key]
                 td.appendChild(a)

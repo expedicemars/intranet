@@ -1,9 +1,6 @@
 {%extends "navbar.html"%}
 {%block content%}
 
-<section class=" container-sm border border-danger border-2 rounded-3 p-2 my-2" style="background-color: #FFA8A8;">
-	4. 4. jsem zavedl nový model uživatele a byl jsem moc línej na to prát se s tim, aby staří uživatelé byli zachováni. Musíš se tedy registrovat znova a já ti znova dám adminy. -Píp
-</section>
 <form method="post">
 	<h2> Přihlaš se :</h2>
 	Měj na paměti, že účty se mezi ročníky mažou. Pokud ses tento ročník ještě neregistroval/a, musíš nejdřív tam.
@@ -26,11 +23,11 @@
 		</div>
 		<div class="row my-1">
 			<div class="col-2">
-				<button type="submit" class="btn btn-primary">Log-in</button>
+				<button type="submit" class="btn em-button">Log-in</button>
 			</div>
 			<div class="col">
 				<small>
-					Zapoměli jste heslo? <a href="{{url_for('auth_views.request_reset')}}">Požádat o nové</a>
+					Zapoměli jste heslo? <a class="link" href="{{url_for('auth_views.request_reset')}}">Požádat o nové</a>
 				</small>
 			</div>
 		</div>
