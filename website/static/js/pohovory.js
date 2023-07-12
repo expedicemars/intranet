@@ -19,7 +19,7 @@ if (aktualne["link"]) {
     a.target = "blank"
     link_p.appendChild(a)
 } else {
-    link_p.innerHTML = "Zatím tu nemáš odkaz na pohovor. Až ho organizátoři vytvořej, čekej ho buď tady, nebo na e-mailu."
+    link_p.innerHTML = "Zatím tu nemáš odkaz na pohovor. Až ho organizátoři vytvoří, čekej ho buď tady, nebo na e-mailu."
 }
 
 
@@ -31,7 +31,7 @@ function generator(iso, pretty) {
     let col2 = document.createElement("div")
     col2.classList.add("col")
     let zapsat_button = document.createElement("button")
-    zapsat_button.innerHTML = "Zapsat tenhle termín"
+    zapsat_button.innerHTML = "Zapsat tento termín"
     zapsat_button.classList.add("btn", "em-button", "my-1")
     zapsat_button.type="submit"
     zapsat_button.name = "vybrat"

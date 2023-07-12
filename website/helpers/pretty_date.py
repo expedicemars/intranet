@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 def pretty_date(datum) -> str:
     """
@@ -15,7 +15,7 @@ def pretty_date(datum) -> str:
         return None
     
 
-def pretty_datetime(isoformat: str) -> str:
+def pretty_datetime(isoformat) -> str:
     """
     Udělá datum ve formátu 21. 4. 2001 7:40
     None -> None
