@@ -3,19 +3,19 @@
 
 <h2>Vítej na stránce svého účtu</h2>
 <div>
-    <div id="not_confirmed_div">
+    <div id="not_confirmed_div" hidden>
         Protože veškerá komunikace s tebou bude probíhat mailem, je nutné, abychom měli jistotu, že ti maily chodí.
         <form method="post" enctype="multipart/form-data">
             <button type="submit" class="btn em-button" name="overeni_emailu" value="whatever">Odeslat E-mail k ověření Vaší e-mailové adresy </button>
         </form>
     </div>
-    <div id="confirmed_div">
+    <div id="confirmed_div" hidden>
         <hr>
         <h3>Nastavitelné údaje</h3>
         <div class="container">
             <div class="row my-2">
                 <div class="col-sm">
-                    Jméno:
+                    Jméno a příjmení:
                 </div>
                 <div class="col">
                     <input type="text" id="jmeno" disabled class="form-control"  value="1">
@@ -154,6 +154,7 @@
         </div>
         <hr>
         <h3>Fotka</h3>
+        <p>Na fotce by měl být vidět tvůj obličej. Fotka může mít maximálně 5 MB a může být ve formátu <code>.jpg</code>, nebo <code>.png</code></p>
         <img src="/file_api/user_profilovka" alt="profilovka" width="20%" class="my-2">
         
         {% if uzamcene_zmeny %}
@@ -163,7 +164,7 @@
         <button type="button" id="show_img_input" class="btn em-button">Nahrát fotku</button>
         <div id="img_input_div" hidden>
             <form  method="post" enctype="multipart/form-data">
-                <input type="file" class="form-control my-2" accept="image/*" name="img_file" id="img_file">
+                <input type="file" class="form-control my-2" accept=".jpg,.jpeg,.png" name="img_file" id="img_file">
                 <button type="submit" class="btn em-button" name="img" value="1">Uložit</button>
             </form>
         </div>

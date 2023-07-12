@@ -1,6 +1,6 @@
 import httpGet from "./httpGet.js"
 
-let ucastnici = JSON.parse(httpGet("/admin_api/ucastnici"))
+let organizatori = JSON.parse(httpGet("/admin_api/organizatori"))
 
 function generator_from_db(id, email, jmeno) {
     let row = document.createElement("div")
@@ -36,6 +36,6 @@ function generator_from_db(id, email, jmeno) {
     col6.appendChild(button)
 }
 
-for (let u of ucastnici) {
+for (let u of organizatori) {
     generator_from_db(u["id"], String(u["email"]), u["jmeno"])
 }

@@ -138,6 +138,11 @@ def detail_usera(id):
 def ucastnici():
     return json.dumps([{"id": u.id, "email": u.email, "jmeno": u.jmeno} for u in User.get_all() if "admin" not in json.loads(u.role)])
 
+@admin_api.route("/organizatori")
+@require_role_on_current_user("editing_users_allowed")
+def organizatori():
+    return json.dumps([{"id": u.id, "email": u.email, "jmeno": u.jmeno} for u in User.get_all() if "admin" in json.loads(u.role)])
+
 @admin_api.route("/useri_na_jmenovani_adminu")
 @require_role_on_current_user("editing_admins_allowed")
 def useri_na_jmenovani_adminu():

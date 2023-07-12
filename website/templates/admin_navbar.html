@@ -21,15 +21,16 @@
             {% endif %}
             {% if "editing_users_allowed" in roles %}
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Registrovaní uživatelé</a>
+                <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Účastníci</a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li class="dropdown-item"><a class="nav-link active" aria-current="page" href="{{url_for('admin_views.registrovani_uzivatele')}}">Detaily</a></li>
                     <li class="dropdown-item"><a class="nav-link active" aria-current="page" href="{{url_for('admin_views.generovat_seznamy')}}">Generovat seznamy</a></li>
                 </ul>
             </li>
+            <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.organizatori')}}">Organizátoři</a></li>
             {% endif %}
             {% if "editing_admins_allowed" in roles %}
-            <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.jmenovat_adminy')}}">Jmenovat adminy</a></li>
+            <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.jmenovat_adminy')}}">Role</a></li>
             {% endif %}
             {% if "editing_bugs_allowed" in roles %}
             <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.uprava_znamych_bugu')}}">Přehled známých bugů</a></li>

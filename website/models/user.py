@@ -64,7 +64,7 @@ class User(db.Model, UserMixin):
             "dozvedeli": self.dozvedeli,
             "alergie": self.alergie,
             "skola": self.skola,
-            "confirmed": self.confirmed,
+            "confirmed": "Ano" if self.confirmed else "Ne",
             "odbornost": self.odbornost,
             "progress": self.progress,
             "tricko": self.tricko,

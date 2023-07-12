@@ -102,13 +102,8 @@ def registrovani_uzivatele():
     if request.method == "GET":
         return render_template("admin_registrovani_uzivatele.html", roles=get_access_rights())
     else:
-        if request.form.get("dummy"):
-            u = User.generate_random()
-            alog("Generování nového dummy usera s id=" + str(u.id))
-            return redirect(url_for("admin_views.detail_usera", id=u.id))
-        else:
-            result = request.form.get("result")
-            return redirect(url_for("admin_views.detail_usera",id=int(result)))
+        result = request.form.get("result")
+        return redirect(url_for("admin_views.detail_usera",id=int(result)))
         
     
 @admin_views.route("/detail_usera/<int:id>", methods=["GET","POST"])
@@ -413,3 +408,13 @@ def info():
         alog("Nové info pro účastníky.")
         flash("Informace byly uloženy.", category="success")
         return redirect(url_for("admin_views.info"))
+    
+    
+@admin_views.route("/organizatori", methods=["GET","POST"])
+@require_role_on_current_user("editing_users_allowed")
+def organizatori():
+    if request.method == "GET":
+        return render_template("admin_organizatori.html", roles=get_access_rights())
+    else:
+        return request.form.to_dict()
+    
