@@ -3,7 +3,7 @@ from flask_login import current_user
 import json
 from website.helpers.require_role_decorator import require_role_on_current_user
 from website.json_handlers.logs_handling import get_logs, get_alogs
-from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena
+from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena, get_zadani_viditelne
 from website.json_handlers.odkazy_handling import get_odkazy
 from website.helpers.pretty_date import pretty_date, pretty_datetime
 from website.paths import velitel_odbornosti_data_path, user_data_folder_path, poznamky_path, prohlaseni_path
@@ -34,6 +34,11 @@ def admin_logs():
 @require_role_on_current_user("editing_prubeh_rocniku")
 def je_registrace_otevrena():
     return str(get_registrace_otevrena())
+
+@admin_api.route("/je_zadani_viditelne")
+@require_role_on_current_user("editing_prubeh_rocniku")
+def je_zadani_viditelne():
+    return str(get_zadani_viditelne())
 
 
 @admin_api.route("/odkazy")

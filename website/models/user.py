@@ -92,7 +92,8 @@ class User(db.Model, UserMixin):
             "progress": self.progress,
             "meeting_link": self.meeting_link,
             "admin_poznamka": self.admin_poznamka,
-            "uzamcene_zmeny": self.uzamcene_zmeny,
+            "uzamcene_zmeny": "Ano" if self.uzamcene_zmeny else "Ne",
+            "uzamcene_zmeny_bool": self.uzamcene_zmeny,
             "motivacni_formular": json.loads(self.motivacni_dotaznik) if self.motivacni_dotaznik else None
         }
         

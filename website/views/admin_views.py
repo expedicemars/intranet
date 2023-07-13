@@ -16,7 +16,7 @@ from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
-from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, toggle_registrace, get_registrace_otevrena
+from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne
 from website.json_handlers.info_handling import ulozit_info
 from website.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path
 
@@ -176,13 +176,6 @@ def detail_usera(id):
             db.session.commit()
             flash("Záznam o userovi upraven", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
-        elif request.form.get("promazat_formular"):
-            u.motivacni_dotaznik = None
-            db.session.add(u)
-            db.session.commit()
-            flash("Motivační dotazník promazán.", category="success")
-            alog(f"Promazán motivační dotazník uživatele {u.email}")
-            return redirect(url_for("admin_views.detail_usera", id=id))
     
 
 @admin_views.route("/jmenovat_adminy", methods=["GET","POST"])
@@ -249,6 +242,10 @@ def prubeh_rocniku():
             rmtree(p)
             flash("Export byl smazán.", category="success")
             alog("Smazání exportu z "+ pretty_datetime(name))
+        elif request.form.get("toggle_zadani"):
+            toggle_zadani()
+            alog(f"Změna viditelnosti zadání na {get_zadani_viditelne()}")
+            flash(f"Stav otevření registrace změnen na {get_zadani_viditelne()}", category="success")
         return redirect(url_for("admin_views.prubeh_rocniku"))        
 
 @admin_views.route("/velitele_odbornosti", methods=["GET","POST"])
@@ -416,5 +413,6 @@ def organizatori():
     if request.method == "GET":
         return render_template("admin_organizatori.html", roles=get_access_rights())
     else:
-        return request.form.to_dict()
+        result = request.form.get("result")
+        return redirect(url_for("admin_views.detail_usera",id=int(result)))
     
