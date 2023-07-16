@@ -2,10 +2,13 @@ import httpGet from "./httpGet.js"
 
 let registrace = httpGet("/noauth_api/registrace")
 let je_registrace_otevrena = httpGet("/admin_api/je_registrace_otevrena")
+let je_zadani_viditelne = httpGet("/admin_api/je_zadani_viditelne")
 let mailing_list = httpGet("/admin_api/mailing_list")
 let ukoncit_rocnik_button = document.getElementById("ukoncit_rocnik")
 let ukoncit_rocnik_input = document.getElementById("ukoncit_rocnik_input")
 let toggle_registraci_button = document.getElementById("toggle_registraci")
+let toggle_zadani_button = document.getElementById("toggle_zadani")
+let stav_zadani = document.getElementById("viditelnost_stav")
 let registrace_date_input = document.getElementById("registrace_date")
 let exporty = JSON.parse(httpGet("/file_api/exporty_filenames"))
 let content_div = document.getElementById("content")
@@ -18,6 +21,14 @@ if (je_registrace_otevrena == "True") {
     toggle_registraci_button.innerHTML = "Uzavřít registraci"
 } else {
     toggle_registraci_button.innerHTML = "Otevřít registraci"
+}
+
+if (je_zadani_viditelne == "True") {
+    toggle_zadani_button.innerText = "Skrýt zadání"
+    stav_zadani.innerText = "viditelná"
+} else {
+    toggle_zadani_button.innerText = "Zobrazit zadání"
+    stav_zadani.innerText = "skrytá"
 }
 
 

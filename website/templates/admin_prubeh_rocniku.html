@@ -2,17 +2,21 @@
 {% block content %}
 <form id="form" method="post">
     <h2>Datum konce registrace a ukončení registrace</h2>
+    Datum samo o sobě nic neukončuje, je pouze informativní. Registrace se otevírají a uzavírají zvlášť.
     <div class="row">
         <div class="col-auto">
             <input type="date" name="registrace_date" id="registrace_date">
         </div>
         <div class="col-auto">
-            <button type="submit" class="btn btn-success" id="ulozit" name="ulozit_datum" value="Whatever">Uložit datum</button>
+            <button type="submit" class="btn em-button" id="ulozit" name="ulozit_datum" value="Whatever">Uložit datum</button>
         </div>
         <div class="col">
-            <button class="btn em-button" name="toggle_registraci" value="whatever" id="toggle_registraci"></button>
+            <button class="btn btn-success" name="toggle_registraci" value="whatever" id="toggle_registraci"></button>
         </div>
     </div>
+    <hr>
+    <h2>Viditelnost zadání na homepage</h2>
+    Zadání jsou <span id="viditelnost_stav"></span>. <button class="btn em-button" id="toggle_zadani" name="toggle_zadani" value="1" type="submit"></button>
     <hr>
     <h2>Náhled na mailing list</h2>
     <div class="row">

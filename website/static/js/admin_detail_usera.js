@@ -21,17 +21,29 @@ textarea.addEventListener("input", function() {
 
 function toggle_zmeny() {
     let node = document.getElementById("uzamcene_zmeny")
-    if (node.innerHTML == "false") {
-        node.innerHTML = "true"
+    if (node.innerHTML == "Ne") {
+        node.innerHTML = "Ano"
+        toggle_zmeny_button.innerText = "Odemknout změny"
     } else {
-        node.innerHTML = "false"
+        node.innerHTML = "Ne"
+        toggle_zmeny_button.innerText = "Uzamknout změny"
     }
+}
+console.log(detail_usera.uzamcene_zmeny, detail_usera.uzamcene_zmeny_bool)
+if (detail_usera.uzamcene_zmeny_bool) {
+    toggle_zmeny_button.innerText = "Odemknout změny"
+} else {
+    toggle_zmeny_button.innerText = "Uzamknout změny"
 }
 
 function  vyhodnotit() {
     let result = {}
     result["progress"] = document.getElementById("progress").value
-    result["uzamcene_zmeny"] = document.getElementById("uzamcene_zmeny").innerHTML
+    if (document.getElementById("uzamcene_zmeny").innerHTML == "Ano") {
+        result["uzamcene_zmeny"] = true
+    } else {
+        result["uzamcene_zmeny"] = false
+    }
     result["admin_poznamka"] = textarea.value
     result["meeting_link"] = meeting_link_input.value
     document.getElementById("result").value = JSON.stringify(result)

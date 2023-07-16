@@ -24,3 +24,15 @@ def get_registrace_otevrena() -> bool:
     with open(prubeh_rocniku_path()) as file:
         f = json.load(file)
     return f["otevrena_registrace"]
+
+def toggle_zadani() -> None:
+    with open(prubeh_rocniku_path()) as file:
+        f = json.load(file)
+    f["viditelna_zadani"] = False if f["viditelna_zadani"] else True
+    with open(prubeh_rocniku_path(), "w") as file:
+        file.write(json.dumps(f, indent=4))
+
+def get_zadani_viditelne() -> bool:
+    with open(prubeh_rocniku_path()) as file:
+        f = json.load(file)
+    return f["viditelna_zadani"]

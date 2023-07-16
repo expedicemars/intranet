@@ -19,9 +19,9 @@ if (uzamcene_zmeny) {
         document.getElementById("img_input_div").hidden = false
     })
     img.addEventListener("change", function() {
-        if(this.files[0].size > 1000000){
-           alert("Nahraj prosím  menší obrázek, limit je 1MB");
-           this.value = "";
+        if(this.files[0].size > 5000000){
+            alert("Nahraj prosím  menší obrázek, limit je 5MB");
+            this.value = "";
         };
     })
 }
