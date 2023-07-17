@@ -2,6 +2,7 @@ from flask import Blueprint
 import json
 from website.models.chyba import Chyba
 from website.json_handlers.prubeh_rocniku_handling import get_datum_konce_registrace
+from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 from website.helpers.pretty_date import pretty_datetime
 import datetime
 
@@ -22,5 +23,9 @@ def registrace_pretty():
     date = datetime.datetime.fromisoformat(get_datum_konce_registrace())
     td = datetime.timedelta(hours=23, minutes=59)
     return pretty_datetime(date + td)
+
+@noauth_api.route("/dostupne_odbornosti")
+def dostupne_odbornosti():
+    return json.dumps(get_dostupne_odbornosti())
 
 
