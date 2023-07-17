@@ -32,6 +32,9 @@ class User(db.Model, UserMixin):
     datum_pohovoru = db.Column(db.DateTime)
     meeting_link = db.Column(db.String(1000))
     motivacni_dotaznik = db.Column(db.Text)
+    osloveni_1p = db.Column(db.String(200))
+    osloveni_5p = db.Column(db.String(200))
+    zajmeno = db.Column(db.String(200))
 
     def get_reset_token(self, expires_sec=9000) -> str:
         reset_token = jwt.encode(
@@ -70,6 +73,9 @@ class User(db.Model, UserMixin):
             "tricko": self.tricko,
             "datum_registrace": pretty_datetime(self.datum_registrace),
             "datum_pohovoru": pretty_datetime(self.datum_pohovoru),
+            "osloveni_1p": self.osloveni_1p,
+            "osloveni_5p": self.osloveni_5p,
+            "zajmeno": self.zajmeno
         }
     
     def get_info_na_detail_usera(self) -> dict:
@@ -94,7 +100,10 @@ class User(db.Model, UserMixin):
             "admin_poznamka": self.admin_poznamka,
             "uzamcene_zmeny": "Ano" if self.uzamcene_zmeny else "Ne",
             "uzamcene_zmeny_bool": self.uzamcene_zmeny,
-            "motivacni_formular": json.loads(self.motivacni_dotaznik) if self.motivacni_dotaznik else None
+            "motivacni_formular": json.loads(self.motivacni_dotaznik) if self.motivacni_dotaznik else None,
+            "osloveni_1p": self.osloveni_1p,
+            "osloveni_5p": self.osloveni_5p,
+            "zajmeno": self.zajmeno
         }
         
 

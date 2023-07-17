@@ -14,7 +14,7 @@
             <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.velitele_odbornosti')}}">Velitelé odborností</a></li>
             {% endif %}
             {% if "editing_pohovory" in roles%}
-            <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.pohovory')}}">Online setkání</a></li>
+            <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.pohovory')}}">První kontakt</a></li>
             {% endif %}
             {% if "editing_prubeh_rocniku" in roles %}
             <li class="nav-item"><a class="nav-link active" href="{{url_for('admin_views.prubeh_rocniku')}}">Průběh ročníku</a></li>

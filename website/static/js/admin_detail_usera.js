@@ -29,7 +29,7 @@ function toggle_zmeny() {
         toggle_zmeny_button.innerText = "Uzamknout změny"
     }
 }
-console.log(detail_usera.uzamcene_zmeny, detail_usera.uzamcene_zmeny_bool)
+
 if (detail_usera.uzamcene_zmeny_bool) {
     toggle_zmeny_button.innerText = "Odemknout změny"
 } else {

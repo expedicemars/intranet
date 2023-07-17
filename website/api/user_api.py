@@ -27,7 +27,7 @@ def uzamcene_zmeny():
 
 @user_api.route("/volne_pohovory")
 @require_role_on_current_user("user")
-@require_progress_na_ucastnikovi("Online setkání")
+@require_progress_na_ucastnikovi("První kontakt")
 def volne_pohovory():
     result = []
     for p in get_neobsazene_pohovory():
@@ -40,7 +40,7 @@ def volne_pohovory():
 
 @user_api.route("/datum_pohovoru")
 @require_role_on_current_user("user")
-@require_progress_na_ucastnikovi("Online setkání")
+@require_progress_na_ucastnikovi("První kontakt")
 def datum_pohovoru():
     result = {
         "datum": pretty_datetime(current_user.datum_pohovoru),

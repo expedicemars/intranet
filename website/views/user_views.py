@@ -57,6 +57,9 @@ def ucet():
             current_user.dozvedeli = data["dozvedeli"]
             current_user.skola = data["skola"]
             current_user.alergie = data["alergie"]
+            current_user.osloveni_1p = data["osloveni_1p"]
+            current_user.osloveni_5p = data["osloveni_5p"]
+            current_user.zajmeno = data["zajmeno"]
             if current_user.email != data["email"]:
                 current_user.email = data["email"]
                 current_user.confirmed = False
@@ -87,7 +90,7 @@ def ucet_overeny(token):
         
 @user_views.route("/pohovory", methods=["GET","POST"])
 @require_role_on_current_user("user")
-@require_progress_na_ucastnikovi("Online setkání")
+@require_progress_na_ucastnikovi("První kontakt")
 def pohovory():
     if  request.method == "GET":
         return render_template("pohovory.html", roles=get_access_rights(), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=get_user_progress())
