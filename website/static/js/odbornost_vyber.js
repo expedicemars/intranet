@@ -1,5 +1,5 @@
 import httpGet from "./httpGet.js"
-let dostupne_odbornosti = JSON.parse(httpGet("/user_api/dostupne_odbornosti"))
+let dostupne_odbornosti = JSON.parse(httpGet("/noauth_api/dostupne_odbornosti"))
 let form = document.getElementById("form")
 let odbornost_input = document.getElementById("odbornost")
 
