@@ -10,6 +10,8 @@ flask-login = "*"
 openpyxl = "*"
 python-dotenv = "*"
 pyjwt = "*"
+pymysql = "*"
+cryptography = "*"
 
 [dev-packages]
 autopep8 = "*"
