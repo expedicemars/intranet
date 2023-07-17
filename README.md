@@ -57,5 +57,10 @@ Pro přidání admina:
 Pro jmenování prvního admina s rolí editing_admins_allowed:
 1. Registrace Usera
 2. v Pythonanywhere najít skript "jmenovani_admina_editing_admins_allowed.py"s
-3. upravit v něm email_na_jmenovani
-4. v konzoli to pustit
+4. v konzoli to pustit a řídit se pokyny
+
+
+
+knihovny crypto a pymysql
+smazat user složky
+establishnout spojeni na muj poc

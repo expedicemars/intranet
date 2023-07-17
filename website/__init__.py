@@ -9,8 +9,6 @@ import os
 from dotenv import load_dotenv
 load_dotenv(dotenv_path=env_path())
 
-DB_NAME = "database.db"
-
 db = SQLAlchemy()
 mail = Mail()
 login_manager = LoginManager()
@@ -21,8 +19,14 @@ def create_app():
     log("=== START appky ===")
     app = Flask(__name__)
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
+    db_username = os.environ.get("DB_USERNAME")
+    db_password = os.environ.get("DB_PASSWORD")
+    db_adress = os.environ.get("DB_ADRESS")
+    db_driver = os.environ.get("DB_DRIVER")
+    db_name = os.environ.get("DB_NAME")
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"{db_driver}://{db_username}:{db_password}@{db_adress}/{db_name}"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle' : 280}
     app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER")
     app.config["MAIL_PORT"] = os.environ.get("MAIL_PORT")
     app.config["MAIL_USE_SSL"] = True
@@ -35,12 +39,15 @@ def create_app():
     mail.init_app(app)
 
     from .models.user import User
+    from .models.chyba import Chyba
+    # with app.app_context():
+    #     if not user_database_path().exists():
+    #         db.create_all()
+    #         log("Vytvořena databáze na " + str(user_database_path()))
+    #     else:
+    #         log("Databáze uživatelů už existuje.")
     with app.app_context():
-        if not user_database_path().exists():
-            db.create_all()
-            log("Vytvořena databáze na " + str(user_database_path()))
-        else:
-            log("Databáze uživatelů už existuje.")
+        db.create_all()
 
     from .views.default_views import default_views
     from .views.auth_views import auth_views
