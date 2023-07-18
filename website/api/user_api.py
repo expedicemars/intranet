@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask_login import current_user
 import json
+import datetime
 from website.helpers.pretty_date import pretty_date, pretty_datetime
 from website.helpers.require_role_decorator import require_progress_na_ucastnikovi, require_role_on_current_user
 from website.json_handlers.pohovory_handling import get_neobsazene_pohovory
@@ -31,10 +32,11 @@ def uzamcene_zmeny():
 def volne_pohovory():
     result = []
     for p in get_neobsazene_pohovory():
-        zaznam = {}
-        zaznam["iso"] = p["iso"]
-        zaznam["pretty"] = pretty_datetime(p["iso"])
-        result.append(zaznam)
+        if datetime.datetime.fromisoformat(p["iso"]) - datetime.timedelta(hours=48) > datetime.datetime.now():
+            zaznam = {}
+            zaznam["iso"] = p["iso"]
+            zaznam["pretty"] = pretty_datetime(p["iso"])
+            result.append(zaznam)
     return json.dumps(result)
 
 

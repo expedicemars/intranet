@@ -23,7 +23,7 @@ def ucet():
         if request.form.get("overeni_emailu"):
             token = current_user.get_reset_token()
             mail_sender(mail_identifier="potvrzeni_emailu", target=current_user.email, data=token)
-            flash("E-mail byl odeslán. Zkontrolujte si svou schránku.", category="info")
+            flash("E-mail byl odeslán. Zkontroluj si svou schránku.", category="info")
             return redirect(url_for("user_views.ucet"))
         elif request.form.get("img"):
             #zkusit smazat starou
