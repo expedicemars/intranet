@@ -5,7 +5,6 @@ import datetime
 from website.helpers.pretty_date import pretty_date, pretty_datetime
 from website.helpers.require_role_decorator import require_progress_na_ucastnikovi, require_role_on_current_user
 from website.json_handlers.pohovory_handling import get_neobsazene_pohovory
-from website.json_handlers.info_handling import get_vsechny_informace
 from website.paths import velitel_odbornosti_data_path
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 
@@ -66,14 +65,6 @@ def kontakt_na_meho_velitele_odbornosti():
 @require_role_on_current_user("user")
 def info():
     return current_user.get_info_na_ucet_stranku()
-
-
-@user_api.route("/moje_info")
-@require_role_on_current_user("user")
-def moje_info():
-    vsechno = get_vsechny_informace()
-    result = filter(lambda x: x["nadpis"] in [current_user.progress, "Obecné"], vsechno)
-    return json.dumps(list(result))
 
 @user_api.route("/dostupne_odbornosti")
 @require_progress_na_ucastnikovi("Domácí projekt")

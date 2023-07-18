@@ -12,7 +12,6 @@ from website.json_handlers.pohovory_handling import get_pohovory
 from website.role_handler import get_access_rights
 from website.json_handlers.dostupne_omezeni import get_dostupne_progressy, get_dostupne_role
 from website.json_handlers.mailing_list import get_mails_from_mailing_list
-from website.json_handlers.info_handling import get_vsechny_informace
 
 
 admin_api = Blueprint("admin_api", __name__)
@@ -161,9 +160,4 @@ def useri_na_jmenovani_adminu():
         else:
             result["users"].append({"id": u.id,"email": u.email, "jmeno": u.jmeno})
     return json.dumps(result)
-            
-@admin_api.route("/vsechny_informace")
-@require_role_on_current_user(["editing_users_allowed", "editing_admins_allowed"])
-def vsechny_informace():
-    return json.dumps(get_vsechny_informace())
 

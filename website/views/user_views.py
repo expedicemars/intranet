@@ -71,7 +71,7 @@ def ucet():
         
 @user_views.route("/info")
 def info():
-    return render_template("info.html", roles = get_access_rights(), user_progress=get_user_progress())
+    return render_template("info.html", roles = get_access_rights(), user_progress=get_user_progress(), odevzdany_formular = current_user.odevzdany_motivacni_dotaznik)
 
 
 @user_views.route("/ucet/<token>", methods=["GET"])
