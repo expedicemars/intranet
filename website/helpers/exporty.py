@@ -27,7 +27,7 @@ def exportovat() -> None:
         "confirmed",
         "Jméno",
         "Adresa",
-        "Telefoní číslo",
+        "Telefonní číslo",
         "E-mail rodičů",
         "Souhlas rodičů",
         "Odbornost",

@@ -6,6 +6,7 @@ import json
 from website.paths import user_data_folder_path
 from shutil import rmtree
 from website.helpers.pretty_date import pretty_date, pretty_datetime
+from website.json_handlers.pohovory_handling import odhlasit_usera_by_id
 from datetime import datetime, timezone, timedelta
 
 
@@ -165,5 +166,12 @@ class User(db.Model, UserMixin):
                     if entry["id"] == key:
                         entry["odpoved"] = value
         self.motivacni_dotaznik = json.dumps(self.motivacni_dotaznik)
-        db.session.add(current_user)
+        db.session.add(self)
         db.session.commit()
+    
+    def odhlasit_z_prvniho_kontaktu(self):
+        self.datum_pohovoru = None
+        db.session.add(self)
+        db.session.commit()
+        odhlasit_usera_by_id(self.id)
+        

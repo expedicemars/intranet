@@ -173,6 +173,7 @@ def motivacni_formular_numbered(blok_otazek):
         if request.form.get("odeslat"):
             current_user.ulozit_odpovedi(request.form.to_dict())
             current_user.odevzdany_motivacni_dotaznik = True
+            current_user.progress = "První kontakt"
             db.session.add(current_user)
             db.session.commit()
             flash("Motivační formulář byl odevzdán.", category="success")

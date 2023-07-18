@@ -48,7 +48,7 @@ if (pohovory.length == 0) {
     pohovory_div.innerHTML = "Nejsou vypsané žádné termíny prvního kontaktu."
 } else {
     let p = document.createElement("p")
-    p.innerHTML = "Tady si můžeš vybrat termín prvního kontaktu. Po výběu je možné svojí volbu změnit:"
+    p.innerHTML = "Tady si můžeš vybrat termín prvního kontaktu. Po výběru je možné svojí volbu změnit. Termíny blíže než 48 hodin se tu nezobrazují."
     pohovory_div.appendChild(p)
     for (let p of pohovory) {
         generator(p["iso"], p["pretty"])

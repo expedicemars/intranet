@@ -133,6 +133,12 @@ def detail_usera(id):
             alog(f"Vymazán motivační formulář usera {u.email}")
             flash("Motivační formulář byl promazán.", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
+
+        elif request.form.get("odebrat_prvni_kontakt"):
+            u.odhlasit_z_prvniho_kontaktu()
+            alog(f"Vymazána volba prvního kontaktu usera {u.email}")
+            flash("Volba prvního kontaktu byla promazána.", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
     
         elif request.form.get("result"):
             data = json.loads(request.form.get("result"))
@@ -338,7 +344,7 @@ def pohovory():
                 flash("Časy, kkteré byly zadány, nedávaly smysl. Zkus to znova.", category="error")
                 return redirect(url_for("admin_views.pohovory"))
             else:
-                pridat_pohovory(start_datetime=start_datetime, end_datetime=end_datetime)
+                pridat_pohovory(start_datetime=start_datetime, end_datetime=end_datetime, admin=current_user)
                 flash("Termíny vypsány.", category="success")
                 alog(f"Vypsání nových termínů na pohovory mezi {start_datetime} a {end_datetime}")
                 return redirect(url_for("admin_views.pohovory"))
