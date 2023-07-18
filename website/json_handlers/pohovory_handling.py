@@ -4,16 +4,18 @@ import json
 from typing import List
 
 
-def pridat_pohovory(start_datetime:  datetime, end_datetime: datetime) ->  None:
+def pridat_pohovory(start_datetime:  datetime, end_datetime: datetime, admin) ->  None:
     """
     struktura: [
         {
             "iso": 02010900T7:20,
-            "user": null
+            "user": null,
+            "admin": email_autora
         },
         {
             "iso": lksldkfslf,
-            "user":1
+            "user":1,
+            "admin": email_autora
         }
     ]
     """
@@ -34,7 +36,8 @@ def pridat_pohovory(start_datetime:  datetime, end_datetime: datetime) ->  None:
         else:
             file.append({
                 "iso": t,
-                "user": None
+                "user": None,
+                "admin": admin.email
             })
     def key_func(zaznam):
         return datetime.fromisoformat(zaznam["iso"])
@@ -67,11 +70,16 @@ def zapsat_na_pohovor(isoformat: datetime, id: int) -> bool:
     with open(pohovory_path()) as file:
         file = json.load(file)
     #zda je zvoleny furt volny
-    volny = False
+    result = {
+        "volny": False,
+        "admin": ""
+    }
     for f in file:
-        if f["iso"] == isoformat.isoformat() and f["user"] is None:
-            volny = True
-    if volny:
+        if f["iso"] == isoformat.isoformat():
+            result["admin"] = f["admin"]
+            if f["user"] is None:
+                result["volny"] = True
+    if result["volny"]:
         #smazu stary
         for f in file:
             if f["user"] == id:
@@ -83,9 +91,9 @@ def zapsat_na_pohovor(isoformat: datetime, id: int) -> bool:
                 break
         with open(pohovory_path(),"w") as new:
             new.write(json.dumps(file, indent=4))
-        return volny
+        return result
     else:
-        return volny
+        return result
 
 def get_neobsazene_pohovory() -> list:
     with open(pohovory_path()) as file:
@@ -97,3 +105,13 @@ def get_neobsazene_pohovory() -> list:
         else:
             result.append(f)
     return result
+
+def odhlasit_usera_by_id(id) -> None:
+    pohovory = get_pohovory()
+    for p in pohovory:
+        if p["user"] == id:
+            p["user"] = None
+            break
+    with open(pohovory_path(),"w") as new:
+        new.write(json.dumps(pohovory, indent=4))
+    

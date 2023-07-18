@@ -4,7 +4,7 @@ from flask import render_template, url_for
 import os
 
 
-def mail_sender(mail_identifier, target, data) -> None:
+def mail_sender(mail_identifier, target, data=None) -> None:
     """
     Will send email, if parameters filled correctly
     """
@@ -20,5 +20,12 @@ def mail_sender(mail_identifier, target, data) -> None:
                       sender=os.environ.get("MAIL_USERNAME"),
                       recipients=[target])
         msg.html = render_template("mails/potvrzeni_emailu.html", url=url_for("user_views.ucet_overeny", token = data, _external = True))
+        mail.send(msg)
+    
+    if mail_identifier == "novy_prvni_kontakt":
+        msg = Message("Někdo se zapsal na první kontakt",
+                      sender=os.environ.get("MAIL_USERNAME"),
+                      recipients=[target])
+        msg.html = render_template("mails/novy_prvni_kontakt.html", url = url_for("admin_views.pohovory", _external = True))
         mail.send(msg)
     

@@ -9,7 +9,6 @@ let charcount_span = document.getElementById("charcount")
 let textarea = document.getElementById("admin_poznamka")
 let meeting_link_input = document.getElementById("meeting_link")
 let progress_select = document.getElementById("progress")
-let formular_div = document.getElementById("formular_div")
 
 
 ulozit_button.addEventListener("click", vyhodnotit)

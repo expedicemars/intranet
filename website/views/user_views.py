@@ -101,7 +101,8 @@ def pohovory():
             db.session.add(current_user)
             db.session.commit()
             vysledek = zapsat_na_pohovor(current_user.datum_pohovoru, current_user.id)
-            if vysledek:
+            mail_sender("novy_prvni_kontakt", target=vysledek["admin"])
+            if vysledek["volny"]:
                 flash("Termín vybrán.", category="success")
             else:
                 flash("Tento termín si mezitím vybral někdo jiný. Prosím, vyber si další.", category="error")
@@ -173,6 +174,7 @@ def motivacni_formular_numbered(blok_otazek):
         if request.form.get("odeslat"):
             current_user.ulozit_odpovedi(request.form.to_dict())
             current_user.odevzdany_motivacni_dotaznik = True
+            current_user.progress = "První kontakt"
             db.session.add(current_user)
             db.session.commit()
             flash("Motivační formulář byl odevzdán.", category="success")
