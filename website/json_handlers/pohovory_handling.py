@@ -19,7 +19,7 @@ def pridat_pohovory(start_datetime:  datetime, end_datetime: datetime) ->  None:
     """
     nove_terminy: List[datetime] = []
     nove_terminy.append(start_datetime)
-    dt = timedelta(minutes=20)
+    dt = timedelta(minutes=10)
     while nove_terminy[-1] < end_datetime:
         nove_terminy.append(nove_terminy[-1] + dt)
     
@@ -36,7 +36,6 @@ def pridat_pohovory(start_datetime:  datetime, end_datetime: datetime) ->  None:
                 "iso": t,
                 "user": None
             })
-    print(file)
     def key_func(zaznam):
         return datetime.fromisoformat(zaznam["iso"])
     file.sort(key = key_func)

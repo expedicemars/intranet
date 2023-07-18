@@ -131,16 +131,3 @@ def check_prubeh_rocniku() -> None:
         with open(path, "w") as file:
             file.write(json.dumps({"datum_konce_registrace":str(date.today()),"otevrena_registrace":False,"viditelna_zadani":False}, indent=4))
         log("Založen soubor na pohovory na " + str(path))
-
-def check_informace() -> None:
-    path = p.info_path()
-    if path.exists():
-        log("Soubor na informace už existuje.")
-    else:
-        path.touch()
-        with open(path, "w") as file:
-            d = get_dostupne_progressy()
-            d.append("Obecné")
-            result = [{"nadpis": dp, "content": ""} for dp in d]
-            file.write(json.dumps(result, indent=4))
-        log("Založen soubor na pohovory na " + str(path))

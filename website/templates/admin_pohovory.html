@@ -1,8 +1,8 @@
 {% extends "admin_navbar.html" %}
 {% block content %}
-    <h2>Online setkání</h2>
-    Tady se dají vypisovat nové termíny, do kterých se poté účastníci můžou zapsat. Setkání mají 20minutové bloky.
-    <h3>Přidat nový den a bloky setkání v něm</h3>
+    <h2>První kontakt</h2>
+    Tady se dají vypisovat nové termíny, do kterých se poté účastníci můžou zapsat. Setkání mají 10minutové bloky.
+    <h3>Přidat nový den a bloky v něm</h3>
     <form method="post">
         <label for="date">Datum: </label>
         <input type="date" name="date">
@@ -13,6 +13,7 @@
         <button name="pridat_termin" value="1" class="btn em-button" type="submit">Přidat</button>
     </form>
     <h3>Vypsané termíny</h3>
+    <p>Termíny blíže než 48 hodin se účastníkům nezobrazují.</p>
     <form method="post">
         <div id="content"></div>
     </form>

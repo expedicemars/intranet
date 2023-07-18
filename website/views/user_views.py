@@ -23,7 +23,7 @@ def ucet():
         if request.form.get("overeni_emailu"):
             token = current_user.get_reset_token()
             mail_sender(mail_identifier="potvrzeni_emailu", target=current_user.email, data=token)
-            flash("E-mail byl odeslán. Zkontrolujte si svou schránku.", category="info")
+            flash("E-mail byl odeslán. Zkontroluj si svou schránku.", category="info")
             return redirect(url_for("user_views.ucet"))
         elif request.form.get("img"):
             #zkusit smazat starou
@@ -57,6 +57,9 @@ def ucet():
             current_user.dozvedeli = data["dozvedeli"]
             current_user.skola = data["skola"]
             current_user.alergie = data["alergie"]
+            current_user.osloveni_1p = data["osloveni_1p"]
+            current_user.osloveni_5p = data["osloveni_5p"]
+            current_user.zajmeno = data["zajmeno"]
             if current_user.email != data["email"]:
                 current_user.email = data["email"]
                 current_user.confirmed = False
@@ -68,7 +71,7 @@ def ucet():
         
 @user_views.route("/info")
 def info():
-    return render_template("info.html", roles = get_access_rights(), user_progress=get_user_progress())
+    return render_template("info.html", roles = get_access_rights(), user_progress=get_user_progress(), odevzdany_formular = current_user.odevzdany_motivacni_dotaznik)
 
 
 @user_views.route("/ucet/<token>", methods=["GET"])
@@ -87,7 +90,7 @@ def ucet_overeny(token):
         
 @user_views.route("/pohovory", methods=["GET","POST"])
 @require_role_on_current_user("user")
-@require_progress_na_ucastnikovi("Online setkání")
+@require_progress_na_ucastnikovi("První kontakt")
 def pohovory():
     if  request.method == "GET":
         return render_template("pohovory.html", roles=get_access_rights(), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=get_user_progress())
@@ -148,15 +151,30 @@ def odbornost_vyber():
             return redirect(url_for("user_views.odbornost"))
         
 
-@user_views.route("/motivacni_formular", methods=["GET","POST"])
+@user_views.route("/motivacni_formular>", methods=["GET","POST"])
 @require_role_on_current_user("user")
-@require_progress_na_ucastnikovi("Registrován")
+@require_progress_na_ucastnikovi("Motivační formulář")
 def motivacni_formular():
+    return redirect(url_for("user_views.motivacni_formular_numbered", blok_otazek = 1))
+
+@user_views.route("/motivacni_formular/<int:blok_otazek>", methods=["GET","POST"])
+@require_role_on_current_user("user")
+@require_progress_na_ucastnikovi("Motivační formulář")
+def motivacni_formular_numbered(blok_otazek):
     if request.method == "GET":
-        return render_template("motivacni_formular.html", roles=get_access_rights(), user_progress=get_user_progress(), vyplneny_formular = current_user.has_vyplneny_formular())
+        return render_template("motivacni_formular.html", roles=get_access_rights(), user_progress=get_user_progress(), blok_otazek=blok_otazek, odevzdany_formular=current_user.odevzdany_motivacni_dotaznik)
     else:
-        current_user.motivacni_dotaznik = json.dumps(request.form.to_dict())
-        db.session.add(current_user)
-        db.session.commit()
-        flash("Motivační formulář byl odeslán.", category="success")
-        return redirect(url_for("user_views.ucet"))
+        if request.form.get("dalsi"):
+            current_user.ulozit_odpovedi(request.form.to_dict())
+            return redirect(url_for("user_views.motivacni_formular_numbered", blok_otazek=int(request.form.get("dalsi")) + 1))
+        if request.form.get("predchozi"):
+            current_user.ulozit_odpovedi(request.form.to_dict())
+            return redirect(url_for("user_views.motivacni_formular_numbered", blok_otazek=int(request.form.get("predchozi")) - 1))
+        if request.form.get("odeslat"):
+            current_user.ulozit_odpovedi(request.form.to_dict())
+            current_user.odevzdany_motivacni_dotaznik = True
+            db.session.add(current_user)
+            db.session.commit()
+            flash("Motivační formulář byl odevzdán.", category="success")
+            return redirect(url_for("user_views.ucet"))
+            

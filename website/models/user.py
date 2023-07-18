@@ -1,4 +1,4 @@
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from website import db
 from flask import current_app
 import jwt
@@ -20,7 +20,7 @@ class User(db.Model, UserMixin):
     mail_rodicu = db.Column(db.String(100))
     odbornost = db.Column(db.String(100), default="zatím nevybraná")
     datum_narozeni = db.Column(db.Date)
-    progress = db.Column(db.String(100), default="Registrován")
+    progress = db.Column(db.String(100), default="Motivační formulář")
     role = db.Column(db.Text, default=json.dumps(["user"]))
     tricko = db.Column(db.String(100))
     dozvedeli = db.Column(db.String(100))
@@ -32,6 +32,10 @@ class User(db.Model, UserMixin):
     datum_pohovoru = db.Column(db.DateTime)
     meeting_link = db.Column(db.String(1000))
     motivacni_dotaznik = db.Column(db.Text)
+    odevzdany_motivacni_dotaznik = db.Column(db.Boolean)
+    osloveni_1p = db.Column(db.String(200))
+    osloveni_5p = db.Column(db.String(200))
+    zajmeno = db.Column(db.String(200))
 
     def get_reset_token(self, expires_sec=9000) -> str:
         reset_token = jwt.encode(
@@ -70,6 +74,9 @@ class User(db.Model, UserMixin):
             "tricko": self.tricko,
             "datum_registrace": pretty_datetime(self.datum_registrace),
             "datum_pohovoru": pretty_datetime(self.datum_pohovoru),
+            "osloveni_1p": self.osloveni_1p,
+            "osloveni_5p": self.osloveni_5p,
+            "zajmeno": self.zajmeno
         }
     
     def get_info_na_detail_usera(self) -> dict:
@@ -94,7 +101,10 @@ class User(db.Model, UserMixin):
             "admin_poznamka": self.admin_poznamka,
             "uzamcene_zmeny": "Ano" if self.uzamcene_zmeny else "Ne",
             "uzamcene_zmeny_bool": self.uzamcene_zmeny,
-            "motivacni_formular": json.loads(self.motivacni_dotaznik) if self.motivacni_dotaznik else None
+            "motivacni_formular": json.loads(self.motivacni_dotaznik) if self.odevzdany_motivacni_dotaznik else None,
+            "osloveni_1p": self.osloveni_1p,
+            "osloveni_5p": self.osloveni_5p,
+            "zajmeno": self.zajmeno
         }
         
 
@@ -111,12 +121,9 @@ class User(db.Model, UserMixin):
         
     def odebrat_motivacni_formular(self):
         self.motivacni_dotaznik = None
+        self.odevzdany_motivacni_dotaznik = False
         db.session.add(self)
         db.session.commit()
-        
-    def has_vyplneny_formular(self) -> bool:
-        print(self.motivacni_dotaznik)
-        return True if self.motivacni_dotaznik else False
 
 
     @staticmethod
@@ -142,4 +149,21 @@ class User(db.Model, UserMixin):
     def get_all():
         return db.session.scalars(db.select(User)).all()
     
-
+    def ulozit_odpovedi(self, form):
+        if self.motivacni_dotaznik is None:
+            self.motivacni_dotaznik = [{"id": i, "odpoved": ""} for i in range(1,15)]
+        else:
+            self.motivacni_dotaznik = json.loads(self.motivacni_dotaznik)
+        for key, value in form.items():
+            try:
+                key = int(key)
+            except ValueError:
+                continue
+            
+            if key in range(1,15):
+                for entry in self.motivacni_dotaznik:
+                    if entry["id"] == key:
+                        entry["odpoved"] = value
+        self.motivacni_dotaznik = json.dumps(self.motivacni_dotaznik)
+        db.session.add(current_user)
+        db.session.commit()
