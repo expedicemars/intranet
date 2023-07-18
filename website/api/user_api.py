@@ -75,7 +75,7 @@ def dostupne_odbornosti():
 
 @user_api.route("/odpovedi_motivaku")
 @require_role_on_current_user(["user"])
-@require_progress_na_ucastnikovi("Registrován")
+@require_progress_na_ucastnikovi("Motivační formulář")
 def odpovedi_motivaku():
     if current_user.motivacni_dotaznik:
         return current_user.motivacni_dotaznik

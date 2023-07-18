@@ -12,7 +12,7 @@
                     <li class="nav-item"><a class="nav-link active" href="{{url_for('user_views.ucet')}}">Účet</a></li>
                     <li class="nav-item"><a class="nav-link active" href="{{url_for('user_views.info')}}">Info</a></li>
                     {% if "confirmed" in roles %}
-                        {% if "Registrován" in user_progress%}
+                        {% if "Motivační formulář" in user_progress%}
                             <li class="nav-item"><a class="nav-link active" href="{{url_for('user_views.motivacni_formular')}}">Motivační formulář</a></li>
                         {% endif %}
                         {% if "První kontakt" in user_progress%}

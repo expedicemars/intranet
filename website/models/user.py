@@ -20,7 +20,7 @@ class User(db.Model, UserMixin):
     mail_rodicu = db.Column(db.String(100))
     odbornost = db.Column(db.String(100), default="zatím nevybraná")
     datum_narozeni = db.Column(db.Date)
-    progress = db.Column(db.String(100), default="Registrován")
+    progress = db.Column(db.String(100), default="Motivační formulář")
     role = db.Column(db.Text, default=json.dumps(["user"]))
     tricko = db.Column(db.String(100))
     dozvedeli = db.Column(db.String(100))
