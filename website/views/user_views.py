@@ -151,15 +151,30 @@ def odbornost_vyber():
             return redirect(url_for("user_views.odbornost"))
         
 
-@user_views.route("/motivacni_formular", methods=["GET","POST"])
+@user_views.route("/motivacni_formular>", methods=["GET","POST"])
 @require_role_on_current_user("user")
 @require_progress_na_ucastnikovi("Registrován")
 def motivacni_formular():
+    return redirect(url_for("user_views.motivacni_formular_numbered", blok_otazek = 1))
+
+@user_views.route("/motivacni_formular/<int:blok_otazek>", methods=["GET","POST"])
+@require_role_on_current_user("user")
+@require_progress_na_ucastnikovi("Registrován")
+def motivacni_formular_numbered(blok_otazek):
     if request.method == "GET":
-        return render_template("motivacni_formular.html", roles=get_access_rights(), user_progress=get_user_progress(), vyplneny_formular = current_user.has_vyplneny_formular())
+        return render_template("motivacni_formular.html", roles=get_access_rights(), user_progress=get_user_progress(), blok_otazek=blok_otazek, odevzdany_formular=current_user.odevzdany_motivacni_dotaznik)
     else:
-        current_user.motivacni_dotaznik = json.dumps(request.form.to_dict())
-        db.session.add(current_user)
-        db.session.commit()
-        flash("Motivační formulář byl odeslán.", category="success")
-        return redirect(url_for("user_views.ucet"))
+        if request.form.get("dalsi"):
+            current_user.ulozit_odpovedi(request.form.to_dict())
+            return redirect(url_for("user_views.motivacni_formular_numbered", blok_otazek=int(request.form.get("dalsi")) + 1))
+        if request.form.get("predchozi"):
+            current_user.ulozit_odpovedi(request.form.to_dict())
+            return redirect(url_for("user_views.motivacni_formular_numbered", blok_otazek=int(request.form.get("predchozi")) - 1))
+        if request.form.get("odeslat"):
+            current_user.ulozit_odpovedi(request.form.to_dict())
+            current_user.odevzdany_motivacni_dotaznik = True
+            db.session.add(current_user)
+            db.session.commit()
+            flash("Motivační formulář byl odevzdán.", category="success")
+            return redirect(url_for("user_views.ucet"))
+            

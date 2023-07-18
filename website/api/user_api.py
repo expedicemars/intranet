@@ -8,7 +8,6 @@ from website.json_handlers.pohovory_handling import get_neobsazene_pohovory
 from website.json_handlers.info_handling import get_vsechny_informace
 from website.paths import velitel_odbornosti_data_path
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
-from website.json_handlers.motivacni_formular_handling import get_motivacni_formular_otazky
 
 
 
@@ -82,8 +81,12 @@ def moje_info():
 def dostupne_odbornosti():
     return json.dumps(get_dostupne_odbornosti())
 
-@user_api.route("/motivacni_formular_otazky")
-@require_role_on_current_user(["user","admin"])
+
+@user_api.route("/odpovedi_motivaku")
+@require_role_on_current_user(["user"])
 @require_progress_na_ucastnikovi("Registrován")
-def motivacni_formular_otazky():
-    return json.dumps(get_motivacni_formular_otazky())
+def odpovedi_motivaku():
+    if current_user.motivacni_dotaznik:
+        return current_user.motivacni_dotaznik
+    else:
+        return json.dumps([{"id": i, "odpoved": ""} for i in range(1,15)])
