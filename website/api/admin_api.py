@@ -61,6 +61,7 @@ def pohovory():
         zaznam["iso"] = p["iso"]
         zaznam["pretty"] = pretty_datetime(p["iso"])
         zaznam["user"] = p["user"]
+        zaznam["admin"] = p["admin"]
         if p["user"]:
             u = User.get_by_id(p["user"])
             zaznam["jmeno"] = u.jmeno

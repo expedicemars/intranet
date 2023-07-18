@@ -70,11 +70,16 @@ def zapsat_na_pohovor(isoformat: datetime, id: int) -> bool:
     with open(pohovory_path()) as file:
         file = json.load(file)
     #zda je zvoleny furt volny
-    volny = False
+    result = {
+        "volny": False,
+        "admin": ""
+    }
     for f in file:
-        if f["iso"] == isoformat.isoformat() and f["user"] is None:
-            volny = True
-    if volny:
+        if f["iso"] == isoformat.isoformat():
+            result["admin"] = f["admin"]
+            if f["user"] is None:
+                result["volny"] = True
+    if result["volny"]:
         #smazu stary
         for f in file:
             if f["user"] == id:
@@ -86,9 +91,9 @@ def zapsat_na_pohovor(isoformat: datetime, id: int) -> bool:
                 break
         with open(pohovory_path(),"w") as new:
             new.write(json.dumps(file, indent=4))
-        return volny
+        return result
     else:
-        return volny
+        return result
 
 def get_neobsazene_pohovory() -> list:
     with open(pohovory_path()) as file:

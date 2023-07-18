@@ -22,15 +22,17 @@ function seznam_casu() {
 
 seznam_casu()
 
-function generator_vypsanych(iso, pretty, user) {
+function generator_vypsanych(iso, pretty, user, admin) {
     let row = document.createElement("div")
     row.classList.add("row")
     let col1 = document.createElement("div")
     col1.classList.add("col")
     let col2 = document.createElement("div")
     col2.classList.add("col")
+    let col3 = document.createElement("div")
+    col3.classList.add("col")
     if (user) {
-        col2.innerHTML = "Obsazeno"
+        col3.innerHTML = "Obsazeno"
     } else {
         let smazat_button = document.createElement("button")
         smazat_button.innerHTML = "Smazat"
@@ -38,22 +40,26 @@ function generator_vypsanych(iso, pretty, user) {
         smazat_button.type="submit"
         smazat_button.name = "smazat"
         smazat_button.value = iso
-        col2.appendChild(smazat_button)
+        col3.appendChild(smazat_button)
     }
 
     col1.innerHTML = pretty
+    col2.innerHTML = admin
     row.appendChild(col1)
     row.appendChild(col2)
+    row.appendChild(col3)
     content_div.appendChild(row)
 }
 
-function generator_prihlasenych(jmeno, pretty, id, link) {
+function generator_prihlasenych(jmeno, pretty, id, link, admin) {
     let row = document.createElement("div")
     row.classList.add("row")
+    
     let col1 = document.createElement("div")
     row.appendChild(col1)
     col1.classList.add("col")
     col1.innerHTML = pretty
+
     let col2 = document.createElement("div")
     row.appendChild(col2)
     col2.classList.add("col")
@@ -62,6 +68,12 @@ function generator_prihlasenych(jmeno, pretty, id, link) {
     a.href = "/admin/detail_usera/" + String(id)
     a.innerHTML = jmeno
     a.classList.add("link")
+
+    let col25 = document.createElement("div")
+    row.appendChild(col25)
+    col25.classList.add("col")
+    col25.innerText = admin
+    
     let col3 = document.createElement("div")
     row.appendChild(col3)
     col3.classList.add("col")
@@ -81,9 +93,9 @@ function generator_prihlasenych(jmeno, pretty, id, link) {
 }
 
 for (let p of pohovory) {
-    generator_vypsanych(p["iso"], p["pretty"], p["user"])
+    generator_vypsanych(p["iso"], p["pretty"], p["user"], p["admin"])
     if (p["user"]) {
-        generator_prihlasenych(p["jmeno"], p["pretty"], p["user"], p["link"])
+        generator_prihlasenych(p["jmeno"], p["pretty"], p["user"], p["link"], p["admin"])
     }
 }
 

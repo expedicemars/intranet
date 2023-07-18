@@ -101,7 +101,8 @@ def pohovory():
             db.session.add(current_user)
             db.session.commit()
             vysledek = zapsat_na_pohovor(current_user.datum_pohovoru, current_user.id)
-            if vysledek:
+            mail_sender("novy_prvni_kontakt", target=vysledek["admin"])
+            if vysledek["volny"]:
                 flash("Termín vybrán.", category="success")
             else:
                 flash("Tento termín si mezitím vybral někdo jiný. Prosím, vyber si další.", category="error")
