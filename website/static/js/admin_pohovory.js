@@ -2,8 +2,8 @@ import httpGet from "./httpGet.js"
 let start_time = document.getElementById("start_time")
 let end_time = document.getElementById("end_time")
 let pohovory = JSON.parse(httpGet("/admin_api/pohovory"))
-let content_div = document.getElementById("content")
-let prihlaseni_div = document.getElementById("prihlaseni")
+let content_table = document.getElementById("content")
+let prihlaseni_table = document.getElementById("prihlaseni")
 
 function seznam_casu() {
     let hodiny = ["7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22"]
@@ -23,73 +23,66 @@ function seznam_casu() {
 seznam_casu()
 
 function generator_vypsanych(iso, pretty, user, admin) {
-    let row = document.createElement("div")
-    row.classList.add("row")
-    let col1 = document.createElement("div")
-    col1.classList.add("col")
-    let col2 = document.createElement("div")
-    col2.classList.add("col")
-    let col3 = document.createElement("div")
-    col3.classList.add("col")
+    let tr = document.createElement("tr")
+    let td1 = document.createElement("td")
+    let td2 = document.createElement("td")
+    let td3 = document.createElement("td")
+    tr.appendChild(td1)
+    tr.appendChild(td2)
+    tr.appendChild(td3)
+    content_table.appendChild(tr)
+
+    td1.innerText = pretty
+    td2.innerText = admin
+
     if (user) {
-        col3.innerHTML = "Obsazeno"
+        td3.innerText = "Obsazeno"
     } else {
         let smazat_button = document.createElement("button")
         smazat_button.innerHTML = "Smazat"
-        smazat_button.classList.add("btn", "btn-danger", "my-1")
+        smazat_button.classList.add("btn", "btn-danger")
         smazat_button.type="submit"
         smazat_button.name = "smazat"
         smazat_button.value = iso
-        col3.appendChild(smazat_button)
+        td3.appendChild(smazat_button)
     }
-
-    col1.innerHTML = pretty
-    col2.innerHTML = admin
-    row.appendChild(col1)
-    row.appendChild(col2)
-    row.appendChild(col3)
-    content_div.appendChild(row)
 }
 
 function generator_prihlasenych(jmeno, pretty, id, link, admin) {
-    let row = document.createElement("div")
-    row.classList.add("row")
+    let tr = document.createElement("tr")
+    let td1 = document.createElement("td")
+    let td2 = document.createElement("td")
+    let td3 = document.createElement("td")
+    let td4 = document.createElement("td")
+    tr.appendChild(td1)
+    tr.appendChild(td2)
+    tr.appendChild(td3)
+    tr.appendChild(td4)
+    content_table.appendChild(tr)
     
-    let col1 = document.createElement("div")
-    row.appendChild(col1)
-    col1.classList.add("col")
-    col1.innerHTML = pretty
+    td1.innerText = pretty
 
-    let col2 = document.createElement("div")
-    row.appendChild(col2)
-    col2.classList.add("col")
     let a = document.createElement("a")
-    col2.appendChild(a)
     a.href = "/admin/detail_usera/" + String(id)
     a.innerHTML = jmeno
     a.classList.add("link")
-
-    let col25 = document.createElement("div")
-    row.appendChild(col25)
-    col25.classList.add("col")
-    col25.innerText = admin
+    td2.appendChild(a)
     
-    let col3 = document.createElement("div")
-    row.appendChild(col3)
-    col3.classList.add("col")
+    td3.innerText = admin
+    
     if (link) {
         let a2 = document.createElement("a")
-        col3.appendChild(a2)
+        td4.appendChild(a2)
         a2.innerHTML = "Odkaz na meeting"
         a2.href = link
         a2.target = "blank"
         a2.classList.add("link")
     } else {
-        col3.innerHTML = "Tady link ještě není"
+        td4.innerHTML = "Tady link ještě není"
     }
     
 
-    prihlaseni_div.append(row)
+    prihlaseni_table.append(tr)
 }
 
 for (let p of pohovory) {

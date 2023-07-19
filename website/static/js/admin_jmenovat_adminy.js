@@ -2,42 +2,31 @@ import httpGet from "./httpGet.js"
 
 let useri_na_jmenovani_adminu = JSON.parse(httpGet("/admin_api/useri_na_jmenovani_adminu"))
 
-
-function vybrat_usera(id) {
-    document.getElementById("result").value = id
-    document.getElementById("form").submit()
-}
-
 function generator_from_db(target, id, email, jmeno) {
-    let row = document.createElement("div")
-    row.classList.add("row", "my-2")
-    document.getElementById(target).appendChild(row)
-
-    let col1 = document.createElement("div")
-    col1.classList.add("col-auto")
-    row.appendChild(col1)
-    col1.innerText = id
-
-    let col2 = document.createElement("div")
-    col2.classList.add("col")
-    row.appendChild(col2)
-    col2.innerText = jmeno
-
-    let col3 = document.createElement("div")
-    col3.classList.add("col")
-    row.appendChild(col3)
-    col3.innerText = email
+    let tr = document.createElement("tr")
+    let td1 = document.createElement("td")
+    let td2 = document.createElement("td")
+    let td3 = document.createElement("td")
+    let td4 = document.createElement("td")
+    tr.appendChild(td1)
+    tr.appendChild(td2)
+    tr.appendChild(td3)
+    tr.appendChild(td4)
+    document.getElementById(target).appendChild(tr)
+    
+    td1.innerText = id
+    td2.innerText = jmeno
+    td3.innerText = email
 
     let button = document.createElement("button")
     button.classList.add("btn", "em-button")
     button.type = "button"
-    button.innerText = "vybrat..."
-    button.addEventListener("click", function() {vybrat_usera(id)})
+    button.innerHTML = "Detail"
+    button.name = "result"
+    button.value = id
+    button.type = "submit"
 
-    let col6 = document.createElement("div")
-    col6.classList.add("col-auto")
-    row.appendChild(col6)
-    col6.appendChild(button)
+    td4.appendChild(button)
 }
 
 

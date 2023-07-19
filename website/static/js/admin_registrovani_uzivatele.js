@@ -3,24 +3,20 @@ import httpGet from "./httpGet.js"
 let ucastnici = JSON.parse(httpGet("/admin_api/ucastnici"))
 
 function generator_from_db(id, email, jmeno) {
-    let row = document.createElement("div")
-    row.classList.add("row", "my-2")
-    document.getElementById("from_db").appendChild(row)
-
-    let col1 = document.createElement("div")
-    col1.classList.add("col-auto")
-    row.appendChild(col1)
-    col1.innerHTML = id
-
-    let col2 = document.createElement("div")
-    col2.classList.add("col")
-    row.appendChild(col2)
-    col2.innerHTML = jmeno
-
-    let col3 = document.createElement("div")
-    col3.classList.add("col")
-    row.appendChild(col3)
-    col3.innerHTML = email
+    let tr = document.createElement("tr")
+    let td1 = document.createElement("td")
+    let td2 = document.createElement("td")
+    let td3 = document.createElement("td")
+    let td4 = document.createElement("td")
+    tr.appendChild(td1)
+    tr.appendChild(td2)
+    tr.appendChild(td3)
+    tr.appendChild(td4)
+    document.getElementById("users").appendChild(tr)
+    
+    td1.innerText = id
+    td2.innerText = jmeno
+    td3.innerText = email
 
     let button = document.createElement("button")
     button.classList.add("btn", "em-button")
@@ -30,10 +26,7 @@ function generator_from_db(id, email, jmeno) {
     button.value = id
     button.type = "submit"
 
-    let col6 = document.createElement("div")
-    col6.classList.add("col-auto")
-    row.appendChild(col6)
-    col6.appendChild(button)
+    td4.appendChild(button)
 }
 
 for (let u of ucastnici) {

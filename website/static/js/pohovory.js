@@ -3,7 +3,9 @@ let pohovory = JSON.parse(httpGet("/user_api/volne_pohovory"))
 let aktualne = JSON.parse(httpGet("/user_api/datum_pohovoru"))
 let datum_p = document.getElementById("datum")
 let link_p = document.getElementById("link")
-let pohovory_div = document.getElementById("pohovory")
+let jsou_pohovory_div = document.getElementById("jsou_pohovory")
+let nejsou_pohovory_div = document.getElementById("nejsou_pohovory")
+let pohovory_table = document.getElementById("pohovory")
 
 if (aktualne["datum"]) {
     datum_p.innerHTML = "Momentálně máš vybrané tohle datum: " + aktualne["datum"]
@@ -24,32 +26,27 @@ if (aktualne["link"]) {
 
 
 function generator(iso, pretty) {
-    let row = document.createElement("div")
-    row.classList.add("row")
-    let col1 = document.createElement("div")
-    col1.classList.add("col")
-    let col2 = document.createElement("div")
-    col2.classList.add("col")
+    let tr = document.createElement("tr")
+    let th = document.createElement("th")
+    let td = document.createElement("td")
+    pohovory_table.appendChild(tr)
+    tr.appendChild(th)
+    tr.appendChild(td)
+    th.innerText = pretty
+    
     let zapsat_button = document.createElement("button")
     zapsat_button.innerHTML = "Zapsat tento termín"
-    zapsat_button.classList.add("btn", "em-button", "my-1")
+    zapsat_button.classList.add("btn", "em-button")
     zapsat_button.type="submit"
     zapsat_button.name = "vybrat"
     zapsat_button.value = iso
-
-    col1.innerHTML = pretty
-    col2.appendChild(zapsat_button)
-    row.appendChild(col1)
-    row.appendChild(col2)
-    pohovory_div.appendChild(row)
+    td.appendChild(zapsat_button)
 }
 
 if (pohovory.length == 0) {
-    pohovory_div.innerHTML = "Nejsou vypsané žádné termíny prvního kontaktu."
+    nejsou_pohovory_div.hidden = false
 } else {
-    let p = document.createElement("p")
-    p.innerHTML = "Tady si můžeš vybrat termín prvního kontaktu. Po výběru je možné svojí volbu změnit. Termíny blíže než 48 hodin se tu nezobrazují."
-    pohovory_div.appendChild(p)
+    jsou_pohovory_div.hidden = false
     for (let p of pohovory) {
         generator(p["iso"], p["pretty"])
     }

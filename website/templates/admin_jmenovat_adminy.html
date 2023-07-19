@@ -3,45 +3,32 @@
 {% block content %}
 <h2>Úprava oprávnění</h2>
 <hr>
-<h3>Úprava rolí stávajících adminů</h3>
-<div id="admins" class="container">
-    <div class="row">
-        <div class="col-auto">
-            <b>id</b>
-        </div>
-        <div class="col">
-            <b>Jméno</b>
-        </div>
-        <div class="col">
-            <b>email</b>
-        </div>
-        <div class="col-auto">
-            Vybrat...
-        </div>
-    </div>
-</div>
-<hr>
-<h3>Jmenování nových adminů</h3>
-<div id="users" class="container">
-    <div class="row">
-        <div class="col-auto">
-            <b>id</b>
-        </div>
-        <div class="col">
-            <b>Jméno</b>
-        </div>
-        <div class="col">
-            <b>email</b>
-        </div>
-        <div class="col-auto">
-            Vybrat...
-        </div>
-    </div>
-</div>
-
-
-<form method="post" id="form">
-    <input hidden name="result" id="result"/>
+<form method="post">
+    <h3>Úprava rolí stávajících adminů</h3>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Jméno</th>
+                <th>E-mail</th>
+                <th>Vybrat</th>
+            </tr>
+        </thead>
+        <tbody id="admins"></tbody>
+    </table>
+    <hr>
+    <h3>Jmenování nových adminů</h3>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Jméno</th>
+                <th>E-mail</th>
+                <th>Vybrat</th>
+            </tr>
+        </thead>
+        <tbody id="users"></tbody>
+    </table>
 </form>
 
 <script type="module" src="{{url_for('static', filename='js/admin_jmenovat_adminy.js')}}"></script>
