@@ -106,12 +106,14 @@ def get_neobsazene_pohovory() -> list:
             result.append(f)
     return result
 
-def odhlasit_usera_by_id(id) -> None:
+def odhlasit_usera_by_id(id) -> str:
     pohovory = get_pohovory()
     for p in pohovory:
         if p["user"] == id:
             p["user"] = None
+            admin = p["admin"]
             break
     with open(pohovory_path(),"w") as new:
         new.write(json.dumps(pohovory, indent=4))
+    return admin
     

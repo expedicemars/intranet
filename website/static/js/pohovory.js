@@ -1,17 +1,14 @@
 import httpGet from "./httpGet.js"
 let pohovory = JSON.parse(httpGet("/user_api/volne_pohovory"))
 let aktualne = JSON.parse(httpGet("/user_api/datum_pohovoru"))
-let datum_p = document.getElementById("datum")
 let link_p = document.getElementById("link")
 let jsou_pohovory_div = document.getElementById("jsou_pohovory")
 let nejsou_pohovory_div = document.getElementById("nejsou_pohovory")
+let datum_je = document.getElementById("datum_je")
+let datum_neni = document.getElementById("datum_neni")
+let datum_span = document.getElementById("datum_span")
 let pohovory_table = document.getElementById("pohovory")
-
-if (aktualne["datum"]) {
-    datum_p.innerHTML = "Momentálně máš vybrané tohle datum: " + aktualne["datum"]
-} else {
-    datum_p.innerHTML = "Momentálně nemáš vybrané žádné datum pohovoru."
-}
+let terminy_div = document.getElementById("terminy")
 
 if (aktualne["link"]) {
     let a = document.createElement("a")
@@ -24,6 +21,13 @@ if (aktualne["link"]) {
     link_p.innerHTML = "Zatím tu nemáš odkaz na pohovor. Až ho organizátoři vytvoří, čekej ho buď tady, nebo na e-mailu."
 }
 
+if (aktualne["datum"]) {
+    datum_je.hidden = false
+    datum_span.innerText = aktualne["datum"]
+} else {
+    datum_neni.hidden = false
+    terminy_div.hidden = false
+}
 
 function generator(iso, pretty) {
     let tr = document.createElement("tr")
@@ -43,7 +47,7 @@ function generator(iso, pretty) {
     td.appendChild(zapsat_button)
 }
 
-if (pohovory.length == 0) {
+if (pohovory.length == 0 || aktualne["datum"]) {
     nejsou_pohovory_div.hidden = false
 } else {
     jsou_pohovory_div.hidden = false

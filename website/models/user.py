@@ -173,5 +173,6 @@ class User(db.Model, UserMixin):
         self.datum_pohovoru = None
         db.session.add(self)
         db.session.commit()
-        odhlasit_usera_by_id(self.id)
+        admin = odhlasit_usera_by_id(self.id)
+        return admin
         

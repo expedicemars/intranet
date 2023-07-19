@@ -107,6 +107,11 @@ def pohovory():
             else:
                 flash("Tento termín si mezitím vybral někdo jiný. Prosím, vyber si další.", category="error")
             return redirect(url_for("user_views.pohovory"))
+        elif request.form.get("zmenit"):
+            admin = current_user.odhlasit_z_prvniho_kontaktu()
+            mail_sender(mail_identifier="odhlaseni_prvniho_kontaktu", target=admin)
+            flash("Termín byl odhlášen.")
+            return redirect(url_for("user_views.pohovory"))
     
     
 @user_views.route("/odbornost", methods=["GET","POST"])
