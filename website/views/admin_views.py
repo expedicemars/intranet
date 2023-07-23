@@ -7,6 +7,7 @@ from website import db
 from website.helpers.require_role_decorator import require_role_on_current_user
 from website.models.chyba import Chyba
 from website.models.user import User
+from website.models.hodnoceni import Hodnoceni
 from website.json_handlers.mailing_list import set_mailing_list
 from website.helpers.user_filter import seznam_generator
 from website.helpers.exporty import exportovat, promazat
@@ -180,6 +181,13 @@ def detail_usera(id):
             db.session.add(u)
             db.session.commit()
             flash("Záznam o userovi upraven", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+        elif request.form.get("hodnoceni"):
+            return redirect(url_for("admin_views.hodnoceni", id=id))
+        elif id_hodnoceni := request.form.get("smazat_hodnoceni"):
+            Hodnoceni.get_by_id(id_hodnoceni).smazat()
+            flash("Hodnocení smazáno", category="success")
+            alog(f"Smazáno hodnocení od uživatele {u.email}")
             return redirect(url_for("admin_views.detail_usera", id=id))
     
 
@@ -408,4 +416,15 @@ def organizatori():
     else:
         result = request.form.get("result")
         return redirect(url_for("admin_views.detail_usera",id=int(result)))
+    
+    
+@admin_views.route("/hodnocen/<int:id>", methods=["GET","POST"])
+@require_role_on_current_user("editing_users_allowed")
+def hodnoceni(id):
+    if request.method == "GET":
+        return render_template("admin_hodnoceni.html", roles=get_access_rights(), jmeno=User.get_by_id(id).jmeno)
+    else:
+        Hodnoceni.zapsat_hodnoceni(request.form.to_dict(), id, current_user.id)
+        flash("Hodnocení zapsáno", category="success")
+        return redirect(url_for("admin_views.detail_usera", id=id))
     

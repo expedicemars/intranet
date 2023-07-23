@@ -28,4 +28,11 @@ def mail_sender(mail_identifier, target, data=None) -> None:
                       recipients=[target])
         msg.html = render_template("mails/novy_prvni_kontakt.html", url = url_for("admin_views.pohovory", _external = True))
         mail.send(msg)
+        
+    if mail_identifier == "odhlaseni_prvniho_kontaktu":
+        msg = Message("Někdo se odhlásil z prvního kontaktu",
+                      sender=os.environ.get("MAIL_USERNAME"),
+                      recipients=[target])
+        msg.html = render_template("mails/odhlaseni_z_prvniho_kontaktu.html", url = url_for("admin_views.pohovory", _external = True))
+        mail.send(msg)
     

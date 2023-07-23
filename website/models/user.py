@@ -5,7 +5,7 @@ import jwt
 import json
 from website.paths import user_data_folder_path
 from shutil import rmtree
-from website.helpers.pretty_date import pretty_date, pretty_datetime
+from website.helpers.pretty_date import pretty_datetime
 from website.json_handlers.pohovory_handling import odhlasit_usera_by_id
 from datetime import datetime, timezone, timedelta
 
@@ -29,7 +29,7 @@ class User(db.Model, UserMixin):
     uzamcene_zmeny = db.Column(db.Boolean, default=False)
     alergie = db.Column(db.String(1000))
     skola = db.Column(db.String(1000))
-    datum_registrace = db.Column((db.DateTime), default=datetime.now())
+    datum_registrace = db.Column((db.DateTime), default=datetime.now)
     datum_pohovoru = db.Column(db.DateTime)
     meeting_link = db.Column(db.String(1000))
     motivacni_dotaznik = db.Column(db.Text)
@@ -37,6 +37,7 @@ class User(db.Model, UserMixin):
     osloveni_1p = db.Column(db.String(200))
     osloveni_5p = db.Column(db.String(200))
     zajmeno = db.Column(db.String(200))
+    hodnoceni_udelene = db.relationship("Hodnoceni", backref="user")
 
     def get_reset_token(self, expires_sec=9000) -> str:
         reset_token = jwt.encode(
@@ -173,5 +174,5 @@ class User(db.Model, UserMixin):
         self.datum_pohovoru = None
         db.session.add(self)
         db.session.commit()
-        odhlasit_usera_by_id(self.id)
-        
+        admin = odhlasit_usera_by_id(self.id)
+        return admin        

@@ -40,12 +40,7 @@ def create_app():
 
     from .models.user import User
     from .models.chyba import Chyba
-    # with app.app_context():
-    #     if not user_database_path().exists():
-    #         db.create_all()
-    #         log("Vytvořena databáze na " + str(user_database_path()))
-    #     else:
-    #         log("Databáze uživatelů už existuje.")
+    from .models.hodnoceni import Hodnoceni
     with app.app_context():
         db.create_all()
 

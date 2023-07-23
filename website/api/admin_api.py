@@ -8,6 +8,7 @@ from website.json_handlers.odkazy_handling import get_odkazy
 from website.helpers.pretty_date import pretty_date, pretty_datetime
 from website.paths import velitel_odbornosti_data_path, user_data_folder_path, poznamky_path, prohlaseni_path
 from website.models.user import User
+from website.models.hodnoceni import Hodnoceni
 from website.json_handlers.pohovory_handling import get_pohovory
 from website.role_handler import get_access_rights
 from website.json_handlers.dostupne_omezeni import get_dostupne_progressy, get_dostupne_role
@@ -136,6 +137,11 @@ def role(id):
 def detail_usera(id):
     u = User.get_by_id(id)
     return u.get_info_na_detail_usera()
+
+@admin_api.route("/hodnoceni/<int:id>")
+@require_role_on_current_user("editing_users_allowed")
+def hodnoceni(id):
+    return json.dumps([h.to_dict() for h in Hodnoceni.get_by_user_id(id)])
 
 
 @admin_api.route("/ucastnici")
