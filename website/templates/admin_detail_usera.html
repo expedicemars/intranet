@@ -1,6 +1,7 @@
 {% extends "admin_navbar.html" %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/duha.css')}}">
 <h2>Detail uživatele</h2>
 
 <form method="post">
@@ -9,6 +10,7 @@
     <button class="btn em-button m-1" type="submit" value = "1" name="odebrat_odbornost">Odebrat údaj o odbornosti</button>
     <button class="btn em-button m-1" type="submit" value = "1" name="odebrat_motivacni_formular">Promazat motivační formulář</button>
     <button class="btn em-button m-1" type="submit" value = "1" name="odebrat_prvni_kontakt">Odhlásit z prvního kontaktu</button>
+    <button class="btn em-button m-1" type="submit" value="1" name="hodnoceni">Přidat hodnocení</button>
 
 </form>
 <hr>
@@ -36,7 +38,7 @@
                     </tr>
                     <tr>
                         <th>
-                            Oslovení 1. pád:
+                            Oslovení 5. pád:
                         </th>
                         <td id="osloveni_5p">
                         </td>
@@ -184,7 +186,7 @@
 <div>
     <h3>Motivační formulář</h3>
     <div id="vyplneny_formular" hidden>
-        <div class="border-orange rounded-2 m-2 p-2">
+        <div class="border-orange rounded-2 m-2 p-2 lighter">
             <b>Jaká oblast vědy a techniky tě zajímá?</b>
             <br>
             <p id="1"></p>
@@ -196,7 +198,7 @@
             <p id="3"></p>
         </div>
         
-        <div class="border-orange rounded-2 m-2 p-2">
+        <div class="border-orange rounded-2 m-2 p-2 lighter">
             <b>Co považuješ za své silné stránky?</b>
             <br>
             <p id="4"></p>
@@ -214,7 +216,7 @@
             <p id="8"></p>
         </div>
         
-        <div class="border-orange rounded-2 m-2 p-2">
+        <div class="border-orange rounded-2 m-2 p-2 lighter">
             <b>Co si kladeš za dlouhodobé cíle?</b>
             <br>
             <p id="9"></p>
@@ -226,7 +228,7 @@
             <p id="11"></p>
         </div>
         
-        <div class="border-orange rounded-2 m-2 p-2">
+        <div class="border-orange rounded-2 m-2 p-2 lighter">
             <b>Jakým volnočasovým aktivitám se věnuješ mimo školu a vědu?</b>
             <br>
             <p id="12"></p>
@@ -242,6 +244,14 @@
 
     <div id="nevyplneny_formular" hidden>
         Tento účastník zatím motivační formulář neodevzdal.
+    </div>
+</div>
+<hr>
+<div>
+    <h3>Hodnocení</h3>
+    <form method="post">
+        <div class="container" id="hodnoceni_div">
+    </form>
     </div>
 </div>
 <hr>
