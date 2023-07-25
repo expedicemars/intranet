@@ -418,7 +418,7 @@ def organizatori():
         return redirect(url_for("admin_views.detail_usera",id=int(result)))
     
     
-@admin_views.route("/hodnocen/<int:id>", methods=["GET","POST"])
+@admin_views.route("/hodnoceni/<int:id>", methods=["GET","POST"])
 @require_role_on_current_user("editing_users_allowed")
 def hodnoceni(id):
     if request.method == "GET":
@@ -428,3 +428,8 @@ def hodnoceni(id):
         flash("Hodnocení zapsáno", category="success")
         return redirect(url_for("admin_views.detail_usera", id=id))
     
+
+@admin_views.route("/struktura_rozhovoru")
+@require_role_on_current_user("admin")
+def struktura_rozhovoru():
+    return render_template("admin_struktura_rozhovoru.html", roles=get_access_rights())
