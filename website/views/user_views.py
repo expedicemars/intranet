@@ -110,7 +110,7 @@ def pohovory():
         elif request.form.get("zmenit"):
             admin = current_user.odhlasit_z_prvniho_kontaktu()
             mail_sender(mail_identifier="odhlaseni_prvniho_kontaktu", target=admin)
-            flash("Termín byl odhlášen.")
+            flash("Termín byl odhlášen.", category="success")
             return redirect(url_for("user_views.pohovory"))
     
     
