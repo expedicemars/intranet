@@ -1,7 +1,6 @@
 import json
 import website.paths as p
 from website.json_handlers.logs_handling import log
-from website.json_handlers.dostupne_omezeni import get_dostupne_progressy
 from datetime import date
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 
@@ -80,7 +79,7 @@ def check_zadani_folders() -> None:
     else:
         path.mkdir()
         for odbornost in get_dostupne_odbornosti():
-            _path = path / odbornost
+            _path = path / odbornost["system_name"]
             _path.mkdir()
         log("Vytvořena složka pro zadání na "+str(path))
 

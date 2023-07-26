@@ -62,12 +62,17 @@ for (let prog of progressy) {
 
 
   // odbornost
-dostupne_odbornosti.push("zatím nevybraná")
+dostupne_odbornosti.push(
+    {
+        "system_name": "zatím nevybraná",
+        "prvnipjc": "zatím nevybraná"
+    }
+)
 for (let odb of dostupne_odbornosti) {
     let opt = document.createElement("option")
-    opt.value = odb
-    opt.id = odb
-    opt.innerText = odb
+    opt.value = odb.system_name
+    opt.id = odb.system_name
+    opt.innerText = odb.prvnipjc
     odbornost_select.appendChild(opt)
 }
 

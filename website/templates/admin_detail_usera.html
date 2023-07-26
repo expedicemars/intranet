@@ -7,7 +7,6 @@
 <form method="post">
     <button class="btn btn-success m-1"  type="button" id="ulozit_button">Uložit</button>
     <button class="btn btn-danger m-1" type="submit" value="1" name="smazat">Smazat uživatele</button>
-    <button class="btn em-button m-1" type="submit" value = "1" name="odebrat_odbornost">Odebrat údaj o odbornosti</button>
     <button class="btn em-button m-1" type="submit" value = "1" name="odebrat_motivacni_formular">Promazat motivační formulář</button>
     <button class="btn em-button m-1" type="submit" value = "1" name="odebrat_prvni_kontakt">Odhlásit z prvního kontaktu</button>
     <button class="btn em-button m-1" type="submit" value="1" name="hodnoceni">Přidat hodnocení</button>
@@ -176,7 +175,8 @@
                 <span id="charcount"></span>
             </td>
         </tr>
-        <tr>
+        <!-- id link je tu kvuli odkazu z pohovorů -->
+        <tr id="link"> 
             <th>
                 Meeting link:
             </th>

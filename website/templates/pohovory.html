@@ -9,7 +9,9 @@ Tady se můžeš zapsat na konkrétní termín.
         <form method="post">
             <p>
                 Momentálně máš vybrané tohle datum: <span id="datum_span"></span>
-                <button class="btn em-button" name="zmenit" value="whatever">Změnit vybraný termín</button>
+                {% if not uzamcene_zmeny %}
+                    <button class="btn em-button" name="zmenit" value="whatever">Změnit vybraný termín</button>
+                {% endif %}
             </p>
         </form>
     </div>

@@ -2,12 +2,10 @@ from flask import Blueprint
 from flask_login import current_user
 import json
 import datetime
-from website.helpers.pretty_date import pretty_date, pretty_datetime
+from website.helpers.pretty_date import pretty_datetime
 from website.helpers.require_role_decorator import require_progress_na_ucastnikovi, require_role_on_current_user
 from website.json_handlers.pohovory_handling import get_neobsazene_pohovory
 from website.paths import velitel_odbornosti_data_path
-from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
-
 
 
 
@@ -70,13 +68,6 @@ def kontakt_na_velitele_odbornosti(odb):
 @require_role_on_current_user("user")
 def info():
     return current_user.get_info_na_ucet_stranku()
-
-
-@user_api.route("/dostupne_odbornosti")
-@require_progress_na_ucastnikovi("Domácí projekt")
-@require_role_on_current_user("user")
-def dostupne_odbornosti():
-    return json.dumps(get_dostupne_odbornosti())
 
 
 @user_api.route("/odpovedi_motivaku")

@@ -117,10 +117,6 @@ class User(db.Model, UserMixin):
         osobni_slozka = user_data_folder_path() / str(self.id)
         rmtree(osobni_slozka)
     
-    def odebrat_odbornost(self):
-        self.odbornost = "zatím nevybraná"
-        db.session.add(self)
-        db.session.commit()
         
     def odebrat_motivacni_formular(self):
         self.motivacni_dotaznik = None

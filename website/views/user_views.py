@@ -121,7 +121,7 @@ def pohovory():
 @require_role_on_current_user("user")
 @require_progress_na_ucastnikovi("Domácí projekt")
 def odbornost(odb):
-    if odb not in get_dostupne_odbornosti():
+    if odb not in [o["system_name"] for o in get_dostupne_odbornosti()]:
         abort(404)
     current_odbornost = current_user.odbornost
     if current_odbornost != "zatím nevybraná" and odb != current_odbornost:
