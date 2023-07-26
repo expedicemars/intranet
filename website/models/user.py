@@ -1,4 +1,4 @@
-from flask_login import UserMixin, current_user
+from flask_login import UserMixin
 from website import db
 from flask import current_app
 import jwt
@@ -6,9 +6,10 @@ import json
 from website.paths import user_data_folder_path
 from shutil import rmtree
 from website.helpers.pretty_date import pretty_datetime
+from website.helpers.get_user_files import get_prace_filenames, get_shrnuti_filename
 from website.json_handlers.pohovory_handling import odhlasit_usera_by_id
 from datetime import datetime, timezone, timedelta
-
+from pathlib import Path
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -176,3 +177,20 @@ class User(db.Model, UserMixin):
         db.session.commit()
         admin = odhlasit_usera_by_id(self.id)
         return admin        
+    
+    def ma_nahranou_praci(self):
+        filenames = json.loads(get_prace_filenames(self.id))
+        return bool(filenames)
+    
+    def smazat_praci(self):
+        path = user_data_folder_path() / str(self.id) / "prace"
+        for file in path.iterdir():
+            file.unlink()
+
+    def smazat_shrnuti(self):
+        filename = get_shrnuti_filename(self.id)
+        p: Path = user_data_folder_path() / str(self.id) / filename["filename"]
+        p.unlink()
+        self.odbornost = "zatím nevybraná"
+        db.session.add(self)
+        db.session.commit()

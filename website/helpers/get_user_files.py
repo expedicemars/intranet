@@ -15,7 +15,7 @@ def get_prace_filenames(id):
             continue
         result.append(file.name)
     if len(result) == 0:
-        return json.dumps(None)
+        return json.dumps(None) # vrací prostý null
     else:
         return json.dumps(result)
 

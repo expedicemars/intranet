@@ -92,7 +92,6 @@ for (let key in detail_usera) {
 charcount_span.innerHTML = String(textarea.value.length) + "/1000"
 
 // shrnuti
-
 let shrnuti = JSON.parse(httpGet("/file_api/send_filename_ciziho_shrnuti/" + String(id_usera)))
 let ukazat_shrnuti = document.getElementById("ukazat_shrnuti")
 if (shrnuti["filename"]) {
@@ -106,26 +105,24 @@ if (shrnuti["filename"]) {
    ukazat_shrnuti.innerText = "Shrnutí práce ještě není odevzdané."
 }
 
+// shrnuti
+let prace = JSON.parse(httpGet("/file_api/send_filenames_cizi_prace/" + String(id_usera)))
+let ukazat_praci = document.getElementById("ukazat_praci")
+if (prace) {
+    for (let prace_file of prace) {
+        let a = document.createElement("a")
+        a.classList.add("link")
+        a.href = "/file_api/cizi_prace/" + String(id_usera) + "/" + prace_file
+        a.download = prace_file
+        a.innerHTML = prace_file
+        ukazat_praci.appendChild(a)
+        ukazat_praci.appendChild(document.createElement("br"))
+    }
+} else {
+   ukazat_praci.innerText = "Práce ještě není odevzdaná."
+}
 
-
-
-// if (prace_filenames) {
-//     document.getElementById("prace_disclaimer").hidden = true
-//     let prace_div = document.getElementById("prace_div")
-//     for (let filename of prace_filenames) {
-//         let a = document.createElement("a")
-//         a.innerHTML = filename
-//         a.download = filename
-//         a.classList.add("link")
-//         a.href = "/file_api/cizi_prace/" + String(id_usera) + "/" + filename
-//         prace_div.appendChild(a)
-//         prace_div.appendChild(document.createElement("br"))
-//     }
-// } else {
-//     document.getElementById("prace_disclaimer").hidden = false
-// }
-
-
+// motivacni formular
 if (detail_usera["motivacni_formular"]) {
     document.getElementById("vyplneny_formular").hidden = false
     for (let odpoved of detail_usera["motivacni_formular"]) {
@@ -137,7 +134,6 @@ if (detail_usera["motivacni_formular"]) {
 
 
 // hodnoceni
-
 function create_div(content) {
     const div = document.createElement("div");
     div.classList.add("col-md", "rounded-2", "border-orange", "m-2", "p-2", "lighter");

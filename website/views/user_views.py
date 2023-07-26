@@ -127,7 +127,13 @@ def odbornost(odb):
     if current_odbornost != "zatím nevybraná" and odb != current_odbornost:
         abort(401)
     if request.method == "GET":
-        return render_template("odbornost.html", roles=get_access_rights(), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=get_user_progress(), odbornost=odb, odbornost_uzivatele = current_odbornost)
+        return render_template("odbornost.html", 
+                               roles=get_access_rights(), 
+                               uzamcene_zmeny = current_user.uzamcene_zmeny, 
+                               user_progress=get_user_progress(), 
+                               odbornost=odb, 
+                               odbornost_uzivatele = current_odbornost, 
+                               ma_nahranou_praci = current_user.ma_nahranou_praci())
     else:
         if request.form.get("ulozit_praci"):
             if all(request.files.getlist("nahrana_prace")):
@@ -157,18 +163,12 @@ def odbornost(odb):
                 flash("Nenahrál jsi žádné soubory.", category="info")
             return redirect(url_for("user_views.odbornost", odb=odb))
         elif request.form.get("smazat_praci"):
-            path = user_data_folder_path() / str(current_user.id) / "prace"
-            for file in path.iterdir():
-                file.unlink()
-            flash("Svou nahranou práci jsi smazal. Nezapomeň nahrát novou verzi :)", category="success")
+            current_user.smazat_praci()
+            flash("Nahraná práce je smazána. Nezapomeň nahrát novou verzi :)", category="success")
             return redirect(url_for("user_views.odbornost", odb=odb))
         elif request.form.get("smazat_shrnuti"):
-            filename = get_shrnuti_filename(current_user.id)
-            p: Path = user_data_folder_path() / str(current_user.id) / filename["filename"]
-            p.unlink()
-            current_user.odbornost = "zatím nevybraná"
-            db.session.add(current_user)
-            db.session.commit()
+            current_user.smazat_shrnuti()
+            current_user.smazat_praci()
             flash("Shrnutí bylo smazáno, můžeš si znovu vybrat odbornost.", category="success")
             return redirect(url_for("user_views.odbornost_vyber"))
 

@@ -1,15 +1,15 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-<h3>Odevzdané práce</h3>
+<h2>Odevzdané práce</h2>
 <p>
     Tady jsou vidět tvé odevzdané práce a motivační formulář.
 </p>
 <hr>
-<h2>Motivační formulář</h2>
+<h3>Motivační formulář</h3>
 
 {% if odevzdany_formular %}
-    <div>
+    <div id="odevzdany_formular">
         <div class="border-orange rounded-2 m-2 p-2 lighter">
             <b>Jaká oblast vědy a techniky tě zajímá?</b>
             <br>
@@ -65,15 +65,15 @@
         </div>
     </div>
 {% else %}
-    <div>
+    <div class="border-orange rounded-2 my-2 p-2 lighter"r>
         Motivační formulář od tebe ještě odevzdaný nemáme.
     </div>
 {% endif %}
 
-<h2>Shrnutí práce</h2>
+<h3>Shrnutí práce</h3>
 <div id="ukazat_shrnuti" class="border-orange rounded-2 my-2 p-2 lighter"></div>
-<h2>Práce domácího kola</h2>
-TODO
+<h3>Práce domácího kola</h3>
+<div id="ukazat_praci" class="border-orange rounded-2 my-2 p-2 lighter"></div>
 
 <script type="module" src="{{url_for('static', filename='js/info.js')}}"></script>
 {% endblock %}
