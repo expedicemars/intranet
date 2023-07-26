@@ -1,11 +1,20 @@
 {% extends "admin_navbar.html" %}
 {% block content %}
-
-<h2>Admin sekce</h2>
-
 <div>
-    Vítej v admin sekci. To, co tu vidíš, ovlivňují admini s rolí <code>editing_admins_allowed</code>. Pokud myslíš, že bys měl mít přístup někam, kam nemůžeš, kontaktuj jednoho znich:
-    <div class="border rounded-2 p-2 my-2 border-secondary">
+    <h3>Rozcestník řadového organizátora</h3>
+    <ul>
+        <li><a href="{{url_for('admin_views.nahrat_soubory')}}" class="link">Nahrávání souborů</a></li>
+        <li><a href="{{url_for('admin_views.poznamky')}}" class="link">Poznámky od adminů pro adminy</a></li>
+        <li>Užitečné odkazy WIP</li>
+        <li>Poznávačka účastníků WIP</li>
+
+    </ul>
+</div>
+<hr>
+<div>
+    <h3>Přístupy</h3>
+    To, co tu vidíš, ovlivňují admini s rolí <code>editing_admins_allowed</code>. Pokud myslíš, že bys měl mít přístup někam, kam nemůžeš, kontaktuj jednoho znich:
+    <div class="border rounded-2 p-2 my-2 border-secondary lighter">
         <code id="emails"></code>
     </div>
 </div>
@@ -16,14 +25,12 @@
         <li>Datum ukončení registrace <code id="datum_konce_registrace"></code>, <a class="link" href="{{url_for('admin_views.prubeh_rocniku')}}">upravit jde tady</a>.</li>
         <li>Reakce na bugtracker</li>
         <li>Kontakty na velitele odborností</li>
-        <li>prohlášení rodičů, nahrát nové verze jde <a class="link" href="{{url_for('admin_views.prohlaseni_rodicu')}}">tady</a>.</li>
-        <li>Stránka s obecnými informacemi v případě, že Píp přestane dělat domácí kola.</li>
-        <li>Užitečné odkazy níže</li>
+        <li>prohlášení rodičů, nahrát nová verze jde <a class="link" href="{{url_for('admin_views.nahrat_soubory')}}">tady</a>.</li>
     </ul>
 </div>
 <hr>
 <div>
-    <h3>Užitečné odkazy</h3>
+    <h3>Užitečné odkazy (brzy budou mít svou stránku)</h3>
     <a class="link" href="{{url_for('admin_views.upravit_odkazy')}}">Upravit tyto odkazy</a>
     <ul id="odkazy">
     </ul>

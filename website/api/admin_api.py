@@ -46,7 +46,6 @@ def je_zadani_viditelne():
 def odkazy():
     return get_odkazy()
 
-
 @admin_api.route("/prohlaseni_rodicu_existuje")
 @require_role_on_current_user("admin")
 def prohlaseni_rodicu_existuje():

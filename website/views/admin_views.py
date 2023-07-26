@@ -373,11 +373,11 @@ def pohovory():
             return redirect(url_for("admin_views.pohovory"))
 
 
-@admin_views.route("/prohlaseni_rodicu", methods=["GET","POST"])
+@admin_views.route("/nahrat_soubory", methods=["GET","POST"])
 @require_role_on_current_user("admin")
-def prohlaseni_rodicu():
+def nahrat_soubory():
     if request.method == "GET":
-        return render_template("admin_prohlaseni_rodicu.html", roles=get_access_rights())
+        return render_template("admin_nahrat_soubory.html", roles=get_access_rights())
     else:
         file = request.files.get("souhlas")
         if file:
