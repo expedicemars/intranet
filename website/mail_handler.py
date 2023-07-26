@@ -50,6 +50,15 @@ def mail_sender(mail_identifier, target, data=None) -> None:
             msg.html = render_template("mails/nove_shrnuti_prace.html", url = url_for("admin_views.detail_usera", id=data, _external = True))
             print(msg.html)
             mail.send(msg)
+        
+        if mail_identifier == "novej_bug":
+            msg = Message("Nový bug na EM intranetu",
+                        sender=os.environ.get("MAIL_USERNAME"),
+                        recipients=target)
+            msg.html = render_template("mails/nove_shrnuti_prace.html", url = url_for("admin_views.uprava_znamych_bugu", _external = True))
+            print(msg.html)
+            mail.send(msg)
+        
     except gaierror:
         flash(f"Gaierror, pravděpodobně nejsi online. E-mail se neposlal. Mail identifier: {mail_identifier}, target: {target}", category="info")
         
