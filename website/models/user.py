@@ -8,6 +8,7 @@ from shutil import rmtree
 from website.helpers.pretty_date import pretty_datetime
 from website.helpers.get_user_files import get_prace_filenames, get_shrnuti_filename
 from website.json_handlers.pohovory_handling import odhlasit_usera_by_id
+from website.json_handlers.dostupne_omezeni import get_odbornost_by_system_name
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -72,7 +73,7 @@ class User(db.Model, UserMixin):
             "alergie": self.alergie,
             "skola": self.skola,
             "confirmed": "Ano" if self.confirmed else "Ne",
-            "odbornost": self.odbornost,
+            "odbornost": get_odbornost_by_system_name(self.odbornost)["prvnipjc"],
             "progress": self.progress,
             "tricko": self.tricko,
             "datum_registrace": pretty_datetime(self.datum_registrace),
@@ -93,7 +94,7 @@ class User(db.Model, UserMixin):
             "id": self.id,
             "tricko": self.tricko,
             "mail_rodicu": self.mail_rodicu,
-            "odbornost": self.odbornost,
+            "odbornost": get_odbornost_by_system_name(self.odbornost)["prvnipjc"],
             "dozvedeli": self.dozvedeli,
             "alergie": self.alergie,
             "skola": self.skola,

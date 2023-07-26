@@ -31,7 +31,7 @@ function vyhodnotit() {
 
 function generator(autor, datum, msg) {
     let div = document.createElement("div")
-    div.classList.add("border-orange", "rounded-2", "m-2", "p-2")
+    div.classList.add("border-orange", "rounded-2", "m-2", "p-2", "lighter")
     let row = document.createElement("div")
     row.classList.add("row")
     let col1 = document.createElement("div")

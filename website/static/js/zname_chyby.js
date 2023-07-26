@@ -6,8 +6,7 @@ let content_div = document.getElementById("content")
 function generator(data) {
     let div = document.createElement("div")
     content_div.appendChild(div)
-    div.classList.add("border", "rounded-2", "border-secondary", "my-2", "p-2")
-    div.classList.add("lighter")
+    div.classList.add("border", "rounded-2", "border-secondary", "my-2", "p-2", "lighter")
 
     function row_generator() {
 

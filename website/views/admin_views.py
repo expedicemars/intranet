@@ -18,6 +18,7 @@ from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
 from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol
+from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 from website.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path
 
 
@@ -295,7 +296,7 @@ def velitele_odbornosti():
 
         # zapisování kontaktních dat
         else:
-            inputs_ids_list = ["biolog", "konstrukter", "fyzik", "inzenyr", "popularizator"]
+            inputs_ids_list = [o["system_name"] for o in get_dostupne_odbornosti()]
             zmeneno = []
             with open(velitel_odbornosti_data_path()) as file:
                 velitel_odbornosti_data = json.load(file)
