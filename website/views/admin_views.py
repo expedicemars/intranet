@@ -17,7 +17,7 @@ from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
-from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne
+from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol
 from website.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path
 
 
@@ -265,6 +265,11 @@ def prubeh_rocniku():
             toggle_zadani()
             alog(f"Změna viditelnosti zadání na {get_zadani_viditelne()}")
             flash(f"Stav otevření registrace změnen na {get_zadani_viditelne()}", category="success")
+        elif request.form.get("koordinator_internetovych_kol_button"):
+            kontakt = request.form.get("koordinator_internetovych_kol")
+            zapsat_koordinatora_i_kol(kontakt)
+            alog(f"Změněn kontakt na koordinátora internetových kol na {kontakt}.")
+            flash("Kontakt na koordinátora internetových kol změněn.", category="success")
         return redirect(url_for("admin_views.prubeh_rocniku"))        
 
 @admin_views.route("/velitele_odbornosti", methods=["GET","POST"])

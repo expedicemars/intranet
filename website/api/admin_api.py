@@ -3,10 +3,10 @@ from flask_login import current_user
 import json
 from website.helpers.require_role_decorator import require_role_on_current_user
 from website.json_handlers.logs_handling import get_logs, get_alogs
-from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena, get_zadani_viditelne
+from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena, get_zadani_viditelne, get_koordinator_internetovych_kol
 from website.json_handlers.odkazy_handling import get_odkazy
-from website.helpers.pretty_date import pretty_date, pretty_datetime
-from website.paths import velitel_odbornosti_data_path, user_data_folder_path, poznamky_path, prohlaseni_path
+from website.helpers.pretty_date import pretty_datetime
+from website.paths import velitel_odbornosti_data_path, poznamky_path, prohlaseni_path
 from website.models.user import User
 from website.models.hodnoceni import Hodnoceni
 from website.json_handlers.pohovory_handling import get_pohovory
@@ -45,6 +45,11 @@ def je_zadani_viditelne():
 @require_role_on_current_user("admin")
 def odkazy():
     return get_odkazy()
+
+@admin_api.route("koordinator_internetovych_kol")
+@require_role_on_current_user("editing_prubeh_rocniku")
+def koordinator_internetovych_kol():
+    return get_koordinator_internetovych_kol()
 
 @admin_api.route("/prohlaseni_rodicu_existuje")
 @require_role_on_current_user("admin")

@@ -149,8 +149,16 @@ class User(db.Model, UserMixin):
         return db.session.scalars(db.select(User).where(User.email == email)).first()
 
     @staticmethod
-    def get_all():
+    def get_all() ->list:
         return db.session.scalars(db.select(User)).all()
+
+    @staticmethod
+    def get_all_by_role(role) -> list:
+        result = []
+        for u in User.get_all():
+            if role in json.loads(u.role):
+                result.append(u)
+        return result
     
     def ulozit_odpovedi(self, form):
         if self.motivacni_dotaznik is None:

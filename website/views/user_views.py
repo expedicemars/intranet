@@ -11,7 +11,7 @@ from website.json_handlers.pohovory_handling import zapsat_na_pohovor
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 import datetime
 from pathlib import Path
-from website.helpers.get_user_files import get_shrnuti_filename
+from website.json_handlers.prubeh_rocniku_handling import get_koordinator_internetovych_kol
 
 user_views = Blueprint("user_views", __name__)
 
@@ -158,6 +158,9 @@ def odbornost(odb):
                     current_user.odbornost = odb
                     db.session.add(current_user)
                     db.session.commit()
+                    target = [u.email for u in User.get_all_by_role("velitel_odbornosti_" + odb)]
+                    target.append(get_koordinator_internetovych_kol())
+                    mail_sender("nove_shrnuti_prace", target=target, data=current_user.id)
                     flash(f"Shrnutí nahráno, zapsal jses tím do odbornosti {odb}.", category="success")
             else:
                 flash("Nenahrál jsi žádné soubory.", category="info")
