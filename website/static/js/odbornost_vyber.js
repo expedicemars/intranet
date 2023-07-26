@@ -1,18 +1,5 @@
 import httpGet from "./httpGet.js"
 let dostupne_odbornosti = JSON.parse(httpGet("/noauth_api/dostupne_odbornosti"))
-let form = document.getElementById("form")
-let odbornost_input = document.getElementById("odbornost")
-
-// vybrani odbornosti
-for (let id of dostupne_odbornosti) {
-    let node = document.getElementById(id)
-    node.addEventListener("click", function() {
-        if (confirm("Po vybrání odbornosti už tvoje volba nepůjde změnit. Jasný?")) {
-            odbornost_input.value = id
-            form.submit()
-        }
-    })
-}
 
 // zadani
 

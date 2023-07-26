@@ -152,6 +152,13 @@
             </td>
         </tr>
         <tr>
+            <th>Odbornost:</th>
+            <td>
+                <select id="odbornost_select" class="form-select">
+                </select>
+            </td>
+        </tr>
+        <tr>
             <th>
                 Uzamčené změny: <span id="uzamcene_zmeny"></span>
             </th>
@@ -242,7 +249,7 @@
         
     </div>
 
-    <div id="nevyplneny_formular" hidden>
+    <div id="nevyplneny_formular" hidden class="border-orange rounded-2 my-2 p-2 lighter">
         Tento účastník zatím motivační formulář neodevzdal.
     </div>
 </div>
@@ -258,9 +265,9 @@
     </div>
 </div>
 <hr>
-<div  id="prace_div">
-    <h3>Práce</h3>
-    <p id="prace_disclaimer">Tento uživatel ještě práci nenahrál. Až se tak stane, půjde zde stáhnout.</p>
+<div>
+    <h3>Shrnutí práce</h3>
+    <div id="ukazat_shrnuti" class="border-orange rounded-2 my-2 p-2 lighter"></div>
 </div>
 
 <script type="module" src="{{url_for('static', filename='js/admin_detail_usera.js')}}"></script>

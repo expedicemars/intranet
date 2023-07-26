@@ -18,6 +18,7 @@ user_api = Blueprint("user_api", __name__)
 def confirmed():
     return json.dumps({"confirmation_status": current_user.confirmed})
 
+
 @user_api.route("/uzamcene_zmeny")
 @require_role_on_current_user("user")
 def uzamcene_zmeny():
@@ -49,22 +50,27 @@ def datum_pohovoru():
     return json.dumps(result)
 
 
-@user_api.route("/kontakt_na_meho_velitele_odbornosti")
+@user_api.route("/kontakt_na_velitele_odbornosti/<string:odb>")
 @require_role_on_current_user("user")
 @require_progress_na_ucastnikovi("Domácí projekt")
-def kontakt_na_meho_velitele_odbornosti():
-    if current_user.odbornost == "zatím nevybraná":
-        return "nevybrano"
+def kontakt_na_velitele_odbornosti(odb):
+    with open(velitel_odbornosti_data_path()) as file:
+        file = json.load(file)
+    try:
+        result = file[odb]
+    except KeyError:
+        return "Tahle odbornost neexistuje."
+    if result == "":
+        return "Tato odbornost kontakt ještě nezadala."
     else:
-        with open(velitel_odbornosti_data_path()) as file:
-            file = json.load(file)
-        return file[current_user.odbornost]
+        return result
 
 
 @user_api.route("/info")
 @require_role_on_current_user("user")
 def info():
     return current_user.get_info_na_ucet_stranku()
+
 
 @user_api.route("/dostupne_odbornosti")
 @require_progress_na_ucastnikovi("Domácí projekt")
@@ -75,7 +81,6 @@ def dostupne_odbornosti():
 
 @user_api.route("/odpovedi_motivaku")
 @require_role_on_current_user(["user"])
-@require_progress_na_ucastnikovi("Motivační formulář")
 def odpovedi_motivaku():
     if current_user.motivacni_dotaznik:
         return current_user.motivacni_dotaznik

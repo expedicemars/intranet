@@ -158,7 +158,13 @@ def detail_usera(id):
                 pass
             else:
                 u.progress = data["progress"]
-                alog(f"Změna progressu uživatele {id} na { u.progress }.")
+                alog(f"Změna progressu uživatele {u.email} na { u.progress }.")
+            
+            if u.odbornost == data["odbornost"]:
+                pass
+            else:
+                u.odbornost = data["odbornost"]
+                alog(f"Změna odbornosti uživatele {u.email} na {u.odbornost}.")
 
             if u.uzamcene_zmeny == data["uzamcene_zmeny"]:
                 pass
