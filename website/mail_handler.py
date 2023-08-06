@@ -11,9 +11,7 @@ def mail_sender(mail_identifier, target, data=None) -> None:
     """
     if isinstance(target, str):
         target = [target]
-    print(target)
     target = list(set(target))
-    print(target)
     try:
         if mail_identifier == "reset_password":
             msg = Message("Změna hesla pro Expedici Mars",
@@ -48,7 +46,6 @@ def mail_sender(mail_identifier, target, data=None) -> None:
                         sender=os.environ.get("MAIL_USERNAME"),
                         recipients=target)
             msg.html = render_template("mails/nove_shrnuti_prace.html", url = url_for("admin_views.detail_usera", id=data, _external = True))
-            print(msg.html)
             mail.send(msg)
         
         if mail_identifier == "novej_bug":
@@ -56,7 +53,6 @@ def mail_sender(mail_identifier, target, data=None) -> None:
                         sender=os.environ.get("MAIL_USERNAME"),
                         recipients=target)
             msg.html = render_template("mails/nove_shrnuti_prace.html", url = url_for("admin_views.uprava_znamych_bugu", _external = True))
-            print(msg.html)
             mail.send(msg)
         
     except gaierror:

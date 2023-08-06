@@ -85,7 +85,12 @@ for (let key in detail_usera) {
         } else if (key == "progress") {
             document.getElementById(detail_usera["progress"]).selected = "selected"
         } else if (key == "odbornost") {
-            node.innerText = detail_usera[key]
+            console.log(detail_usera)
+            for (let odb of dostupne_odbornosti) {
+                if (odb.system_name == detail_usera[key]) {
+                    node.innerText = odb.prvnipjc
+                }
+            }
             document.getElementById(detail_usera[key]).selected = "selected"
         } else if (key == "meeting_link") {
             meeting_link_input.value = detail_usera[key]

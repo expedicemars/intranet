@@ -5,7 +5,7 @@ import jwt
 import json
 from website.paths import user_data_folder_path
 from shutil import rmtree
-from website.helpers.pretty_date import pretty_datetime
+from website.helpers.pretty_date import pretty_datetime, pretty_date
 from website.helpers.get_user_files import get_prace_filenames, get_shrnuti_filename
 from website.json_handlers.pohovory_handling import odhlasit_usera_by_id
 from website.json_handlers.dostupne_omezeni import get_odbornost_by_system_name
@@ -73,7 +73,7 @@ class User(db.Model, UserMixin):
             "alergie": self.alergie,
             "skola": self.skola,
             "confirmed": "Ano" if self.confirmed else "Ne",
-            "odbornost": get_odbornost_by_system_name(self.odbornost)["prvnipjc"],
+            "odbornost": get_odbornost_by_system_name(self.odbornost)["prvnipjc"] if self.odbornost != "zatím nevybraná" else "zatím nevybraná",
             "progress": self.progress,
             "tricko": self.tricko,
             "datum_registrace": pretty_datetime(self.datum_registrace),
@@ -86,7 +86,7 @@ class User(db.Model, UserMixin):
     def get_info_na_detail_usera(self) -> dict:
         return {
             "jmeno": self.jmeno,
-            "datum_narozeni": self.datum_narozeni.isoformat() if self.datum_narozeni else None,
+            "datum_narozeni": pretty_date(self.datum_narozeni.isoformat()) if self.datum_narozeni else None,
             "email": self.email,
             "telcislo": self.telcislo,
             "adresa": self.adresa,
@@ -94,7 +94,7 @@ class User(db.Model, UserMixin):
             "id": self.id,
             "tricko": self.tricko,
             "mail_rodicu": self.mail_rodicu,
-            "odbornost": get_odbornost_by_system_name(self.odbornost)["prvnipjc"],
+            "odbornost": self.odbornost,
             "dozvedeli": self.dozvedeli,
             "alergie": self.alergie,
             "skola": self.skola,
