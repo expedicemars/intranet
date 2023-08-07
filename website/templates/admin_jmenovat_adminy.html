@@ -5,30 +5,34 @@
 <hr>
 <form method="post">
     <h3>Úprava rolí stávajících adminů</h3>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Jméno</th>
-                <th>E-mail</th>
-                <th>Vybrat</th>
-            </tr>
-        </thead>
-        <tbody id="admins"></tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Jméno</th>
+                    <th>E-mail</th>
+                    <th>Vybrat</th>
+                </tr>
+            </thead>
+            <tbody id="admins"></tbody>
+        </table>
+    </div>
     <hr>
     <h3>Jmenování nových adminů</h3>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Jméno</th>
-                <th>E-mail</th>
-                <th>Vybrat</th>
-            </tr>
-        </thead>
-        <tbody id="users"></tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Jméno</th>
+                    <th>E-mail</th>
+                    <th>Vybrat</th>
+                </tr>
+            </thead>
+            <tbody id="users"></tbody>
+        </table>
+    </div>
 </form>
 
 <script type="module" src="{{url_for('static', filename='js/admin_jmenovat_adminy.js')}}"></script>

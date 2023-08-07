@@ -146,7 +146,7 @@ if (detail_usera["motivacni_formular"]) {
 // hodnoceni
 function create_div(content) {
     const div = document.createElement("div");
-    div.classList.add("col-md", "rounded-2", "border-orange", "m-2", "p-2", "lighter");
+    div.classList.add("col-md", "rounded-2", "border-orange", "m-2", "p-2", "lighter", "table-responsive");
     
     let table = document.createElement("table")
     table.classList.add("table", "table-hover")

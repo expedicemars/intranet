@@ -18,7 +18,7 @@
 <h3>Informace</h3>
 <div class="container">
     <div class="row">
-        <div class="col-lg-9">
+        <div class="col-lg-9 table-responsive">
             <table class="table table-hover">
                 <tbody>
                     <tr>
@@ -141,51 +141,53 @@
     </div>
 </div>
 <hr>
-<table class="table table-hover">
-    <tbody>
-        <tr>
-            <th>Progress:</th>
-            <td>
-                <select id="progress" class="form-select">
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <th>Odbornost:</th>
-            <td>
-                <select id="odbornost_select" class="form-select">
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Uzamčené změny: <span id="uzamcene_zmeny"></span>
-            </th>
-            <td>
-                <button type="button" id="toggle_zmeny" class="btn em-button"></button>
-            </td>
-        </tr> 
-        <tr>
-            <th>
-                Adminí poznámka:
-            </th>
-            <td>
-                <label for="admin_poznamka">Tuhle poznámku uživatel nikdy neuvidí.</label>
-                <textarea id="admin_poznamka" class="form-control" rows="5"></textarea>
-                <span id="charcount"></span>
-            </td>
-        </tr>
-        <!-- id link je tu kvuli odkazu z pohovorů -->
-        <tr id="link"> 
-            <th>
-                Meeting link:
-            </th>
-            <td>
-                <input type="text" id="meeting_link" class="form-control"></textarea>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <th>Progress:</th>
+                <td>
+                    <select id="progress" class="form-select">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Odbornost:</th>
+                <td>
+                    <select id="odbornost_select" class="form-select">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Uzamčené změny: <span id="uzamcene_zmeny"></span>
+                </th>
+                <td>
+                    <button type="button" id="toggle_zmeny" class="btn em-button"></button>
+                </td>
+            </tr> 
+            <tr>
+                <th>
+                    Adminí poznámka:
+                </th>
+                <td>
+                    <label for="admin_poznamka">Tuhle poznámku uživatel nikdy neuvidí.</label>
+                    <textarea id="admin_poznamka" class="form-control" rows="5"></textarea>
+                    <span id="charcount"></span>
+                </td>
+            </tr>
+            <!-- id link je tu kvuli odkazu z pohovorů -->
+            <tr id="link"> 
+                <th>
+                    Meeting link:
+                </th>
+                <td>
+                    <input type="text" id="meeting_link" class="form-control"></textarea>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 <form method="post" id="form">
     <input type="text" hidden id="result" name="result">
 </form>

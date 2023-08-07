@@ -2,26 +2,31 @@
     {
         "system_name": "biolog",
         "prvnipjc": "Biolog",
-        "prvnipmc": "Biologové"
+        "prvnipmc": "Biologové",
+        "druhypmc": "Biologů"
     },
     {
         "system_name":"fyzik",
         "prvnipjc":"Fyzik",
-        "prvnipmc":"Fyzikové"
+        "prvnipmc":"Fyzikové",
+        "druhypmc": "Fyziků"
     },
     {
         "system_name":"konstrukter",
         "prvnipjc":"Konstruktér",
-        "prvnipmc":"Konstruktéři"
+        "prvnipmc":"Konstruktéři",
+        "druhypmc": "Konstruktérů"
     },
     {
         "system_name":"inzenyr",
         "prvnipjc":"Inženýr",
-        "prvnipmc":"Inženýři"
+        "prvnipmc":"Inženýři",
+        "druhypmc": "Inženýrů"
     },
     {
         "system_name":"popularizator",
         "prvnipjc":"Popularizátor",
-        "prvnipmc":"Popularizátoři"
+        "prvnipmc":"Popularizátoři",
+        "druhypmc": "Popularizátorů"
     }
 ]

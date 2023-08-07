@@ -1,7 +1,7 @@
 import json
 import datetime
 from shutil import rmtree
-from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user
 from website import db
 from website.helpers.require_role_decorator import require_role_on_current_user
@@ -11,7 +11,7 @@ from website.models.hodnoceni import Hodnoceni
 from website.json_handlers.mailing_list import set_mailing_list
 from website.helpers.user_filter import seznam_generator
 from website.helpers.exporty import exportovat, promazat
-from website.helpers.pretty_date import pretty_date, pretty_datetime
+from website.helpers.pretty_date import pretty_datetime
 from website.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
@@ -30,7 +30,7 @@ admin_views = Blueprint("admin_views",__name__)
 def admin_dashboard():
     if request.method == "GET":
         flash("Vítej a porozhlédni se tu. Zatím nejlépe shrnuté a popsané fíčury jsou dole v patičce v Přehledu fíčur systému.", category="success")
-        return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych(), roles=get_access_rights())
+        return render_template("admin_dashboard.html", roles=get_access_rights())
     else:
         mailing_list = request.form.get("mailing_list")
         set_mailing_list(mailing_list)

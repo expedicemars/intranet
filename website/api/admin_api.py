@@ -8,10 +8,11 @@ from website.json_handlers.odkazy_handling import get_odkazy
 from website.helpers.pretty_date import pretty_datetime
 from website.paths import velitel_odbornosti_data_path, poznamky_path, prohlaseni_path
 from website.models.user import User
+from website.models.chyba import Chyba
 from website.models.hodnoceni import Hodnoceni
 from website.json_handlers.pohovory_handling import get_pohovory
 from website.role_handler import get_access_rights
-from website.json_handlers.dostupne_omezeni import get_dostupne_progressy, get_dostupne_role
+from website.json_handlers.dostupne_omezeni import get_dostupne_progressy, get_dostupne_role, get_dostupne_odbornosti
 from website.json_handlers.mailing_list import get_mails_from_mailing_list
 
 
@@ -172,3 +173,20 @@ def useri_na_jmenovani_adminu():
             result["users"].append({"id": u.id,"email": u.email, "jmeno": u.jmeno})
     return json.dumps(result)
 
+@admin_api.route("/statistiky")
+@require_role_on_current_user("admin")
+def statistiky():
+    ucastnici = [u for u in User.get_all() if "admin" not in json.loads(u.role)]
+    
+    result =  {
+        "registrovanych": len(ucastnici),
+        "domaci_kolo": len(list(filter(lambda x: x.progress in ["Domácí projekt", "Výcvik posádky", "Simulace"], ucastnici))),
+        "vycvik": len(list(filter(lambda x: x.progress in ["Výcvik posádky", "Simulace"], ucastnici))),
+        "simulace": len(list(filter(lambda x: x.progress == "Simulace", ucastnici))),
+        "pocet_bugu": Chyba.pocet_neresenych()
+    }
+
+    for odb in get_dostupne_odbornosti():
+        result[odb["system_name"]] = len(list(filter(lambda x: x.odbornost == odb["system_name"], ucastnici)))
+
+    return result

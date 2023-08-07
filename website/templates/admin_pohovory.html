@@ -15,29 +15,33 @@
     <h3>Vypsané termíny</h3>
     <p>Termíny blíže než 48 hodin se účastníkům nezobrazují.</p>
     <form method="post">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Kdy</th>
+                        <th>Kdo to vypsal</th>
+                        <th>Smazat</th>
+                    </tr>
+                </thead>            
+                <tbody id="content"></tbody>
+            </table>
+        </div>
+    </form>
+    <h3>Přihlášení účastníci</h3>
+    <div class="table-responsive">
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Kdy</th>
-                    <th>Kdo to vypsal</th>
-                    <th>Smazat</th>
+                    <td>Datum</td>
+                    <td>Jméno účastníka</td>
+                    <td>Kdo to vypsal</td>
+                    <td>Link na meeting</td>
                 </tr>
-            </thead>            
-            <tbody id="content"></tbody>
+            </thead>
+            <tbody id="prihlaseni"></tbody>
         </table>
-    </form>
-    <h3>Přihlášení účastníci</h3>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <td>Datum</td>
-                <td>Jméno účastníka</td>
-                <td>Kdo to vypsal</td>
-                <td>Link na meeting</td>
-            </tr>
-        </thead>
-        <tbody id="prihlaseni"></tbody>
-    </table>
+    </div>
 
     <script type="module" src="{{url_for('static', filename='js/admin_pohovory.js')}}"></script>
 {% endblock %}

@@ -52,7 +52,7 @@ def mail_sender(mail_identifier, target, data=None) -> None:
             msg = Message("Nový bug na EM intranetu",
                         sender=os.environ.get("MAIL_USERNAME"),
                         recipients=target)
-            msg.html = render_template("mails/nove_shrnuti_prace.html", url = url_for("admin_views.uprava_znamych_bugu", _external = True))
+            msg.html = render_template("mails/novy_bug.html", url = url_for("admin_views.uprava_znamych_bugu", _external = True))
             mail.send(msg)
         
     except gaierror:

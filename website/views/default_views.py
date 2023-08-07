@@ -42,3 +42,7 @@ def nahlasit_bug():
 @default_views.route("/known_bugs")
 def known_bugs():
     return render_template("zname_chyby.html", roles = get_access_rights(), user_progress=get_user_progress())
+
+@default_views.route("/kontakty")
+def kontakty():
+    return render_template("kontakty.html", roles = get_access_rights(), user_progress=get_user_progress())
