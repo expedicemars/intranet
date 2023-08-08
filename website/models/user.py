@@ -187,10 +187,13 @@ class User(db.Model, UserMixin):
 
     def smazat_shrnuti(self):
         filename = get_shrnuti_filename(self.id)
-        p: Path = user_data_folder_path() / str(self.id) / filename["filename"]
-        p.unlink()
+        print(filename)
+        if filename["filename"]:
+            p: Path = user_data_folder_path() / str(self.id) / filename["filename"]
+            p.unlink()
         self.odbornost = "zatím nevybraná"
         db.session.add(self)
+        db.session.commit()
     
         
     def odebrat_motivacni_formular(self):

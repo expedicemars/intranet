@@ -181,6 +181,7 @@ def odbornost(odb):
 @require_role_on_current_user("user")
 @require_progress_na_ucastnikovi("Domácí projekt")
 def odbornost_vyber():
+    print(current_user.odbornost)
     if current_user.odbornost != "zatím nevybraná":
         return redirect(url_for("user_views.odbornost", odb = current_user.odbornost))
     else:
