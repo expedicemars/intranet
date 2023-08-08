@@ -124,10 +124,17 @@ def detail_usera(id):
                 alog("Smazání usera " + str(id) + ".")
                 flash("User byl smazán", category="success")
                 return redirect(url_for("admin_views.registrovani_uzivatele"))
+            
         elif request.form.get("odebrat_motivacni_formular"):
             u.odebrat_motivacni_formular()
             alog(f"Vymazán motivační formulář usera {u.email}")
             flash("Motivační formulář byl promazán.", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+        
+        elif request.form.get("zpristupnit_motivacni_formular"):
+            u.znovu_zpristupnit_motivacni_formular()
+            alog(f"Znovu zpřístupněn motivační formulář usera {u.email}")
+            flash("Motivační formulář byl znovu zpřístupněn.", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
 
         elif request.form.get("odebrat_prvni_kontakt"):

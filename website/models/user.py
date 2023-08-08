@@ -117,13 +117,6 @@ class User(db.Model, UserMixin):
         db.session.commit()
         osobni_slozka = user_data_folder_path() / str(self.id)
         rmtree(osobni_slozka)
-    
-        
-    def odebrat_motivacni_formular(self):
-        self.motivacni_dotaznik = None
-        self.odevzdany_motivacni_dotaznik = False
-        db.session.add(self)
-        db.session.commit()
 
 
     @staticmethod
@@ -198,4 +191,18 @@ class User(db.Model, UserMixin):
         p.unlink()
         self.odbornost = "zatím nevybraná"
         db.session.add(self)
+    
+        
+    def odebrat_motivacni_formular(self):
+        self.motivacni_dotaznik = None
+        self.odevzdany_motivacni_dotaznik = False
+        db.session.add(self)
         db.session.commit()
+    
+    def znovu_zpristupnit_motivacni_formular(self):
+        self.odevzdany_motivacni_dotaznik = False
+        self.progress = "Motivační formulář"
+        db.session.add(self)
+        db.session.commit()
+        
+        
