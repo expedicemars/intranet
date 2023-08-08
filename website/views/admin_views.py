@@ -1,7 +1,7 @@
 import json
 import datetime
 from shutil import rmtree
-from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user
 from website import db
 from website.helpers.require_role_decorator import require_role_on_current_user
@@ -11,13 +11,14 @@ from website.models.hodnoceni import Hodnoceni
 from website.json_handlers.mailing_list import set_mailing_list
 from website.helpers.user_filter import seznam_generator
 from website.helpers.exporty import exportovat, promazat
-from website.helpers.pretty_date import pretty_date, pretty_datetime
+from website.helpers.pretty_date import pretty_datetime
 from website.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
-from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne
+from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol
+from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 from website.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path
 
 
@@ -29,7 +30,7 @@ admin_views = Blueprint("admin_views",__name__)
 def admin_dashboard():
     if request.method == "GET":
         flash("Vítej a porozhlédni se tu. Zatím nejlépe shrnuté a popsané fíčury jsou dole v patičce v Přehledu fíčur systému.", category="success")
-        return render_template("admin_dashboard.html", pocet_bugu = Chyba.pocet_neresenych(), roles=get_access_rights())
+        return render_template("admin_dashboard.html", roles=get_access_rights())
     else:
         mailing_list = request.form.get("mailing_list")
         set_mailing_list(mailing_list)
@@ -123,12 +124,6 @@ def detail_usera(id):
                 alog("Smazání usera " + str(id) + ".")
                 flash("User byl smazán", category="success")
                 return redirect(url_for("admin_views.registrovani_uzivatele"))
-        elif request.form.get("odebrat_odbornost"):
-            u.odebrat_odbornost()
-            alog(f"Odebrána odbornost userovi {u.email}")
-            flash("Odbornost byla odebrána", category="success")
-            return redirect(url_for("admin_views.detail_usera", id=id))
-        
         elif request.form.get("odebrat_motivacni_formular"):
             u.odebrat_motivacni_formular()
             alog(f"Vymazán motivační formulář usera {u.email}")
@@ -158,7 +153,13 @@ def detail_usera(id):
                 pass
             else:
                 u.progress = data["progress"]
-                alog(f"Změna progressu uživatele {id} na { u.progress }.")
+                alog(f"Změna progressu uživatele {u.email} na { u.progress }.")
+            
+            if u.odbornost == data["odbornost"]:
+                pass
+            else:
+                u.odbornost = data["odbornost"]
+                alog(f"Změna odbornosti uživatele {u.email} na {u.odbornost}.")
 
             if u.uzamcene_zmeny == data["uzamcene_zmeny"]:
                 pass
@@ -259,6 +260,11 @@ def prubeh_rocniku():
             toggle_zadani()
             alog(f"Změna viditelnosti zadání na {get_zadani_viditelne()}")
             flash(f"Stav otevření registrace změnen na {get_zadani_viditelne()}", category="success")
+        elif request.form.get("koordinator_internetovych_kol_button"):
+            kontakt = request.form.get("koordinator_internetovych_kol")
+            zapsat_koordinatora_i_kol(kontakt)
+            alog(f"Změněn kontakt na koordinátora internetových kol na {kontakt}.")
+            flash("Kontakt na koordinátora internetových kol změněn.", category="success")
         return redirect(url_for("admin_views.prubeh_rocniku"))        
 
 @admin_views.route("/velitele_odbornosti", methods=["GET","POST"])
@@ -290,7 +296,7 @@ def velitele_odbornosti():
 
         # zapisování kontaktních dat
         else:
-            inputs_ids_list = ["biolog", "konstrukter", "fyzik", "inzenyr", "popularizator"]
+            inputs_ids_list = [o["system_name"] for o in get_dostupne_odbornosti()]
             zmeneno = []
             with open(velitel_odbornosti_data_path()) as file:
                 velitel_odbornosti_data = json.load(file)
@@ -367,11 +373,11 @@ def pohovory():
             return redirect(url_for("admin_views.pohovory"))
 
 
-@admin_views.route("/prohlaseni_rodicu", methods=["GET","POST"])
+@admin_views.route("/nahrat_soubory", methods=["GET","POST"])
 @require_role_on_current_user("admin")
-def prohlaseni_rodicu():
+def nahrat_soubory():
     if request.method == "GET":
-        return render_template("admin_prohlaseni_rodicu.html", roles=get_access_rights())
+        return render_template("admin_nahrat_soubory.html", roles=get_access_rights())
     else:
         file = request.files.get("souhlas")
         if file:
@@ -418,7 +424,7 @@ def organizatori():
         return redirect(url_for("admin_views.detail_usera",id=int(result)))
     
     
-@admin_views.route("/hodnocen/<int:id>", methods=["GET","POST"])
+@admin_views.route("/hodnoceni/<int:id>", methods=["GET","POST"])
 @require_role_on_current_user("editing_users_allowed")
 def hodnoceni(id):
     if request.method == "GET":
@@ -428,3 +434,8 @@ def hodnoceni(id):
         flash("Hodnocení zapsáno", category="success")
         return redirect(url_for("admin_views.detail_usera", id=id))
     
+
+@admin_views.route("/struktura_rozhovoru")
+@require_role_on_current_user("admin")
+def struktura_rozhovoru():
+    return render_template("admin_struktura_rozhovoru.html", roles=get_access_rights())

@@ -4,6 +4,7 @@ from flask_login import current_user
 from website.models.chyba import Chyba
 from website.role_handler import get_access_rights, get_user_progress
 from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena, get_zadani_viditelne
+from website.mail_handler import mail_sender
 
 
 default_views = Blueprint("default_views", __name__)
@@ -34,9 +35,14 @@ def nahlasit_bug():
             popis=request.form.get("popis")
         )
         c.pridat_do_chyb()
+        mail_sender("novej_bug", "josef.latj@gmail.com")
         return redirect(url_for("default_views.known_bugs"))
 
 
 @default_views.route("/known_bugs")
 def known_bugs():
     return render_template("zname_chyby.html", roles = get_access_rights(), user_progress=get_user_progress())
+
+@default_views.route("/kontakty")
+def kontakty():
+    return render_template("kontakty.html", roles = get_access_rights(), user_progress=get_user_progress())

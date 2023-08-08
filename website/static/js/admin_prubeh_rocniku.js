@@ -4,6 +4,7 @@ let registrace = httpGet("/noauth_api/registrace")
 let je_registrace_otevrena = httpGet("/admin_api/je_registrace_otevrena")
 let je_zadani_viditelne = httpGet("/admin_api/je_zadani_viditelne")
 let mailing_list = httpGet("/admin_api/mailing_list")
+let koordinator_internetovych_kol = httpGet("/admin_api/koordinator_internetovych_kol")
 let ukoncit_rocnik_button = document.getElementById("ukoncit_rocnik")
 let ukoncit_rocnik_input = document.getElementById("ukoncit_rocnik_input")
 let toggle_registraci_button = document.getElementById("toggle_registraci")
@@ -13,9 +14,11 @@ let registrace_date_input = document.getElementById("registrace_date")
 let exporty = JSON.parse(httpGet("/file_api/exporty_filenames"))
 let content_div = document.getElementById("content")
 let form = document.getElementById("form")
+
 registrace_date_input.value=registrace
 ukoncit_rocnik_button.addEventListener("click", ukoncit)
 document.getElementById("mailing_list").innerHTML = JSON.parse(mailing_list)
+document.getElementById("koordinator_internetovych_kol").value = koordinator_internetovych_kol
 
 if (je_registrace_otevrena == "True") {
     toggle_registraci_button.innerHTML = "Uzavřít registraci"

@@ -8,14 +8,18 @@
         </div>
         <div class="col">
             <input type="file" id="souhlas" class="form-control" name="souhlas" accept=".docx">
-            <label for="souhlas">Přijímam jen .docx soubory a to proto, aby to šlo za rok stáhnout a upravit :)</label>
+            <label for="souhlas">Přijímam jen <code>.docx</code> soubory a to proto, aby to šlo za rok stáhnout a upravit :)</label>
         </div>
         <div class="col-auto">
             <button class="btn btn-success" type="submit">Nahrát</button>
         </div>
     </div>
 </form>
-<div id="existuje"></div>
+<div id="prohlaseni_link"></div>
 
-<script type="module" src="{{url_for('static', filename='js/admin_prohlaseni_rodicu.js')}}"></script>
+<hr>
+<h2>Šablona shrnutí práce pro biology</h2>
+TODO
+
+<script type="module" src="{{url_for('static', filename='js/admin_nahrat_soubory.js')}}"></script>
 {% endblock %}

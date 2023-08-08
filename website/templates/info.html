@@ -1,16 +1,16 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-<h3>Odevzdané práce</h3>
+<h2>Odevzdané práce</h2>
 <p>
     Tady jsou vidět tvé odevzdané práce a motivační formulář.
 </p>
 <hr>
-<h2>Motivační formulář</h2>
+<h3>Motivační formulář</h3>
 
 {% if odevzdany_formular %}
-    <div>
-        <div class="border-orange rounded-2 m-2 p-2">
+    <div id="odevzdany_formular">
+        <div class="border-orange rounded-2 m-2 p-2 lighter">
             <b>Jaká oblast vědy a techniky tě zajímá?</b>
             <br>
             <p id="1"></p>
@@ -22,7 +22,7 @@
             <p id="3"></p>
         </div>
         
-        <div class="border-orange rounded-2 m-2 p-2">
+        <div class="border-orange rounded-2 m-2 p-2 lighter">
             <b>Co považuješ za své silné stránky?</b>
             <br>
             <p id="4"></p>
@@ -40,7 +40,7 @@
             <p id="8"></p>
         </div>
         
-        <div class="border-orange rounded-2 m-2 p-2">
+        <div class="border-orange rounded-2 m-2 p-2 lighter">
             <b>Co si kladeš za dlouhodobé cíle?</b>
             <br>
             <p id="9"></p>
@@ -52,7 +52,7 @@
             <p id="11"></p>
         </div>
         
-        <div class="border-orange rounded-2 m-2 p-2">
+        <div class="border-orange rounded-2 m-2 p-2 lighter">
             <b>Jakým volnočasovým aktivitám se věnuješ mimo školu a vědu?</b>
             <br>
             <p id="12"></p>
@@ -65,15 +65,15 @@
         </div>
     </div>
 {% else %}
-    <div>
+    <div class="border-orange rounded-2 my-2 p-2 lighter"r>
         Motivační formulář od tebe ještě odevzdaný nemáme.
     </div>
 {% endif %}
 
-<h2>Shrnutí práce</h2>
-TODO
-<h2>Práce domácího kola</h2>
-TODO
+<h3>Shrnutí práce</h3>
+<div id="ukazat_shrnuti" class="border-orange rounded-2 my-2 p-2 lighter"></div>
+<h3>Práce domácího kola</h3>
+<div id="ukazat_praci" class="border-orange rounded-2 my-2 p-2 lighter"></div>
 
 <script type="module" src="{{url_for('static', filename='js/info.js')}}"></script>
 {% endblock %}

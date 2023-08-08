@@ -12,3 +12,9 @@ def get_dostupne_role() -> list:
 def get_dostupne_odbornosti() -> list:
     with open(dostupne_odbornosti_path()) as file:
         return json.load(file)
+
+def get_odbornost_by_system_name(name) -> dict:
+    od = get_dostupne_odbornosti()
+    for o in od:
+        if o["system_name"] == name:
+            return o

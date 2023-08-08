@@ -28,7 +28,7 @@ function smazat_zaznam(div_id) {
 function generator(index, data) { 
     let div = document.createElement("div")
     content_div.appendChild(div)
-    div.classList.add("border", "rounded-2", "border-secondary", "my-2", "p-2")
+    div.classList.add("border", "rounded-2", "border-secondary", "my-2", "p-2", "lighter")
     div.id = String(index) + "na_delete"
 
 

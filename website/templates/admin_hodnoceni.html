@@ -6,254 +6,256 @@
 <h2>Nové hodnocení účastníka <code>{{jmeno}}</code></h2>
 
 <form method="post" id="form">
-    <table class="table table-hover">
-        <tbody>
-            <tr>
-                <td>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm"><b>Věcnost</b></div>
-                            <div class="col-sm">
-                                <div class="rate">
-                                    <input type="radio" id="vecnost_star5" name="vecnost" value="5" />
-                                    <label for="vecnost_star5" title="5 stars">5 stars</label>
-                                    <input type="radio" id="vecnost_star4" name="vecnost" value="4" />
-                                    <label for="vecnost_star4" title="4 stars">4 stars</label>
-                                    <input type="radio" id="vecnost_star3" name="vecnost" value="3" />
-                                    <label for="vecnost_star3" title="3 stars">3 stars</label>
-                                    <input type="radio" id="vecnost_star2" name="vecnost" value="2" />
-                                    <label for="vecnost_star2" title="2 stars">2 stars</label>
-                                    <input type="radio" id="vecnost_star1" name="vecnost" value="1" />
-                                    <label for="vecnost_star1" title="1 star">1 star</label>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm"><b>Věcnost</b></div>
+                                <div class="col-sm">
+                                    <div class="rate">
+                                        <input type="radio" id="vecnost_star5" name="vecnost" value="5" />
+                                        <label for="vecnost_star5" title="5 stars">5 stars</label>
+                                        <input type="radio" id="vecnost_star4" name="vecnost" value="4" />
+                                        <label for="vecnost_star4" title="4 stars">4 stars</label>
+                                        <input type="radio" id="vecnost_star3" name="vecnost" value="3" />
+                                        <label for="vecnost_star3" title="3 stars">3 stars</label>
+                                        <input type="radio" id="vecnost_star2" name="vecnost" value="2" />
+                                        <label for="vecnost_star2" title="2 stars">2 stars</label>
+                                        <input type="radio" id="vecnost_star1" name="vecnost" value="1" />
+                                        <label for="vecnost_star1" title="1 star">1 star</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            1 - utíkal od tématu, 5 - odpovídal konkrétně a k věci
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        
-            <!-- Criteria: Originalita -->
-            <tr>
-                <td>
-                    <div class="container">
                         <div class="row">
-                            <div class="col-sm"><b>Originalita</b></div>
-                            <div class="col-sm">
-                                <div class="rate">
-                                    <input type="radio" id="originalita_star5" name="originalita" value="5" />
-                                    <label for="originalita_star5" title="5 stars">5 stars</label>
-                                    <input type="radio" id="originalita_star4" name="originalita" value="4" />
-                                    <label for="originalita_star4" title="4 stars">4 stars</label>
-                                    <input type="radio" id="originalita_star3" name="originalita" value="3" />
-                                    <label for="originalita_star3" title="3 stars">3 stars</label>
-                                    <input type="radio" id="originalita_star2" name="originalita" value="2" />
-                                    <label for="originalita_star2" title="2 stars">2 stars</label>
-                                    <input type="radio" id="originalita_star1" name="originalita" value="1" />
-                                    <label for="originalita_star1" title="1 star">1 star</label>
+                            <div class="col">
+                                1 - utíkal od tématu, 5 - odpovídal konkrétně a k věci
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            
+                <!-- Criteria: Originalita -->
+                <tr>
+                    <td>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm"><b>Originalita</b></div>
+                                <div class="col-sm">
+                                    <div class="rate">
+                                        <input type="radio" id="originalita_star5" name="originalita" value="5" />
+                                        <label for="originalita_star5" title="5 stars">5 stars</label>
+                                        <input type="radio" id="originalita_star4" name="originalita" value="4" />
+                                        <label for="originalita_star4" title="4 stars">4 stars</label>
+                                        <input type="radio" id="originalita_star3" name="originalita" value="3" />
+                                        <label for="originalita_star3" title="3 stars">3 stars</label>
+                                        <input type="radio" id="originalita_star2" name="originalita" value="2" />
+                                        <label for="originalita_star2" title="2 stars">2 stars</label>
+                                        <input type="radio" id="originalita_star1" name="originalita" value="1" />
+                                        <label for="originalita_star1" title="1 star">1 star</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            1 - velmi basic odpověď, 5 - „To jsem v životě neslyšel“
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        
-            <!-- Criteria: Komunikační schopnosti -->
-            <tr>
-                <td>
-                    <div class="container">
                         <div class="row">
-                            <div class="col-sm"><b>Komunikační schopnosti</b></div>
-                            <div class="col-sm">
-                                <div class="rate">
-                                    <input type="radio" id="komunikace_star5" name="komunikace" value="5" />
-                                    <label for="komunikace_star5" title="5 stars">5 stars</label>
-                                    <input type="radio" id="komunikace_star4" name="komunikace" value="4" />
-                                    <label for="komunikace_star4" title="4 stars">4 stars</label>
-                                    <input type="radio" id="komunikace_star3" name="komunikace" value="3" />
-                                    <label for="komunikace_star3" title="3 stars">3 stars</label>
-                                    <input type="radio" id="komunikace_star2" name="komunikace" value="2" />
-                                    <label for="komunikace_star2" title="2 stars">2 stars</label>
-                                    <input type="radio" id="komunikace_star1" name="komunikace" value="1" />
-                                    <label for="komunikace_star1" title="1 star">1 star</label>
+                            <div class="col">
+                                1 - velmi basic odpověď, 5 - „To jsem v životě neslyšel“
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            
+                <!-- Criteria: Komunikační schopnosti -->
+                <tr>
+                    <td>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm"><b>Komunikační schopnosti</b></div>
+                                <div class="col-sm">
+                                    <div class="rate">
+                                        <input type="radio" id="komunikace_star5" name="komunikace" value="5" />
+                                        <label for="komunikace_star5" title="5 stars">5 stars</label>
+                                        <input type="radio" id="komunikace_star4" name="komunikace" value="4" />
+                                        <label for="komunikace_star4" title="4 stars">4 stars</label>
+                                        <input type="radio" id="komunikace_star3" name="komunikace" value="3" />
+                                        <label for="komunikace_star3" title="3 stars">3 stars</label>
+                                        <input type="radio" id="komunikace_star2" name="komunikace" value="2" />
+                                        <label for="komunikace_star2" title="2 stars">2 stars</label>
+                                        <input type="radio" id="komunikace_star1" name="komunikace" value="1" />
+                                        <label for="komunikace_star1" title="1 star">1 star</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            1 - v kuse ticho, 5 - jasné vyjadřování
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        
-            <!-- Criteria: Motivovanost -->
-            <tr>
-                <td>
-                    <div class="container">
                         <div class="row">
-                            <div class="col-sm"><b>Motivovanost</b></div>
-                            <div class="col-sm">
-                                <div class="rate">
-                                    <input type="radio" id="motivovanost_star5" name="motivovanost" value="5" />
-                                    <label for="motivovanost_star5" title="5 stars">5 stars</label>
-                                    <input type="radio" id="motivovanost_star4" name="motivovanost" value="4" />
-                                    <label for="motivovanost_star4" title="4 stars">4 stars</label>
-                                    <input type="radio" id="motivovanost_star3" name="motivovanost" value="3" />
-                                    <label for="motivovanost_star3" title="3 stars">3 stars</label>
-                                    <input type="radio" id="motivovanost_star2" name="motivovanost" value="2" />
-                                    <label for="motivovanost_star2" title="2 stars">2 stars</label>
-                                    <input type="radio" id="motivovanost_star1" name="motivovanost" value="1" />
-                                    <label for="motivovanost_star1" title="1 star">1 star</label>
+                            <div class="col">
+                                1 - v kuse ticho, 5 - jasné vyjadřování
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            
+                <!-- Criteria: Motivovanost -->
+                <tr>
+                    <td>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm"><b>Motivovanost</b></div>
+                                <div class="col-sm">
+                                    <div class="rate">
+                                        <input type="radio" id="motivovanost_star5" name="motivovanost" value="5" />
+                                        <label for="motivovanost_star5" title="5 stars">5 stars</label>
+                                        <input type="radio" id="motivovanost_star4" name="motivovanost" value="4" />
+                                        <label for="motivovanost_star4" title="4 stars">4 stars</label>
+                                        <input type="radio" id="motivovanost_star3" name="motivovanost" value="3" />
+                                        <label for="motivovanost_star3" title="3 stars">3 stars</label>
+                                        <input type="radio" id="motivovanost_star2" name="motivovanost" value="2" />
+                                        <label for="motivovanost_star2" title="2 stars">2 stars</label>
+                                        <input type="radio" id="motivovanost_star1" name="motivovanost" value="1" />
+                                        <label for="motivovanost_star1" title="1 star">1 star</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            1 - „další trofej na poličce“, 5 - vysoko motivovaný, zápal pro věc
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        
-            <!-- Criteria: Míra sebevědomí -->
-            <tr>
-                <td>
-                    <div class="container">
                         <div class="row">
-                            <div class="col-sm"><b>Míra sebevědomí</b></div>
-                            <div class="col-sm">
-                                <div class="rate">
-                                    <input type="radio" id="sebevedomi_star5" name="sebevedomi" value="5" />
-                                    <label for="sebevedomi_star5" title="5 stars">5 stars</label>
-                                    <input type="radio" id="sebevedomi_star4" name="sebevedomi" value="4" />
-                                    <label for="sebevedomi_star4" title="4 stars">4 stars</label>
-                                    <input type="radio" id="sebevedomi_star3" name="sebevedomi" value="3" />
-                                    <label for="sebevedomi_star3" title="3 stars">3 stars</label>
-                                    <input type="radio" id="sebevedomi_star2" name="sebevedomi" value="2" />
-                                    <label for="sebevedomi_star2" title="2 stars">2 stars</label>
-                                    <input type="radio" id="sebevedomi_star1" name="sebevedomi" value="1" />
-                                    <label for="sebevedomi_star1" title="1 star">1 star</label>
+                            <div class="col">
+                                1 - „další trofej na poličce“, 5 - vysoko motivovaný, zápal pro věc
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            
+                <!-- Criteria: Míra sebevědomí -->
+                <tr>
+                    <td>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm"><b>Míra sebevědomí</b></div>
+                                <div class="col-sm">
+                                    <div class="rate">
+                                        <input type="radio" id="sebevedomi_star5" name="sebevedomi" value="5" />
+                                        <label for="sebevedomi_star5" title="5 stars">5 stars</label>
+                                        <input type="radio" id="sebevedomi_star4" name="sebevedomi" value="4" />
+                                        <label for="sebevedomi_star4" title="4 stars">4 stars</label>
+                                        <input type="radio" id="sebevedomi_star3" name="sebevedomi" value="3" />
+                                        <label for="sebevedomi_star3" title="3 stars">3 stars</label>
+                                        <input type="radio" id="sebevedomi_star2" name="sebevedomi" value="2" />
+                                        <label for="sebevedomi_star2" title="2 stars">2 stars</label>
+                                        <input type="radio" id="sebevedomi_star1" name="sebevedomi" value="1" />
+                                        <label for="sebevedomi_star1" title="1 star">1 star</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            1 - bez sebevědomí, 5 - přemíra sebevědomí
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        
-            <!-- Criteria: Flexibilita a přizpůsobivost -->
-            <tr>
-                <td>
-                    <div class="container">
                         <div class="row">
-                            <div class="col-sm"><b>Flexibilita a přizpůsobivost</b></div>
-                            <div class="col-sm">
-                                <div class="rate">
-                                    <input type="radio" id="flexibilita_star5" name="flexibilita" value="5" />
-                                    <label for="flexibilita_star5" title="5 stars">5 stars</label>
-                                    <input type="radio" id="flexibilita_star4" name="flexibilita" value="4" />
-                                    <label for="flexibilita_star4" title="4 stars">4 stars</label>
-                                    <input type="radio" id="flexibilita_star3" name="flexibilita" value="3" />
-                                    <label for="flexibilita_star3" title="3 stars">3 stars</label>
-                                    <input type="radio" id="flexibilita_star2" name="flexibilita" value="2" />
-                                    <label for="flexibilita_star2" title="2 stars">2 stars</label>
-                                    <input type="radio" id="flexibilita_star1" name="flexibilita" value="1" />
-                                    <label for="flexibilita_star1" title="1 star">1 star</label>
+                            <div class="col">
+                                1 - bez sebevědomí, 5 - přemíra sebevědomí
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            
+                <!-- Criteria: Flexibilita a přizpůsobivost -->
+                <tr>
+                    <td>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm"><b>Flexibilita a přizpůsobivost</b></div>
+                                <div class="col-sm">
+                                    <div class="rate">
+                                        <input type="radio" id="flexibilita_star5" name="flexibilita" value="5" />
+                                        <label for="flexibilita_star5" title="5 stars">5 stars</label>
+                                        <input type="radio" id="flexibilita_star4" name="flexibilita" value="4" />
+                                        <label for="flexibilita_star4" title="4 stars">4 stars</label>
+                                        <input type="radio" id="flexibilita_star3" name="flexibilita" value="3" />
+                                        <label for="flexibilita_star3" title="3 stars">3 stars</label>
+                                        <input type="radio" id="flexibilita_star2" name="flexibilita" value="2" />
+                                        <label for="flexibilita_star2" title="2 stars">2 stars</label>
+                                        <input type="radio" id="flexibilita_star1" name="flexibilita" value="1" />
+                                        <label for="flexibilita_star1" title="1 star">1 star</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            1 - nulová, 5 - pohotové reakce, nenechá se rozhodit
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        
-            <!-- Criteria: Sebehodnocení -->
-            <tr>
-                <td>
-                    <div class="container">
                         <div class="row">
-                            <div class="col-sm"><b>Sebehodnocení</b></div>
-                            <div class="col-sm">
-                                <div class="rate">
-                                    <input type="radio" id="sebehodnoceni_star5" name="sebehodnoceni" value="5" />
-                                    <label for="sebehodnoceni_star5" title="5 stars">5 stars</label>
-                                    <input type="radio" id="sebehodnoceni_star4" name="sebehodnoceni" value="4" />
-                                    <label for="sebehodnoceni_star4" title="4 stars">4 stars</label>
-                                    <input type="radio" id="sebehodnoceni_star3" name="sebehodnoceni" value="3" />
-                                    <label for="sebehodnoceni_star3" title="3 stars">3 stars</label>
-                                    <input type="radio" id="sebehodnoceni_star2" name="sebehodnoceni" value="2" />
-                                    <label for="sebehodnoceni_star2" title="2 stars">2 stars</label>
-                                    <input type="radio" id="sebehodnoceni_star1" name="sebehodnoceni" value="1" />
-                                    <label for="sebehodnoceni_star1" title="1 star">1 star</label>
+                            <div class="col">
+                                1 - nulová, 5 - pohotové reakce, nenechá se rozhodit
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            
+                <!-- Criteria: Sebehodnocení -->
+                <tr>
+                    <td>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm"><b>Sebehodnocení</b></div>
+                                <div class="col-sm">
+                                    <div class="rate">
+                                        <input type="radio" id="sebehodnoceni_star5" name="sebehodnoceni" value="5" />
+                                        <label for="sebehodnoceni_star5" title="5 stars">5 stars</label>
+                                        <input type="radio" id="sebehodnoceni_star4" name="sebehodnoceni" value="4" />
+                                        <label for="sebehodnoceni_star4" title="4 stars">4 stars</label>
+                                        <input type="radio" id="sebehodnoceni_star3" name="sebehodnoceni" value="3" />
+                                        <label for="sebehodnoceni_star3" title="3 stars">3 stars</label>
+                                        <input type="radio" id="sebehodnoceni_star2" name="sebehodnoceni" value="2" />
+                                        <label for="sebehodnoceni_star2" title="2 stars">2 stars</label>
+                                        <input type="radio" id="sebehodnoceni_star1" name="sebehodnoceni" value="1" />
+                                        <label for="sebehodnoceni_star1" title="1 star">1 star</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            1 - mylné představy/nemá názor, 5 - uvědomuje si vlastní kompetence
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        
-            <!-- Criteria: K - faktor (kokot faktor) -->
-            <tr>
-                <td>
-                    <div class="container">
                         <div class="row">
-                            <div class="col-sm"><b>K - faktor (kokot faktor)</b></div>
-                            <div class="col-sm">
-                                <div class="rate">
-                                    <input type="radio" id="k_faktor_star5" name="k_faktor" value="5" />
-                                    <label for="k_faktor_star5" title="5 stars">5 stars</label>
-                                    <input type="radio" id="k_faktor_star4" name="k_faktor" value="4" />
-                                    <label for="k_faktor_star4" title="4 stars">4 stars</label>
-                                    <input type="radio" id="k_faktor_star3" name="k_faktor" value="3" />
-                                    <label for="k_faktor_star3" title="3 stars">3 stars</label>
-                                    <input type="radio" id="k_faktor_star2" name="k_faktor" value="2" />
-                                    <label for="k_faktor_star2" title="2 stars">2 stars</label>
-                                    <input type="radio" id="k_faktor_star1" name="k_faktor" value="1" />
-                                    <label for="k_faktor_star1" title="1 star">1 star</label>
+                            <div class="col">
+                                1 - mylné představy/nemá názor, 5 - uvědomuje si vlastní kompetence
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            
+                <!-- Criteria: K - faktor (kokot faktor) -->
+                <tr>
+                    <td>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm"><b>K - faktor (kokot faktor)</b></div>
+                                <div class="col-sm">
+                                    <div class="rate">
+                                        <input type="radio" id="k_faktor_star5" name="k_faktor" value="5" />
+                                        <label for="k_faktor_star5" title="5 stars">5 stars</label>
+                                        <input type="radio" id="k_faktor_star4" name="k_faktor" value="4" />
+                                        <label for="k_faktor_star4" title="4 stars">4 stars</label>
+                                        <input type="radio" id="k_faktor_star3" name="k_faktor" value="3" />
+                                        <label for="k_faktor_star3" title="3 stars">3 stars</label>
+                                        <input type="radio" id="k_faktor_star2" name="k_faktor" value="2" />
+                                        <label for="k_faktor_star2" title="2 stars">2 stars</label>
+                                        <input type="radio" id="k_faktor_star1" name="k_faktor" value="1" />
+                                        <label for="k_faktor_star1" title="1 star">1 star</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            1 - super zlatý člověk, 5 - ...
+                        <div class="row">
+                            <div class="col">
+                                1 - super zlatý člověk, 5 - ...
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <b>Osobní dojem</b>
-                    <textarea class="form-control" rows="2" placeholder="Sepiš dojem v rozsahu dvou až tří vět." name="dojem"></textarea>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Osobní dojem</b>
+                        <textarea class="form-control" rows="2" placeholder="Sepiš dojem v rozsahu dvou až tří vět." name="dojem"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <button class="btn em-button" type="button" id="form-check">Odeslat hodnocení</button>
 </form>
 

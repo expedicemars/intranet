@@ -1,14 +1,16 @@
-from flask_login import UserMixin, current_user
+from flask_login import UserMixin
 from website import db
 from flask import current_app
 import jwt
 import json
 from website.paths import user_data_folder_path
 from shutil import rmtree
-from website.helpers.pretty_date import pretty_datetime
+from website.helpers.pretty_date import pretty_datetime, pretty_date
+from website.helpers.get_user_files import get_prace_filenames, get_shrnuti_filename
 from website.json_handlers.pohovory_handling import odhlasit_usera_by_id
+from website.json_handlers.dostupne_omezeni import get_odbornost_by_system_name
 from datetime import datetime, timezone, timedelta
-
+from pathlib import Path
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -71,7 +73,7 @@ class User(db.Model, UserMixin):
             "alergie": self.alergie,
             "skola": self.skola,
             "confirmed": "Ano" if self.confirmed else "Ne",
-            "odbornost": self.odbornost,
+            "odbornost": get_odbornost_by_system_name(self.odbornost)["prvnipjc"] if self.odbornost != "zatím nevybraná" else "zatím nevybraná",
             "progress": self.progress,
             "tricko": self.tricko,
             "datum_registrace": pretty_datetime(self.datum_registrace),
@@ -84,7 +86,7 @@ class User(db.Model, UserMixin):
     def get_info_na_detail_usera(self) -> dict:
         return {
             "jmeno": self.jmeno,
-            "datum_narozeni": self.datum_narozeni.isoformat() if self.datum_narozeni else None,
+            "datum_narozeni": pretty_date(self.datum_narozeni.isoformat()) if self.datum_narozeni else None,
             "email": self.email,
             "telcislo": self.telcislo,
             "adresa": self.adresa,
@@ -116,10 +118,6 @@ class User(db.Model, UserMixin):
         osobni_slozka = user_data_folder_path() / str(self.id)
         rmtree(osobni_slozka)
     
-    def odebrat_odbornost(self):
-        self.odbornost = "zatím nevybraná"
-        db.session.add(self)
-        db.session.commit()
         
     def odebrat_motivacni_formular(self):
         self.motivacni_dotaznik = None
@@ -148,8 +146,16 @@ class User(db.Model, UserMixin):
         return db.session.scalars(db.select(User).where(User.email == email)).first()
 
     @staticmethod
-    def get_all():
+    def get_all() ->list:
         return db.session.scalars(db.select(User)).all()
+
+    @staticmethod
+    def get_all_by_role(role) -> list:
+        result = []
+        for u in User.get_all():
+            if role in json.loads(u.role):
+                result.append(u)
+        return result
     
     def ulozit_odpovedi(self, form):
         if self.motivacni_dotaznik is None:
@@ -176,3 +182,20 @@ class User(db.Model, UserMixin):
         db.session.commit()
         admin = odhlasit_usera_by_id(self.id)
         return admin        
+    
+    def ma_nahranou_praci(self):
+        filenames = json.loads(get_prace_filenames(self.id))
+        return bool(filenames)
+    
+    def smazat_praci(self):
+        path = user_data_folder_path() / str(self.id) / "prace"
+        for file in path.iterdir():
+            file.unlink()
+
+    def smazat_shrnuti(self):
+        filename = get_shrnuti_filename(self.id)
+        p: Path = user_data_folder_path() / str(self.id) / filename["filename"]
+        p.unlink()
+        self.odbornost = "zatím nevybraná"
+        db.session.add(self)
+        db.session.commit()

@@ -9,7 +9,9 @@ Tady se můžeš zapsat na konkrétní termín.
         <form method="post">
             <p>
                 Momentálně máš vybrané tohle datum: <span id="datum_span"></span>
-                <button class="btn em-button" name="zmenit" value="whatever">Změnit vybraný termín</button>
+                {% if not uzamcene_zmeny %}
+                    <button class="btn em-button" name="zmenit" value="whatever">Změnit vybraný termín</button>
+                {% endif %}
             </p>
         </form>
     </div>
@@ -27,16 +29,18 @@ Tvému účtu byly uzamčeny změny, pravděpodobně proto, že se blíží něj
     <div id="jsou_pohovory" hidden>
         <p>Tady si můžeš vybrat termín prvního kontaktu. Po výběru je možné svojí volbu změnit. Termíny blíže než 48 hodin se tu nezobrazují.</p>
         <form method="post">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Datum a čas</th>
-                        <th>Zapsání</th>
-                    </tr>
-                </thead>
-                <tbody id="pohovory">
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Datum a čas</th>
+                            <th>Zapsání</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pohovory">
+                    </tbody>
+                </table>
+            </div>
             <div id="pohovory"></div>
         </form>
     </div>

@@ -1,7 +1,6 @@
 import json
 import website.paths as p
 from website.json_handlers.logs_handling import log
-from website.json_handlers.dostupne_omezeni import get_dostupne_progressy
 from datetime import date
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 
@@ -56,13 +55,7 @@ def check_velitel_odbornosti_data() -> None:
     else:
         path.touch()
         with open(path, "w") as file:
-            file.write(json.dumps({
-                "biolog": "",
-                "fyzik": "",
-                "konstrukter": "",
-                "inzenyr": "",
-                "popularizator": ""
-            }, indent=4))
+            file.write(json.dumps({o["system_name"]:"" for o in get_dostupne_odbornosti()}, indent=4))
         log("Zakládam soubor na velitele odborností na " + str(path))
 
 def check_user_data_folder() -> None:
@@ -80,7 +73,7 @@ def check_zadani_folders() -> None:
     else:
         path.mkdir()
         for odbornost in get_dostupne_odbornosti():
-            _path = path / odbornost
+            _path = path / odbornost["system_name"]
             _path.mkdir()
         log("Vytvořena složka pro zadání na "+str(path))
 

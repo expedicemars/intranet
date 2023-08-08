@@ -1,62 +1,61 @@
 {% extends "navbar.html" %}
 {% block content %}
 <h2>Zadání a výběr odbornosti</h2>
-Zde si vyber odbornost a můžeš začít pracovat na domácí práci.
+Zde si vyber odbornost a můžeš začít pracovat na domácí práci. V detailu můžeš práci odevzdávat.
 <div class="rounded-2 border-orange biolog-div my-2 p-2" >
     <h3>Zadání pro biology</h3>
     <div class="row">
         <div class="col" id="biolog_zadani"></div>
         <div class="col-auto">
-            <button class="btn em-button" type="button" id="biolog">Zvolit odbornost</button>
+            <a href="{{url_for('user_views.odbornost', odb='biolog')}}">
+                <button class="btn em-button" type="button" id="biolog">Detail</button>
+            </a>
         </div>
     </div>
 </div>
 <div class="rounded-2 border-orange fyzik-div my-2 p-2" >
     <h3>Zadání pro fyziky</h3>
     <div class="row">
-        <div class="col" id="fyzik_zadani">
-            
-        </div>
+        <div class="col" id="fyzik_zadani"></div>
         <div class="col-auto">
-            <button class="btn em-button" type="button" id="fyzik">Zvolit odbornost</button>
+            <a href="{{url_for('user_views.odbornost', odb='fyzik')}}">
+                <button class="btn em-button" type="button" id="fyzik">Detail</button>
+            </a>        
         </div>
     </div>
 </div>
 <div class="rounded-2 border-orange konstrukter-div my-2 p-2" >
     <h3>Zadání pro konstruktéry</h3>
     <div class="row">
-        <div class="col" id="konstrukter_zadani">
-            
-        </div>
+        <div class="col" id="konstrukter_zadani"></div>
         <div class="col-auto">
-            <button class="btn em-button" type="button" id="konstrukter">Zvolit odbornost</button>
+            <a href="{{url_for('user_views.odbornost', odb='konstrukter')}}">
+                <button class="btn em-button" type="button" id="konstrukter">Detail</button>
+            </a>
         </div>
     </div>
 </div>
 <div class="rounded-2 border-orange inzenyr-div my-2 p-2" >
     <h3>Zadání pro inženýry</h3>
     <div class="row">
-        <div class="col" id="inzenyr_zadani">
-            
-        </div>
+        <div class="col" id="inzenyr_zadani"></div>
         <div class="col-auto">
-            <button class="btn em-button" type="button" id="inzenyr">Zvolit odbornost</button>
+            <a href="{{url_for('user_views.odbornost', odb='inzenyr')}}">
+                <button class="btn em-button" type="button" id="inzenyr">Detail</button>
+            </a>
         </div>
     </div>
 </div>
 <div class="rounded-2 border-orange popularizator-div my-2 p-2" >
     <h3>Zadání pro popularizátory</h3>
     <div class="row">
-        <div class="col" id="popularizator_zadani">
-            
-        </div>
+        <div class="col" id="popularizator_zadani"></div>
         <div class="col-auto">
-            <button class="btn em-button" type="button" id="popularizator">Zvolit odbornost</button>
+            <a href="{{url_for('user_views.odbornost', odb='popularizator')}}">
+                <button class="btn em-button" type="button" id="popularizator">Detail</button>
+            </a>
         </div>
     </div>
 </div>
-<form method="post" id="form">
-    <input type="text" hidden id="odbornost" name="odbornost"/>
-</form>
 <script type="module" src="{{url_for('static', filename='js/odbornost_vyber.js')}}"></script>
 {% endblock %}

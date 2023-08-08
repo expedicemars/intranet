@@ -36,3 +36,19 @@ def get_zadani_viditelne() -> bool:
     with open(prubeh_rocniku_path()) as file:
         f = json.load(file)
     return f["viditelna_zadani"]
+
+def zapsat_koordinatora_i_kol(mail) -> None:
+    with open(prubeh_rocniku_path()) as file:
+        f = json.load(file)
+    f["koordinator_internetovych_kol"] = mail
+    with open(prubeh_rocniku_path(), "w") as file:
+        file.write(json.dumps(f, indent=4))
+
+def get_koordinator_internetovych_kol():
+    with open(prubeh_rocniku_path()) as file:
+        f = json.load(file)
+    try:
+        return f["koordinator_internetovych_kol"]
+    except KeyError:
+        return ""
+        

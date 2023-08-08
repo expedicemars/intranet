@@ -1,43 +1,70 @@
 {% extends "navbar.html" %}
 {% block content %}
-<h2>Info o odbornosti</h2>
+<input hidden id="odbornost" value="{{odbornost}}">
+<h2>Info o odbornosti {{odbornost_pretty}}</h2>
 Tady máš zadání internetováho kola Expedice Mars:
-<div id="zadani_single" class="border-orange rounded-2 my-2 p-2"></div>
+<div id="zadani_single" class="border-orange rounded-2 my-2 p-2 lighter"></div>
 <hr>
 Tady potom kontakt na velitele odbornosti. Neváhej se jich na cokoli ptát, všichni ti rádi odpoví :)
-<div id="kontakt" class="border-orange rounded-2 my-2 p-2"></div>
+<div id="kontakt" class="border-orange rounded-2 my-2 p-2 lighter"></div>
 <hr>
-<div id="ukazat_praci">
-    <h2>Tvá práce</h2>
+<h2>Jak odevzdat práci</h2>
+<p>Více detailů by mělo být napsaných přímo v zadání domácího kola, ale obecně je to tak, že se odevzdává na dvakrát:</p>
+<ul>
+    <li>Nejprve čekáme odevzdání krátkého shrnutí práce. Odevzdáním tohoto shrnutí proběhne tvé přiřazení do odbornosti. To probíhá cca týden před online konferencí.</li>
+    <li>Na online konferenci budeš prezentovat svou práci, budeš sdílet obrazovku s prezentací. Abychom mohli pomoct v případě, že sdílení nebude fungovat, chceme po každém ještě odevzdat prezentaci předem. To je možné nejpozději o půlnoci před online konferencí. Zároveň nám tato prezentace poslouží jako další materiály, ve kterých uvidíme tvou práci.</li>
+</ul>
+<p>Může se stát, že výsledkem práce je více, než jen prezentace. To není problém. Jakékoli obrázky, protokoly, výkresy, videa a další materiály nám prosím odevzdej také. Pokud jsou soubory moc velké a nechce tě to nechat je nahrát, umísti je na nějaké cloudové úložiště a odevzdej nám link. To samé platí v případě, že používáš nějaké online nástroje (např. Prezi).</p>
+<hr>
+{%if odbornost_uzivatele == "zatím nevybraná"%}
+    <h2>Odevzdání shrnutí práce</h2>
+    <form method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col">
+                <input type="file" class="form-control" name="nahrane_shrnuti">
+            </div>
+            <div class="col-auto">
+                <button type="submit" name="ulozit_shrnuti" value="1" class="btn btn-outline-success">Nahrát</button>
+            </div>
+        </div>
+    </form>
+{% else %}
+    <h2>Shrnutí práce</h2>
     {% if uzamcene_zmeny %}
         <p>Tvému účtu byly uzamčeny změny, pravděpodobně proto, že se blíží nějaký důležitý termín. Pokud ještě něco potřebuješ pozměnit, napiš nám a my ti změny ještě povolíme.</p>
     {% else %}
     <form method="post">
-        <button type="submit" class="btn btn-danger" value="1" name="smazat_praci">Smazat nahrané soubory</button>
+        <button type="submit" class="btn btn-danger" value="1" name="smazat_shrnuti">Smazat shrnutí a odhlásit se z odbornosti {{odbornost}}</button>
+        <p>Pokud už máš nahranou práci a rozhodneš se smazat shrnutí, práce bude promazána taky.</p>
     </form>
     {% endif %}
-    <div id="ukazat_praci_content" class="border-orange rounded-2 my-2 p-2"></div>
-</div>
-<div id="nahrat_praci">
-    <h2>Nahraj vypracované soubory</h2>
-    Sem nahraj všechny soubory, které souvisí s tvou prací na domácím kole. Způsob odevdzání by měl být napsán v zadání, ale mělo by jít především o:
-    <ul>
-        <li>Prezentaci k pohovoru. Ten bude trvat 15 minut, prezentace by měla trvat kolem 7. </li>
-        <li>Shrnutí práce na jednu A4</li>
-        <li>Jakékoli další protokoly z měření nebo o postupu práce</li>
-        <li>Obrázky, pokud nejsou v protokolech</li>
-    </ul>
-    Pokud jsou nějaká tvoje data moc velká a nechce tě to nechat je nahrát, použij prosím jakékoli z tobě dostupných cloudových úožišť a sem odevzdej jednoduše texťák se sdílceím odkazem. To samé platí, používáš-li nějaké webové aplikace, například <code>prezi</code> pro prezentování.
-    <form  method="post" enctype="multipart/form-data" id="ulozit_praci_form">
-        <div class="row">
-            <div class="col">
-                <input type="file" multiple class="form-control" name="nahrana_prace" id="nahrana_prace">
+    <div id="ukazat_shrnuti" class="border-orange rounded-2 my-2 p-2 lighter"></div>
+    
+    <hr>
+    <h2>Prezentace a zbytek práce</h2> 
+    {% if ma_nahranou_praci %}
+        {% if uzamcene_zmeny %}
+            <p>Tvému účtu byly uzamčeny změny, pravděpodobně proto, že se blíží nějaký důležitý termín. Pokud ještě něco potřebuješ pozměnit, napiš nám a my ti změny ještě povolíme.</p>
+        {% else %}
+        <form method="post">
+            <button type="submit" class="btn btn-danger" value="1" name="smazat_praci">Smazat práci a nahrát novou verzi</button>
+        </form>
+        {% endif %}
+        <div id="ukazat_praci" class="border-orange rounded-2 my-2 p-2 lighter"></div>
+    {% else %}
+        <p>Tady nahraj prezentaci na online konferenci a jakékoli další soubory, pokud nějaké máš.</p>
+        <form method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col">
+                    <input type="file" multiple class="form-control" name="nahrana_prace">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" name="ulozit_praci" value="1" class="btn btn-outline-success">Nahrát</button>
+                </div>
             </div>
-            <div class="col-auto">
-                <button type="submit" name="ulozit_praci" value="1" class="btn btn-outline-success">Nahrát</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    {% endif %}
+{% endif %}
 
 </div>
 <script type="module" src="{{url_for('static', filename='js/odbornost.js')}}"></script>

@@ -1,6 +1,7 @@
 from website.paths import user_data_folder_path, default_profilovka_path
 from flask import send_file
 import json
+import re
 
 
 def get_prace_filenames(id):
@@ -14,9 +15,19 @@ def get_prace_filenames(id):
             continue
         result.append(file.name)
     if len(result) == 0:
-        return json.dumps(None)
+        return json.dumps(None) # vrací prostý null
     else:
         return json.dumps(result)
+
+def get_shrnuti_filename(id):
+    p = user_data_folder_path() / str(id)
+    filename = None
+    for file in p.iterdir():
+        if re.match("shrnuti_", file.name):
+            filename = file.name
+            break
+    return {"filename": filename} 
+
 
 def get_profilovka_by_id(id):
     path = user_data_folder_path() / str(id)

@@ -78,7 +78,12 @@ function generator_prihlasenych(jmeno, pretty, id, link, admin) {
         a2.target = "blank"
         a2.classList.add("link")
     } else {
-        td4.innerHTML = "Tady link ještě není"
+        td4.innerHTML = "Tady link ještě není. "
+        let a3 = document.createElement("a")
+        a3.href = "/admin/detail_usera/" + String(id) + "#link"
+        a3.innerHTML = "Přidat link"
+        a3.classList.add("link")
+        td4.appendChild(a3)
     }
     
 

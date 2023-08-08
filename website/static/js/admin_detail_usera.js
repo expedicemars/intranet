@@ -10,8 +10,8 @@ let charcount_span = document.getElementById("charcount")
 let textarea = document.getElementById("admin_poznamka")
 let meeting_link_input = document.getElementById("meeting_link")
 let progress_select = document.getElementById("progress")
-
-console.log(hodnoceni)
+let odbornost_select = document.getElementById("odbornost_select")
+let dostupne_odbornosti = JSON.parse(httpGet("/noauth_api/dostupne_odbornosti"))
 
 ulozit_button.addEventListener("click", vyhodnotit)
 toggle_zmeny_button.addEventListener("click", toggle_zmeny)
@@ -38,6 +38,7 @@ if (detail_usera.uzamcene_zmeny_bool) {
 
 function  vyhodnotit() {
     let result = {}
+    result["odbornost"] = document.getElementById("odbornost_select").value
     result["progress"] = document.getElementById("progress").value
     if (document.getElementById("uzamcene_zmeny").innerHTML == "Ano") {
         result["uzamcene_zmeny"] = true
@@ -50,6 +51,7 @@ function  vyhodnotit() {
     document.getElementById("form").submit()
 }
 
+// progressy
 for (let prog of progressy) {
     let opt = document.createElement("option")
     opt.value = prog
@@ -58,13 +60,38 @@ for (let prog of progressy) {
     progress_select.appendChild(opt)
 }
 
+
+  // odbornost
+dostupne_odbornosti.push(
+    {
+        "system_name": "zatím nevybraná",
+        "prvnipjc": "zatím nevybraná"
+    }
+)
+for (let odb of dostupne_odbornosti) {
+    let opt = document.createElement("option")
+    opt.value = odb.system_name
+    opt.id = odb.system_name
+    opt.innerText = odb.prvnipjc
+    odbornost_select.appendChild(opt)
+}
+
+// spešl udaje, v else jsou ty normalni na display
 for (let key in detail_usera) {
     let node = document.getElementById(key)
     if (node) {
         if (key == "id") {
             document.getElementById("id_display").innerHTML = detail_usera[key]
         } else if (key == "progress") {
-            document.getElementById(detail_usera["progress"]).selected = "selected"         
+            document.getElementById(detail_usera["progress"]).selected = "selected"
+        } else if (key == "odbornost") {
+            console.log(detail_usera)
+            for (let odb of dostupne_odbornosti) {
+                if (odb.system_name == detail_usera[key]) {
+                    node.innerText = odb.prvnipjc
+                }
+            }
+            document.getElementById(detail_usera[key]).selected = "selected"
         } else if (key == "meeting_link") {
             meeting_link_input.value = detail_usera[key]
         } else {
@@ -74,22 +101,38 @@ for (let key in detail_usera) {
 }
 charcount_span.innerHTML = String(textarea.value.length) + "/1000"
 
+// shrnuti
+let shrnuti = JSON.parse(httpGet("/file_api/send_filename_ciziho_shrnuti/" + String(id_usera)))
+let ukazat_shrnuti = document.getElementById("ukazat_shrnuti")
+if (shrnuti["filename"]) {
+    let a = document.createElement("a")
+    a.classList.add("link")
+    a.href = "/file_api/cizi_shrnuti/" + String(id_usera) + "/" + shrnuti["filename"]
+    a.download = shrnuti["filename"]
+    a.innerHTML = shrnuti["filename"]
+    ukazat_shrnuti.appendChild(a)
+} else {
+   ukazat_shrnuti.innerText = "Shrnutí práce ještě není odevzdané."
+}
 
-if (prace_filenames) {
-    document.getElementById("prace_disclaimer").hidden = true
-    let prace_div = document.getElementById("prace_div")
-    for (let filename of prace_filenames) {
+// shrnuti
+let prace = JSON.parse(httpGet("/file_api/send_filenames_cizi_prace/" + String(id_usera)))
+let ukazat_praci = document.getElementById("ukazat_praci")
+if (prace) {
+    for (let prace_file of prace) {
         let a = document.createElement("a")
-        a.innerHTML = filename
-        a.download = filename
         a.classList.add("link")
-        a.href = "/file_api/cizi_prace/" + String(id_usera) + "/" + filename
-        prace_div.appendChild(a)
-        prace_div.appendChild(document.createElement("br"))
+        a.href = "/file_api/cizi_prace/" + String(id_usera) + "/" + prace_file
+        a.download = prace_file
+        a.innerHTML = prace_file
+        ukazat_praci.appendChild(a)
+        ukazat_praci.appendChild(document.createElement("br"))
     }
 } else {
-    document.getElementById("prace_disclaimer").hidden = false
+   ukazat_praci.innerText = "Práce ještě není odevzdaná."
 }
+
+// motivacni formular
 if (detail_usera["motivacni_formular"]) {
     document.getElementById("vyplneny_formular").hidden = false
     for (let odpoved of detail_usera["motivacni_formular"]) {
@@ -101,10 +144,9 @@ if (detail_usera["motivacni_formular"]) {
 
 
 // hodnoceni
-
 function create_div(content) {
     const div = document.createElement("div");
-    div.classList.add("col-md", "rounded-2", "border-orange", "m-2", "p-2", "lighter");
+    div.classList.add("col-md", "rounded-2", "border-orange", "m-2", "p-2", "lighter", "table-responsive");
     
     let table = document.createElement("table")
     table.classList.add("table", "table-hover")

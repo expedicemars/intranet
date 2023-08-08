@@ -1,11 +1,20 @@
 {% extends "admin_navbar.html" %}
 {% block content %}
-
-<h2>Admin sekce</h2>
-
 <div>
-    Vítej v admin sekci. To, co tu vidíš, ovlivňují admini s rolí <code>editing_admins_allowed</code>. Pokud myslíš, že bys měl mít přístup někam, kam nemůžeš, kontaktuj jednoho znich:
-    <div class="border rounded-2 p-2 my-2 border-secondary">
+    <h3>Rozcestník řadového organizátora</h3>
+    <ul>
+        <li><a href="{{url_for('admin_views.nahrat_soubory')}}" class="link">Nahrávání souborů</a></li>
+        <li><a href="{{url_for('admin_views.poznamky')}}" class="link">Poznámky od adminů pro adminy</a></li>
+        <li>Užitečné odkazy WIP</li>
+        <li>Poznávačka účastníků WIP</li>
+
+    </ul>
+</div>
+<hr>
+<div>
+    <h3>Přístupy</h3>
+    To, co tu vidíš, ovlivňují admini s rolí <code>editing_admins_allowed</code>. Pokud myslíš, že bys měl mít přístup někam, kam nemůžeš, kontaktuj jednoho znich:
+    <div class="border rounded-2 p-2 my-2 border-secondary lighter">
         <code id="emails"></code>
     </div>
 </div>
@@ -13,25 +22,66 @@
 <div>
     <h3>Co všechno musí být udržováno up-to-date</h3>
     <ul>
-        <li>Datum ukončení registrace <code id="datum_konce_registrace"></code>, <a class="link" href="{{url_for('admin_views.prubeh_rocniku')}}">upravit jde tady</a>.</li>
-        <li>Reakce na bugtracker</li>
-        <li>Kontakty na velitele odborností</li>
-        <li>prohlášení rodičů, nahrát nové verze jde <a class="link" href="{{url_for('admin_views.prohlaseni_rodicu')}}">tady</a>.</li>
-        <li>Stránka s obecnými informacemi v případě, že Píp přestane dělat domácí kola.</li>
-        <li>Užitečné odkazy níže</li>
+        <li>Datum ukončení registrace <code id="datum_konce_registrace"></code>, upravit jde x<a class="link" href="{{url_for('admin_views.prubeh_rocniku')}}">tady</a>.</li>
+        <li>Viditelnost zadání na homepage, upravit jde <a class="link" href="{{url_for('admin_views.prubeh_rocniku')}}">tady</a>.</li>
+        <li>Reakce na bugtracker, upravit jdou <a class="link" href="{{url_for('admin_views.uprava_znamych_bugu')}}">tady</a>.</li>
+        <li>Kontakt na koordinátora internetových kol, upravit jde <a class="link" href="{{url_for('admin_views.prubeh_rocniku')}}">tady</a>.</li>
+        <li>Kontakty na velitele odborností, upravit jdou <a class="link" href="{{url_for('admin_views.velitele_odbornosti')}}">tady</a>.</li>
+        <li>prohlášení rodičů, nahrát nová verze jde <a class="link" href="{{url_for('admin_views.nahrat_soubory')}}">tady</a>.</li>
     </ul>
 </div>
 <hr>
 <div>
-    <h3>Užitečné odkazy</h3>
+    <h3>Užitečné odkazy (brzy budou mít svou stránku)</h3>
     <a class="link" href="{{url_for('admin_views.upravit_odkazy')}}">Upravit tyto odkazy</a>
     <ul id="odkazy">
     </ul>
 </div>
 <hr>
 <div>
-    <h3>Počet neřešených bugů: {{pocet_bugu}}</h3>
-    Pokud nemáš práva je upravovat, řekni to adminovi, kterej to umí. Jsem ale línej je sem vypisovat.
+    <h3>Statistiky</h3>
+    <table class="table table-hover table-striped">
+        <tbody id="tbody">
+            <tr>
+                <th>
+                    Registrovaných
+                </th>
+                <td id="registrovanych"></td>
+            </tr>
+            <tr>
+                <th>
+                    V domácím kole
+                </th>
+                <td id="domaci_kolo"></td>
+            </tr>
+            <!-- sem se vejdou odbornosti -->
+            <tr>
+                <th>
+                    Ve výcviku posádky
+                </th>
+                <td id="vycvik"></td>
+            </tr>
+            <tr>
+                <th>
+                    V simulaci
+                </th>
+                <td id="simulace"></td>
+            </tr>
+            <tr>
+                <th>
+                    Počet neřešených bugů
+                </th>
+                <td id="pocet_bugu"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <small>
+                        Pokud nemáš práva je upravovat, řekni to adminovi, kterej to umí. Jsem ale línej je sem vypisovat.
+                    </small>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 
