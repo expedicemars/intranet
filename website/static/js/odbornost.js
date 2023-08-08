@@ -2,6 +2,8 @@ import httpGet from "./httpGet.js"
 let odbornost = document.getElementById("odbornost").value
 let kontakt = httpGet("/user_api/kontakt_na_velitele_odbornosti/" + odbornost)
 let zadani = JSON.parse(httpGet("/file_api/filenames_vsech_zadani_v_odbornosti/" + odbornost))
+let nahrane_shrnuti_input = document.getElementById("nahrane_shrnuti")
+let nahrana_prace_input = document.getElementById("nahrana_prace")
 
 document.getElementById("kontakt").innerText = kontakt
 
@@ -46,14 +48,28 @@ if (prace) {
     }
 }
 
-// document.getElementById("nahrana_prace").addEventListener("change", function() {
-//     let spolecna_velikost = 0
-//     for (let file of this.files) {
-//         spolecna_velikost += file.size
-//     }
-//     if (spolecna_velikost > 20000000) {
-//         alert("Zajisti prosím, aby celková velikost tvývh souborů nebyla přes 20 MB. Pokud potřebuješ více místa, použij prosím jakékoli cloudové úložiště a sem nám pošli textový dokument, ve kterém bude sdílecí link.")
-//         this.value = "";
-//     }
+if (nahrane_shrnuti_input) {
+    nahrane_shrnuti_input.addEventListener("change", function() {
+        let spolecna_velikost = 0
+        for (let file of this.files) {
+            spolecna_velikost += file.size
+        }
+        if (spolecna_velikost > 5*1024*1024) {
+            alert("Zajisti prosím, aby shrnutí práce nebylo větší než 5 MB. Pokud potřebuješ více místa, použij prosím jakékoli cloudové úložiště a sem nám pošli textový dokument, ve kterém bude sdílecí link.")
+            this.value = "";
+        }
+    })
+}
 
-// })
+if (nahrana_prace_input) {
+    nahrana_prace_input.addEventListener("change", function() {
+        let spolecna_velikost = 0
+        for (let file of this.files) {
+            spolecna_velikost += file.size
+        }
+        if (spolecna_velikost > 20*1024*1024) {
+            alert("Zajisti prosím, aby tvá  práce nebyla větší než 20 MB. Pokud potřebuješ více místa, použij prosím jakékoli cloudové úložiště a sem nám pošli textový dokument, ve kterém bude sdílecí link.")
+            this.value = "";
+        }
+    })
+}

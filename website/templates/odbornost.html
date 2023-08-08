@@ -18,10 +18,13 @@ Tady potom kontakt na velitele odbornosti. Neváhej se jich na cokoli ptát, vš
 <hr>
 {%if odbornost_uzivatele == "zatím nevybraná"%}
     <h2>Odevzdání shrnutí práce</h2>
+    <p>
+        Shrnutí nesmí přesáhnout 5 MB.
+    </p>
     <form method="post" enctype="multipart/form-data">
         <div class="row">
             <div class="col">
-                <input type="file" class="form-control" name="nahrane_shrnuti">
+                <input type="file" class="form-control" name="nahrane_shrnuti" id="nahrane_shrnuti">
             </div>
             <div class="col-auto">
                 <button type="submit" name="ulozit_shrnuti" value="1" class="btn btn-outline-success">Nahrát</button>
@@ -52,11 +55,11 @@ Tady potom kontakt na velitele odbornosti. Neváhej se jich na cokoli ptát, vš
         {% endif %}
         <div id="ukazat_praci" class="border-orange rounded-2 my-2 p-2 lighter"></div>
     {% else %}
-        <p>Tady nahraj prezentaci na online konferenci a jakékoli další soubory, pokud nějaké máš.</p>
+        <p>Tady nahraj prezentaci na online konferenci a jakékoli další soubory, pokud nějaké máš. Společně by neměly být větší, než 20 MB.</p>
         <form method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col">
-                    <input type="file" multiple class="form-control" name="nahrana_prace">
+                    <input type="file" multiple class="form-control" name="nahrana_prace" id="nahrana_prace">
                 </div>
                 <div class="col-auto">
                     <button type="submit" name="ulozit_praci" value="1" class="btn btn-outline-success">Nahrát</button>
