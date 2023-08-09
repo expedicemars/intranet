@@ -24,6 +24,9 @@ def velitel_odbornosti_data_path() -> Path:
 def zadani_folder_path() -> Path:
     return Path.cwd() / "data" / "zadani"
 
+def sablony_folder_path() -> Path:
+    return Path.cwd() / "data" / "sablony"
+
 def default_profilovka_path() -> Path:
     return Path.cwd() / "data" / "default_profilovka.png"
 
