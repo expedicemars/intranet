@@ -175,7 +175,7 @@ def promazat() -> None:
     with open(poznamky_path(), "w") as file:
         file.write(json.dumps([], indent=4))
     with open(prubeh_rocniku_path(),"w") as file:
-        file.write(json.dumps({"datum_konce_registrace":str(date.today()),"otevrena_registrace":False,"viditelna_zadani":False, "koordinator_internetovych_kol":""}, indent=4))
+        file.write(json.dumps({"datum_konce_registrace":str(date.today()),"datum_zacatku_registrace":str(date.today()),"otevrena_registrace":False,"viditelna_zadani":False, "koordinator_internetovych_kol":""}, indent=4))
     with open(velitel_odbornosti_data_path(), "w") as file:
         file.write(json.dumps({odb["system_name"]:"" for odb in get_dostupne_odbornosti()}, indent=4))
     

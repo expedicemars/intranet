@@ -1,6 +1,7 @@
 import httpGet from "./httpGet.js"
 
-let registrace = httpGet("/noauth_api/registrace")
+let konec_registrace = httpGet("/noauth_api/konec_registrace")
+let zacatek_registrace = httpGet("/noauth_api/zacatek_registrace")
 let je_registrace_otevrena = httpGet("/admin_api/je_registrace_otevrena")
 let je_zadani_viditelne = httpGet("/admin_api/je_zadani_viditelne")
 let mailing_list = httpGet("/admin_api/mailing_list")
@@ -8,22 +9,27 @@ let koordinator_internetovych_kol = httpGet("/admin_api/koordinator_internetovyc
 let ukoncit_rocnik_button = document.getElementById("ukoncit_rocnik")
 let ukoncit_rocnik_input = document.getElementById("ukoncit_rocnik_input")
 let toggle_registraci_button = document.getElementById("toggle_registraci")
+let stav_registraci = document.getElementById("stav_registrace")
 let toggle_zadani_button = document.getElementById("toggle_zadani")
 let stav_zadani = document.getElementById("viditelnost_stav")
-let registrace_date_input = document.getElementById("registrace_date")
+let datum_otevreni_input = document.getElementById("datum_otevreni")
+let datum_uzavreni_input = document.getElementById("datum_uzavreni")
 let exporty = JSON.parse(httpGet("/file_api/exporty_filenames"))
 let content_div = document.getElementById("content")
 let form = document.getElementById("form")
 
-registrace_date_input.value=registrace
+datum_uzavreni_input.value=konec_registrace
+datum_otevreni_input.value=zacatek_registrace
 ukoncit_rocnik_button.addEventListener("click", ukoncit)
 document.getElementById("mailing_list").innerHTML = JSON.parse(mailing_list)
 document.getElementById("koordinator_internetovych_kol").value = koordinator_internetovych_kol
 
 if (je_registrace_otevrena == "True") {
-    toggle_registraci_button.innerHTML = "Uzavřít registraci"
+    toggle_registraci_button.innerText = "Uzavřít registraci"
+    stav_registraci.innerText = "otevřená"
 } else {
-    toggle_registraci_button.innerHTML = "Otevřít registraci"
+    toggle_registraci_button.innerText = "Otevřít registraci"
+    stav_registraci.innerText = "uzavřená"
 }
 
 if (je_zadani_viditelne == "True") {
@@ -69,7 +75,7 @@ function generator(isoformat ,pretty, filename) {
     col1.appendChild(a)
 
     let col2 = document.createElement("div")
-    col2.classList.add("col")
+    col2.classList.add("col-auto")
     row.appendChild(col2)
 
     let btn = document.createElement("button")

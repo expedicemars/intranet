@@ -130,5 +130,5 @@ def check_prubeh_rocniku() -> None:
     else:
         path.touch()
         with open(path, "w") as file:
-            file.write(json.dumps({"datum_konce_registrace":str(date.today()),"otevrena_registrace":False,"viditelna_zadani":False, "koordinator_internetovych_kol":""}, indent=4))
+            file.write(json.dumps({"datum_konce_registrace":str(date.today()),"datum_zacatku_registrace":str(date.today()),"otevrena_registrace":False,"viditelna_zadani":False, "koordinator_internetovych_kol":""}, indent=4))
         log("Založen soubor na pohovory na " + str(path))

@@ -17,7 +17,7 @@ from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
-from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol
+from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, set_nove_datum_zacatku_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 from website.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path
 
@@ -240,10 +240,15 @@ def prubeh_rocniku():
             alog("Byl promazán systém")
             flash("Promazání systému bylo úspěšné.", category="success")
             return redirect(url_for("admin_views.admin_dashboard"))
-        elif request.form.get("ulozit_datum"):
-            datum = request.form.get("registrace_date")
+        elif request.form.get("ulozit_datum_otevreni"):
+            datum = request.form.get("datum_otevreni")
+            set_nove_datum_zacatku_registrace(datum)
+            alog(f"Úprava termmínu začátku registrace na {datum}.")
+            flash("Termín začátku registrace byl upraven.", category="success")
+        elif request.form.get("ulozit_datum_uzavreni"):
+            datum = request.form.get("datum_uzavreni")
             set_nove_datum_konce_registrace(datum)
-            alog(f"Úprava temrínu konce registrace na {datum}.")
+            alog(f"Úprava termínu konce registrace na {datum}.")
             flash("Termín konce registrace byl upraven.", category="success")
         elif request.form.get("toggle_registraci"):
             toggle_registrace()
@@ -266,7 +271,7 @@ def prubeh_rocniku():
         elif request.form.get("toggle_zadani"):
             toggle_zadani()
             alog(f"Změna viditelnosti zadání na {get_zadani_viditelne()}")
-            flash(f"Stav otevření registrace změnen na {get_zadani_viditelne()}", category="success")
+            flash(f"Stav viditelnosti zadání změnen na {get_zadani_viditelne()}", category="success")
         elif request.form.get("koordinator_internetovych_kol_button"):
             kontakt = request.form.get("koordinator_internetovych_kol")
             zapsat_koordinatora_i_kol(kontakt)
