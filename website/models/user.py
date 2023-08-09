@@ -39,7 +39,6 @@ class User(db.Model, UserMixin):
     osloveni_1p = db.Column(db.String(200))
     osloveni_5p = db.Column(db.String(200))
     zajmeno = db.Column(db.String(200))
-    hodnoceni_udelene = db.relationship("Hodnoceni", backref="user")
 
     def get_reset_token(self, expires_sec=9000) -> str:
         reset_token = jwt.encode(
