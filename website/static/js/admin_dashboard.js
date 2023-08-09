@@ -7,7 +7,6 @@ let tbody = document.getElementById("tbody")
 let statistiky = JSON.parse(httpGet("/admin_api/statistiky"))
 
 document.getElementById("emails").innerHTML = emaily
-document.getElementById("datum_konce_registrace").innerHTML = httpGet("/noauth_api/registrace_pretty")
 
 for (let o of odkazy) {
     let li = document.createElement("li")
