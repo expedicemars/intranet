@@ -2,14 +2,17 @@
 {% block content %}
     
 <h2>Intranet Expedice Mars</h2>
-
+    <p>
+        Letošní ročník Expedice Mars <span id="mit"></span> otevřené registrace mezi <code id="zacatek_registrace"></code> a <code id="konec_registrace"></code>.
+    </p>
+    <hr>
     {% if otevrena_registrace %}
     <div>
-        Registrace běží, můžeš se do Expedice <a class="link" href="{{url_for('auth_views.register')}}">přidat</a>. Registraci ukončíme <code id="date"></code>.
+        Registrace běží, můžeš se do Expedice <a class="link" href="{{url_for('auth_views.register')}}">přidat</a>
     </div>
     {% else %}
     <div>
-        Registrace letošního ročníku byly <code id="date"></code> uzavřeny. Můžeš se ale <a class="link" href="{{url_for('auth_views.register')}}">zapsat do mailing listu</a>, s otevřením nového ročníku ti dáme vědět.
+        Registrace letošního ročníku jsou uzavřeny. Můžeš se ale <a class="link" href="{{url_for('auth_views.register')}}">zapsat do mailing listu</a>, s otevřením nového ročníku ti dáme vědět. Nebo nám můžeš napsat a třeba se do ročníku ještě dostaneš.
     </div>
     {% endif %}
     <hr>
@@ -23,7 +26,6 @@
         </div>
     {% endif %}
 
-<!-- <img src="{{url_for('static', filename='grafik.png')}}" width="40%" style="display:block; margin-left: auto; margin-right: auto;"> -->
 <script src="{{url_for('static', filename='js/home.js')}}", type="module"></script>
 
 {% endblock %}

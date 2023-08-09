@@ -1,22 +1,50 @@
 {% extends "admin_navbar.html" %}
 {% block content %}
 <form id="form" method="post">
-    <h2>Datum konce registrace a ukončení registrace</h2>
+    <h2>Datum začátku a konce registrace</h2>
     Datum samo o sobě nic neukončuje, je pouze informativní. Registrace se otevírají a uzavírají zvlášť.
-    <div class="row">
+    <div class="row my-2">
         <div class="col-auto">
-            <input type="date" name="registrace_date" id="registrace_date">
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn em-button" id="ulozit" name="ulozit_datum" value="Whatever">Uložit datum</button>
+            Otevření registrace:
         </div>
         <div class="col">
+            <input type="date" name="datum_otevreni" id="datum_otevreni">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn em-button" name="ulozit_datum_otevreni" value="Whatever">Uložit datum</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-auto">
+            Ukončení registrace:
+        </div>
+        <div class="col">
+            <input type="date" name="datum_uzavreni" id="datum_uzavreni">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn em-button" name="ulozit_datum_uzavreni" value="Whatever">Uložit datum</button>
+        </div>
+    </div>
+    <hr>
+    <h2>Ukončení registrace</h2>
+    <div class="row">
+        <div class="col">
+            Registrace je <span id="stav_registrace"></span>.
+        </div>
+        <div class="col-auto">
             <button class="btn btn-success" name="toggle_registraci" value="whatever" id="toggle_registraci"></button>
         </div>
     </div>
     <hr>
     <h2>Viditelnost zadání na homepage</h2>
-    Zadání jsou <span id="viditelnost_stav"></span>. <button class="btn em-button" id="toggle_zadani" name="toggle_zadani" value="1" type="submit"></button>
+    <div class="row">
+        <div class="col">
+            Zadání jsou <span id="viditelnost_stav"></span>.
+        </div>
+        <div class="col-auto">
+            <button class="btn em-button" id="toggle_zadani" name="toggle_zadani" value="1" type="submit"></button>
+        </div>
+    </div>
     <hr>
     <h2>E-mail na koordinátora internetových kol</h2>
     <p>Když nějaký účastník nahraje souhrn své práce, pošle to e-mail veliteli odbornosti a právě na tento e-mail koordinátora internetových kol.</p>
@@ -31,27 +59,39 @@
     <hr>
     <h2>Náhled na mailing list</h2>
     <div class="row">
-        <div class="col">
+        <div class="col-sm">
             <textarea class="form-control" rows="2" id="mailing_list" name="mailing_list"></textarea>
         </div>
-        <div class="col-auto">
+        <div class="col-auto my-2">
             <button class="btn btn-success" name="ulozit_mailing_list" value="whatever">Uložit mailing list</button>
         </div>
     </div>
     <hr>
     <h2>Export dat</h2>
-    Vygeneruje .zip soubor, kterej obsahuje všechno. Vesměs je to potřeba při ukončování ročníku. Neslouží a nikdy nebude sloužit jako záloha systému, k obnovení stavu z daného exportu. 
-        <button class="btn em-button" value="generovat" name="generovat">Vytvořit nový export</button>
+    <div class="row">
+        <div class="col">
+            Vygeneruje .zip soubor, kterej obsahuje všechno. Vesměs je to potřeba při ukončování ročníku. Neslouží a nikdy nebude sloužit jako záloha systému, k obnovení stavu z daného exportu. 
+        </div>
+        <div class="col-auto">
+            <button class="btn em-button" value="generovat" name="generovat">Vytvořit nový export</button>
+        </div>
+    </div>
     <h2>Stáhnout starší exporty</h2>
         <div id="content"></div>
     <hr>
     <h2>Ukončit ročník</h2>
-    <ul>
-        <li>Promaže to účastníky</li>
-        <li>Nechá to adminy a mailing-list</li>
-    </ul>
-    <button id="ukoncit_rocnik" class="btn btn-danger" name="ukoncit_rocnik">Projít otázkama a ukončit ročník</button>
-    <input type="text" hidden name="ukoncit_rocnik_input" id="ukoncit_rocnik_input" value="">
+    <div class="row">
+        <div class="col">
+            <ul>
+                <li>Promaže to účastníky</li>
+                <li>Nechá to adminy, mailing-list, prohlášení rodičů a šablony</li>
+            </ul>
+        </div>
+        <div class="col-auto">
+            <button id="ukoncit_rocnik" class="btn btn-danger" name="ukoncit_rocnik">Projít otázkama a ukončit ročník</button>
+            <input type="text" hidden name="ukoncit_rocnik_input" id="ukoncit_rocnik_input" value="">
+        </div>
+    </div>
 </form>
 
 <script type="module" src="{{url_for('static', filename='js/admin_prubeh_rocniku.js')}}"></script>
