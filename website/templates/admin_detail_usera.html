@@ -7,7 +7,6 @@
 <form method="post">
     <button class="btn btn-success m-1"  type="button" id="ulozit_button">Uložit</button>
     <button class="btn btn-danger m-1" type="submit" value="1" name="smazat">Smazat uživatele</button>
-    <button class="btn em-button m-1" type="submit" value = "1" name="odebrat_motivacni_formular">Promazat motivační formulář</button>
     <button class="btn em-button m-1" type="submit" value = "1" name="odebrat_prvni_kontakt">Odhlásit z prvního kontaktu</button>
     <button class="btn em-button m-1" type="submit" value="1" name="hodnoceni">Přidat hodnocení</button>
 
@@ -195,6 +194,12 @@
 <div>
     <h3>Motivační formulář</h3>
     <div id="vyplneny_formular" hidden>
+        <form method="post">
+            <button class="btn em-button m-1" type="submit" value = "1" name="odebrat_motivacni_formular">Promazat motivační formulář</button>
+            <button class="btn em-button m-1" type="submit" value = "1" name="zpristupnit_motivacni_formular">Znovu zpřístupnit motivační formulář k úpravám</button>
+        </form>
+
+
         <div class="border-orange rounded-2 m-2 p-2 lighter">
             <b>Jaká oblast vědy a techniky tě zajímá?</b>
             <br>
@@ -259,7 +264,7 @@
 <div>
     <h3>Hodnocení</h3>
     <p>
-        Tipy pro to, jak vést rozhovor prvního kontaktu jsou <a href="{{ url_for('admin_views.struktura_rozhovoru') }}">tady</a>.
+        Tipy pro to, jak vést rozhovor prvního kontaktu jsou <a class="link" href="{{ url_for('admin_views.struktura_rozhovoru') }}">tady</a>.
     </p>
     <form method="post">
         <div class="container" id="hodnoceni_div">

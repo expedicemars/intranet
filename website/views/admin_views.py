@@ -19,7 +19,7 @@ from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_term
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
 from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
-from website.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path
+from website.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path
 
 
 admin_views = Blueprint("admin_views",__name__)
@@ -124,10 +124,17 @@ def detail_usera(id):
                 alog("Smazání usera " + str(id) + ".")
                 flash("User byl smazán", category="success")
                 return redirect(url_for("admin_views.registrovani_uzivatele"))
+            
         elif request.form.get("odebrat_motivacni_formular"):
             u.odebrat_motivacni_formular()
             alog(f"Vymazán motivační formulář usera {u.email}")
             flash("Motivační formulář byl promazán.", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+        
+        elif request.form.get("zpristupnit_motivacni_formular"):
+            u.znovu_zpristupnit_motivacni_formular()
+            alog(f"Znovu zpřístupněn motivační formulář usera {u.email}")
+            flash("Motivační formulář byl znovu zpřístupněn.", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
 
         elif request.form.get("odebrat_prvni_kontakt"):
@@ -379,15 +386,28 @@ def nahrat_soubory():
     if request.method == "GET":
         return render_template("admin_nahrat_soubory.html", roles=get_access_rights())
     else:
-        file = request.files.get("souhlas")
-        if file:
-            file.name = "prohlaseni_rodicu.docx"
-            file.save(prohlaseni_path())
-            flash("Souhlas rodičů aktualizován.", category="success")
-            alog("Nahraný nový soubor souhlasu rodičů.")
+        if request.form.get("souhlas"):
+            file = request.files.get("souhlas_file")
+            if file:
+                file.name = "prohlaseni_rodicu.docx"
+                file.save(prohlaseni_path())
+                flash("Souhlas rodičů aktualizován.", category="success")
+                alog("Nahraný nový soubor souhlasu rodičů.")
+            else:
+                flash("Nenahrál jsi žádný soubor.", category="error")
         else:
-            flash("Nenahrál jsi žádný soubor.", category="error")
-        return redirect(url_for("admin_views.admin_dashboard"))
+            for odb in get_dostupne_odbornosti():
+                if request.form.get(odb["system_name"]):
+                    file = request.files.get(odb["system_name"] + "_file")
+                    if file:
+                        file.name = odb["system_name"] + "_sablona.docx"
+                        path = sablony_folder_path() / file.name
+                        file.save(path)
+                        flash(f"Šablona {odb['druhypmc']} aktualizována.", category="success")
+                    else:
+                        flash("Nenahrál jsi žádný soubor.", category="error")  
+                    break
+        return redirect(url_for("admin_views.nahrat_soubory"))
 
 @admin_views.route("/featury")
 @require_role_on_current_user("admin")

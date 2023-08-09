@@ -6,7 +6,7 @@ from website.json_handlers.logs_handling import get_logs, get_alogs
 from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena, get_zadani_viditelne, get_koordinator_internetovych_kol
 from website.json_handlers.odkazy_handling import get_odkazy
 from website.helpers.pretty_date import pretty_datetime
-from website.paths import velitel_odbornosti_data_path, poznamky_path, prohlaseni_path
+from website.paths import velitel_odbornosti_data_path, poznamky_path, prohlaseni_path, sablony_folder_path
 from website.models.user import User
 from website.models.chyba import Chyba
 from website.models.hodnoceni import Hodnoceni
@@ -52,10 +52,17 @@ def odkazy():
 def koordinator_internetovych_kol():
     return get_koordinator_internetovych_kol()
 
-@admin_api.route("/prohlaseni_rodicu_existuje")
+@admin_api.route("/soubory_existuji")
 @require_role_on_current_user("admin")
-def prohlaseni_rodicu_existuje():
-    return json.dumps({"existuje": prohlaseni_path().exists()})
+def soubory_existuji():
+    result = {
+        "prohlaseni_rodicu": prohlaseni_path().exists()
+    }
+    for odb in get_dostupne_odbornosti():
+        filename = odb["system_name"] + "_sablona.docx"
+        path = sablony_folder_path() / filename
+        result[odb["system_name"]] = path.exists()
+    return result
 
 
 @admin_api.route("/pohovory")

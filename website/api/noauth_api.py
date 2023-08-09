@@ -3,7 +3,9 @@ import json
 from website.models.chyba import Chyba
 from website.json_handlers.prubeh_rocniku_handling import get_datum_konce_registrace
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
+from website.json_handlers.prubeh_rocniku_handling import get_koordinator_internetovych_kol
 from website.helpers.pretty_date import pretty_datetime
+
 import datetime
 
 
@@ -27,5 +29,9 @@ def registrace_pretty():
 @noauth_api.route("/dostupne_odbornosti")
 def dostupne_odbornosti():
     return json.dumps(get_dostupne_odbornosti())
+
+@noauth_api.route("/velitel_internetovych_kol_mail")
+def velitel_internetovych_kol_mail():
+    return get_koordinator_internetovych_kol()
 
 

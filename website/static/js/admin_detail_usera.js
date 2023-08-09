@@ -3,7 +3,6 @@ let id_usera = document.getElementById("id").value
 let detail_usera = JSON.parse(httpGet("/admin_api/detail_usera/" + String(id_usera)))
 let progressy = JSON.parse(httpGet("/admin_api/vsechny_progressy"))
 let hodnoceni = JSON.parse(httpGet("/admin_api/hodnoceni/" + String(id_usera)))
-let prace_filenames = JSON.parse(httpGet("/file_api/send_filenames_cizi_prace/" + String(id_usera)))
 let ulozit_button = document.getElementById("ulozit_button")
 let toggle_zmeny_button = document.getElementById("toggle_zmeny")
 let charcount_span = document.getElementById("charcount")
@@ -115,7 +114,7 @@ if (shrnuti["filename"]) {
    ukazat_shrnuti.innerText = "Shrnutí práce ještě není odevzdané."
 }
 
-// shrnuti
+// prace
 let prace = JSON.parse(httpGet("/file_api/send_filenames_cizi_prace/" + String(id_usera)))
 let ukazat_praci = document.getElementById("ukazat_praci")
 if (prace) {

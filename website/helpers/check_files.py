@@ -64,7 +64,7 @@ def check_user_data_folder() -> None:
         log("Složka pro user data existuje.")
     else:
         path.mkdir()
-        log("Vytvořena složka pro user data na "+ str(path))
+        log("Vytvořena složka pro user data na " + str(path))
 
 def check_zadani_folders() -> None:
     path = p.zadani_folder_path()
@@ -75,7 +75,15 @@ def check_zadani_folders() -> None:
         for odbornost in get_dostupne_odbornosti():
             _path = path / odbornost["system_name"]
             _path.mkdir()
-        log("Vytvořena složka pro zadání na "+str(path))
+        log("Vytvořena složka pro zadání na " + str(path))
+
+def check_sablony_folder() -> None:
+    path = p.sablony_folder_path()
+    if path.exists():
+        log("Složka pro šablony už existuje.")
+    else:
+        path.mkdir()
+        log("Vytvořena složka pro šablony na " + str(path))
 
 def check_poznamky() -> None:
     path = p.poznamky_path()
@@ -122,5 +130,5 @@ def check_prubeh_rocniku() -> None:
     else:
         path.touch()
         with open(path, "w") as file:
-            file.write(json.dumps({"datum_konce_registrace":str(date.today()),"otevrena_registrace":False,"viditelna_zadani":False}, indent=4))
+            file.write(json.dumps({"datum_konce_registrace":str(date.today()),"otevrena_registrace":False,"viditelna_zadani":False, "koordinator_internetovych_kol":""}, indent=4))
         log("Založen soubor na pohovory na " + str(path))

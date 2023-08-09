@@ -1,11 +1,13 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
 from flask_login import current_user
 from website.helpers.require_role_decorator import require_role_on_current_user, require_progress_na_ucastnikovi, require_odbornost_na_ucastnikovi
+from website.helpers.size_check import check_size
 from website.models.user import User
 from website.mail_handler import mail_sender
 from website import db
 from website.role_handler import get_access_rights, get_user_progress
 import json
+import os
 from website.paths import user_data_folder_path
 from website.json_handlers.pohovory_handling import zapsat_na_pohovor
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti, get_odbornost_by_system_name
@@ -29,6 +31,13 @@ def ucet():
             flash("E-mail byl odeslán. Zkontroluj si svou schránku.", category="info")
             return redirect(url_for("user_views.ucet"))
         elif request.form.get("img"):
+            files = check_size(request.files.getlist("img_file"), 5*1024*1024)
+            if not files:
+                flash("Soubor byl moc velký. Prosíme, nahraj fotku pod 5 MB.", category="error")
+                return redirect(url_for("user_views.ucet"))
+            
+            fotka = files[0]
+            
             #zkusit smazat starou
             path = user_data_folder_path() / str(current_user.id)
             for file in path.iterdir():
@@ -36,8 +45,8 @@ def ucet():
                     profilovka_path = path / file.name
                     profilovka_path.unlink()
                     break
+            
             #nahrát novou
-            fotka = request.files.get("img_file")
             if len(fotka.filename.split(".")) == 2:
                 pripona = fotka.filename.split(".")[1]
                 filename = "profilovka" + "." + pripona
@@ -137,11 +146,15 @@ def odbornost(odb):
                                ma_nahranou_praci = current_user.ma_nahranou_praci())
     else:
         if request.form.get("ulozit_praci"):
-            if all(request.files.getlist("nahrana_prace")):
-                for file in request.files.getlist("nahrana_prace"):
-                    prace_folder_path = user_data_folder_path() / str(current_user.id) / "prace"
-                    file.save(prace_folder_path / file.filename)
-                flash("Práce nahrána.", category="success")
+            if all(files := request.files.getlist("nahrana_prace")):
+                files = check_size(files, 20*1024*1024)
+                if not files:
+                    flash("Společná velikost souborů byla přes 20 MB.", category="error")
+                else:
+                    for file in request.files.getlist("nahrana_prace"):
+                        prace_folder_path = user_data_folder_path() / str(current_user.id) / "prace"
+                        file.save(prace_folder_path / file.filename)
+                    flash("Práce nahrána.", category="success")
             else:
                 flash("Nenahrál jsi žádné soubory.", category="info")
             return redirect(url_for("user_views.odbornost", odb=odb))
@@ -149,6 +162,11 @@ def odbornost(odb):
             if all(files:=request.files.getlist("nahrane_shrnuti")): # musi to tak byt, protoze len(prazdneho) = 1
                 if len(files) != 1:
                     flash("Nahrál jsi více souborů, než 1.")
+                    return redirect(url_for("user_views.odbornost", odb=odb))
+                files = check_size(files, 5*1024*1024)
+                if not files:
+                    flash("Soubor byl moc velký. Maximální velikost souboru je 5 MB.", category="error")
+                    return redirect(url_for("user_views.odbornost", odb=odb))
                 else: # ulozim origo a pak ho prejmenuju. taky tu probiha zapis do odbornosti
                     save_path: Path = user_data_folder_path() / str(current_user.id) / files[0].filename
                     files[0].save(save_path)
@@ -163,9 +181,10 @@ def odbornost(odb):
                     target.append(get_koordinator_internetovych_kol())
                     mail_sender("nove_shrnuti_prace", target=target, data=current_user.id)
                     flash(f"Shrnutí nahráno, zapsal jses tím do odbornosti {odb}.", category="success")
+                    return redirect(url_for("user_views.odbornost", odb=odb))
             else:
                 flash("Nenahrál jsi žádné soubory.", category="info")
-            return redirect(url_for("user_views.odbornost", odb=odb))
+                return redirect(url_for("user_views.odbornost", odb=odb))
         elif request.form.get("smazat_praci"):
             current_user.smazat_praci()
             flash("Nahraná práce je smazána. Nezapomeň nahrát novou verzi :)", category="success")
@@ -181,6 +200,7 @@ def odbornost(odb):
 @require_role_on_current_user("user")
 @require_progress_na_ucastnikovi("Domácí projekt")
 def odbornost_vyber():
+    print(current_user.odbornost)
     if current_user.odbornost != "zatím nevybraná":
         return redirect(url_for("user_views.odbornost", odb = current_user.odbornost))
     else:

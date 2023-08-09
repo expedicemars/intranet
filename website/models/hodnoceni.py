@@ -67,4 +67,8 @@ class Hodnoceni(db.Model):
     @staticmethod  
     def get_by_user_id(id) -> List["Hodnoceni"]:
         return db.session.scalars(db.select(Hodnoceni).where(Hodnoceni.user_id == id)).all()
+    
+    @staticmethod
+    def get_all() -> List["Hodnoceni"]:
+        return db.session.scalars(db.select(Hodnoceni)).all()
         

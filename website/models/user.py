@@ -39,7 +39,6 @@ class User(db.Model, UserMixin):
     osloveni_1p = db.Column(db.String(200))
     osloveni_5p = db.Column(db.String(200))
     zajmeno = db.Column(db.String(200))
-    hodnoceni_udelene = db.relationship("Hodnoceni", backref="user")
 
     def get_reset_token(self, expires_sec=9000) -> str:
         reset_token = jwt.encode(
@@ -117,13 +116,6 @@ class User(db.Model, UserMixin):
         db.session.commit()
         osobni_slozka = user_data_folder_path() / str(self.id)
         rmtree(osobni_slozka)
-    
-        
-    def odebrat_motivacni_formular(self):
-        self.motivacni_dotaznik = None
-        self.odevzdany_motivacni_dotaznik = False
-        db.session.add(self)
-        db.session.commit()
 
 
     @staticmethod
@@ -194,8 +186,25 @@ class User(db.Model, UserMixin):
 
     def smazat_shrnuti(self):
         filename = get_shrnuti_filename(self.id)
-        p: Path = user_data_folder_path() / str(self.id) / filename["filename"]
-        p.unlink()
+        print(filename)
+        if filename["filename"]:
+            p: Path = user_data_folder_path() / str(self.id) / filename["filename"]
+            p.unlink()
         self.odbornost = "zatím nevybraná"
         db.session.add(self)
         db.session.commit()
+    
+        
+    def odebrat_motivacni_formular(self):
+        self.motivacni_dotaznik = None
+        self.odevzdany_motivacni_dotaznik = False
+        db.session.add(self)
+        db.session.commit()
+    
+    def znovu_zpristupnit_motivacni_formular(self):
+        self.odevzdany_motivacni_dotaznik = False
+        self.progress = "Motivační formulář"
+        db.session.add(self)
+        db.session.commit()
+        
+        
