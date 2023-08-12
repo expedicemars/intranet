@@ -14,7 +14,7 @@
 		</div>
 		<div class="row my-1">
 			<div class="col-2">
-				Heslo
+				Heslo:
 			</div>
 			<div class="col">
 				<input type="password" name="password" id="password" maxlength="300" class="form-control"/>
@@ -41,5 +41,16 @@
 	</div>
 	<button type="button" id="btn" class="btn em-button">Registrovat se</button>
 	</form>
+	<hr>
+	<div>
+		<h2>Pro koho je Expedice Mars?</h2>
+		<p>
+			<ul>
+				<li>13 až 18 let</li>
+				<li>zájem o přírodní vědy, techniku anebo jejich popularizaci</li>
+				<li>touha se zlepšovat, ochota přijmout kritiku a vůle dotáhnout věci do konce</li>
+			</ul>
+		</p>
+	</div>
 <script type="module" src="{{url_for('static',filename='js/register_form_validation.js')}}"></script>
 {%endblock%}
