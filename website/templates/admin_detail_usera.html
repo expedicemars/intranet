@@ -7,7 +7,7 @@
 <form method="post">
     <button class="btn btn-success m-1"  type="button" id="ulozit_button">Uložit</button>
     <button class="btn btn-danger m-1" type="submit" value="1" name="smazat">Smazat uživatele</button>
-    <button class="btn em-button m-1" type="submit" value = "1" name="odebrat_prvni_kontakt">Odhlásit z prvního kontaktu</button>
+    <button class="btn em-button m-1" type="submit" value = "1" name="odebrat_motivacni_call">Odhlásit z motivačního callu</button>
     <button class="btn em-button m-1" type="submit" value="1" name="hodnoceni">Přidat hodnocení</button>
 
 </form>
@@ -127,7 +127,7 @@
                     </tr>
                     <tr>
                         <th>
-                            Datum prvního kontaktu:
+                            Datum motivačního callu:
                         </th>
                         <td id="datum_pohovoru"></td>
                     </tr>
@@ -264,7 +264,7 @@
 <div>
     <h3>Hodnocení</h3>
     <p>
-        Tipy pro to, jak vést rozhovor prvního kontaktu jsou <a class="link" href="{{ url_for('admin_views.struktura_rozhovoru') }}">tady</a>.
+        Tipy pro to, jak vést motivační call jsou <a class="link" href="{{ url_for('admin_views.struktura_rozhovoru') }}">tady</a>.
     </p>
     <form method="post">
         <div class="container" id="hodnoceni_div">

@@ -2,17 +2,34 @@
 {% block content %}
 
 <h2>Přehled fíčur systému</h2>
-Intranet Expedice Mars slouží především k usnadnění průběhu internetových kol. Je to prostředí, do kterého se účastníci registrují, zapisují informace o sobě, vyplňují motivační formulář, odevzdávají práce nebo se přihlašují na první kontakt. Je to taky místo, kde mají organizátoři přístup k hodnocení účastníků a k užitečným odkazům. 
+<p>
+    Intranet Expedice Mars slouží především k usnadnění průběhu internetových kol. Je to prostředí, do kterého se účastníci registrují, zapisují informace o sobě, vyplňují motivační formulář, odevzdávají práce nebo se přihlašují na motivační call. Je to taky místo, kde mají organizátoři přístup k hodnocení účastníků a k užitečným odkazům. 
+</p>
+<ol>
+    <li><a href="#uzivatele">Uživatelé</a></li>
+    <ul>
+        <li><a href="#ucet">Účet</a></li>
+        <li><a href="#info">Info</a></li>
+        <li><a href="#formular">Motivační formulář</a></li>
+        <li><a href="#motivacni_call">Motivační call</a></li>
+        <li><a href="#odbornost">Odbornost</a></li>
+    </ul>
+    <li> <a href="#admin">Admin sekce</a></li>
+    <li> <a href="#ostatni">Ostatní koncepty</a></li>
+    <ul>
+        <li><a href="#uzamykani">Uzamykání změn</a></li>
+    </ul>
+</ol>
 <div>
     <hr>
-    <h3>Uživatelé</h3>
+    <h3 id="uzivatele">Uživatelé</h3>
     <ul>
         <li>Po registraci musí v sekci <code>účet</code> ověřit svůj e-mail, abychom měli spolehlivý komunikační kanál.</li>
         <li>Při přihlašování je možnost obnovy hesla</li>
         <li>Uživatelské účty se každoročně promazávají. Je tedy nutné, aby se každý rok účastníci registrovali znovu.</li>
         <li>Po ověření e-mailu se účastníkům odemkne přístup do ostatních sekcí. Některé z nich jsou ale ještě navíc omezeny tím, jak daleko daný uživatel v Expedici postoupil.</li>
     </ul>
-    <h4>Účet</h4>
+    <h4 id="ucet">Účet</h4>
     <ul>
         <li>V sekci účet se zadávají informace o sobě, kontakt na rodiče apod.</li>
         <li>Zobrazují se zde některé informace o účtu, které nejde změnit.</li>
@@ -20,32 +37,34 @@ Intranet Expedice Mars slouží především k usnadnění průběhu internetov�
         <li>Měnit profilovku a data o sobě jde do té doby, dokud nejsou uživateli zakázány změny.</li>
         <li>Je zde ke stažení prohlášení o bezinfekčnosti a souhlas s pořizováním fotografií.</li>
     </ul>
-    <h4>Info</h4>
-    Stránka, kde se dynamicky zobrazují takové informace, které odpovídají postupu uživatele v Expedici.
-    <h4>Motivační formulář</h4>
-    Místo, kde uživatel vyplní informace, které bývaly náplní motivačního dopisu.
-    <h4>První kontakt</h4>
+    <h4 id="info">Info</h4>
+    Info slouží k zobrazování dosavadní práce účastníka. Zobrazuje se zde jeho motivační formulář a odevzdané práce.
+    <h4 id="formular">Motivační formulář</h4>
+    Místo, kde uživatel vyplní informace, které bývaly náplní motivačního dopisu. Po vyplnění je mu rovnou umožněn přístup k motivačnímu callu.
+    <h4 id="motivacni_call">Motivační call</h4>
     <ul>
-        <li>Zobrazují se zde vypsané termíny na první kontakt.</li>
+        <li>Zobrazují se zde vypsané termíny na motivační call.</li>
         <li>Účastníci mohou svůj výběr termínu měnit do té doby, dokud nebudou účtu zakázány změny.</li>
         <li>Zobrazuje se zde vybraný termín a odkaz na meeting, pokud ho organizátoři dobře zadali.</li>
+        <li>Termíny blíže než 48 hod. se nezobrazují.</li>
     </ul>
-    <h4>Odbornost</h4>
+    <h4 id="odbornost">Odbornost</h4>
     <ul>
-        <li>Před výběrem odbornosti je zde k nahlédnutí zadání každé odbornosti.</li>
-        <li>Po zvolení odbornosti je zde k nalezení:</li>
+        <li>Účastník je do odbornosti zařazen okamžikem odevzdání shrnutí práce. Do té doby může nahlížet detail každé odbornosti. Tam je:</li>
         <ul>
-            <li>Zadání domácího kola mé odbornosti</li>
             <li>Kontakt na velitele odbornosti</li>
-            <li>Možnost nahrát vypracovanou práci</li>
+            <li>Šablonu pro shrnutí práce</li>
+            <li>Možnost nahrát shrnutí práce</li>
+
         </ul>
+        <li>Po zvolení odbornosti se zde odevzdává celá práce.</li>
         <li>Nahranou práci je možné měnit do té doby, dokud nebudou účtu zakázány změny.</li>
     </ul>
 
 
 
     <hr>
-    <h3>Admin sekce</h3>
+    <h3 id="admin">Admin sekce</h3>
     Většina těchto stránek je přístupná pouze s určitou rolí. Pokud tedy stránky nevidíte a myslíte si, že byste měli, požádejte o přidělení role.
     <h4>Admin Dashboard</h4>
     <ul>
@@ -69,7 +88,7 @@ Intranet Expedice Mars slouží především k usnadnění průběhu internetov�
         <li>Zadání jde kdykoli nahrát znovu.</li>
         <li>Dá se zde zadat kontakt na sebe / na důstojníky. Zobrazuje se účastníkům a měl by sloužit v případě, že si účastníci s něčím nevědí rady.</li>
     </ul>
-    <h4>První kontakt</h4>
+    <h4>Motivační call</h4>
     <ul>
         <li>Zvolením data a dvou časů se vypisují termíny na pohovory.</li>
         <li>Účastníci vidí vypsané pohovory a můžou se na ně zapisovat; organizátoři můžou mazat jen neobsazené termíny.</li>
@@ -110,6 +129,13 @@ Intranet Expedice Mars slouží především k usnadnění průběhu internetov�
             <li>Admini s rolí <code>editing_admins_allowed</code> smí jmenovat další adminy a přidávat jim nové role.</li>
         </ul>
     </ul>
+
+    <hr>
+    <h3 id="ostatni">Ostatní koncepty</h3>
+    <h4 id="uzamykani">Uzamykání změn</h4>
+    <p>Derp</p>
+    <h4 id="bugs">Uzamykání změn</h4>
+
 </div>
 
 
