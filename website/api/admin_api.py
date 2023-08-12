@@ -187,9 +187,9 @@ def statistiky():
     
     result =  {
         "registrovanych": len(ucastnici),
-        "domaci_kolo": len(list(filter(lambda x: x.progress in ["Domácí projekt", "Výcvik posádky", "Simulace"], ucastnici))),
-        "vycvik": len(list(filter(lambda x: x.progress in ["Výcvik posádky", "Simulace"], ucastnici))),
-        "simulace": len(list(filter(lambda x: x.progress == "Simulace", ucastnici))),
+        "domaci_kolo": len(list(filter(lambda x: x.progress in ["Domácí projekt", "Přípravná mise", "Simulovaná mise"], ucastnici))),
+        "pripravna_mise": len(list(filter(lambda x: x.progress in ["Přípravná mise", "Simulovaná mise"], ucastnici))),
+        "simulovana_mise": len(list(filter(lambda x: x.progress == "Simulovaná mise", ucastnici))),
         "pocet_bugu": Chyba.pocet_neresenych()
     }
 

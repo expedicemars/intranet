@@ -100,12 +100,12 @@ def ucet_overeny(token):
         return redirect(url_for("user_views.ucet"))
         
         
-@user_views.route("/pohovory", methods=["GET","POST"])
+@user_views.route("/motivacni_call", methods=["GET","POST"])
 @require_role_on_current_user("user")
-@require_progress_na_ucastnikovi("První kontakt")
-def pohovory():
+@require_progress_na_ucastnikovi("Motivační call")
+def motivacni_call():
     if  request.method == "GET":
-        return render_template("pohovory.html", roles=get_access_rights(), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=get_user_progress())
+        return render_template("motivacni_call.html", roles=get_access_rights(), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=get_user_progress())
     else:
         if request.form.get("vybrat"):
             current_user.datum_pohovoru =  datetime.datetime.fromisoformat(request.form.get("vybrat"))
@@ -113,17 +113,17 @@ def pohovory():
             db.session.add(current_user)
             db.session.commit()
             vysledek = zapsat_na_pohovor(current_user.datum_pohovoru, current_user.id)
-            mail_sender("novy_prvni_kontakt", target=vysledek["admin"])
+            mail_sender("novy_motivacni_call", target=vysledek["admin"])
             if vysledek["volny"]:
                 flash("Termín vybrán.", category="success")
             else:
                 flash("Tento termín si mezitím vybral někdo jiný. Prosím, vyber si další.", category="error")
-            return redirect(url_for("user_views.pohovory"))
+            return redirect(url_for("user_views.motivacni_call"))
         elif request.form.get("zmenit"):
-            admin = current_user.odhlasit_z_prvniho_kontaktu()
-            mail_sender(mail_identifier="odhlaseni_prvniho_kontaktu", target=admin)
+            admin = current_user.odhlasit_z_motivacniho_callu()
+            mail_sender(mail_identifier="odhlaseni_motivacniho_callu", target=admin)
             flash("Termín byl odhlášen.", category="success")
-            return redirect(url_for("user_views.pohovory"))
+            return redirect(url_for("user_views.motivacni_call"))
     
     
 @user_views.route("/odbornost/<string:odb>", methods=["GET","POST"])
@@ -228,7 +228,7 @@ def motivacni_formular_numbered(blok_otazek):
         if request.form.get("odeslat"):
             current_user.ulozit_odpovedi(request.form.to_dict())
             current_user.odevzdany_motivacni_dotaznik = True
-            current_user.progress = "První kontakt"
+            current_user.progress = "Motivační call"
             db.session.add(current_user)
             db.session.commit()
             flash("Motivační formulář byl odevzdán.", category="success")

@@ -137,10 +137,10 @@ def detail_usera(id):
             flash("Motivační formulář byl znovu zpřístupněn.", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
 
-        elif request.form.get("odebrat_prvni_kontakt"):
-            u.odhlasit_z_prvniho_kontaktu()
-            alog(f"Vymazána volba prvního kontaktu usera {u.email}")
-            flash("Volba prvního kontaktu byla promazána.", category="success")
+        elif request.form.get("odebrat_motivacni_call"):
+            u.odhlasit_z_motivacniho_callu()
+            alog(f"Vymazána volba motivačního callu usera {u.email}")
+            flash("Volba motivačního callu byla promazána.", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
     
         elif request.form.get("result"):
@@ -348,11 +348,11 @@ def prace():
         return render_template("admin_prace.html", roles=get_access_rights())
 
 
-@admin_views.route("/pohovory", methods=["GET","POST"])
+@admin_views.route("/motivacni_call", methods=["GET","POST"])
 @require_role_on_current_user("editing_pohovory")
-def pohovory():
+def motivacni_call():
     if request.method == "GET":
-        return render_template("admin_pohovory.html", roles=get_access_rights())
+        return render_template("admin_motivacni_call.html", roles=get_access_rights())
     else:
         if request.form.get("pridat_termin"):
             date = request.form.get("date")
@@ -365,15 +365,15 @@ def pohovory():
                 end_datetime = datetime.datetime.strptime(end_datetime, "%Y-%m-%d %H:%M")
             except ValueError:
                 flash("Pravděpodobně nebylo zadáno datum.", category="error")
-                return redirect(url_for("admin_views.pohovory"))
+                return redirect(url_for("admin_views.motivacni_call"))
             if start_datetime > end_datetime:
                 flash("Časy, kkteré byly zadány, nedávaly smysl. Zkus to znova.", category="error")
-                return redirect(url_for("admin_views.pohovory"))
+                return redirect(url_for("admin_views.motivacni_call"))
             else:
                 pridat_pohovory(start_datetime=start_datetime, end_datetime=end_datetime, admin=current_user)
                 flash("Termíny vypsány.", category="success")
                 alog(f"Vypsání nových termínů na pohovory mezi {start_datetime} a {end_datetime}")
-                return redirect(url_for("admin_views.pohovory"))
+                return redirect(url_for("admin_views.motivacni_call"))
         elif request.form.get("smazat"):
             isoformat = request.form.get("smazat")
             vysledek = smazat_termin(datetime.datetime.fromisoformat(isoformat))
@@ -382,7 +382,7 @@ def pohovory():
                 alog(f"Smazání termínu pohovoru {isoformat}.")
             else:
                 flash("Tento termín si mezitím někdo zapsal, nejde tedy smazat.", category="error")
-            return redirect(url_for("admin_views.pohovory"))
+            return redirect(url_for("admin_views.motivacni_call"))
 
 
 @admin_views.route("/nahrat_soubory", methods=["GET","POST"])

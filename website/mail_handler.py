@@ -27,18 +27,18 @@ def mail_sender(mail_identifier, target, data=None) -> None:
             msg.html = render_template("mails/potvrzeni_emailu.html", url=url_for("user_views.ucet_overeny", token = data, _external = True))
             mail.send(msg)
         
-        if mail_identifier == "novy_prvni_kontakt":
-            msg = Message("Někdo se zapsal na první kontakt",
+        if mail_identifier == "novy_motivacni_call":
+            msg = Message("Někdo se zapsal na motivační call",
                         sender=os.environ.get("MAIL_USERNAME"),
                         recipients=target)
-            msg.html = render_template("mails/novy_prvni_kontakt.html", url = url_for("admin_views.pohovory", _external = True))
+            msg.html = render_template("mails/novy_motivacni_call.html", url = url_for("admin_views.motivacni_call", _external = True))
             mail.send(msg)
             
-        if mail_identifier == "odhlaseni_prvniho_kontaktu":
-            msg = Message("Někdo se odhlásil z prvního kontaktu",
+        if mail_identifier == "odhlaseni_motivacniho_callu":
+            msg = Message("Někdo se odhlásil z motivačního callu",
                         sender=os.environ.get("MAIL_USERNAME"),
                         recipients=target)
-            msg.html = render_template("mails/odhlaseni_z_prvniho_kontaktu.html", url = url_for("admin_views.pohovory", _external = True))
+            msg.html = render_template("mails/odhlaseni_z_motivacniho_callu.html", url = url_for("admin_views.motivacni_call", _external = True))
             mail.send(msg)
             
         if mail_identifier == "nove_shrnuti_prace":

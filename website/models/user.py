@@ -168,7 +168,7 @@ class User(db.Model, UserMixin):
         db.session.add(self)
         db.session.commit()
     
-    def odhlasit_z_prvniho_kontaktu(self):
+    def odhlasit_z_motivacniho_callu(self):
         self.datum_pohovoru = None
         db.session.add(self)
         db.session.commit()

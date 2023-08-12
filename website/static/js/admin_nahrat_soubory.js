@@ -85,7 +85,7 @@ for (let odb of dostupne_odbornosti) {
         link_div.appendChild(a)
         a.classList.add("link")
     } else {
-        link_div.innerHTML = "Žádné prohlášení tu ještě nahrané není."
+        link_div.innerHTML = "Žádná šablona tu ještě nahraná není."
     }
 
 }
