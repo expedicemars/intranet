@@ -28,10 +28,8 @@ def login():
 			return redirect(url_for("auth_views.login"))
 		user = User.get_by_email(email)
 		if user and check_password_hash(user.password, password):
-			print(user, user.email)
 			login_user(user, remember=True)
 			flash("úspěšné přihlášení", category="success")
-			print(current_user, user)
 			return redirect(url_for("default_views.home"))
 		else:
 			flash("E-mail nebo heslo byly špatně", category="error")

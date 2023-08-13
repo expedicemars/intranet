@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
-from flask_login import current_user
+from flask_login import current_user, login_user
 from website.helpers.require_role_decorator import require_role_on_current_user, require_progress_na_ucastnikovi, require_odbornost_na_ucastnikovi
 from website.helpers.size_check import check_size
 from website.models.user import User
@@ -87,16 +87,16 @@ def info():
 
 
 @user_views.route("/ucet/<token>", methods=["GET"])
-@require_role_on_current_user("user")
 def ucet_overeny(token):
     user = User.verify_reset_token(token)
     if user is None:
-        flash("Obnovovací link vypršel, nebo je jinak neplatný.", category="info")
+        flash("Ověřovací link vypršel, nebo je jinak neplatný.", category="info")
         return redirect(url_for("user_views.ucet"))
     else:
         user.confirmed = True
         db.session.add(user)
         db.session.commit()
+        login_user(user, remember=True)
         return redirect(url_for("user_views.ucet"))
         
         
