@@ -84,7 +84,6 @@ for (let key in detail_usera) {
         } else if (key == "progress") {
             document.getElementById(detail_usera["progress"]).selected = "selected"
         } else if (key == "odbornost") {
-            console.log(detail_usera)
             for (let odb of dostupne_odbornosti) {
                 if (odb.system_name == detail_usera[key]) {
                     node.innerText = odb.prvnipjc

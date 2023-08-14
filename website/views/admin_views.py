@@ -19,6 +19,7 @@ from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_term
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
 from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, set_nove_datum_zacatku_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
+from website.json_handlers.velitele_odbornosti_handling import zapsat_kontakt
 from website.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path
 
 
@@ -286,8 +287,7 @@ def velitele_odbornosti():
         return render_template("admin_velitele_odbornosti.html", roles=get_access_rights())
     else:
         # mazani souboru
-        if request.form.get("smazat_zadani"):
-            odbornost = request.form.get("smazat_zadani")
+        if odbornost := request.form.get("smazat_zadani"):
             path = zadani_folder_path() / odbornost
             for file in path.iterdir():
                 file.unlink()
@@ -295,8 +295,7 @@ def velitele_odbornosti():
             flash(f"Zadání odborosti {odbornost} je smazaný.", category="success")
         
         # ukládání souborů
-        elif request.form.get("ulozit_zadani"):
-            odbornost = request.form.get("ulozit_zadani")
+        elif odbornost := request.form.get("ulozit_zadani"):
             if all(request.files.getlist(f"{odbornost}_files")):
                 for file in request.files.getlist(f"{odbornost}_files"):
                     file.save(zadani_folder_path() / odbornost / file.filename)
@@ -307,24 +306,9 @@ def velitele_odbornosti():
 
 
         # zapisování kontaktních dat
-        else:
-            inputs_ids_list = [o["system_name"] for o in get_dostupne_odbornosti()]
-            zmeneno = []
-            with open(velitel_odbornosti_data_path()) as file:
-                velitel_odbornosti_data = json.load(file)
-            for id in inputs_ids_list:
-                res = request.form.get(id)
-                if res is None:
-                    pass
-                else:
-                    if velitel_odbornosti_data[id] == res:
-                        pass
-                    else:
-                        zmeneno.append(id)
-                        velitel_odbornosti_data[id] = res
-            with open(velitel_odbornosti_data_path(),"w") as file:
-                file.write(json.dumps(velitel_odbornosti_data, indent=4))
-            alog("Úprava kontaktních údajů pro odbornosti: " + str(zmeneno))
+        elif odbornost := request.form.get("ulozit_kontakt"):
+            zapsat_kontakt(odbornost=odbornost, data=request.form.get(odbornost))
+            alog("Úprava kontaktních údajů pro odboornost " + odbornost)
             flash("Data velitelů odborností byla upravena.", category="success")
         return redirect(url_for("admin_views.velitele_odbornosti"))
 

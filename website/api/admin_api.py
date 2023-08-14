@@ -183,10 +183,11 @@ def useri_na_jmenovani_adminu():
 @admin_api.route("/statistiky")
 @require_role_on_current_user("admin")
 def statistiky():
-    ucastnici = [u for u in User.get_all() if "admin" not in json.loads(u.role)]
-    
+    ucastnici = [u for u in User.get_all() if "admin" not in json.loads(u.role)]    
     result =  {
         "registrovanych": len(ucastnici),
+        "motivacni_formular": len(list(filter(lambda x: x.odevzdany_motivacni_dotaznik == True, ucastnici))),
+        "motivacni_call": len(list(filter(lambda x: x.datum_pohovoru is not None, ucastnici))),
         "domaci_kolo": len(list(filter(lambda x: x.progress in ["Domácí projekt", "Přípravná mise", "Simulovaná mise"], ucastnici))),
         "pripravna_mise": len(list(filter(lambda x: x.progress in ["Přípravná mise", "Simulovaná mise"], ucastnici))),
         "simulovana_mise": len(list(filter(lambda x: x.progress == "Simulovaná mise", ucastnici))),
