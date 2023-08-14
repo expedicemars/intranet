@@ -63,3 +63,5 @@ def dostupne_role_path() -> Path:
 def dostupne_odbornosti_path() -> Path:
     return Path.cwd() / "data" / "dostupne_odbornosti.json"
 
+def mail_logo_path() -> Path:
+    return Path.cwd() / "website" / "static" / "graphics" / "mail_logo.png"
