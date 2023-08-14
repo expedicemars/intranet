@@ -59,7 +59,7 @@ def ucet():
                 flash("Prosím, pojmenuj soubor tak, aby název obsahoval jen jednu tečku, a to u přípony.", category="info")
                 return redirect(url_for("user_views.ucet"))
         else:
-            data = json.loads(request.form.get("result"))
+            data = request.form.to_dict()
             current_user.jmeno = data["jmeno"]
             current_user.adresa = data["adresa"]
             current_user.telcislo = data["telcislo"]
@@ -200,7 +200,6 @@ def odbornost(odb):
 @require_role_on_current_user("user")
 @require_progress_na_ucastnikovi("Domácí projekt")
 def odbornost_vyber():
-    print(current_user.odbornost)
     if current_user.odbornost != "zatím nevybraná":
         return redirect(url_for("user_views.odbornost", odb = current_user.odbornost))
     else:

@@ -39,6 +39,9 @@ def pohovory_path() -> Path:
 def prohlaseni_path() -> Path:
     return Path.cwd() / "data" / "prohlaseni_rodicu.docx"
 
+def vzorove_vypracovani_path() -> Path:
+    return Path.cwd() / "data" / "vzorove_vypracovani.docx"
+
 def exporty_path() -> Path:
     return Path.cwd() / "exporty"
 

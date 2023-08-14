@@ -2,7 +2,7 @@ from flask import Blueprint, send_file
 from flask_login import current_user
 import json
 from website.helpers.require_role_decorator import require_role_on_current_user
-from website.paths import user_data_folder_path, zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path
+from website.paths import user_data_folder_path, zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path, vzorove_vypracovani_path
 from website.helpers.get_user_files import get_prace_filenames, get_profilovka_by_id, get_shrnuti_filename
 from website.helpers.pretty_date import pretty_datetime
 
@@ -13,6 +13,11 @@ file_api = Blueprint("file_api", __name__)
 @require_role_on_current_user(["user","admin"])
 def prohlaseni_rodicu():
     return send_file(prohlaseni_path())
+
+@file_api.route("/vzorove_vypracovani")
+@require_role_on_current_user(["user","admin"])
+def vzorove_vypracovani():
+    return send_file(vzorove_vypracovani_path())
 
 @file_api.route("/stahnout_sablonu/<string:odb>")
 @require_role_on_current_user(["user","admin"])

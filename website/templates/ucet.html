@@ -12,179 +12,179 @@
     <div id="confirmed_div" hidden>
         <hr>
         <h3>Nastavitelné údaje</h3>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <tbody>
-                    <tr>
-                        <th>
-                            Jméno a příjmení:
-                        </th>
-                        <td>
-                            <input type="text" id="jmeno" disabled class="form-control">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Preferované oslovení:
-                        </th>
-                        <td>
-                            <div class="row">
-                                <div class="col">
-                                    <input type="text" id="osloveni_1p" disabled class="form-control" placeholder="1. pád">
-                                </div>
-                                <div class="col">
-                                    <input type="text" id="osloveni_5p" disabled class="form-control" placeholder="5. pád">
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Preferovaná zájmena:
-                        </th>
-                        <td>
-                            <input type="text" id="zajmeno" disabled class="form-control" placeholder="ona/jí, on/jemu, oni/jim">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            E-mail:
-                        </th>
-                        <td>
-                            <input disabled class="form-control" type="email" id="email">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Adresa:
-                        </th>
-                        <td>
-                            <input disabled class="form-control" type="text" id="adresa">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Telefonní číslo:
-                        </th>
-                        <td>
-                            <input disabled class="form-control" type="text" id="telcislo" placeholder="zadej číslo s předvolbou">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Datum narození:
-                        </th>
-                        <td>
-                            <input disabled type="date" id="datum_narozeni">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            E-mail jednoho z rodičů:
-                        </th>
-                        <td>
-                            <input disabled class="form-control" type="email" id="mail_rodicu">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Velikost trička:
-                        </th>
-                        <td>
-                            <select id="tricko_select" disabled class="form-select">
-                                <option disabled value="nic" id="nic">Vyber velikost</option>
-                                <option value="XS" id="XS">XS</option>
-                                <option value="S" id="S">S</option>
-                                <option value="M" id="M">M</option>
-                                <option value="L" id="L">L</option>
-                                <option value="XL" id="XL">XL</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Alergie / intolerance / diety: 
-                        </th>
-                        <td>
-                            <input disabled type="text" id="alergie" class="form-control">
-                            <label for="alergie" class="small">Pokud žádné nemáš, poznamenej to sem, prosíme, také.</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Na jakou školu momentálně chodíš / půjdeš?
-                        </th>
-                        <td>
-                            <input disabled type="text" id="skola" class="form-control">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Odkud víš o Expedici Mars?
-                        </th>
-                        <td>
-                            <input disabled type="text" id="dozvedeli" class="form-control">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        {% if uzamcene_zmeny %}
-        <p>Tvému účtu byly uzamčeny změny, pravděpodobně proto, že se blíží nějaký důležitý termín. Pokud ještě něco potřebuješ pozměnit, napiš nám a my ti změny ještě povolíme.</p>
-        {% else %}
-            <button type="button" class="btn em-button" id="zmeny" value="zamknuto">Odemknout úpravy</button>
-            {% endif %}
-            <hr>
-            <h3>Pevné údaje</h3>
+        <form method="post">
+            <button id="ulozit_1" class="btn btn-success" type="submit" hidden>Uložit změny</button>
             <div class="table-responsive">
                 <table class="table table-hover">
                     <tbody>
                         <tr>
                             <th>
-                                Ověřený e-mail:
+                                Jméno a příjmení:
                             </th>
                             <td>
-                                <span id="confirmed"></span>
+                                <input type="text" id="jmeno" class="form-control" name="jmeno">
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                Odbornost: 
+                                Preferované oslovení:
                             </th>
                             <td>
-                                <span id="odbornost"></span>
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="text" id="osloveni_1p" name="osloveni_1p" class="form-control" placeholder="1. pád">
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" id="osloveni_5p" name="osloveni_5p" class="form-control" placeholder="5. pád">
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                Postup v Expedici: 
+                                Preferovaná zájmena:
                             </th>
                             <td>
-                                <span id="progress"></span>
+                                <input type="text" id="zajmeno" name="zajmeno" class="form-control" placeholder="ona/jí, on/jemu, oni/jim">
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                Datum registrace:  
+                                E-mail:
                             </th>
                             <td>
-                                <span id="datum_registrace"></span>
+                                <input class="form-control" type="email" id="email" name="email">
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                Datum pohovoru: 
+                                Adresa:
                             </th>
                             <td>
-                                <span id="datum_pohovoru"></span>
+                                <input class="form-control" type="text" id="adresa" name="adresa">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Telefonní číslo:
+                            </th>
+                            <td>
+                                <input class="form-control" type="text" id="telcislo" placeholder="zadej číslo s předvolbou" name="telcislo">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Datum narození:
+                            </th>
+                            <td>
+                                <input type="date" id="datum_narozeni" name="datum_narozeni">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                E-mail jednoho z rodičů:
+                            </th>
+                            <td>
+                                <input class="form-control" type="email" id="mail_rodicu" name="mail_rodicu">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Velikost trička:
+                            </th>
+                            <td>
+                                <select id="tricko_select" class="form-select"  name="tricko">
+                                    <option value="nic" id="nic">Vyber velikost</option>
+                                    <option value="XS" id="XS">XS</option>
+                                    <option value="S" id="S">S</option>
+                                    <option value="M" id="M">M</option>
+                                    <option value="L" id="L">L</option>
+                                    <option value="XL" id="XL">XL</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Alergie / intolerance / diety: 
+                            </th>
+                            <td>
+                                <input type="text" id="alergie" class="form-control" name="alergie">
+                                <label for="alergie" class="small">Pokud žádné nemáš, poznamenej to sem také.</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Na jakou školu momentálně chodíš / půjdeš?
+                            </th>
+                            <td>
+                                <input type="text" id="skola" class="form-control" name="skola">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Odkud víš o Expedici Mars?
+                            </th>
+                            <td>
+                                <input type="text" id="dozvedeli" class="form-control" name="dozvedeli">
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                <button id="ulozit_2" class="btn btn-success" type="submit" hidden>Uložit změny</button>
             </div>
+        </form>
+        
+        <hr>
+        <h3>Pevné údaje</h3>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <th>
+                            Ověřený e-mail:
+                        </th>
+                        <td>
+                            <span id="confirmed"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Odbornost: 
+                        </th>
+                        <td>
+                            <span id="odbornost"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Postup v Expedici: 
+                        </th>
+                        <td>
+                            <span id="progress"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Datum registrace:  
+                        </th>
+                        <td>
+                            <span id="datum_registrace"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Datum pohovoru: 
+                        </th>
+                        <td>
+                            <span id="datum_pohovoru"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <hr>
         <h3>Fotka</h3>
-        <p>Na fotce by měl být vidět tvůj obličej. Fotka může mít maximálně 5 MB a může být ve formátu <code>.jpg</code>, nebo <code>.png</code></p>
+        <p>Na fotce by měl být vidět tvůj obličej. Fotka může mít maximálně 5 MB a může být ve formátu <code>.jpg</code>, nebo <code>.png</code>.</p>
         <img src="/file_api/user_profilovka" alt="profilovka" width="20%" class="my-2">
         
         {% if uzamcene_zmeny %}

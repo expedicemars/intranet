@@ -6,7 +6,7 @@ from website.json_handlers.logs_handling import get_logs, get_alogs
 from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena, get_zadani_viditelne, get_koordinator_internetovych_kol
 from website.json_handlers.odkazy_handling import get_odkazy
 from website.helpers.pretty_date import pretty_datetime
-from website.paths import velitel_odbornosti_data_path, poznamky_path, prohlaseni_path, sablony_folder_path
+from website.paths import velitel_odbornosti_data_path, poznamky_path, prohlaseni_path, sablony_folder_path, vzorove_vypracovani_path
 from website.models.user import User
 from website.models.chyba import Chyba
 from website.models.hodnoceni import Hodnoceni
@@ -56,7 +56,8 @@ def koordinator_internetovych_kol():
 @require_role_on_current_user("admin")
 def soubory_existuji():
     result = {
-        "prohlaseni_rodicu": prohlaseni_path().exists()
+        "prohlaseni_rodicu": prohlaseni_path().exists(),
+        "vzorove_vypracovani": vzorove_vypracovani_path().exists()
     }
     for odb in get_dostupne_odbornosti():
         filename = odb["system_name"] + "_sablona.docx"
@@ -183,10 +184,11 @@ def useri_na_jmenovani_adminu():
 @admin_api.route("/statistiky")
 @require_role_on_current_user("admin")
 def statistiky():
-    ucastnici = [u for u in User.get_all() if "admin" not in json.loads(u.role)]
-    
+    ucastnici = [u for u in User.get_all() if "admin" not in json.loads(u.role)]    
     result =  {
         "registrovanych": len(ucastnici),
+        "motivacni_formular": len(list(filter(lambda x: x.odevzdany_motivacni_dotaznik == True, ucastnici))),
+        "motivacni_call": len(list(filter(lambda x: x.datum_pohovoru is not None, ucastnici))),
         "domaci_kolo": len(list(filter(lambda x: x.progress in ["Domácí projekt", "Přípravná mise", "Simulovaná mise"], ucastnici))),
         "pripravna_mise": len(list(filter(lambda x: x.progress in ["Přípravná mise", "Simulovaná mise"], ucastnici))),
         "simulovana_mise": len(list(filter(lambda x: x.progress == "Simulovaná mise", ucastnici))),

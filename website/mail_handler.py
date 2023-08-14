@@ -42,7 +42,6 @@ def mail_sender(mail_identifier, target, data=None) -> None:
             mail.send(msg)
             
         if mail_identifier == "nove_shrnuti_prace":
-            print(target)
             msg = Message("Někdo odevzdal shrnutí své práce",
                         sender=os.environ.get("MAIL_USERNAME"),
                         recipients=target)

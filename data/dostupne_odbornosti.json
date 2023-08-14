@@ -14,18 +14,18 @@
         "ctvrtypmc": "Fyziky"
     },
     {
-        "system_name":"konstrukter",
-        "prvnipjc":"Konstruktér",
-        "prvnipmc":"Konstruktéři",
-        "druhypmc": "Konstruktérů",
-        "ctvrtypmc": "Konstruktéry"
-    },
-    {
         "system_name":"inzenyr",
         "prvnipjc":"Inženýr",
         "prvnipmc":"Inženýři",
         "druhypmc": "Inženýrů",
         "ctvrtypmc": "Inženýry"
+    },
+    {
+        "system_name":"konstrukter",
+        "prvnipjc":"Konstruktér",
+        "prvnipmc":"Konstruktéři",
+        "druhypmc": "Konstruktérů",
+        "ctvrtypmc": "Konstruktéry"
     },
     {
         "system_name":"popularizator",
