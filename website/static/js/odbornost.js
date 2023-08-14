@@ -4,8 +4,16 @@ let kontakt = httpGet("/user_api/kontakt_na_velitele_odbornosti/" + odbornost)
 let zadani = JSON.parse(httpGet("/file_api/filenames_vsech_zadani_v_odbornosti/" + odbornost))
 let nahrane_shrnuti_input = document.getElementById("nahrane_shrnuti")
 let nahrana_prace_input = document.getElementById("nahrana_prace")
+let vzor = JSON.parse(httpGet("/user_api/vzorove_vypracovani_existuje"))
+let vzor_span = document.getElementById("vzor")
 
 document.getElementById("kontakt").innerText = kontakt
+
+if (vzor.existuje) {
+    vzor_span.innerHTML = "Vzorové vypracování najdeš <a  class='link' href='/file_api/vzorove_vypracovani'>tady</a>."
+} else {
+    vzor_span.innerText = "Vzorové vypracování ještě neexistuje, ale až ho vytvoříme, bude tady."
+}
 
 if (zadani.length != 0) {
     for (let zadani_file of zadani) {

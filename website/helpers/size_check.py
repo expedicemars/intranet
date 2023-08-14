@@ -1,7 +1,6 @@
 import os
 
 def check_size(files:list , size_bytes: int):
-    print(type(files), files)
     """Vrátí buď files, pokud je jejich souhrnná velikost OK, nebo False.
 
     Args:

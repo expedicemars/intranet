@@ -1,8 +1,10 @@
 import httpGet from "./httpGet.js"
 let soubory_existuji = JSON.parse(httpGet("/admin_api/soubory_existuji"))
 let prohlaseni_link_div = document.getElementById("prohlaseni_link")
+let vzor_link_div = document.getElementById("vzor_link")
+
 let dostupne_odbornosti = JSON.parse(httpGet("/noauth_api/dostupne_odbornosti"))
-let content_form = document.getElementById("content")
+let sablony_div = document.getElementById("sablony")
 
 if (soubory_existuji["prohlaseni_rodicu"]) {
     let a = document.createElement("a")
@@ -15,8 +17,19 @@ if (soubory_existuji["prohlaseni_rodicu"]) {
     prohlaseni_link_div.innerHTML = "Žádné prohlášení tu ještě nahrané není."
 }
 
+if (soubory_existuji["vzorove_vypracovani"]) {
+    let a = document.createElement("a")
+    a.innerHTML = "Stáhnout současnou verzi"
+    a.href = "/file_api/vzorove_vypracovani"
+    a.download = "vzorove_vypracovani.docx"
+    vzor_link_div.appendChild(a)
+    a.classList.add("link")
+} else {
+    vzor_link_div.innerHTML = "Žádnýá vzor tu ještě nahraný není."
+}
+
 for (let odb of dostupne_odbornosti) {
-    content_form.appendChild(document.createElement("hr"))
+    sablony_div.appendChild(document.createElement("hr"))
     // Create the main container div
     const containerDiv = document.createElement('div');
     containerDiv.className = 'container';
@@ -74,7 +87,7 @@ for (let odb of dostupne_odbornosti) {
     containerDiv.appendChild(link_div);
 
     // Append the container div to the body or any other parent element
-    content_form.appendChild(containerDiv);
+    sablony_div.appendChild(containerDiv);
 
 
     if (soubory_existuji[odb.system_name]) {

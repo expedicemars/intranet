@@ -5,7 +5,7 @@ import datetime
 from website.helpers.pretty_date import pretty_datetime
 from website.helpers.require_role_decorator import require_progress_na_ucastnikovi, require_role_on_current_user
 from website.json_handlers.pohovory_handling import get_neobsazene_pohovory
-from website.paths import velitel_odbornosti_data_path
+from website.paths import velitel_odbornosti_data_path, vzorove_vypracovani_path
 
 
 
@@ -77,3 +77,9 @@ def odpovedi_motivaku():
         return current_user.motivacni_dotaznik
     else:
         return json.dumps([{"id": i, "odpoved": ""} for i in range(1,15)])
+    
+
+@user_api.route("/vzorove_vypracovani_existuje")
+@require_role_on_current_user(["user"])
+def vzorove_vypracovani_existuje():
+    return json.dumps({"existuje": vzorove_vypracovani_path().exists()})

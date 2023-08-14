@@ -20,7 +20,7 @@ from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_
 from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, set_nove_datum_zacatku_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 from website.json_handlers.velitele_odbornosti_handling import zapsat_kontakt
-from website.paths import velitel_odbornosti_data_path, zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path
+from website.paths import zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path, vzorove_vypracovani_path
 
 
 admin_views = Blueprint("admin_views",__name__)
@@ -382,6 +382,15 @@ def nahrat_soubory():
                 file.save(prohlaseni_path())
                 flash("Souhlas rodičů aktualizován.", category="success")
                 alog("Nahraný nový soubor souhlasu rodičů.")
+            else:
+                flash("Nenahrál jsi žádný soubor.", category="error")
+        elif request.form.get("vzor"):
+            file = request.files.get("vzor_file")
+            if file:
+                file.name = "vzorove_vypracovani.docx"
+                file.save(vzorove_vypracovani_path())
+                flash("Vzorové vypracování aktualizováno.", category="success")
+                alog("Nahraný nový soubor vzorového vypracování odbornostního kola.")
             else:
                 flash("Nenahrál jsi žádný soubor.", category="error")
         else:
