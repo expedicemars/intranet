@@ -2,9 +2,7 @@ import httpGet from "./httpGet.js"
 let info = JSON.parse(httpGet("/user_api/info"))
 let confirmed = JSON.parse(httpGet("/user_api/confirmed"))["confirmation_status"]
 let uzamcene_zmeny = JSON.parse(httpGet("/user_api/uzamcene_zmeny"))["status"]
-let zmeny_button = document.getElementById("zmeny")
-let form = document.getElementById("form")
-let ids_list = ["jmeno", "email", "adresa", "telcislo", "datum_narozeni", "mail_rodicu", "dozvedeli", "alergie", "skola", "osloveni_1p", "osloveni_5p", "zajmeno"]
+let ids_list = ["jmeno", "email", "adresa", "telcislo", "datum_narozeni", "mail_rodicu", "dozvedeli", "alergie", "skola", "osloveni_1p", "osloveni_5p", "zajmeno", "tricko_select"]
 let fixni_info_ids_list = ["confirmed", "odbornost", "progress", "datum_registrace", "datum_pohovoru"]
 let show_img_input_button = document.getElementById("show_img_input")
 let img = document.getElementById("img_file");
@@ -14,7 +12,6 @@ let confirmed_div = document.getElementById("confirmed_div")
 
 if (uzamcene_zmeny) {
 } else {
-    zmeny_button.addEventListener("click", toggle_zmeny)
     show_img_input_button.addEventListener("click", function() {
         document.getElementById("img_input_div").hidden = false
     })
@@ -25,6 +22,7 @@ if (uzamcene_zmeny) {
         };
     })
 }
+
 // ovládá viditelnost divu co žádá o e-mail
 if (confirmed) {
     not_confirmed_div.hidden = true
@@ -55,34 +53,14 @@ function nacist() {
 }
 
 
-function toggle_zmeny() {
-    if (zmeny_button.value == "upravy") {
-        zmeny_button.value = "zamknuto"
-        zmeny_button.innerHTML = "Odemknout úpravy"
-        for (let id of ids_list) {
-            document.getElementById(id).disabled = true
-        }
-        document.getElementById("tricko_select").disabled = true
-        odeslat_formular()
-    } else {
-        zmeny_button.value = "upravy"
-        zmeny_button.innerHTML = "Uložit změny"
-        for (let id of ids_list) {
-            document.getElementById(id).disabled = false
-        }  
-        document.getElementById("tricko_select").disabled = false
-    }
+// při změně formuláře to ukáže butonítka na uložení změn
+function toggle_visibility_ulozit_buttonu() {
+    document.getElementById("ulozit_1").hidden = false
+    document.getElementById("ulozit_2").hidden = false
 }
 
-
-function odeslat_formular() {
-    let result = {}
-    for (let id of ids_list) {
-        result[id] = document.getElementById(id).value
-    }
-    result["tricko"] = document.getElementById("tricko_select").value
-    document.getElementById("result").value = JSON.stringify(result)
-    form.submit()
+for (let id of ids_list) {
+    document.getElementById(id).addEventListener("input", toggle_visibility_ulozit_buttonu)
 }
 
 nacist()

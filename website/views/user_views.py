@@ -59,7 +59,7 @@ def ucet():
                 flash("Prosím, pojmenuj soubor tak, aby název obsahoval jen jednu tečku, a to u přípony.", category="info")
                 return redirect(url_for("user_views.ucet"))
         else:
-            data = json.loads(request.form.get("result"))
+            data = request.form.to_dict()
             current_user.jmeno = data["jmeno"]
             current_user.adresa = data["adresa"]
             current_user.telcislo = data["telcislo"]
