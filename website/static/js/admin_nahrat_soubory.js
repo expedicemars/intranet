@@ -25,7 +25,7 @@ if (soubory_existuji["vzorove_vypracovani"]) {
     vzor_link_div.appendChild(a)
     a.classList.add("link")
 } else {
-    vzor_link_div.innerHTML = "Žádnýá vzor tu ještě nahraný není."
+    vzor_link_div.innerHTML = "Žádný vzor tu ještě nahraný není."
 }
 
 for (let odb of dostupne_odbornosti) {
