@@ -308,7 +308,7 @@ def velitele_odbornosti():
         # zapisování kontaktních dat
         elif odbornost := request.form.get("ulozit_kontakt"):
             zapsat_kontakt(odbornost=odbornost, data=request.form.get(odbornost))
-            alog("Úprava kontaktních údajů pro odboornost " + odbornost)
+            alog("Úprava kontaktních údajů pro odbornost " + odbornost)
             flash("Data velitelů odborností byla upravena.", category="success")
         return redirect(url_for("admin_views.velitele_odbornosti"))
 

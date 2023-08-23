@@ -65,6 +65,3 @@ def dostupne_odbornosti_path() -> Path:
 
 def mail_logo_path() -> Path:
     return Path.cwd() / "website" / "static" / "graphics" / "mail_logo.png"
-
-def harmonogram_path() -> Path:
-    return Path.cwd() / "website" / "static" / "graphics" / "harmonogram.svg"
