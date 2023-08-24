@@ -386,6 +386,13 @@ def motivacni_call():
             else:
                 flash("Termíny smazány.", category="success")
             return redirect(url_for("admin_views.motivacni_call"))
+        elif request.form.get("smazat_48"):
+            for m in Motivacni_call.get_all():
+                if m.datum_a_cas - datetime.timedelta(hours=48) < datetime.datetime.now() and not m.user_id:
+                    m.delete()
+            alog("Smazání termínů bližších než 48 hodin.")
+            flash("Termíny smazány.", category="success")
+            return redirect(url_for("admin_views.motivacni_call"))
 
 
 @admin_views.route("/nahrat_soubory", methods=["GET","POST"])
