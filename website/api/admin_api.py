@@ -1,5 +1,6 @@
 from flask import Blueprint
 from flask_login import current_user
+from datetime import datetime
 import json
 from website.helpers.require_role_decorator import require_role_on_current_user
 from website.json_handlers.logs_handling import get_logs, get_alogs
@@ -10,7 +11,7 @@ from website.paths import velitel_odbornosti_data_path, poznamky_path, prohlasen
 from website.models.user import User
 from website.models.chyba import Chyba
 from website.models.hodnoceni import Hodnoceni
-from website.json_handlers.pohovory_handling import get_pohovory
+from website.models.motivacni_call import Motivacni_call
 from website.role_handler import get_access_rights
 from website.json_handlers.dostupne_omezeni import get_dostupne_progressy, get_dostupne_role, get_dostupne_odbornosti
 from website.json_handlers.mailing_list import get_mails_from_mailing_list
@@ -66,20 +67,24 @@ def soubory_existuji():
     return result
 
 
-@admin_api.route("/pohovory")
+@admin_api.route("/motivacni_cally")
 @require_role_on_current_user("editing_pohovory")
-def pohovory():
+def motivacni_cally():
     result = []
-    for p in get_pohovory():
+    cally = Motivacni_call.get_all()
+    cally.sort(key=lambda x: x.datum_a_cas)
+    for p in cally:
+        p: Motivacni_call
         zaznam = {}
-        zaznam["iso"] = p["iso"]
-        zaznam["pretty"] = pretty_datetime(p["iso"])
-        zaznam["user"] = p["user"]
-        zaznam["admin"] = p["admin"]
-        if p["user"]:
-            u = User.get_by_id(p["user"])
+        zaznam["id"] = p.id
+        zaznam["pretty"] = pretty_datetime(p.datum_a_cas)
+        zaznam["user_id"] = p.user_id
+        zaznam["admin_email"] = User.get_by_id(p.admin_id).email
+        zaznam["probehl"] = (p.datum_a_cas < datetime.now() and p.user_id)
+        if p.user_id:
+            u = User.get_by_id(p.user_id)
             zaznam["jmeno"] = u.jmeno
-            zaznam["link"] = u.meeting_link
+            zaznam["link"] = p.meeting_link
             #  aby bylo clickable, i když nemá jméno ještě:
             if u.jmeno == "":
                 zaznam["jmeno"] = "Dosud nevyplnil jméno"
@@ -149,7 +154,15 @@ def role(id):
 @require_role_on_current_user(["editing_users_allowed", "editing_admins_allowed"])
 def detail_usera(id):
     u = User.get_by_id(id)
-    return u.get_info_na_detail_usera()
+    data = u.get_info_na_detail_usera()
+    m = Motivacni_call.get_by_user_id(id)
+    if m:
+        data["datum_motivacniho_callu"] = pretty_datetime(m.datum_a_cas)
+        data["meeting_link"] = m.meeting_link
+    else:
+        data["datum_motivacniho_callu"] = None
+        data["meeting_link"] = None
+    return data
 
 @admin_api.route("/hodnoceni/<int:id>")
 @require_role_on_current_user("editing_users_allowed")
@@ -184,11 +197,12 @@ def useri_na_jmenovani_adminu():
 @admin_api.route("/statistiky")
 @require_role_on_current_user("admin")
 def statistiky():
-    ucastnici = [u for u in User.get_all() if "admin" not in json.loads(u.role)]    
+    ucastnici = [u for u in User.get_all() if "admin" not in json.loads(u.role)] 
+    pohovory = Motivacni_call.get_all()   
     result =  {
         "registrovanych": len(ucastnici),
         "motivacni_formular": len(list(filter(lambda x: x.odevzdany_motivacni_dotaznik == True, ucastnici))),
-        "motivacni_call": len(list(filter(lambda x: x.datum_pohovoru is not None, ucastnici))),
+        "motivacni_call": len(list(filter(lambda x: x.user_id is not None, pohovory))),
         "domaci_kolo": len(list(filter(lambda x: x.progress in ["Domácí projekt", "Přípravná mise", "Simulovaná mise"], ucastnici))),
         "pripravna_mise": len(list(filter(lambda x: x.progress in ["Přípravná mise", "Simulovaná mise"], ucastnici))),
         "simulovana_mise": len(list(filter(lambda x: x.progress == "Simulovaná mise", ucastnici))),

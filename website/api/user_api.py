@@ -4,7 +4,7 @@ import json
 import datetime
 from website.helpers.pretty_date import pretty_datetime
 from website.helpers.require_role_decorator import require_progress_na_ucastnikovi, require_role_on_current_user
-from website.json_handlers.pohovory_handling import get_neobsazene_pohovory
+from website.models.motivacni_call import Motivacni_call
 from website.paths import velitel_odbornosti_data_path, vzorove_vypracovani_path
 
 
@@ -28,22 +28,25 @@ def uzamcene_zmeny():
 @require_progress_na_ucastnikovi("Motivační call")
 def volne_pohovory():
     result = []
-    for p in get_neobsazene_pohovory():
-        if datetime.datetime.fromisoformat(p["iso"]) - datetime.timedelta(hours=48) > datetime.datetime.now():
+    for p in Motivacni_call.get_neobsazene_cally():
+        print(p)
+        if p.datum_a_cas - datetime.timedelta(hours=48) > datetime.datetime.now():
             zaznam = {}
-            zaznam["iso"] = p["iso"]
-            zaznam["pretty"] = pretty_datetime(p["iso"])
+            zaznam["id"] = p.id
+            zaznam["pretty"] = pretty_datetime(p.datum_a_cas)
             result.append(zaznam)
+    print(result)
     return json.dumps(result)
 
 
-@user_api.route("/datum_pohovoru")
+@user_api.route("/datum_motivacniho_callu")
 @require_role_on_current_user("user")
 @require_progress_na_ucastnikovi("Motivační call")
-def datum_pohovoru():
+def datum_motivacniho_callu():
+    m = Motivacni_call.get_by_user_id(current_user.id)
     result = {
-        "datum": pretty_datetime(current_user.datum_pohovoru),
-        "link": current_user.meeting_link
+        "datum": pretty_datetime(m.datum_a_cas) if m else None,
+        "link": m.meeting_link if m else None
         }
     return json.dumps(result)
 
@@ -67,7 +70,13 @@ def kontakt_na_velitele_odbornosti(odb):
 @user_api.route("/info")
 @require_role_on_current_user("user")
 def info():
-    return current_user.get_info_na_ucet_stranku()
+    data = current_user.get_info_na_ucet_stranku()
+    m = Motivacni_call.get_by_user_id(current_user.id)
+    if m:
+        data["datum_motivacniho_callu"] = pretty_datetime(m.datum_a_cas)
+    else:
+        data["datum_motivacniho_callu"] = None
+    return data
 
 
 @user_api.route("/odpovedi_motivaku")

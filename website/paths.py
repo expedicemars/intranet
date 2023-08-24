@@ -33,9 +33,6 @@ def default_profilovka_path() -> Path:
 def poznamky_path() -> Path:
     return Path.cwd() / "data" / "poznamky.json"
 
-def pohovory_path() -> Path:
-    return Path.cwd() / "data" / "pohovory.json"
-
 def prohlaseni_path() -> Path:
     return Path.cwd() / "data" / "prohlaseni_rodicu.docx"
 
@@ -65,6 +62,3 @@ def dostupne_odbornosti_path() -> Path:
 
 def mail_logo_path() -> Path:
     return Path.cwd() / "website" / "static" / "graphics" / "mail_logo.png"
-
-def harmonogram_path() -> Path:
-    return Path.cwd() / "website" / "static" / "graphics" / "harmonogram.svg"

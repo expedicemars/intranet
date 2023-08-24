@@ -8,6 +8,7 @@ from website.helpers.require_role_decorator import require_role_on_current_user
 from website.models.chyba import Chyba
 from website.models.user import User
 from website.models.hodnoceni import Hodnoceni
+from website.models.motivacni_call import Motivacni_call
 from website.json_handlers.mailing_list import set_mailing_list
 from website.helpers.user_filter import seznam_generator
 from website.helpers.exporty import exportovat, promazat
@@ -15,7 +16,6 @@ from website.helpers.pretty_date import pretty_datetime
 from website.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
-from website.json_handlers.pohovory_handling import pridat_pohovory, smazat_termin
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
 from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, set_nove_datum_zacatku_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
@@ -139,7 +139,11 @@ def detail_usera(id):
             return redirect(url_for("admin_views.detail_usera", id=id))
 
         elif request.form.get("odebrat_motivacni_call"):
-            u.odhlasit_z_motivacniho_callu()
+            m = Motivacni_call().get_by_user_id(id)
+            m.user_id = None
+            m.meeting_link = None
+            db.session.add(m)
+            db.session.commit()
             alog(f"Vymazána volba motivačního callu usera {u.email}")
             flash("Volba motivačního callu byla promazána.", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
@@ -181,11 +185,20 @@ def detail_usera(id):
                 u.admin_poznamka = data["admin_poznamka"]
                 alog(f"Změna admin poznámky uživatele {id}.")
 
-            if u.meeting_link == data["meeting_link"]:
-                pass
+            m = Motivacni_call.get_by_user_id(id)
+            if not m:
+                if data["meeting_link"]:
+                    flash("Nemůžeš upravovat meeting link, tento uživatel není zapsaný na žádném callu.", category="info")
+                else:
+                    pass
             else:
-                u.meeting_link = data["meeting_link"]
-                alog(f"Změna meeting linku uživatele {id}.")
+                if m.meeting_link == data["meeting_link"]:
+                    pass
+                else:
+                    m.meeting_link = data["meeting_link"]
+                    alog(f"Změna meeting linku uživatele {id}.")
+                    db.session.add(m)
+                    db.session.commit()
             
             db.session.add(u)
             db.session.commit()
@@ -308,7 +321,7 @@ def velitele_odbornosti():
         # zapisování kontaktních dat
         elif odbornost := request.form.get("ulozit_kontakt"):
             zapsat_kontakt(odbornost=odbornost, data=request.form.get(odbornost))
-            alog("Úprava kontaktních údajů pro odboornost " + odbornost)
+            alog("Úprava kontaktních údajů pro odbornost " + odbornost)
             flash("Data velitelů odborností byla upravena.", category="success")
         return redirect(url_for("admin_views.velitele_odbornosti"))
 
@@ -317,7 +330,6 @@ def velitele_odbornosti():
 @require_role_on_current_user("editing_users_allowed")
 def generovat_seznamy():
     if request.method == "GET":
-        flash("Tohe je ještě rozbitý.", category="error")
         return render_template("admin_generovat_seznamy.html", roles=get_access_rights())
     else:
         alog("Generování seznamu účastníků podle: " + request.form.get("result") + ".")
@@ -354,18 +366,25 @@ def motivacni_call():
                 flash("Časy, kkteré byly zadány, nedávaly smysl. Zkus to znova.", category="error")
                 return redirect(url_for("admin_views.motivacni_call"))
             else:
-                pridat_pohovory(start_datetime=start_datetime, end_datetime=end_datetime, admin=current_user)
+                Motivacni_call.pridat_pohovory(start_datetime=start_datetime, end_datetime=end_datetime, admin=current_user)
                 flash("Termíny vypsány.", category="success")
                 alog(f"Vypsání nových termínů na pohovory mezi {start_datetime} a {end_datetime}")
                 return redirect(url_for("admin_views.motivacni_call"))
-        elif request.form.get("smazat"):
-            isoformat = request.form.get("smazat")
-            vysledek = smazat_termin(datetime.datetime.fromisoformat(isoformat))
-            if vysledek:
-                flash("Termín smazán.", category="success")
-                alog(f"Smazání termínu pohovoru {isoformat}.")
+        elif r := request.form.get("smazat_ids_list"):
+            ids_list = json.loads(r)
+            skipped_some = False
+            for id in ids_list:
+                m: Motivacni_call
+                m = Motivacni_call.get_by_id(id)
+                if m.user_id:
+                    skipped_some = True
+                else:
+                    m.delete()
+            alog("Smazání vybraných termínů pohovorů")
+            if skipped_some:
+                flash("Na některé vybrané pohovory se mezitím někdo zapsal. Ostatní byly smazány.", category="info")
             else:
-                flash("Tento termín si mezitím někdo zapsal, nejde tedy smazat.", category="error")
+                flash("Termíny smazány.", category="success")
             return redirect(url_for("admin_views.motivacni_call"))
 
 
