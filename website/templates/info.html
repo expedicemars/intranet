@@ -1,10 +1,8 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-<h2>Odevzdané práce</h2>
-<p>
-    Tady jsou vidět tvé odevzdané práce a motivační formulář.
-</p>
+<h2>Další kroky v Expedici</h2>
+<div class="border-orange rounded-2 m-2 p-2 lighter" id="dalsi_kroky"></div>
 <hr>
 <h3>Motivační formulář</h3>
 
@@ -72,9 +70,10 @@
         Motivační formulář od tebe ještě odevzdaný nemáme.
     </div>
 {% endif %}
-
+<hr>
 <h3>Shrnutí práce</h3>
 <div id="ukazat_shrnuti" class="border-orange rounded-2 my-2 p-2 lighter"></div>
+<hr>
 <h3>Práce domácího kola</h3>
 <div id="ukazat_praci" class="border-orange rounded-2 my-2 p-2 lighter"></div>
 

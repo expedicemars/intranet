@@ -1,5 +1,11 @@
 import httpGet from "./httpGet.js"
 let odpovedi_motivaku = JSON.parse(httpGet("/user_api/odpovedi_motivaku"))
+let dalsi_kroky_div = document.getElementById("dalsi_kroky")
+let dalsi_kroky_info = httpGet("/user_api/dalsi_kroky")
+let shrnuti = JSON.parse(httpGet("/file_api/send_filename_vlastniho_shrnuti"))
+let ukazat_shrnuti = document.getElementById("ukazat_shrnuti")
+let prace = JSON.parse(httpGet("/file_api/send_filenames_vlastni_prace"))
+let ukazat_praci = document.getElementById("ukazat_praci")
 
 if (document.getElementById("odevzdany_formular")) {
    for (let o of odpovedi_motivaku) {   
@@ -7,8 +13,6 @@ if (document.getElementById("odevzdany_formular")) {
    }
 }
 
-let shrnuti = JSON.parse(httpGet("/file_api/send_filename_vlastniho_shrnuti"))
-let ukazat_shrnuti = document.getElementById("ukazat_shrnuti")
 if (shrnuti["filename"]) {
     let a = document.createElement("a")
     a.classList.add("link")
@@ -20,8 +24,6 @@ if (shrnuti["filename"]) {
    ukazat_shrnuti.innerText = "Shrnutí práce ještě není odevzdané."
 }
 
-let prace = JSON.parse(httpGet("/file_api/send_filenames_vlastni_prace"))
-let ukazat_praci = document.getElementById("ukazat_praci")
 if (prace) {
     for (let prace_file of prace) {
         let a = document.createElement("a")
@@ -35,3 +37,5 @@ if (prace) {
 } else {
    ukazat_praci.innerText = "Práce ještě není odevzdaná."
 }
+
+dalsi_kroky_div.innerHTML = dalsi_kroky_info
