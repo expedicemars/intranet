@@ -3,13 +3,11 @@ from flask_login import current_user, login_user
 from website.helpers.require_role_decorator import require_role_on_current_user, require_progress_na_ucastnikovi, require_odbornost_na_ucastnikovi
 from website.helpers.size_check import check_size
 from website.models.user import User
+from website.models.motivacni_call import Motivacni_call
 from website.mail_handler import mail_sender
 from website import db
 from website.role_handler import get_access_rights, get_user_progress
-import json
-import os
 from website.paths import user_data_folder_path
-from website.json_handlers.pohovory_handling import zapsat_na_pohovor
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti, get_odbornost_by_system_name
 import datetime
 from pathlib import Path
@@ -108,20 +106,18 @@ def motivacni_call():
         return render_template("motivacni_call.html", roles=get_access_rights(), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=get_user_progress())
     else:
         if request.form.get("vybrat"):
-            current_user.datum_pohovoru =  datetime.datetime.fromisoformat(request.form.get("vybrat"))
-
-            db.session.add(current_user)
-            db.session.commit()
-            vysledek = zapsat_na_pohovor(current_user.datum_pohovoru, current_user.id)
-            mail_sender("novy_motivacni_call", target=vysledek["admin"])
-            if vysledek["volny"]:
+            m: Motivacni_call
+            m = Motivacni_call.get_by_id(request.form.get("vybrat"))
+            vysledek = m.zapsat_usera(user_id = current_user.id)
+            if vysledek:
+                mail_sender("novy_motivacni_call", target=User.get_by_id(m.admin_id).email)
                 flash("Termín vybrán.", category="success")
             else:
                 flash("Tento termín si mezitím vybral někdo jiný. Prosím, vyber si další.", category="error")
             return redirect(url_for("user_views.motivacni_call"))
         elif request.form.get("zmenit"):
-            admin = current_user.odhlasit_z_motivacniho_callu()
-            mail_sender(mail_identifier="odhlaseni_motivacniho_callu", target=admin)
+            admin_id = Motivacni_call.odhlasit_usera_by_user_id(current_user.id)
+            mail_sender(mail_identifier="odhlaseni_motivacniho_callu", target=User.get_by_id(admin_id).email)
             flash("Termín byl odhlášen.", category="success")
             return redirect(url_for("user_views.motivacni_call"))
     

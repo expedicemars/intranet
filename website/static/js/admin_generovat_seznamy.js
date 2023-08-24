@@ -58,8 +58,8 @@ let udaje_k_filtrovani = [
         "display_name": "Škola",
     },
     {
-        "system_name": "datum_pohovoru",
-        "display_name": "Datum pohovoru",
+        "system_name": "datum_motivacniho_callu",
+        "display_name": "Datum otivačního callu",
     },
     {
         "system_name": "meeting_link",
@@ -158,8 +158,8 @@ let udaje_k_vypsani = [
         "display_name": "Datum registrace"
     },
     {
-        "system_name": "datum_pohovoru",
-        "display_name": "Datum pohovoru",
+        "system_name": "datum_motivacniho_callu",
+        "display_name": "Datum motivačního callu",
     },
     {
         "system_name": "meeting_link",

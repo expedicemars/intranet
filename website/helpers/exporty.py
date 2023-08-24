@@ -1,10 +1,11 @@
 from openpyxl import Workbook
-from website.paths import exporty_path, mailing_list_path, pohovory_path, poznamky_path, velitel_odbornosti_data_path, zadani_folder_path, admin_logs_file_path, app_logs_file_path, prohlaseni_path, user_data_folder_path, prubeh_rocniku_path, sablony_folder_path, odkazy_path
+from website.paths import exporty_path, mailing_list_path, poznamky_path, velitel_odbornosti_data_path, zadani_folder_path, admin_logs_file_path, app_logs_file_path, prohlaseni_path, user_data_folder_path, prubeh_rocniku_path, sablony_folder_path, odkazy_path, vzorove_vypracovani_path
 from website.helpers.pretty_date import pretty_date, pretty_datetime
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 from website.role_handler import get_access_rights
 from datetime import datetime, date
 from website.models.user import User
+from website.models.motivacni_call import Motivacni_call
 from website.models.hodnoceni import Hodnoceni
 from website import db
 import json
@@ -42,8 +43,6 @@ def exportovat() -> None:
         "Alergie",
         "Škola",
         "Datum registrace",
-        "Datum pohovoru",
-        "Meeting link",
         "Odevzdal motivační dotazník",
         "Oslovení v 1. pádě",
         "Oslovení v 5. pádě",
@@ -70,23 +69,24 @@ def exportovat() -> None:
         ws1.cell(i+2,16,value=u.alergie)
         ws1.cell(i+2,17,value=u.skola)
         ws1.cell(i+2,18,value=pretty_datetime(u.datum_registrace))
-        ws1.cell(i+2,19,value=pretty_datetime(u.datum_pohovoru))
-        ws1.cell(i+2,20,value=u.meeting_link)
-        ws1.cell(i+2,21,value=u.odevzdany_motivacni_dotaznik)
-        ws1.cell(i+2,22,value=u.osloveni_1p)
-        ws1.cell(i+2,23,value=u.osloveni_5p)
-        ws1.cell(i+2,24,value=u.zajmeno)
+        ws1.cell(i+2,19,value=u.odevzdany_motivacni_dotaznik)
+        ws1.cell(i+2,20,value=u.osloveni_1p)
+        ws1.cell(i+2,21,value=u.osloveni_5p)
+        ws1.cell(i+2,22,value=u.zajmeno)
 
     ws2 = wb.create_sheet("Pohovory")
-    with open(pohovory_path()) as file:
-        file = json.load(file)
-    ws2.cell(1,1,"Datum")
-    ws2.cell(1,2,"ID účastníka")
-    ws2.cell(1,3,"Kdo to vypsal")
-    for i, zaznam in enumerate(file):
-        ws2.cell(i+2,1,pretty_datetime(zaznam["iso"]))
-        ws2.cell(i+2,2,zaznam["user"])
-        ws2.cell(i+2,3,zaznam["admin"])
+    cally = Motivacni_call.get_all()
+    ws2.cell(1,1,"Id")
+    ws2.cell(1,2,"Datum")
+    ws2.cell(1,3,"ID účastníka")
+    ws2.cell(1,4,"ID admina kdo to vypsal")
+    ws2.cell(1,5,"Link")
+    for i, call in enumerate(cally):
+        ws2.cell(i+2,1,call.id)
+        ws2.cell(i+2,2,pretty_datetime(call.datum_a_cas))
+        ws2.cell(i+2,3,call.user_id)
+        ws2.cell(i+2,4,call.admin_id)
+        ws2.cell(i+2,5,call.meeting_link)
     
     ws3 = wb.create_sheet("Poznámky")
     with open(poznamky_path()) as file:
@@ -145,6 +145,7 @@ def exportovat() -> None:
         archive.write(admin_logs_file_path(), arcname=admin_logs_file_path().name)
         archive.write(app_logs_file_path(), arcname=app_logs_file_path().name)
         archive.write(prohlaseni_path(), arcname=prohlaseni_path().name)
+        archive.write(vzorove_vypracovani_path(), arcname=vzorove_vypracovani_path().name)
         archive.write(odkazy_path(), arcname=odkazy_path().name)
         for file in sablony_folder_path().iterdir():
             archive.write(file, arcname=file.name)
@@ -170,8 +171,6 @@ def promazat() -> None:
                     file.unlink()
     with open(admin_logs_file_path(), "w") as file:
         file.write("")
-    with open(pohovory_path(), "w") as file:
-        file.write(json.dumps([], indent=4))
     with open(poznamky_path(), "w") as file:
         file.write(json.dumps([], indent=4))
     with open(prubeh_rocniku_path(),"w") as file:

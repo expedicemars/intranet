@@ -1,4 +1,5 @@
 from website.models.user import User
+from website.models.motivacni_call import Motivacni_call
 from typing import List
 from website.paths import user_data_folder_path
 from website.helpers.pretty_date import pretty_datetime, pretty_date
@@ -46,7 +47,24 @@ def user_filter(kriteria: dict) -> List[User]:
                 return True
         else:
             return False
-
+        
+    def ma_datum_motivacniho_callu(user):
+        m = Motivacni_call.get_by_user_id(user.id)
+        if m:
+            return True
+        else:
+            return False
+    
+    def ma_meeting_link(user):
+        m = Motivacni_call.get_by_user_id(user.id)
+        if m:
+            if m.meeting_link in [None, ""]:
+                return False
+            else:
+                return True
+        else:
+            return False
+        
     if kriteria["udaj_ma"] == "profilovka":
         users = filter(lambda x: ma_profilovku(x), users)
     elif kriteria["udaj_ma"] == "jmeno":
@@ -67,10 +85,10 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: x.alergie not in [None, ""], users)
     elif kriteria["udaj_ma"] == "skola":
         users = filter(lambda x: x.skola not in [None, ""], users)
-    elif kriteria["udaj_ma"] == "datum_pohovoru":
-        users = filter(lambda x: x.datum_pohovoru not in [None, ""], users)
+    elif kriteria["udaj_ma"] == "datum_motivacniho_callu":
+        users = filter(lambda x: ma_datum_motivacniho_callu(x), users)
     elif kriteria["udaj_ma"] == "meeting_link":
-        users = filter(lambda x: x.meeting_link not in [None, ""], users)
+        users = filter(lambda x: ma_meeting_link(x), users)
     elif kriteria["udaj_ma"] == "osloveni_1p":
         users = filter(lambda x: x.osloveni_1p not in [None, ""], users)
     elif kriteria["udaj_ma"] == "osloveni_5p":
@@ -98,10 +116,10 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: x.alergie in [None, ""], users)
     elif kriteria["udaj_nema"] == "skola":
         users = filter(lambda x: x.skola in [None, ""], users)
-    elif kriteria["udaj_nema"] == "datum_pohovoru":
-        users = filter(lambda x: x.datum_pohovoru in [None, ""], users)
+    elif kriteria["udaj_nema"] == "datum_motivacniho_callu":
+        users = filter(lambda x: not ma_datum_motivacniho_callu(x), users)
     elif kriteria["udaj_nema"] == "meeting_link":
-        users = filter(lambda x: x.meeting_link in [None, ""], users)
+        users = filter(lambda x: not ma_meeting_link(x), users)
     elif kriteria["udaj_nema"] == "osloveni_1p":
         users = filter(lambda x: x.osloveni_1p in [None, ""], users)
     elif kriteria["udaj_nema"] == "osloveni_5p":
@@ -183,10 +201,12 @@ def seznam_generator(kriteria: dict) -> dict:
             zaznam["skola"] = u.skola
         if "datum_registrace" in vypsat_list:
             zaznam["datum_registrace"] = pretty_datetime(u.datum_registrace) 
-        if "datum_pohovoru" in vypsat_list:
-            zaznam["datum_pohovoru"] = pretty_datetime(u.datum_pohovoru)
+        if "datum_motivacniho_callu" in vypsat_list:
+            m = Motivacni_call.get_by_user_id(u.id)
+            zaznam["datum_motivacniho_callu"] = pretty_datetime(m.datum) if m else None
         if "meeting_link" in vypsat_list:
-            zaznam["meeting_link"] = u.meeting_link
+            m = Motivacni_call.get_by_user_id(u.id)
+            zaznam["meeting_link"] = m.meeting_link if m else None
         if "odevzdany_motivacni_dotaznik" in vypsat_list:
             zaznam["odevzdany_motivacni_dotaznik"] = "Odevzdaný" if u.odevzdany_motivacni_dotaznik else "Ještě ne"
         if "osloveni_1p" in vypsat_list:

@@ -14,34 +14,48 @@
     </form>
     <h3>Vypsané termíny</h3>
     <p>Termíny blíže než 48 hodin se účastníkům nezobrazují.</p>
-    <form method="post">
+    <button type="button" class="btn btn-danger" id="smazat_vybrane">Smazat vybrané cally</button>
+    <form method="post" id="form">
+        <input type="text" hidden name="smazat_ids_list" id="result">
+    </form>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Kdy</th>
                         <th>Kdo to vypsal</th>
-                        <th>Smazat</th>
+                        <th class="text-center">Vybrat</th>
                     </tr>
                 </thead>            
                 <tbody id="content"></tbody>
             </table>
         </div>
-    </form>
     <h3>Přihlášení účastníci</h3>
     <div class="table-responsive">
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <td>Datum</td>
-                    <td>Jméno účastníka</td>
-                    <td>Kdo to vypsal</td>
-                    <td>Link na meeting</td>
+                    <th>Datum</th>
+                    <th>Jméno účastníka</th>
+                    <th>Kdo to vypsal</th>
+                    <th>Link na meeting</th>
                 </tr>
             </thead>
             <tbody id="prihlaseni"></tbody>
         </table>
     </div>
+    <h3>Proběhlé cally</h3>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Jméno účastníka</th>
+                </tr>
+            </thead>
+            <tbody id="probehly"></tbody>
+        </table>
+    </div>
 
-    <script type="module" src="{{url_for('static', filename='js/admin_pohovory.js')}}"></script>
+    <script type="module" src="{{url_for('static', filename='js/admin_motivacni_call.js')}}"></script>
 {% endblock %}

@@ -7,7 +7,6 @@ from website.paths import user_data_folder_path
 from shutil import rmtree
 from website.helpers.pretty_date import pretty_datetime, pretty_date
 from website.helpers.get_user_files import get_prace_filenames, get_shrnuti_filename
-from website.json_handlers.pohovory_handling import odhlasit_usera_by_id
 from website.json_handlers.dostupne_omezeni import get_odbornost_by_system_name
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -32,8 +31,6 @@ class User(db.Model, UserMixin):
     alergie = db.Column(db.String(1000))
     skola = db.Column(db.String(1000))
     datum_registrace = db.Column((db.DateTime), default=datetime.now)
-    datum_pohovoru = db.Column(db.DateTime)
-    meeting_link = db.Column(db.String(1000))
     motivacni_dotaznik = db.Column(db.Text)
     odevzdany_motivacni_dotaznik = db.Column(db.Boolean)
     osloveni_1p = db.Column(db.String(200))
@@ -79,7 +76,6 @@ class User(db.Model, UserMixin):
             "progress": self.progress,
             "tricko": self.tricko,
             "datum_registrace": pretty_datetime(self.datum_registrace),
-            "datum_pohovoru": pretty_datetime(self.datum_pohovoru),
             "osloveni_1p": self.osloveni_1p,
             "osloveni_5p": self.osloveni_5p,
             "zajmeno": self.zajmeno
@@ -101,9 +97,7 @@ class User(db.Model, UserMixin):
             "alergie": self.alergie,
             "skola": self.skola,
             "datum_registrace": pretty_datetime(self.datum_registrace),
-            "datum_pohovoru": pretty_datetime(self.datum_pohovoru),
             "progress": self.progress,
-            "meeting_link": self.meeting_link,
             "admin_poznamka": self.admin_poznamka,
             "uzamcene_zmeny": "Ano" if self.uzamcene_zmeny else "Ne",
             "uzamcene_zmeny_bool": self.uzamcene_zmeny,
@@ -169,14 +163,7 @@ class User(db.Model, UserMixin):
                         entry["odpoved"] = value
         self.motivacni_dotaznik = json.dumps(self.motivacni_dotaznik)
         db.session.add(self)
-        db.session.commit()
-    
-    def odhlasit_z_motivacniho_callu(self):
-        self.datum_pohovoru = None
-        db.session.add(self)
-        db.session.commit()
-        admin = odhlasit_usera_by_id(self.id)
-        return admin        
+        db.session.commit()  
     
     def ma_nahranou_praci(self):
         filenames = json.loads(get_prace_filenames(self.id))

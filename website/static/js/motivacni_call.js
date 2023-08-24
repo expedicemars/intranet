@@ -1,6 +1,6 @@
 import httpGet from "./httpGet.js"
 let pohovory = JSON.parse(httpGet("/user_api/volne_pohovory"))
-let aktualne = JSON.parse(httpGet("/user_api/datum_pohovoru"))
+let aktualne = JSON.parse(httpGet("/user_api/datum_motivacniho_callu"))
 let link_p = document.getElementById("link")
 let jsou_pohovory_div = document.getElementById("jsou_pohovory")
 let nejsou_pohovory_div = document.getElementById("nejsou_pohovory")
@@ -26,10 +26,12 @@ if (aktualne["datum"]) {
     datum_span.innerText = aktualne["datum"]
 } else {
     datum_neni.hidden = false
-    terminy_div.hidden = false
+    if (terminy_div) {
+        terminy_div.hidden = false
+    }
 }
 
-function generator(iso, pretty) {
+function generator(id, pretty) {
     let tr = document.createElement("tr")
     let th = document.createElement("th")
     let td = document.createElement("td")
@@ -43,15 +45,19 @@ function generator(iso, pretty) {
     zapsat_button.classList.add("btn", "em-button")
     zapsat_button.type="submit"
     zapsat_button.name = "vybrat"
-    zapsat_button.value = iso
+    zapsat_button.value = id
     td.appendChild(zapsat_button)
 }
 
 if (pohovory.length == 0 || aktualne["datum"]) {
-    nejsou_pohovory_div.hidden = false
+    if (nejsou_pohovory_div) {
+        nejsou_pohovory_div.hidden = false
+    }
 } else {
-    jsou_pohovory_div.hidden = false
-    for (let p of pohovory) {
-        generator(p["iso"], p["pretty"])
+    if (jsou_pohovory_div) {
+        jsou_pohovory_div.hidden = false
+        for (let p of pohovory) {
+            generator(p["id"], p["pretty"])
+        }
     }
 }

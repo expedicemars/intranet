@@ -95,16 +95,6 @@ def check_poznamky() -> None:
             file.write(json.dumps([], indent=4))
         log("Založen soubor na poznámky na " + str(path))
 
-def check_pohovory() -> None:
-    path = p.pohovory_path()
-    if path.exists():
-        log("Soubor na pohovory už existuje.")
-    else:
-        path.touch()
-        with open(path, "w") as file:
-            file.write(json.dumps([], indent=4))
-        log("Založen soubor na pohovory na " + str(path))
-
 def check_exporty() -> None:
     path = p.exporty_path()
     if path.exists():
