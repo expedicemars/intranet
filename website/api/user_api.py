@@ -103,6 +103,8 @@ def dalsi_kroky():
         return "Čeká tě motivační call s některými našimi organizátory. Jde o neformální online popovídání, při kterém se s tebou seznámíme a ty zase poznáš pár minulých účastníků Expedice. Pro účast na callu si musíš vybrat jeden z vypsaných termínů. Jestliže nejsou žádné termíny vypsané nebo se ti nehodí, brzy zveřejníme další. Pokud by to trvalo dlouho, omlouváme se. Můžeš nám kdykoli napsat, například s návrhem času, který ti vyhovuje. "
     elif Motivacni_call.get_by_user_id(u.id).datum_a_cas > datetime.datetime.now():
         return "Čeká tě motivační call, termín už máš vybraný. Nejpozději do zvoleného času uvidíš na intranetu odkaz, kde se bude call odehrávat. Těšíme se!"
+    elif u.progress == "Motivační call":
+        return "Teď čekáš na to, než ti někdo z organizátorů zpřístupní výběr odbornosti. Mělo by se tak stát do několika dní po tvém motivačním callu."
     elif u.odbornost == "zatím nevybraná":
         return "Teď tě čeká domácí práce. Vyber si jednu z pěti odborností podle toho, které nejlépe vystihuje tvé zájmy.  Začít s prací můžeš kdykoli, velitelé odborostí jsou ti kdykoli k dispozici a moc rádi odpoví na tvé otázky. <br>Finální zařazení do odbornosti proběhne ve chvíli, kdy odevzdáš shrnutí práce."
     elif not u.ma_nahranou_praci():
