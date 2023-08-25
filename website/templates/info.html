@@ -1,9 +1,12 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-<h2>Další kroky v Expedici</h2>
-<div class="border-orange rounded-2 m-2 p-2 lighter" id="dalsi_kroky"></div>
-<hr>
+
+<div hidden>
+    <h2>Další kroky v Expedici</h2>
+    <div class="border-orange rounded-2 m-2 p-2 lighter" id="dalsi_kroky"></div>
+    <hr>
+</div>
 <h3>Motivační formulář</h3>
 
 {% if odevzdany_formular %}

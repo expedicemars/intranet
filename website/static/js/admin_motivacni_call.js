@@ -25,7 +25,7 @@ for (let h of hodiny) {
 }
 
 function vyhodnotit() {
-    result = []
+    let result = []
     let checkboxes = document.getElementsByName("smazat")
     for (let ch of checkboxes) {
         if (ch.checked) {
