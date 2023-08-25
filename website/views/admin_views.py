@@ -177,13 +177,13 @@ def detail_usera(id):
                 pass
             else:
                 u.uzamcene_zmeny = data["uzamcene_zmeny"]
-                alog(f"Změna uzamčení změn uživatele {id} na { u.uzamcene_zmeny }.")
+                alog(f"Změna uzamčení změn uživatele {u.email} na { u.uzamcene_zmeny }.")
             
-            if u.admin_poznamka == data["admin_poznamka"]:
+            if u.admin_poznamka == data["admin_poznamka"] or data["admin_poznamka"] in [None, ""]:
                 pass
             else:
                 u.admin_poznamka = data["admin_poznamka"]
-                alog(f"Změna admin poznámky uživatele {id}.")
+                alog(f"Změna admin poznámky uživatele {u.email}.")
 
             m = Motivacni_call.get_by_user_id(id)
             if not m:
@@ -196,7 +196,7 @@ def detail_usera(id):
                     pass
                 else:
                     m.meeting_link = data["meeting_link"]
-                    alog(f"Změna meeting linku uživatele {id}.")
+                    alog(f"Změna meeting linku uživatele {u.email}.")
                     db.session.add(m)
                     db.session.commit()
             

@@ -8,6 +8,9 @@ let show_img_input_button = document.getElementById("show_img_input")
 let img = document.getElementById("img_file");
 let not_confirmed_div = document.getElementById("not_confirmed_div")
 let confirmed_div = document.getElementById("confirmed_div")
+let dalsi_kroky_div = document.getElementById("dalsi_kroky")
+let dalsi_kroky_info = httpGet("/user_api/dalsi_kroky")
+
 
 
 if (uzamcene_zmeny) {
@@ -64,3 +67,5 @@ for (let id of ids_list) {
 }
 
 nacist()
+
+dalsi_kroky_div.innerHTML = dalsi_kroky_info
