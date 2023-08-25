@@ -30,7 +30,7 @@ def login():
 		if user and check_password_hash(user.password, password):
 			login_user(user, remember=True)
 			flash("úspěšné přihlášení", category="success")
-			return redirect(url_for("default_views.home"))
+			return redirect(url_for("user_views.ucet"))
 		else:
 			flash("E-mail nebo heslo byly špatně", category="error")
 			return redirect(url_for("auth_views.login"))
@@ -73,7 +73,7 @@ def register():
 				prace_path = user_folder_path / "prace"
 				user_folder_path.mkdir()
 				prace_path.mkdir()
-				return redirect(url_for("default_views.home"))
+				return redirect(url_for("user_views.ucet"))
 
 @auth_views.route("/mailing_list", methods=["GET","POST"])		
 def mailing_list():
