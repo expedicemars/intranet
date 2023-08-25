@@ -1,7 +1,8 @@
 {% extends "admin_navbar.html" %}
 {% block content %}
     <h2>Motivační call</h2>
-    Tady se dají vypisovat nové termíny, do kterých se poté účastníci můžou zapsat. Setkání mají 10minutové bloky.
+    Tady se dají vypisovat nové termíny, do kterých se poté účastníci můžou zapsat. Setkání mají 10minutové bloky. Tipy pro to, jak vést motivační call jsou <a class="link" href="{{ url_for('admin_views.struktura_rozhovoru') }}">tady</a>.
+
     <h3>Přidat nový den a bloky v něm</h3>
     <form method="post">
         <label for="date">Datum: </label>
@@ -14,8 +15,9 @@
     </form>
     <h3>Vypsané termíny</h3>
     <p>Termíny blíže než 48 hodin se účastníkům nezobrazují.</p>
-    <button type="button" class="btn btn-danger" id="smazat_vybrane">Smazat vybrané cally</button>
     <form method="post" id="form">
+        <button type="button" class="btn btn-danger mx-1" id="smazat_vybrane">Smazat vybrané cally</button>
+        <button type="submit" class="btn btn-danger mx-1" name="smazat_48" value="whatever">Smazat cally blíže než 48 h</button>
         <input type="text" hidden name="smazat_ids_list" id="result">
     </form>
         <div class="table-responsive">

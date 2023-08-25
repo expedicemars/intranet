@@ -5,6 +5,7 @@ import datetime
 from website.helpers.pretty_date import pretty_datetime
 from website.helpers.require_role_decorator import require_progress_na_ucastnikovi, require_role_on_current_user
 from website.models.motivacni_call import Motivacni_call
+from website.models.user import User
 from website.paths import velitel_odbornosti_data_path, vzorove_vypracovani_path
 
 
@@ -29,13 +30,11 @@ def uzamcene_zmeny():
 def volne_pohovory():
     result = []
     for p in Motivacni_call.get_neobsazene_cally():
-        print(p)
         if p.datum_a_cas - datetime.timedelta(hours=48) > datetime.datetime.now():
             zaznam = {}
             zaznam["id"] = p.id
             zaznam["pretty"] = pretty_datetime(p.datum_a_cas)
             result.append(zaznam)
-    print(result)
     return json.dumps(result)
 
 
@@ -92,3 +91,23 @@ def odpovedi_motivaku():
 @require_role_on_current_user(["user"])
 def vzorove_vypracovani_existuje():
     return json.dumps({"existuje": vzorove_vypracovani_path().exists()})
+
+@user_api.route("/dalsi_kroky")
+@require_role_on_current_user(["user"])
+def dalsi_kroky():
+    u: User
+    u = current_user
+    if not u.confirmed:
+        return "Musíš potvrdit E-mail."
+    elif not u.odevzdany_motivacni_dotaznik:
+        return "Musíš vyplnit motivační dotazník."
+    elif not Motivacni_call.get_by_user_id(u.id):
+        return "Musíš si vybrat termín na call."
+    elif Motivacni_call.get_by_user_id(u.id).datum_a_cas > datetime.datetime.now():
+        return "Musíš počkat na call."
+    elif u.odbornost == "zatím nevybraná":
+        return "Musíš odevzdat shrnutí za jednu odbornost."
+    elif not u.ma_nahranou_praci():
+        return "Musíš do-odevzdat celou práci."
+    else:
+        return "Zbytek o konferenci a dalších kolech se dozvíš v mailech."
