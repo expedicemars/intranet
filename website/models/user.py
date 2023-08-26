@@ -10,6 +10,7 @@ from website.helpers.get_user_files import get_prace_filenames, get_shrnuti_file
 from website.json_handlers.dostupne_omezeni import get_odbornost_by_system_name
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from website.models.motivacni_call import Motivacni_call
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -78,7 +79,8 @@ class User(db.Model, UserMixin):
             "datum_registrace": pretty_datetime(self.datum_registrace),
             "osloveni_1p": self.osloveni_1p,
             "osloveni_5p": self.osloveni_5p,
-            "zajmeno": self.zajmeno
+            "zajmeno": self.zajmeno,
+            "dalsi_kroky": self.dalsi_kroky()
         }
     
     def get_info_na_detail_usera(self) -> dict:
@@ -104,7 +106,8 @@ class User(db.Model, UserMixin):
             "motivacni_formular": json.loads(self.motivacni_dotaznik) if self.odevzdany_motivacni_dotaznik else None,
             "osloveni_1p": self.osloveni_1p,
             "osloveni_5p": self.osloveni_5p,
-            "zajmeno": self.zajmeno
+            "zajmeno": self.zajmeno,
+            "dalsi_kroky": self.dalsi_kroky()
         }
         
 
@@ -196,4 +199,18 @@ class User(db.Model, UserMixin):
         db.session.add(self)
         db.session.commit()
         
-        
+    def dalsi_kroky(self) -> str:
+        if not self.odevzdany_motivacni_dotaznik:
+            return "Pro tvé další kroky Expedicí od tebe teď potřebujeme vyplnění motivačního formuláře. Ten není nutné odeslat rovnou, uložené odpovědi si můžeš nechat rozmyslet a formulář odeslat později. Čím dřív ho ale dostaneme, tím dříve si budeš moct zvolit termín motivačního callu. Je také potřeba průběžně vyplňovat (tuto) stránku svého účtu."
+        elif not Motivacni_call.get_by_user_id(self.id):
+            return "Čeká tě motivační call s některými našimi organizátory. Jde o neformální online popovídání, při kterém se s tebou seznámíme a ty zase poznáš pár minulých účastníků Expedice. Pro účast na callu si musíš vybrat jeden z vypsaných termínů. Jestliže nejsou žádné termíny vypsané nebo se ti nehodí, brzy zveřejníme další. Pokud by to trvalo dlouho, omlouváme se. Můžeš nám kdykoli napsat, například s návrhem času, který ti vyhovuje. "
+        elif Motivacni_call.get_by_user_id(self.id).datum_a_cas > datetime.now():
+            return "Čeká tě motivační call, termín už máš vybraný. Nejpozději do zvoleného času uvidíš na intranetu odkaz, kde se bude call odehrávat. Těšíme se!"
+        elif self.progress == "Motivační call":
+            return "Teď čekáš na to, než ti někdo z organizátorů zpřístupní výběr odbornosti. Mělo by se tak stát do několika dní po tvém motivačním callu."
+        elif self.odbornost == "zatím nevybraná":
+            return "Teď tě čeká domácí práce. Vyber si jednu z pěti odborností podle toho, které nejlépe vystihuje tvé zájmy.  Začít s prací můžeš kdykoli, velitelé odborostí jsou ti kdykoli k dispozici a moc rádi odpoví na tvé otázky. <br>Finální zařazení do odbornosti proběhne ve chvíli, kdy odevzdáš shrnutí práce."
+        elif not self.ma_nahranou_praci():
+            return "Na online konferenci budeš prezentovat svou domácí práci. Nyní čekáme na to, než celou práci odevzdáš. Máš na to čas do půlnoci před konferencí."
+        else:
+            return "Informace o konferenci a dalších kolech budeš dostávat e-mailem. Tak na viděnou!"
