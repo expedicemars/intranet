@@ -195,7 +195,7 @@ function create_div(content) {
     createTableRow("Dojem", content["dojem"]);
 
     let smazat_button = document.createElement("button")
-    smazat_button.innerText = "Smmazat hodnocení"
+    smazat_button.innerText = "Smazat hodnocení"
     smazat_button.classList.add("btn", "btn-danger")
     smazat_button.type = "submit"
     smazat_button.value = content["id"]
