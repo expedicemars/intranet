@@ -1,5 +1,6 @@
 from website.models.user import User
 from website.models.motivacni_call import Motivacni_call
+from website.models.hodnoceni import Hodnoceni
 from typing import List
 from website.paths import user_data_folder_path
 from website.helpers.pretty_date import pretty_datetime, pretty_date
@@ -89,6 +90,8 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: ma_datum_motivacniho_callu(x), users)
     elif kriteria["udaj_ma"] == "meeting_link":
         users = filter(lambda x: ma_meeting_link(x), users)
+    elif kriteria["udaj_ma"] == "hodnoceni": 
+        users = filter(lambda x: Hodnoceni.get_by_user_id(x.id), users)
     elif kriteria["udaj_ma"] == "osloveni_1p":
         users = filter(lambda x: x.osloveni_1p not in [None, ""], users)
     elif kriteria["udaj_ma"] == "osloveni_5p":
@@ -120,6 +123,8 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: not ma_datum_motivacniho_callu(x), users)
     elif kriteria["udaj_nema"] == "meeting_link":
         users = filter(lambda x: not ma_meeting_link(x), users)
+    elif kriteria["udaj_nema"] == "hodnoceni": 
+        users = filter(lambda x: not Hodnoceni.get_by_user_id(x.id), users)
     elif kriteria["udaj_nema"] == "osloveni_1p":
         users = filter(lambda x: x.osloveni_1p in [None, ""], users)
     elif kriteria["udaj_nema"] == "osloveni_5p":

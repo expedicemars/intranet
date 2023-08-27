@@ -66,6 +66,10 @@ let udaje_k_filtrovani = [
         "display_name": "Odkaz na call",
     },
     {
+        "system_name": "hodnoceni",
+        "display_name": "Hodnocení"
+    },
+    {
         "system_name": "osloveni_1p",
         "display_name": "Oslovení (1. pád)",
     },
