@@ -18,10 +18,10 @@ def confirmed():
     return json.dumps({"confirmation_status": current_user.confirmed})
 
 
-@user_api.route("/uzamcene_zmeny")
+@user_api.route("/uzamcene_zmeny_udaju")
 @require_role_on_current_user("user")
-def uzamcene_zmeny():
-    return json.dumps({"status": current_user.uzamcene_zmeny})
+def uzamcene_zmeny_udaju():
+    return json.dumps({"status": current_user.uzamcene_zmeny_udaju})
 
 
 @user_api.route("/volne_pohovory")

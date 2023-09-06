@@ -21,8 +21,11 @@ user_views = Blueprint("user_views", __name__)
 @require_role_on_current_user("user")
 def ucet():
     if request.method == "GET":
-        return render_template("ucet.html", current_user = current_user, roles=get_access_rights(), uzamcene_zmeny=current_user.uzamcene_zmeny, user_progress=get_user_progress())
+        return render_template("ucet.html", current_user = current_user, roles=get_access_rights(), uzamcene_zmeny_udaju=current_user.uzamcene_zmeny_udaju, user_progress=get_user_progress())
     else:
+        if current_user.uzamcene_zmeny_udaju:
+            flash("Máš uzamčené změny údajů, nesmíš nic měnit.")
+            return redirect(url_for("user_views.ucet"))
         if request.form.get("overeni_emailu"):
             token = current_user.get_reset_token()
             mail_sender(mail_identifier="potvrzeni_emailu", target=current_user.email, data=token)
@@ -103,7 +106,7 @@ def ucet_overeny(token):
 @require_progress_na_ucastnikovi("Motivační call")
 def motivacni_call():
     if  request.method == "GET":
-        return render_template("motivacni_call.html", roles=get_access_rights(), uzamcene_zmeny = current_user.uzamcene_zmeny, user_progress=get_user_progress())
+        return render_template("motivacni_call.html", roles=get_access_rights(), uzamcene_zmeny_callu = current_user.uzamcene_zmeny_callu, user_progress=get_user_progress())
     else:
         if request.form.get("vybrat"):
             m: Motivacni_call
@@ -134,7 +137,7 @@ def odbornost(odb):
     if request.method == "GET":
         return render_template("odbornost.html", 
                                roles=get_access_rights(), 
-                               uzamcene_zmeny = current_user.uzamcene_zmeny, 
+                               uzamcene_zmeny_prace = current_user.uzamcene_zmeny_prace, 
                                user_progress=get_user_progress(), 
                                odbornost=odb, 
                                odbornost_pretty = get_odbornost_by_system_name(odb)["prvnipjc"],

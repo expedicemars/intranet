@@ -30,7 +30,7 @@ Tady potom kontakt na velitele odbornosti. Neváhej se jich na cokoli ptát, vš
     </form>
 {% else %}
     <h2>Shrnutí práce</h2>
-    {% if uzamcene_zmeny %}
+    {% if uzamcene_zmeny_prace %}
         <p>Tvému účtu byly uzamčeny změny, pravděpodobně proto, že se blíží nějaký důležitý termín. Pokud ještě něco potřebuješ pozměnit, napiš nám a my ti změny ještě povolíme.</p>
     {% else %}
     <form method="post">
@@ -43,7 +43,7 @@ Tady potom kontakt na velitele odbornosti. Neváhej se jich na cokoli ptát, vš
     <hr>
     <h2>Prezentace a zbytek práce</h2> 
     {% if ma_nahranou_praci %}
-        {% if uzamcene_zmeny %}
+        {% if uzamcene_zmeny_prace %}
             <p>Tvému účtu byly uzamčeny změny, pravděpodobně proto, že se blíží nějaký důležitý termín. Pokud ještě něco potřebuješ pozměnit, napiš nám a my ti změny ještě povolíme.</p>
         {% else %}
         <form method="post">

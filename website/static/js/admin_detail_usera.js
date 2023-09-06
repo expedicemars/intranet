@@ -3,52 +3,17 @@ let id_usera = document.getElementById("id").value
 let detail_usera = JSON.parse(httpGet("/admin_api/detail_usera/" + String(id_usera)))
 let progressy = JSON.parse(httpGet("/admin_api/vsechny_progressy"))
 let hodnoceni = JSON.parse(httpGet("/admin_api/hodnoceni/" + String(id_usera)))
-let ulozit_button = document.getElementById("ulozit_button")
-let toggle_zmeny_button = document.getElementById("toggle_zmeny")
 let charcount_span = document.getElementById("charcount")
 let textarea = document.getElementById("admin_poznamka")
 let meeting_link_input = document.getElementById("meeting_link")
-let progress_select = document.getElementById("progress")
+let progress_select = document.getElementById("progress_select")
 let odbornost_select = document.getElementById("odbornost_select")
 let dostupne_odbornosti = JSON.parse(httpGet("/noauth_api/dostupne_odbornosti"))
+let odebrat_call_button = document.getElementById("odebrat_motivacni_call")
 
-ulozit_button.addEventListener("click", vyhodnotit)
-toggle_zmeny_button.addEventListener("click", toggle_zmeny)
 textarea.addEventListener("input", function() {
     charcount_span.innerHTML = String(textarea.value.length) + "/1000"
 })
-
-function toggle_zmeny() {
-    let node = document.getElementById("uzamcene_zmeny")
-    if (node.innerHTML == "Ne") {
-        node.innerHTML = "Ano"
-        toggle_zmeny_button.innerText = "Odemknout změny"
-    } else {
-        node.innerHTML = "Ne"
-        toggle_zmeny_button.innerText = "Uzamknout změny"
-    }
-}
-
-if (detail_usera.uzamcene_zmeny_bool) {
-    toggle_zmeny_button.innerText = "Odemknout změny"
-} else {
-    toggle_zmeny_button.innerText = "Uzamknout změny"
-}
-
-function  vyhodnotit() {
-    let result = {}
-    result["odbornost"] = document.getElementById("odbornost_select").value
-    result["progress"] = document.getElementById("progress").value
-    if (document.getElementById("uzamcene_zmeny").innerHTML == "Ano") {
-        result["uzamcene_zmeny"] = true
-    } else {
-        result["uzamcene_zmeny"] = false
-    }
-    result["admin_poznamka"] = textarea.value
-    result["meeting_link"] = meeting_link_input.value
-    document.getElementById("result").value = JSON.stringify(result)
-    document.getElementById("form").submit()
-}
 
 // progressy
 for (let prog of progressy) {
@@ -92,6 +57,11 @@ for (let key in detail_usera) {
             document.getElementById(detail_usera[key]).selected = "selected"
         } else if (key == "meeting_link") {
             meeting_link_input.value = detail_usera[key]
+        } else if (key == "datum_motivacniho_callu") {
+            node.innerHTML = detail_usera[key]
+            if (detail_usera[key] == "Nemá") {
+                odebrat_call_button.disabled = "disabled"
+            }
         } else {
             node.innerHTML = detail_usera[key]
         }

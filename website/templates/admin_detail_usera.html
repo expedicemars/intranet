@@ -4,17 +4,7 @@
 <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/duha.css')}}">
 <h2>Detail uživatele</h2>
 
-<form method="post">
-    <button class="btn btn-success m-1"  type="button" id="ulozit_button">Uložit</button>
-    <button class="btn btn-danger m-1" type="submit" value="1" name="smazat">Smazat uživatele</button>
-    <button class="btn em-button m-1" type="submit" value = "1" name="odebrat_motivacni_call">Odhlásit z motivačního callu</button>
-    <button class="btn em-button m-1" type="submit" value="1" name="hodnoceni">Přidat hodnocení</button>
-
-</form>
-<hr>
-
 <input hidden id="id" value="{{id}}"/>
-<h3>Informace</h3>
 <div class="container">
     <div class="row">
         <div class="col-lg-9 table-responsive">
@@ -125,12 +115,6 @@
                         </th>
                         <td id="datum_registrace"></td>
                     </tr>
-                    <tr>
-                        <th>
-                            Datum motivačního callu:
-                        </th>
-                        <td id="datum_motivacniho_callu"></td>
-                    </tr>
                 </tbody>
             </table>
             <b>Jaké se zobrazují další kroky: </b> <span id="dalsi_kroky"></span>
@@ -141,55 +125,100 @@
     </div>
 </div>
 <hr>
-<div class="table-responsive">
-    <table class="table table-hover">
-        <tbody>
-            <tr>
-                <th>Progress:</th>
-                <td>
-                    <select id="progress" class="form-select">
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>Odbornost:</th>
-                <td>
-                    <select id="odbornost_select" class="form-select">
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Uzamčené změny: <span id="uzamcene_zmeny"></span>
-                </th>
-                <td>
-                    <button type="button" id="toggle_zmeny" class="btn em-button"></button>
-                </td>
-            </tr> 
-            <tr>
-                <th>
-                    Adminí poznámka:
-                </th>
-                <td>
-                    <label for="admin_poznamka">Tuhle poznámku uživatel nikdy neuvidí.</label>
-                    <textarea id="admin_poznamka" class="form-control" rows="5"></textarea>
-                    <span id="charcount"></span>
-                </td>
-            </tr>
-            <!-- id link je tu kvuli odkazu z pohovorů -->
-            <tr id="link"> 
-                <th>
-                    Meeting link:
-                </th>
-                <td>
-                    <input type="text" id="meeting_link" class="form-control"></textarea>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<form method="post" id="form">
-    <input type="text" hidden id="result" name="result">
+<form method="post">
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <th>
+                        Datum motivačního callu:
+                    </th>
+                    <td id="datum_motivacniho_callu"></td>
+                    <td>
+                        <button class="btn em-button m-1" type="submit" value = "whatever" name="odebrat_motivacni_call" id="odebrat_motivacni_call">Odhlásit z motivačního callu</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Progress:</th>
+                    <td>
+                        <select class="form-select" name="progress" id="progress_select">
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn em-button" type="submit" name="progress_button" value="whatever">Uložit</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Odbornost:</th>
+                    <td>
+                        <select class="form-select" name="odbornost" id="odbornost_select">
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn em-button" type="submit" name="odbornost_button" value="whatever">Uložit</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Uzamčené změny osobních údajů: 
+                    </th>
+                    <td>
+                        <span id="uzamcene_zmeny_udaju"></span>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn em-button" name="uzamcene_zmeny_udaju" value="whatever">Toggle</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Uzamčené změny termínu callu: 
+                    </th>
+                    <td>
+                        <span id="uzamcene_zmeny_callu"></span>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn em-button" name="uzamcene_zmeny_callu" value="whatever">Toggle</button>
+                    </td>
+                </tr> 
+                <tr>
+                    <th>
+                        Uzamčené změny nahrání nové práce: 
+                    </th>
+                    <td>
+                        <span id="uzamcene_zmeny_prace"></span>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn em-button" name="uzamcene_zmeny_prace" value="whatever">Toggle</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Adminí poznámka:
+                    </th>
+                    <td>
+                        <label for="admin_poznamka">Tuhle poznámku uživatel nikdy neuvidí.</label>
+                        <textarea id="admin_poznamka" class="form-control" rows="5" name="admin_poznamka"></textarea>
+                        <span id="charcount"></span>
+                    </td>
+                    <td>
+                        <button class="btn em-button" type="submit" name="admin_poznamka_button" value="whatever"> Uložit</button>
+                    </td>
+                </tr>
+                <!-- id link je tu kvuli odkazu z pohovorů -->
+                <tr id="link"> 
+                    <th>
+                        Meeting link:
+                    </th>
+                    <td>
+                        <input type="text" id="meeting_link" name="meeting_link" class="form-control"></textarea>
+                    </td>
+                    <td>
+                        <button class="btn em-button" type="submit" name="meeting_button" value="whatever">Uložit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </form>
 <hr>
 <div>
@@ -268,6 +297,7 @@
         Tipy pro to, jak vést motivační call jsou <a class="link" href="{{ url_for('admin_views.struktura_rozhovoru') }}">tady</a>.
     </p>
     <form method="post">
+        <button class="btn em-button m-1" type="submit" value="1" name="hodnoceni">Přidat hodnocení</button>
         <div class="container" id="hodnoceni_div">
     </form>
     </div>
@@ -277,6 +307,10 @@
 <div id="ukazat_shrnuti" class="border-orange rounded-2 my-2 p-2 lighter"></div>
 <h3>Práce domácího kola</h3>
 <div id="ukazat_praci" class="border-orange rounded-2 my-2 p-2 lighter"></div>
+
+<form method="post">
+    <button class="btn btn-danger m-1" type="submit" value="1" name="smazat">Smazat uživatele</button>
+</form>
 
 <script type="module" src="{{url_for('static', filename='js/admin_detail_usera.js')}}"></script>
 {% endblock %}

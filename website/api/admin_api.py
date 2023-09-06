@@ -160,7 +160,7 @@ def detail_usera(id):
         data["datum_motivacniho_callu"] = pretty_datetime(m.datum_a_cas)
         data["meeting_link"] = m.meeting_link
     else:
-        data["datum_motivacniho_callu"] = None
+        data["datum_motivacniho_callu"] = "Nemá"
         data["meeting_link"] = None
     return data
 
