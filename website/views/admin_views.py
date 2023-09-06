@@ -115,16 +115,79 @@ def detail_usera(id):
         return render_template("admin_detail_usera.html", roles=get_access_rights(), id=id)
     else:
         u = User.get_by_id(id)
-        if request.form.get("smazat"):
-            if "admin" in json.loads(u.role):
-                alog(f"Pokus o smazání admina {u.email}")
-                flash("Nemůžeš mazat adminy!", category="error")
-                return redirect(url_for("admin_views.registrovani_uzivatele"))
+        if request.form.get("odebrat_motivacni_call"): #není tu check na to, zda m = None, protože disabluju tlačítko pomocí JS.
+            m = Motivacni_call().get_by_user_id(id)
+            m.user_id = None
+            m.meeting_link = None
+            db.session.add(m)
+            db.session.commit()
+            alog(f"Vymazána volba motivačního callu usera {u.email}")
+            flash("Volba motivačního callu byla promazána.", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+        
+        elif request.form.get("progress_button"):
+            p = request.form.get("progress")
+            if u.progress == p:
+                flash("Progres uživatele nezměněn, vybral jsi stejný progress.", category="info")
             else:
-                u.odstranit()
-                alog("Smazání usera " + str(id) + ".")
-                flash("User byl smazán", category="success")
-                return redirect(url_for("admin_views.registrovani_uzivatele"))
+                u.progress = p
+                u.save()
+                alog(f"Změna progressu uživatele {u.email} na { p }.")
+                flash(f"Progress uživatele změněn na {p}", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+    
+        elif request.form.get("odbornost_button"):
+            odbornosti = get_dostupne_odbornosti()
+            odbornosti.append({
+                "system_name":"zatím nevybraná",
+                "prvnipjc": "zatím nevybraná"
+            })
+            o_dict = list(filter(lambda x: x["system_name"] == request.form.get("odbornost"), odbornosti))[0]
+            if u.odbornost == o_dict["system_name"]:
+                flash("Odbornost uživatele nezměněna, vybral si stejnou.", category="info")
+            else:
+                u.odbornost = o_dict["system_name"]
+                u.save()
+                alog(f"Změna odbornosti uživatele {u.email} na { o_dict['prvnipjc'] }.")
+                flash(f"Odbornost uživatele změněna na { o_dict['prvnipjc']}.", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+
+        elif request.form.get("admin_poznamka_button"):
+            admin_poznamka = request.form.get("admin_poznamka")
+            if len(admin_poznamka) > 1000:
+                flash("Admin poznámka je moc dlouhá, sori. Může bejt max 1000 znaků.", category="error")
+                return redirect(url_for("admin_views.detail_usera", id=id))
+            if admin_poznamka == "":
+                admin_poznamka = None
+            if u.admin_poznamka == admin_poznamka:
+                flash("Admin poznámka uživatele nezměněna, byla stejná.", category="info")
+            else:
+                u.admin_poznamka = admin_poznamka
+                u.save()
+                flash("Změna admin poznámky.", category="success")
+                alog(f"Změna admin poznámky uživatele {u.email}.")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+        
+        elif request.form.get("meeting_button"):
+            meeting_link = request.form.get("meeting_link")
+            if len(meeting_link) > 1000:
+                flash("Meeting link je moc dlouhý. Může bejt max 1000 znaků.", category="error")
+                return redirect(url_for("admin_views.detail_usera", id=id))
+            if meeting_link == "":
+                meeting_link = None
+            m = Motivacni_call.get_by_user_id(id)
+            if not m:
+                flash("Nemůžeš upravovat meeting link, tento uživatel není zapsaný na žádném callu.", category="info")
+                return redirect(url_for("admin_views.detail_usera", id=id))
+            if m.meeting_link == meeting_link:
+                flash("Meeting link uživatele nezměněn, byla stejný.", category="info")
+            else:
+                m.meeting_link = meeting_link
+                m.save()
+                flash("Změna meeting linku.", category="success")
+                alog(f"Změna meeting linku uživatele {u.email}.")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+        
             
         elif request.form.get("odebrat_motivacni_formular"):
             u.odebrat_motivacni_formular()
@@ -138,80 +201,48 @@ def detail_usera(id):
             flash("Motivační formulář byl znovu zpřístupněn.", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
 
-        elif request.form.get("odebrat_motivacni_call"):
-            m = Motivacni_call().get_by_user_id(id)
-            m.user_id = None
-            m.meeting_link = None
-            db.session.add(m)
-            db.session.commit()
-            alog(f"Vymazána volba motivačního callu usera {u.email}")
-            flash("Volba motivačního callu byla promazána.", category="success")
-            return redirect(url_for("admin_views.detail_usera", id=id))
-    
-        elif request.form.get("result"):
-            data = json.loads(request.form.get("result"))
-            if len(data["admin_poznamka"]) > 1000:
-                flash("Admin poznámka je moc dlouhá, sori. Může bejt max 1000 znaků.", category="error")
-                return redirect(url_for("admin_views.detail_usera", id=id))
-            if len(data["meeting_link"]) > 1000:
-                flash("Meeting link je moc dlouhý, sori. Může bejt max 1000 znaků.", category="error")
-                return redirect(url_for("admin_views.detail_usera", id=id))
-            if data["uzamcene_zmeny"] == "true":
-                data["uzamcene_zmeny"] = True
-            if data["uzamcene_zmeny"] == "false":
-                data["uzamcene_zmeny"] = False
-
-            if u.progress == data["progress"]:
-                pass
-            else:
-                u.progress = data["progress"]
-                alog(f"Změna progressu uživatele {u.email} na { u.progress }.")
-            
-            if u.odbornost == data["odbornost"]:
-                pass
-            else:
-                u.odbornost = data["odbornost"]
-                alog(f"Změna odbornosti uživatele {u.email} na {u.odbornost}.")
-
-            if u.uzamcene_zmeny == data["uzamcene_zmeny"]:
-                pass
-            else:
-                u.uzamcene_zmeny = data["uzamcene_zmeny"]
-                alog(f"Změna uzamčení změn uživatele {u.email} na { u.uzamcene_zmeny }.")
-            
-            if u.admin_poznamka == data["admin_poznamka"] or data["admin_poznamka"] in [None, ""]:
-                pass
-            else:
-                u.admin_poznamka = data["admin_poznamka"]
-                alog(f"Změna admin poznámky uživatele {u.email}.")
-
-            m = Motivacni_call.get_by_user_id(id)
-            if not m:
-                if data["meeting_link"]:
-                    flash("Nemůžeš upravovat meeting link, tento uživatel není zapsaný na žádném callu.", category="info")
-                else:
-                    pass
-            else:
-                if m.meeting_link == data["meeting_link"]:
-                    pass
-                else:
-                    m.meeting_link = data["meeting_link"]
-                    alog(f"Změna meeting linku uživatele {u.email}.")
-                    db.session.add(m)
-                    db.session.commit()
-            
-            db.session.add(u)
-            db.session.commit()
-            flash("Záznam o userovi upraven", category="success")
-            return redirect(url_for("admin_views.detail_usera", id=id))
         elif request.form.get("hodnoceni"):
             return redirect(url_for("admin_views.hodnoceni", id=id))
+        
+        elif request.form.get("uzamcene_zmeny_udaju"):
+            u.uzamcene_zmeny_udaju = not u.uzamcene_zmeny_udaju
+            u.save()
+            alog(f"Uzamčení změn údajů akatualizováno na {u.uzamcene_zmeny_udaju}")
+            flash("Uzamčení změn údajů aktualizováno.", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+        
+        elif request.form.get("uzamcene_zmeny_callu"):
+            u.uzamcene_zmeny_callu = not u.uzamcene_zmeny_callu
+            u.save()
+            alog(f"Uzamčení změn callů akatualizováno na {u.uzamcene_zmeny_callu}")
+            flash("Uzamčení změn callů aktualizováno.", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+        
+        elif request.form.get("uzamcene_zmeny_prace"):
+            u.uzamcene_zmeny_prace = not u.uzamcene_zmeny_prace
+            u.save()
+            alog(f"Uzamčení změn práce akatualizováno na {u.uzamcene_zmeny_prace}")
+            flash("Uzamčení změn práce aktualizováno.", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+        
         elif id_hodnoceni := request.form.get("smazat_hodnoceni"):
             Hodnoceni.get_by_id(id_hodnoceni).smazat()
             flash("Hodnocení smazáno", category="success")
             alog(f"Smazáno hodnocení od uživatele {u.email}")
             return redirect(url_for("admin_views.detail_usera", id=id))
-    
+        
+        elif request.form.get("smazat"):
+            if "admin" in json.loads(u.role):
+                alog(f"Pokus o smazání admina {u.email}")
+                flash("Nemůžeš mazat adminy!", category="error")
+                return redirect(url_for("admin_views.registrovani_uzivatele"))
+            else:
+                u.odstranit()
+                alog("Smazání usera " + str(id) + ".")
+                flash("User byl smazán", category="success")
+                return redirect(url_for("admin_views.registrovani_uzivatele"))
+
+
 
 @admin_views.route("/jmenovat_adminy", methods=["GET","POST"])
 @require_role_on_current_user("editing_admins_allowed")

@@ -15,6 +15,9 @@
         <div class="border-orange rounded-2 m-2 p-2 lighter" id="dalsi_kroky"></div>
         <hr>
         <h3>Nastavitelné údaje</h3>
+        {% if uzamcene_zmeny_udaju %}
+            Tvému účtu byly uzamčeny změny údajů. Pokud myslíš, že je to chyba, napiš nám a povolíme je.
+        {% endif %}
         <form method="post">
             <button id="ulozit_1" class="btn btn-success" type="submit" hidden>Uložit změny</button>
             <div class="table-responsive">
@@ -190,8 +193,8 @@
         <p>Na fotce by měl být vidět tvůj obličej. Fotka může mít maximálně 5 MB a může být ve formátu <code>.jpg</code>, nebo <code>.png</code>.</p>
         <img src="/file_api/user_profilovka" alt="profilovka" width="20%" class="my-2">
         
-        {% if uzamcene_zmeny %}
-        <p>Tvému účtu byly uzamčeny změny, pravděpodobně proto, že se blíží nějaký důležitý termín. Pokud ještě něco potřebuješ pozměnit, napiš nám a my ti změny ještě povolíme.</p>
+        {% if uzamcene_zmeny_udaju %}
+        Tvému účtu byly uzamčeny změny údajů. Pokud myslíš, že je to chyba, napiš nám a povolíme je.
         {% else %}
         <br>
         <button type="button" id="show_img_input" class="btn em-button">Nahrát fotku</button>

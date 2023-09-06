@@ -28,7 +28,9 @@ class User(db.Model, UserMixin):
     tricko = db.Column(db.String(100))
     dozvedeli = db.Column(db.String(100))
     admin_poznamka = db.Column(db.String(1000))
-    uzamcene_zmeny = db.Column(db.Boolean, default=False)
+    uzamcene_zmeny_udaju = db.Column(db.Boolean, default=False)
+    uzamcene_zmeny_callu = db.Column(db.Boolean, default=False)
+    uzamcene_zmeny_prace = db.Column(db.Boolean, default=False)
     alergie = db.Column(db.String(1000))
     skola = db.Column(db.String(1000))
     datum_registrace = db.Column((db.DateTime), default=datetime.now)
@@ -101,8 +103,9 @@ class User(db.Model, UserMixin):
             "datum_registrace": pretty_datetime(self.datum_registrace),
             "progress": self.progress,
             "admin_poznamka": self.admin_poznamka,
-            "uzamcene_zmeny": "Ano" if self.uzamcene_zmeny else "Ne",
-            "uzamcene_zmeny_bool": self.uzamcene_zmeny,
+            "uzamcene_zmeny_callu": "Ano" if self.uzamcene_zmeny_callu else "Ne",
+            "uzamcene_zmeny_prace": "Ano" if self.uzamcene_zmeny_prace else "Ne",
+            "uzamcene_zmeny_udaju": "Ano" if self.uzamcene_zmeny_udaju else "Ne",
             "motivacni_formular": json.loads(self.motivacni_dotaznik) if self.odevzdany_motivacni_dotaznik else None,
             "osloveni_1p": self.osloveni_1p,
             "osloveni_5p": self.osloveni_5p,
@@ -165,8 +168,7 @@ class User(db.Model, UserMixin):
                     if entry["id"] == key:
                         entry["odpoved"] = value
         self.motivacni_dotaznik = json.dumps(self.motivacni_dotaznik)
-        db.session.add(self)
-        db.session.commit()  
+        self.save()
     
     def ma_nahranou_praci(self):
         filenames = json.loads(get_prace_filenames(self.id))
@@ -183,19 +185,20 @@ class User(db.Model, UserMixin):
             p: Path = user_data_folder_path() / str(self.id) / filename["filename"]
             p.unlink()
         self.odbornost = "zatím nevybraná"
-        db.session.add(self)
-        db.session.commit()
+        self.save()
     
         
     def odebrat_motivacni_formular(self):
         self.motivacni_dotaznik = None
         self.odevzdany_motivacni_dotaznik = False
-        db.session.add(self)
-        db.session.commit()
+        self.save()
     
     def znovu_zpristupnit_motivacni_formular(self):
         self.odevzdany_motivacni_dotaznik = False
         self.progress = "Motivační formulář"
+        self.save()
+    
+    def save(self):
         db.session.add(self)
         db.session.commit()
         
@@ -209,7 +212,7 @@ class User(db.Model, UserMixin):
         elif self.progress == "Motivační call":
             return "Teď čekáš na to, než ti někdo z organizátorů zpřístupní výběr odbornosti. Mělo by se tak stát do několika dní po tvém motivačním callu."
         elif self.odbornost == "zatím nevybraná":
-            return "Teď tě čeká domácí práce. Vyber si jednu z pěti odborností podle toho, které nejlépe vystihuje tvé zájmy.  Začít s prací můžeš kdykoli, velitelé odborostí jsou ti kdykoli k dispozici a moc rádi odpoví na tvé otázky. <br>Finální zařazení do odbornosti proběhne ve chvíli, kdy odevzdáš shrnutí práce."
+            return "Teď tě čeká domácí práce. Vyber si jednu z pěti odborností podle toho, která nejlépe vystihuje tvé zájmy. Začít s prací můžeš kdykoli, velitelé odborostí jsou ti neustále k dispozici a moc rádi odpoví na tvé otázky. <br>Finální zařazení do odbornosti proběhne ve chvíli, kdy odevzdáš shrnutí práce."
         elif not self.ma_nahranou_praci():
             return "Na online konferenci budeš prezentovat svou domácí práci. Nyní čekáme na to, než celou práci odevzdáš. Máš na to čas do půlnoci před konferencí."
         else:

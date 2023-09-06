@@ -9,7 +9,11 @@ class Motivacni_call(db.Model):
     admin_id = db.Column(db.Integer)
     datum_a_cas = db.Column(db.DateTime)
     meeting_link = db.Column(db.String(1000))
-
+    
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        
     @staticmethod
     def pridat_pohovory(start_datetime: datetime, end_datetime: datetime, admin) ->  None:
         nove_terminy: List[datetime] = []
@@ -47,8 +51,7 @@ class Motivacni_call(db.Model):
         m = Motivacni_call.get_by_user_id(id)
         m.user_id = None
         admin_id = m.admin_id
-        db.session.add(m)
-        db.session.commit()
+        m.save()
         return admin_id
     
     def zapsat_usera(self, user_id: int) -> bool:
@@ -56,8 +59,7 @@ class Motivacni_call(db.Model):
             return False
         else:
             self.user_id = user_id
-            db.session.add(self)
-            db.session.commit()
+            self.save()
             return True
     
     def delete(self):

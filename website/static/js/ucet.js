@@ -1,7 +1,7 @@
 import httpGet from "./httpGet.js"
 let info = JSON.parse(httpGet("/user_api/info"))
 let confirmed = JSON.parse(httpGet("/user_api/confirmed"))["confirmation_status"]
-let uzamcene_zmeny = JSON.parse(httpGet("/user_api/uzamcene_zmeny"))["status"]
+let uzamcene_zmeny_udaju = JSON.parse(httpGet("/user_api/uzamcene_zmeny_udaju"))["status"]
 let ids_list = ["jmeno", "email", "adresa", "telcislo", "datum_narozeni", "mail_rodicu", "dozvedeli", "alergie", "skola", "osloveni_1p", "osloveni_5p", "zajmeno", "tricko_select"]
 let fixni_info_ids_list = ["confirmed", "odbornost", "progress", "datum_registrace", "datum_motivacniho_callu", "dalsi_kroky"]
 let show_img_input_button = document.getElementById("show_img_input")
@@ -10,7 +10,10 @@ let not_confirmed_div = document.getElementById("not_confirmed_div")
 let confirmed_div = document.getElementById("confirmed_div")
 
 
-if (uzamcene_zmeny) {
+if (uzamcene_zmeny_udaju) {
+    for (let id of ids_list) {
+        document.getElementById(id).disabled = "disabled"
+    }
 } else {
     show_img_input_button.addEventListener("click", function() {
         document.getElementById("img_input_div").hidden = false

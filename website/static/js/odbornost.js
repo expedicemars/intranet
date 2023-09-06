@@ -32,7 +32,7 @@ if (zadani.length != 0) {
 // shrnutí
 let shrnuti = JSON.parse(httpGet("/file_api/send_filename_vlastniho_shrnuti"))
 let ukazat_shrnuti = document.getElementById("ukazat_shrnuti")
-if (shrnuti["filename"]) {
+if (shrnuti["filename"] && ukazat_shrnuti) {
     let a = document.createElement("a")
     a.classList.add("link")
     a.href = "/file_api/vlastni_shrnuti/" + shrnuti["filename"]
