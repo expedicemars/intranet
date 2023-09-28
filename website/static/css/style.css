@@ -67,6 +67,31 @@ body{
 .content-section{
     background-color: rgb(243,234,224);
 }
+.progress-section{
+    background: linear-gradient(to right,rgb(243,234,224), rgb(243,133,8) );
+    font-family: 'Exo 2', sans-serif;
+    color: rgb(33,37,41);
+    font-weight: bold;
+    font-size: large;
+}
+
+@media (max-width:1400px) {
+    .progress-section{
+        font-size: medium;
+    }
+}
+
+@media (max-width:1200px) {
+    .progress-section{
+        font-size: small;
+    }
+}
+@media (max-width:992px) {
+    .progress-section{
+        background: linear-gradient(to bottom,rgb(243,234,224), rgb(243,133,8) );
+        font-size: large;
+    }
+}
 
 .link {
     color: rgb(243,133,8);

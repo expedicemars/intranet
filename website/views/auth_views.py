@@ -73,6 +73,8 @@ def register():
 				prace_path = user_folder_path / "prace"
 				user_folder_path.mkdir()
 				prace_path.mkdir()
+				token = current_user.get_reset_token()
+				mail_sender(mail_identifier="potvrzeni_emailu", target=current_user.email, data=token)
 				return redirect(url_for("user_views.ucet"))
 
 @auth_views.route("/mailing_list", methods=["GET","POST"])		

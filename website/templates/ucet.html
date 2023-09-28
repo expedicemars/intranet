@@ -4,7 +4,12 @@
 <h2>Vítej na stránce svého účtu</h2>
 <div>
     <div id="not_confirmed_div" hidden>
-        Protože veškerá komunikace s tebou bude probíhat mailem, je nutné, abychom měli jistotu, že ti maily chodí.
+        <p>
+            První krok v tvé cestě Expedicí Mars je potvrzení tvého e-mailu <code>{{current_user.email}}</code>. Je to proto, že veškerá komunikace s tebou bude probíhat mailem. Po potvrzení se ti tu zobrazí místo pro vyplnění dalších informací o sobě a hlavně přístup k vyplnění motivačního formuláře. Více o něm se tu dočteš po ověření!
+        </p>
+        <p>
+            Ověřovací e-mail jsme ti poslali, klikni na link v něm. Pokud se mail někde zatoulal nebo potřebuješ e-mail dostat znovu, můžeš si ho nechat poslat ještě jednou.
+        </p>
         <form method="post" enctype="multipart/form-data">
             <button type="submit" class="btn em-button" name="overeni_emailu" value="whatever">Odeslat E-mail k ověření e-mailové adresy </button>
         </form>
