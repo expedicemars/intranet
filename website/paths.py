@@ -62,3 +62,6 @@ def dostupne_odbornosti_path() -> Path:
 
 def mail_logo_path() -> Path:
     return Path.cwd() / "website" / "static" / "graphics" / "mail_logo.png"
+
+def info_o_konferenci_path() -> Path:
+    return Path.cwd() / "data" / "info_o_konferenci.txt"

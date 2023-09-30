@@ -4,6 +4,7 @@ let konec_registrace = httpGet("/noauth_api/konec_registrace")
 let zacatek_registrace = httpGet("/noauth_api/zacatek_registrace")
 let je_registrace_otevrena = httpGet("/admin_api/je_registrace_otevrena")
 let je_zadani_viditelne = httpGet("/admin_api/je_zadani_viditelne")
+let je_info_o_konferenci_viditelne = httpGet("/admin_api/je_info_o_konferenci_viditelne")
 let mailing_list = httpGet("/admin_api/mailing_list")
 let koordinator_internetovych_kol = httpGet("/admin_api/koordinator_internetovych_kol")
 let ukoncit_rocnik_button = document.getElementById("ukoncit_rocnik")
@@ -12,6 +13,8 @@ let toggle_registraci_button = document.getElementById("toggle_registraci")
 let stav_registraci = document.getElementById("stav_registrace")
 let toggle_zadani_button = document.getElementById("toggle_zadani")
 let stav_zadani = document.getElementById("viditelnost_stav")
+let toggle_info_o_konferenci_button = document.getElementById("toggle_info_o_konferenci")
+let stav_informace_o_konferenci = document.getElementById("informace_o_konferenci_stav")
 let datum_otevreni_input = document.getElementById("datum_otevreni")
 let datum_uzavreni_input = document.getElementById("datum_uzavreni")
 let exporty = JSON.parse(httpGet("/file_api/exporty_filenames"))
@@ -38,6 +41,14 @@ if (je_zadani_viditelne == "True") {
 } else {
     toggle_zadani_button.innerText = "Zobrazit zadání"
     stav_zadani.innerText = "skrytá"
+}
+
+if (je_info_o_konferenci_viditelne == "True") {
+    toggle_info_o_konferenci_button.innerText = "Skrýt stránku"
+    stav_informace_o_konferenci.innerText = "viditelná"
+} else {
+    toggle_info_o_konferenci_button.innerText = "Zobrazit stránku"
+    stav_informace_o_konferenci.innerText = "skrytá"
 }
 
 

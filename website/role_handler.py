@@ -1,5 +1,6 @@
 from website.models.user import User
 from flask_login import current_user
+from website.json_handlers.prubeh_rocniku_handling import get_info_o_konferenci_viditelne
 import json
 
 def get_access_rights(userobj: User = current_user) -> list:
@@ -18,3 +19,8 @@ def get_user_progress(userObj: User = current_user) -> str:
         return userObj.progress
     else:
         return None
+    
+def get_info_o_konf_viditelne(userObj: User = current_user) -> bool:
+    if userObj.progress == "Domácí projekt" and get_info_o_konferenci_viditelne():
+        return True
+    return False

@@ -5,8 +5,8 @@ import datetime
 from website.helpers.pretty_date import pretty_datetime
 from website.helpers.require_role_decorator import require_progress_na_ucastnikovi, require_role_on_current_user
 from website.models.motivacni_call import Motivacni_call
-from website.models.user import User
 from website.paths import velitel_odbornosti_data_path, vzorove_vypracovani_path
+from website.json_handlers.prubeh_rocniku_handling import get_info_o_konferenci
 
 
 
@@ -91,3 +91,8 @@ def odpovedi_motivaku():
 @require_role_on_current_user(["user"])
 def vzorove_vypracovani_existuje():
     return json.dumps({"existuje": vzorove_vypracovani_path().exists()})
+
+@user_api.route("/info_o_konferenci")
+@require_role_on_current_user("user")
+def info_konferenci():
+    return get_info_o_konferenci()
