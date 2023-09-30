@@ -4,7 +4,7 @@ from datetime import datetime
 import json
 from website.helpers.require_role_decorator import require_role_on_current_user
 from website.json_handlers.logs_handling import get_logs, get_alogs
-from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena, get_zadani_viditelne, get_koordinator_internetovych_kol
+from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena, get_zadani_viditelne, get_koordinator_internetovych_kol, get_info_o_konferenci_viditelne, get_info_o_konferenci
 from website.json_handlers.odkazy_handling import get_odkazy
 from website.helpers.pretty_date import pretty_datetime
 from website.paths import velitel_odbornosti_data_path, poznamky_path, prohlaseni_path, sablony_folder_path, vzorove_vypracovani_path
@@ -42,6 +42,10 @@ def je_registrace_otevrena():
 def je_zadani_viditelne():
     return str(get_zadani_viditelne())
 
+@admin_api.route("/je_info_o_konferenci_viditelne")
+@require_role_on_current_user("editing_prubeh_rocniku")
+def je_info_o_konferenci_viditelne():
+    return str(get_info_o_konferenci_viditelne())
 
 @admin_api.route("/odkazy")
 @require_role_on_current_user("admin")
@@ -213,3 +217,8 @@ def statistiky():
         result[odb["system_name"]] = len(list(filter(lambda x: x.odbornost == odb["system_name"], ucastnici)))
 
     return result
+
+@admin_api.route("/info_o_konferenci")
+@require_role_on_current_user("editing_prubeh_rocniku")
+def info_konferenci():
+    return get_info_o_konferenci()

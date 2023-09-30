@@ -22,6 +22,7 @@ for (let prog of progressy) {
     opt.id = prog
     opt.innerText = prog
     progress_select.appendChild(opt)
+    console.log(opt, prog)
 }
 
 
@@ -41,12 +42,15 @@ for (let odb of dostupne_odbornosti) {
 }
 
 // spešl udaje, v else jsou ty normalni na display
+console.log(detail_usera)
 for (let key in detail_usera) {
+    console.log(key)
     let node = document.getElementById(key)
     if (node) {
         if (key == "id") {
             document.getElementById("id_display").innerHTML = detail_usera[key]
         } else if (key == "progress") {
+            console.log(document.getElementById(detail_usera["progress"]))
             document.getElementById(detail_usera["progress"]).selected = "selected"
         } else if (key == "odbornost") {
             for (let odb of dostupne_odbornosti) {

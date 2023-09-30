@@ -207,7 +207,7 @@ class User(db.Model, UserMixin):
             return "Pro tvé další kroky Expedicí od tebe teď potřebujeme vyplnění motivačního formuláře. Ten není nutné odeslat rovnou, uložené odpovědi si můžeš nechat rozmyslet a formulář odeslat později. Čím dřív ho ale dostaneme, tím dříve si budeš moct zvolit termín motivačního callu. Je také potřeba průběžně vyplňovat (tuto) stránku svého účtu."
         elif not Motivacni_call.get_by_user_id(self.id):
             return "Čeká tě motivační call s některými našimi organizátory. Jde o neformální online popovídání, při kterém se s tebou seznámíme a ty zase poznáš pár minulých účastníků Expedice. Pro účast na callu si musíš vybrat jeden z vypsaných termínů. Jestliže nejsou žádné termíny vypsané nebo se ti nehodí, brzy zveřejníme další. Pokud by to trvalo dlouho, omlouváme se. Můžeš nám kdykoli napsat, například s návrhem času, který ti vyhovuje. "
-        elif Motivacni_call.get_by_user_id(self.id).datum_a_cas > datetime.now():
+        elif Motivacni_call.get_by_user_id(self.id).datum_a_cas > datetime.now() and self.progress == "Motivační call":
             return "Čeká tě motivační call, termín už máš vybraný. Nejpozději do zvoleného času uvidíš na intranetu odkaz, kde se bude call odehrávat. Těšíme se!"
         elif self.progress == "Motivační call":
             return "Teď čekáš na to, než ti někdo z organizátorů zpřístupní výběr odbornosti. Mělo by se tak stát do několika dní po tvém motivačním callu."

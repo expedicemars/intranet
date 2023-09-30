@@ -46,6 +46,23 @@
         </div>
     </div>
     <hr>
+    <h2>Viditelnost stránky s informacemi o Online konferenci</h2>
+    <p>
+        Informace o konferenci jdou upravit <a class="link" href="{{url_for('admin_views.info_o_konferenci')}}">tady</a> a zobrazují se účastníkům, pokud jsou splněny obě následující podmínky:
+        <ul>
+            <li>Jejich progress je <code>Domácí projekt</code></li>
+            <li>Viditelnost je tady povolena</li>
+        </ul>
+    </p>
+    <div class="row">
+        <div class="col">
+            Stránka je <span id="informace_o_konferenci_stav"></span>.
+        </div>
+        <div class="col-auto">
+            <button class="btn em-button" id="toggle_info_o_konferenci" name="toggle_info_o_konferenci" value="1" type="submit"></button>
+        </div>
+    </div>
+    <hr>
     <h2>E-mail na koordinátora internetových kol</h2>
     <p>Když nějaký účastník nahraje souhrn své práce, pošle to e-mail veliteli odbornosti a právě na tento e-mail koordinátora internetových kol.</p>
     <div class="row">

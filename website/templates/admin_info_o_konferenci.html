@@ -1,0 +1,19 @@
+{% extends "admin_navbar.html" %}
+
+{% block content %}
+<h2>Info o online konferenci</h2>
+<p>
+    Obsah tohoto textového pole se zobrazí účastníkům. Je možné zde používat html syntax, takže sem<b> nevkládej nedůvěryhodná data</b>. Před uložením je možnost si zobrazit preview.
+</p>
+
+<form method="post">
+    <textarea rows="10" class="form-control" name="content" id="content"></textarea>
+    <button type="button" id="preview" class="btn em-button my-2">Preview</button>
+    <button type="submit" name="submit" value="whatever" class="btn em-button m-2">Uložit</button>
+</form>
+<hr>
+<div id="preview_div"></div>
+
+<script type="module" src="{{url_for('static', filename='js/admin_info_o_konferenci.js')}}"></script>
+
+{% endblock %}

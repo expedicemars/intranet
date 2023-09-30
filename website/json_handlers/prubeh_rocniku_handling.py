@@ -1,4 +1,4 @@
-from website.paths import prubeh_rocniku_path
+from website.paths import prubeh_rocniku_path, info_o_konferenci_path
 import json
 
 def set_nove_datum_konce_registrace(datum: str) -> None:
@@ -49,6 +49,18 @@ def get_zadani_viditelne() -> bool:
         f = json.load(file)
     return f["viditelna_zadani"]
 
+def toggle_info_o_konferenci() -> None:
+    with open(prubeh_rocniku_path()) as file:
+        f = json.load(file)
+    f["info_o_konferenci_viditelne"] = False if f["info_o_konferenci_viditelne"] else True
+    with open(prubeh_rocniku_path(), "w") as file:
+        file.write(json.dumps(f, indent=4))
+
+def get_info_o_konferenci_viditelne() -> bool:
+    with open(prubeh_rocniku_path()) as file:
+        f = json.load(file)
+    return f["info_o_konferenci_viditelne"]
+
 def zapsat_koordinatora_i_kol(mail) -> None:
     with open(prubeh_rocniku_path()) as file:
         f = json.load(file)
@@ -64,3 +76,10 @@ def get_koordinator_internetovych_kol():
     except KeyError:
         return ""
         
+def get_info_o_konferenci():
+    with open(info_o_konferenci_path()) as file:
+        return file.read()
+
+def zapsat_info_o_konferenci(data):
+    with open(info_o_konferenci_path(), "w") as file:
+        file.write(data)
