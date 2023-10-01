@@ -212,10 +212,12 @@ def statistiky():
         "simulovana_mise": len(list(filter(lambda x: x.progress == "Simulovaná mise", ucastnici))),
         "pocet_bugu": Chyba.pocet_neresenych()
     }
-
+    odevzdanych_shrnuti_prace = 0
     for odb in get_dostupne_odbornosti():
-        result[odb["system_name"]] = len(list(filter(lambda x: x.odbornost == odb["system_name"], ucastnici)))
-
+        count = len(list(filter(lambda x: x.odbornost == odb["system_name"], ucastnici)))
+        result[odb["system_name"]] = count
+        odevzdanych_shrnuti_prace += count
+    result["odevzdanych_shrnuti_prace"] = odevzdanych_shrnuti_prace
     return result
 
 @admin_api.route("/info_o_konferenci")
