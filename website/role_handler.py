@@ -21,6 +21,7 @@ def get_user_progress(userObj: User = current_user) -> str:
         return None
     
 def get_info_o_konf_viditelne(userObj: User = current_user) -> bool:
-    if userObj.progress == "Domácí projekt" and get_info_o_konferenci_viditelne():
-        return True
+    if userObj.is_authenticated:
+        if userObj.progress == "Domácí projekt" and get_info_o_konferenci_viditelne():
+            return True
     return False

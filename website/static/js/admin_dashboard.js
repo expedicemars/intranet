@@ -29,12 +29,14 @@ for (let odbornost of dostupne_odbornosti) {
     let td = document.createElement("td")
     td.id = odbornost.system_name
     tr.appendChild(td)
-    children.splice(-3, 0, tr)
+    children.splice(-4, 0, tr)
 }
 tbody.innerHTML = null
 for (let ch of children) {
     tbody.appendChild(ch)
 }
+console.log(statistiky)
+
 
 for (let key of Object.keys(statistiky)) {
     document.getElementById(key).innerText = statistiky[key]
