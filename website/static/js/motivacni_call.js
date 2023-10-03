@@ -1,6 +1,7 @@
 import httpGet from "./httpGet.js"
 let pohovory = JSON.parse(httpGet("/user_api/volne_pohovory"))
 let aktualne = JSON.parse(httpGet("/user_api/datum_motivacniho_callu"))
+let hodiny = JSON.parse(httpGet("/user_api/limit_hodin"))["limit"]
 let link_p = document.getElementById("link")
 let jsou_pohovory_div = document.getElementById("jsou_pohovory")
 let nejsou_pohovory_div = document.getElementById("nejsou_pohovory")
@@ -61,3 +62,6 @@ if (pohovory.length == 0 || aktualne["datum"]) {
         }
     }
 }
+
+document.getElementById("hodiny_1").innerText = hodiny
+document.getElementById("hodiny_2").innerText = hodiny

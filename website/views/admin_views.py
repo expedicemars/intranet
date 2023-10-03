@@ -17,7 +17,7 @@ from website.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
-from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, set_nove_datum_zacatku_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol, toggle_info_o_konferenci, get_info_o_konferenci_viditelne, zapsat_info_o_konferenci
+from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, set_nove_datum_zacatku_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol, toggle_info_o_konferenci, get_info_o_konferenci_viditelne, zapsat_info_o_konferenci, save_mezni_hodiny_pro_cally, get_mezni_hodiny_pro_cally
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 from website.json_handlers.velitele_odbornosti_handling import zapsat_kontakt
 from website.paths import zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path, vzorove_vypracovani_path
@@ -421,12 +421,19 @@ def motivacni_call():
             else:
                 flash("Termíny smazány.", category="success")
             return redirect(url_for("admin_views.motivacni_call"))
-        elif request.form.get("smazat_48"):
+        elif request.form.get("smazat_pod_limit"):
+            hodiny = int(get_mezni_hodiny_pro_cally())
             for m in Motivacni_call.get_all():
-                if m.datum_a_cas - datetime.timedelta(hours=48) < datetime.datetime.now() and not m.user_id:
+                if m.datum_a_cas - datetime.timedelta(hours=hodiny) < datetime.datetime.now() and not m.user_id:
                     m.delete()
-            alog("Smazání termínů bližších než 48 hodin.")
+            alog(f"Smazání termínů bližších než {hodiny} hodin.")
             flash("Termíny smazány.", category="success")
+            return redirect(url_for("admin_views.motivacni_call"))
+        elif request.form.get("zmenit_hodiny"):
+            hours = int(request.form.get("hours_select"))
+            save_mezni_hodiny_pro_cally(hours)
+            alog(f"Limit předstihu motivačních callů nastaven na {hours} hodin.")
+            flash("Limit předstihu motivačních callů uložen.", category="success")
             return redirect(url_for("admin_views.motivacni_call"))
 
 

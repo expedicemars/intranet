@@ -2,12 +2,14 @@ import httpGet from "./httpGet.js"
 let start_time = document.getElementById("start_time")
 let end_time = document.getElementById("end_time")
 let pohovory = JSON.parse(httpGet("/admin_api/motivacni_cally"))
+let limit_hodin = JSON.parse(httpGet("/admin_api/limit_hodin"))["limit"]
 let content_table = document.getElementById("content")
 let prihlaseni_table = document.getElementById("prihlaseni")
 let probehly_table = document.getElementById("probehly")
 let form = document.getElementById("form")
 let smazat_button = document.getElementById("smazat_vybrane")
 let result_input = document.getElementById("result")
+let hours_select = document.getElementById("hours_select")
 
 smazat_button.addEventListener("click", vyhodnotit)
 
@@ -138,3 +140,14 @@ for (let p of pohovory) {
     }
 }
 
+
+document.getElementById("hours_display").innerText = limit_hodin
+for (let h of [0, 1, 2, 3, 4, 5, 6, 10, 12, 24, 36, 48]) {
+    let opt = document.createElement("option")
+    opt.value = h
+    opt.innerText = h
+    if (h == limit_hodin) {
+        opt.selected = "selected"
+    }
+    hours_select.appendChild(opt)
+}
