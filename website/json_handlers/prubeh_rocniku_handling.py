@@ -83,3 +83,15 @@ def get_info_o_konferenci():
 def zapsat_info_o_konferenci(data):
     with open(info_o_konferenci_path(), "w") as file:
         file.write(data)
+        
+def get_mezni_hodiny_pro_cally() -> int:
+    with open(prubeh_rocniku_path()) as file:
+        f = json.load(file)
+        return int(f["hodiny_motivacni_call"])
+    
+def save_mezni_hodiny_pro_cally(h: int):
+    with open(prubeh_rocniku_path()) as file:
+        f = json.load(file)
+    f["hodiny_motivacni_call"] = h
+    with open(prubeh_rocniku_path(), "w") as file:
+        file.write(json.dumps(f, indent=4))

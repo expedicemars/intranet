@@ -7,6 +7,7 @@ from website.helpers.require_role_decorator import require_progress_na_ucastniko
 from website.models.motivacni_call import Motivacni_call
 from website.paths import velitel_odbornosti_data_path, vzorove_vypracovani_path
 from website.json_handlers.prubeh_rocniku_handling import get_info_o_konferenci
+from website.json_handlers.prubeh_rocniku_handling import get_mezni_hodiny_pro_cally
 
 
 
@@ -30,7 +31,8 @@ def uzamcene_zmeny_udaju():
 def volne_pohovory():
     result = []
     for p in Motivacni_call.get_neobsazene_cally():
-        if p.datum_a_cas - datetime.timedelta(hours=48) > datetime.datetime.now():
+        hours = get_mezni_hodiny_pro_cally()
+        if p.datum_a_cas - datetime.timedelta(hours=hours) > datetime.datetime.now():
             zaznam = {}
             zaznam["id"] = p.id
             zaznam["pretty"] = pretty_datetime(p.datum_a_cas)
@@ -96,3 +98,8 @@ def vzorove_vypracovani_existuje():
 @require_role_on_current_user("user")
 def info_konferenci():
     return get_info_o_konferenci()
+
+@user_api.route("/limit_hodin")
+@require_role_on_current_user("user")
+def limit_hodin():
+    return json.dumps({"limit": get_mezni_hodiny_pro_cally()})
