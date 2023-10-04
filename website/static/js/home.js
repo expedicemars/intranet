@@ -4,6 +4,7 @@ let mit = httpGet("/noauth_api/mit")
 let konec_registrace = httpGet("/noauth_api/konec_registrace_pretty")
 let dostupne_odbornosti = JSON.parse(httpGet("/noauth_api/dostupne_odbornosti"))
 let odbornosti_div = document.getElementById("odbornosti")
+let sablony_li = document.getElementById("sablony")
 
 document.getElementById("zacatek_registrace").innerText = zacatek_registrace
 document.getElementById("konec_registrace").innerText = konec_registrace
@@ -39,3 +40,15 @@ if (odbornosti_div) {
         }
     }
 }
+
+ // sablony
+ if (sablony_li) {
+    for (let odbornost of dostupne_odbornosti) {
+        let a = document.createElement("a")
+        a.classList.add("link")
+        a.href = "/file_api/stahnout_sablonu/" + odbornost["system_name"]
+        a.innerText = odbornost["prvnipmc"]
+        sablony_li.appendChild(a)
+        sablony_li.innerHTML += " "
+    }
+ }

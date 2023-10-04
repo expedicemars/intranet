@@ -18,7 +18,14 @@
     <hr>
     {% if zverejnena_zadani %}
         <h2>Zadání domácího kola</h2>
-        <p>Zadání jsou viditelná. Budeš k nim mít přístup i po přihlášení. Na jednom z těchto zadání budeš pracovat.</p>
+        <p>
+            <ul>
+                <li>Zadání jsou nyní viditelná pro všechny</li>
+                <li>Na jednom z těchto zadání budeš pracovat</li>
+                <li>Tady najdeš <a class="link" href="/file_api/vzorove_vypracovani">vzorové vypracování</a></li>
+                <li id="sablony">Tady jsou šablony pro shrnutí práce: </li>
+            </ul>
+        </p>
         <div id="odbornosti"></div>
     {% else %}
         <div>
