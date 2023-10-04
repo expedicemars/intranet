@@ -67,7 +67,7 @@ let udaje_k_filtrovani = [
     },
     {
         "system_name": "hodnoceni",
-        "display_name": "Hodnocení"
+        "display_name": "Hodnocení po callu"
     },
     {
         "system_name": "osloveni_1p",

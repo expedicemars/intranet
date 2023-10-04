@@ -15,12 +15,10 @@ def prohlaseni_rodicu():
     return send_file(prohlaseni_path())
 
 @file_api.route("/vzorove_vypracovani")
-@require_role_on_current_user(["user","admin"])
 def vzorove_vypracovani():
     return send_file(vzorove_vypracovani_path())
 
 @file_api.route("/stahnout_sablonu/<string:odb>")
-@require_role_on_current_user(["user","admin"])
 def stahnout_sablonu(odb):
     filename = odb + "_sablona.docx"
     path = sablony_folder_path() / filename
