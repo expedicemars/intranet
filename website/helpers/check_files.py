@@ -110,8 +110,40 @@ def check_odkazy() -> None:
     else:
         path.touch()
         with open(path, "w") as file:
-            file.write(json.dumps([], indent=4))
-        log("Založen soubor na pohovory na " + str(path))
+            content = [
+                    {
+                        "system_name": "rocnik",
+                        "display_name": "Obecně k ročníku",
+                        "odkazy": [
+                        ]
+                    },
+                    {
+                        "system_name": "internetove_kolo",
+                        "display_name": "Internetové kolo",
+                        "odkazy": [
+                        ]
+                    },
+                    {
+                        "system_name": "online_konference",
+                        "display_name": "Online konference",
+                        "odkazy": [
+                        ]
+                    },
+                    {
+                        "system_name": "primi",
+                        "display_name": "Přípravná mise",
+                        "odkazy": [
+                        ]
+                    },
+                    {
+                        "system_name": "simu",
+                        "display_name": "Simulace",
+                        "odkazy": [
+                        ]
+                    }
+                ]
+            file.write(json.dumps(content, indent=4))
+        log("Založen soubor na odkazy na " + str(path))
         
 def check_prubeh_rocniku() -> None:
     path = p.prubeh_rocniku_path()

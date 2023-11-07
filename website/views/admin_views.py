@@ -16,7 +16,7 @@ from website.helpers.pretty_date import pretty_datetime
 from website.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
-from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_id
+from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_name
 from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, set_nove_datum_zacatku_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol, toggle_info_o_konferenci, get_info_o_konferenci_viditelne, zapsat_info_o_konferenci, save_mezni_hodiny_pro_cally, get_mezni_hodiny_pro_cally
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 from website.json_handlers.velitele_odbornosti_handling import zapsat_kontakt
@@ -480,25 +480,6 @@ def nahrat_soubory():
 def featury():
     return render_template("admin_featury.html", roles=get_access_rights())
     
-@admin_views.route("/upravit_odkazy", methods=["GET","POST"])
-@require_role_on_current_user("admin")
-def upravit_odkazy():
-    if request.method == "GET":
-        return render_template("admin_upravit_odkazy.html", roles=get_access_rights())
-    else:
-        if request.form.get("smazat"):
-            i = request.form.get("smazat")
-            smazat_odkaz_by_id(i)
-            flash("Odkaz odebrán", category="success")
-            alog(f"Odebrán odkaz.")
-        else:
-            popis = request.form.get("popis")
-            odkaz = request.form.get("odkaz")
-            pridat_odkaz(popis=popis, odkaz=odkaz)
-            flash("Odkaz přidán", category="success")
-            alog(f"Přidán užitečný odkaz {odkaz}")
-        return redirect(url_for("admin_views.upravit_odkazy"))
-    
     
 @admin_views.route("/organizatori", methods=["GET","POST"])
 @require_role_on_current_user("editing_users_allowed")
@@ -539,3 +520,19 @@ def info_o_konferenci():
             return redirect(url_for("admin_views.prubeh_rocniku"))
         else:
             return request.form.to_dict()
+
+@admin_views.route("/odkazy", methods=["GET","POST"])
+@require_role_on_current_user("admin")
+def odkazy():
+    if request.method == "GET":
+        return render_template("admin_odkazy.html", roles=get_access_rights())
+    else:
+        if request.form.get("adresa"):
+            pridat_odkaz(nazev=request.form.get("nazev"), adresa=request.form.get("adresa"), kategorie_system_name=request.form.get("kategorie"))
+            alog(f"Přidán odkaz {request.form.get('nazev')}")
+            flash("Odkaz přidán.", category="success")
+        elif request.form.get("name_to_delete"):
+            smazat_odkaz_by_name(request.form.get("name_to_delete"))
+            alog(f"Smazán odkaz {request.form.get('name_to_delete')}")
+            flash("Odkaz odebrán.", category="info")
+        return redirect(url_for("admin_views.odkazy"))

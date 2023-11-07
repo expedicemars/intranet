@@ -1,0 +1,30 @@
+{% extends "admin_navbar.html" %}
+
+{% block content %}
+<h2>Přidat nový link</h2>
+<form method="post" id="form">
+    <div class="row">
+        <div class="col-sm my-1">
+            <input type="text" class="form-control" placeholder="Text nového linku" name="nazev" id="nazev">
+        </div>
+        <div class="col-sm my-1">
+            <input type="text" class="form-control" placeholder="URL adresa" name="adresa">
+        </div>
+        <div class="col my-1">
+            <select class="form-select" id="select" name="kategorie">
+                <option value="vybrat">Vybrat kategorii</option>
+            </select>
+        </div>
+        <div class="col-auto my-1">
+            <button type="button" id="pridat_button" class="btn em-button" name="pridat" value="whatever">Přidat</button>
+        </div>
+    </div>
+</form>
+<div id="content"></div>
+<form hidden id="result" method="post">
+    <input type="text" name="name_to_delete" id="name_to_delete">
+</form>
+
+<script type="module" src="{{url_for('static', filename='js/admin_odkazy.js')}}"></script>
+
+{% endblock %}
