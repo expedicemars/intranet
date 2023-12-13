@@ -39,7 +39,9 @@ def exportovat() -> None:
         "Tričko",
         "Jak se o nás dozvěděli",
         "Admin poznámka",
-        "Uzamčené změny",
+        "Uzamčené změny údajů",
+        "Uzamčené změny callů",
+        "Uzamčené změny práce",
         "Alergie",
         "Škola",
         "Datum registrace",
@@ -65,14 +67,16 @@ def exportovat() -> None:
         ws1.cell(i+2,12,value=u.tricko)
         ws1.cell(i+2,13,value=u.dozvedeli)
         ws1.cell(i+2,14,value=u.admin_poznamka)
-        ws1.cell(i+2,15,value=u.uzamcene_zmeny)
-        ws1.cell(i+2,16,value=u.alergie)
-        ws1.cell(i+2,17,value=u.skola)
-        ws1.cell(i+2,18,value=pretty_datetime(u.datum_registrace))
-        ws1.cell(i+2,19,value=u.odevzdany_motivacni_dotaznik)
-        ws1.cell(i+2,20,value=u.osloveni_1p)
-        ws1.cell(i+2,21,value=u.osloveni_5p)
-        ws1.cell(i+2,22,value=u.zajmeno)
+        ws1.cell(i+2,15,value=u.uzamcene_zmeny_udaju)
+        ws1.cell(i+2,16,value=u.uzamcene_zmeny_callu)
+        ws1.cell(i+2,17,value=u.uzamcene_zmeny_prace)
+        ws1.cell(i+2,18,value=u.alergie)
+        ws1.cell(i+2,19,value=u.skola)
+        ws1.cell(i+2,20,value=pretty_datetime(u.datum_registrace))
+        ws1.cell(i+2,21,value=u.odevzdany_motivacni_dotaznik)
+        ws1.cell(i+2,22,value=u.osloveni_1p)
+        ws1.cell(i+2,23,value=u.osloveni_5p)
+        ws1.cell(i+2,24,value=u.zajmeno)
 
     ws2 = wb.create_sheet("Pohovory")
     cally = Motivacni_call.get_all()

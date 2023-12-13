@@ -36,16 +36,19 @@
                 <input type="radio" name="udaje_nema" id="nezalezi_nema" checked>
                 <label for="nezalezi_nema">Nezáleží na tom</label>
             </div>
-            <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="uzamcene_zmeny">
+            <div class="col-xl-2 col-lg-4 col-md-6 my-1">
                 <h4>Uzamčenost změn</h4>
-                <input type="radio" name="uzamcene_zmeny" id="uzamcene_zmeny_oboji" value="oboji" checked>
-                <label for="uzamcene_zmeny_oboji">Obojí</label>
+                <input type="checkbox" name="uzamcenost_zmen_cokoli" id="uzamcene_zmeny_cokoli" value="cokoli" checked>
+                <label for="uzamcene_zmeny_oboji">Cokoli</label>
                 <br>
-                <input type="radio" name="uzamcene_zmeny" id="uzamcene_zmeny_uzamcene" value="uzamcene">
-                <label for="uzamcene_zmeny_uzamcene">Uzamčené</label>
+                <input type="checkbox" name="uzamcenost_zmen" id="uzamcene_zmeny_udaju" value="uzamcene_zmeny_udaju">
+                <label for="uzamcene_zmeny_udaju">Uzamčené změny údajů</label>
                 <br>
-                <input type="radio" name="uzamcene_zmeny" id="uzamcene_zmeny_odemcene" value="odemcene">
-                <label for="uzamcene_zmeny_odemcene">Odemčené</label>
+                <input type="checkbox" name="uzamcenost_zmen" id="uzamcene_zmeny_callu" value="uzamcene_zmeny_callu">
+                <label for="uzamcene_zmeny_callu">Uzamčené změny callů</label>
+                <br>
+                <input type="checkbox" name="uzamcenost_zmen" id="uzamcene_zmeny_prace" value="uzamcene_zmeny_prace">
+                <label for="uzamcene_zmeny_prace">Uzamčené změny práce</label>
             </div>
             <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="odevzdany_motivacni_dotaznik">
                 <h4>Odevzdanost (?) motivačního dotazníku</h4>

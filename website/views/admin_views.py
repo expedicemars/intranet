@@ -361,7 +361,7 @@ def velitele_odbornosti():
         return redirect(url_for("admin_views.velitele_odbornosti"))
 
 
-@admin_views.route("/generovat_seznamy/", methods=["GET","POST"])
+@admin_views.route("/generovat_seznamy", methods=["GET","POST"])
 @require_role_on_current_user("editing_users_allowed")
 def generovat_seznamy():
     if request.method == "GET":

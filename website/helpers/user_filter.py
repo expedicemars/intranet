@@ -24,13 +24,15 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: x.progress in kriteria["postup"], users)
     
     #uzamcene_zmeny
-    if kriteria["uzamcene_zmeny"] == "oboji":
+    if kriteria["uzamcenost_zmen"] == "jakakoli":
         pass
     else:
-        if kriteria["uzamcene_zmeny"] == "uzamcene":
-            users = filter(lambda x: x.uzamcene_zmeny, users)
-        else:
-            users = filter(lambda x: not x.uzamcene_zmeny, users)
+        if "uzamcene_zmeny_callu" in kriteria["uzamcenost_zmen"]:
+            users = filter(lambda x: x.uzamcene_zmeny_callu, users)
+        if "uzamcene_zmeny_prace" in kriteria["uzamcenost_zmen"]:
+            users = filter(lambda x: x.uzamcene_zmeny_prace, users)
+        if "uzamcene_zmeny_udaju" in kriteria["uzamcenost_zmen"]:
+            users = filter(lambda x: x.uzamcene_zmeny_udaju, users)
     
     # odevzdany motivak     
     if kriteria["odevzdany_dotaznik"] == "oboji":
@@ -198,8 +200,12 @@ def seznam_generator(kriteria: dict) -> dict:
             zaznam["dozvedeli"] = u.dozvedeli
         if "admin_poznamka" in vypsat_list:
             zaznam["admin_poznamka"] = u.admin_poznamka
-        if "uzamcene_zmeny" in vypsat_list:
-            zaznam["uzamcene_zmmeny"] = "Uzamčené" if u.uzamcene_zmeny else "Odemčené"
+        if "uzamcene_zmeny_prace" in vypsat_list:
+            zaznam["uzamcene_zmeny_prace"] = "Uzamčené" if u.uzamcene_zmeny_prace else "Odemčené"
+        if "uzamcene_zmeny_udaju" in vypsat_list:
+            zaznam["uzamcene_zmeny_udaju"] = "Uzamčené" if u.uzamcene_zmeny_udaju else "Odemčené"
+        if "uzamcene_zmeny_callu" in vypsat_list:
+            zaznam["uzamcene_zmeny_callu"] = "Uzamčené" if u.uzamcene_zmeny_callu else "Odemčené"
         if "alergie" in vypsat_list:
             zaznam["alergie"] = u.alergie
         if "skola" in vypsat_list:
