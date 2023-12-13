@@ -6,6 +6,7 @@ let bez_odbornosti = document.getElementById("bez_odbornosti")
 let jakykoli = document.getElementById("jakykoli")
 let nezalezi_ma = document.getElementById("nezalezi_ma")
 let nezalezi_nema = document.getElementById("nezalezi_nema")
+let jakakoli_uzamcenost = document.getElementById("uzamcene_zmeny_cokoli")
 let vyber_div = document.getElementById("vyber")
 let vysledek_div = document.getElementById("vysledek")
 let ukazat_button = document.getElementById("ukazat")
@@ -146,8 +147,16 @@ let udaje_k_vypsani = [
         "display_name": "Admin poznámka"
     },
     {
-        "system_name": "uzamcene_zmeny",
-        "display_name": "Uzamčené změny"
+        "system_name": "uzamcene_zmeny_callu",
+        "display_name": "Uzamčené změny callů"
+    },
+    {
+        "system_name": "uzamcene_zmeny_prace",
+        "display_name": "Uzamčené změny práce"
+    },
+    {
+        "system_name": "uzamcene_zmeny_udaju",
+        "display_name": "Uzamčené změny údajů"
     },
     {
         "system_name": "alergie",
@@ -349,10 +358,14 @@ function vyhodnotit() {
 
     // uzamčenost změn
 
-    let radios_u = document.getElementsByName("uzamcene_zmeny")
-    for (let r of radios_u) {
-        if (r.checked) {
-            result["uzamcene_zmeny"] = r.value
+    if (jakakoli_uzamcenost.checked) {
+        result["uzamcenost_zmen"] = "jakakoli"
+    } else {
+        result["uzamcenost_zmen"] = []
+        for (let id of ["uzamcene_zmeny_callu", "uzamcene_zmeny_prace", "uzamcene_zmeny_udaju"]) {
+            if (document.getElementById(id).checked) {
+                result["uzamcenost_zmen"].push(id)
+            }
         }
     }
 
@@ -390,7 +403,7 @@ function vyhodnotit() {
                 result: JSON.stringify(result)
             },
             type: "POST",
-            url: "/admin/generovat_seznamy/"
+            url: "/admin/generovat_seznamy"
         })
         .done(function(data) {
             vypsat(data)
@@ -477,5 +490,14 @@ jakykoli.addEventListener("change", function() {
         document.getElementById(id).checked = false
     }
 })
-
+jakakoli_uzamcenost.addEventListener("change", function() {
+    for (let radio of document.getElementsByName("uzamcenost_zmen")) {
+        radio.checked = false
+    }
+})
+for (let radio of document.getElementsByName("uzamcenost_zmen")) {
+    radio.addEventListener("change", function() {
+        jakakoli_uzamcenost.checked = false
+    })
+}
 novy_sloupecek() // aby tam vzdy byl jeden
