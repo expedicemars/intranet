@@ -65,3 +65,6 @@ def mail_logo_path() -> Path:
 
 def info_o_konferenci_path() -> Path:
     return Path.cwd() / "data" / "info_o_konferenci.txt"
+
+def faze_path() -> Path:
+    return Path.cwd() / "data" / "faze.json"

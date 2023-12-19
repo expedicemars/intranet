@@ -1,6 +1,25 @@
 {% extends "admin_navbar.html" %}
 {% block content %}
 <form id="form" method="post">
+    <h2>Fáze ročníku: <span id="faze_display_name"></span></h2>
+    <p>
+        Fáze to, zda jsou otevřené registrace a to, jak se intranet zobrazuje nově příchozím.
+        <ul>
+            <li><b>Ročník bude</b> je fáze, která trvá od ukončení registrací do stanovení data dalších registrací. Na homepage je napsáno, že nový ročník začne v srpnu a že je možné se předregistrovat.</li>
+            <li><b>Zveřejněné datum registrace</b> na hommepage ukáže datumy, ve kterých bude možné se registrovat.</li>
+            <li><b>Otevřená registrace</b> je dost jasná.</li>
+            <li><b>Uzavřená registrace</b> na homepage řekne, že tento ročník právě probíhá a je možné se předregistrovat do nového.</li>
+        </ul>
+    </p>
+    <div class="row">
+        <div class="col">
+            <select id="faze_select" class="form-select" name="faze_select"></select>
+        </div>
+        <div class="col-auto">
+            <button class="btn em-button" name="ulozit_fazi", value="whatever">Uložit fázi</button>
+        </div>
+    </div>
+    <hr>
     <h2>Datum začátku a konce registrace</h2>
     Datum samo o sobě nic neukončuje, je pouze informativní. Registrace se otevírají a uzavírají zvlášť.
     <div class="row my-2">
@@ -26,17 +45,8 @@
         </div>
     </div>
     <hr>
-    <h2>Ukončení registrace</h2>
-    <div class="row">
-        <div class="col">
-            Registrace je <span id="stav_registrace"></span>.
-        </div>
-        <div class="col-auto">
-            <button class="btn btn-success" name="toggle_registraci" value="whatever" id="toggle_registraci"></button>
-        </div>
-    </div>
-    <hr>
-    <h2>Viditelnost zadání na homepage</h2>
+    
+    <h2>Viditelnost zadání domácího kola na homepage</h2>
     <div class="row">
         <div class="col">
             Zadání jsou <span id="viditelnost_stav"></span>.
@@ -46,7 +56,7 @@
         </div>
     </div>
     <hr>
-    <h2>Viditelnost stránky s informacemi o Online konferenci</h2>
+    <h2>Viditelnost stránky s informacemi o online konferenci</h2>
     <p>
         Informace o konferenci jdou upravit <a class="link" href="{{url_for('admin_views.info_o_konferenci')}}">tady</a> a zobrazují se účastníkům, pokud jsou splněny obě následující podmínky:
         <ul>

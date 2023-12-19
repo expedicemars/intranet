@@ -17,7 +17,7 @@ from website.role_handler import get_access_rights
 from website.json_handlers.logs_handling import delete_logs,  delete_alogs, alog
 from website.json_handlers.poznamky_handling import zapsat_poznamky
 from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_name
-from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, set_nove_datum_zacatku_registrace, toggle_registrace, get_registrace_otevrena, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol, toggle_info_o_konferenci, get_info_o_konferenci_viditelne, zapsat_info_o_konferenci, save_mezni_hodiny_pro_cally, get_mezni_hodiny_pro_cally
+from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, set_nove_datum_zacatku_registrace, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol, toggle_info_o_konferenci, get_info_o_konferenci_viditelne, zapsat_info_o_konferenci, save_mezni_hodiny_pro_cally, get_mezni_hodiny_pro_cally, set_aktualni_faze_system_name
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 from website.json_handlers.velitele_odbornosti_handling import zapsat_kontakt
 from website.paths import zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path, vzorove_vypracovani_path
@@ -295,10 +295,6 @@ def prubeh_rocniku():
             set_nove_datum_konce_registrace(datum)
             alog(f"Úprava termínu konce registrace na {datum}.")
             flash("Termín konce registrace byl upraven.", category="success")
-        elif request.form.get("toggle_registraci"):
-            toggle_registrace()
-            alog(f"Změna otevření registrace na {get_registrace_otevrena()}")
-            flash(f"Stav otevření registrace změnen na {get_registrace_otevrena()}", category="success")
         elif request.form.get("ulozit_mailing_list"):
             set_mailing_list(request.form.get("mailing_list"))
             alog("Upraven mailing list.")
@@ -326,6 +322,11 @@ def prubeh_rocniku():
             toggle_info_o_konferenci()
             alog(f"Změna viditelnosti stránky o online konferenci na {get_info_o_konferenci_viditelne()}")
             flash(f"Stav viditelnosti infa o online konferenci změnen na {get_info_o_konferenci_viditelne()}", category="success")
+        elif request.form.get("ulozit_fazi"):
+            system_name_nove_faze = request.form.get("faze_select") # TODO
+            set_aktualni_faze_system_name(system_name_nove_faze)
+            alog(f"Změna fáze na {system_name_nove_faze}.")
+            flash("Fáze přepnuta.", category="success")
         return redirect(url_for("admin_views.prubeh_rocniku"))        
 
 @admin_views.route("/velitele_odbornosti", methods=["GET","POST"])

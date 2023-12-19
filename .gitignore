@@ -23,6 +23,7 @@ prubeh_rocniku.json
 exporty/*
 .env
 info_o_konferenci.txt
+faze.json
 
 # Node artifact files
 node_modules/
