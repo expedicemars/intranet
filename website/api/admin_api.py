@@ -4,7 +4,7 @@ from datetime import datetime
 import json
 from website.helpers.require_role_decorator import require_role_on_current_user
 from website.json_handlers.logs_handling import get_logs, get_alogs
-from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena, get_zadani_viditelne, get_koordinator_internetovych_kol, get_info_o_konferenci_viditelne, get_info_o_konferenci, get_mezni_hodiny_pro_cally
+from website.json_handlers.prubeh_rocniku_handling import get_zadani_viditelne, get_koordinator_internetovych_kol, get_info_o_konferenci_viditelne, get_info_o_konferenci, get_mezni_hodiny_pro_cally
 from website.json_handlers.odkazy_handling import get_odkazy
 from website.helpers.pretty_date import pretty_datetime
 from website.paths import velitel_odbornosti_data_path, poznamky_path, prohlaseni_path, sablony_folder_path, vzorove_vypracovani_path
@@ -32,30 +32,29 @@ def admin_logs():
     return json.dumps(get_alogs())
 
 
-@admin_api.route("/je_registrace_otevrena")
-@require_role_on_current_user("editing_prubeh_rocniku")
-def je_registrace_otevrena():
-    return str(get_registrace_otevrena())
-
 @admin_api.route("/je_zadani_viditelne")
 @require_role_on_current_user("editing_prubeh_rocniku")
 def je_zadani_viditelne():
     return str(get_zadani_viditelne())
+
 
 @admin_api.route("/je_info_o_konferenci_viditelne")
 @require_role_on_current_user("editing_prubeh_rocniku")
 def je_info_o_konferenci_viditelne():
     return str(get_info_o_konferenci_viditelne())
 
+
 @admin_api.route("/odkazy")
 @require_role_on_current_user("admin")
 def odkazy():
     return get_odkazy()
 
+
 @admin_api.route("koordinator_internetovych_kol")
 @require_role_on_current_user("editing_prubeh_rocniku")
 def koordinator_internetovych_kol():
     return get_koordinator_internetovych_kol()
+
 
 @admin_api.route("/soubory_existuji")
 @require_role_on_current_user("admin")

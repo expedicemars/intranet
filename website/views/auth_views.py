@@ -6,7 +6,7 @@ from website.models.user import User
 from website.mail_handler import mail_sender
 from website.json_handlers.mailing_list import get_mails_from_mailing_list, pridat_mail_do_mailing_listu
 from website.paths import user_data_folder_path
-from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena
+from website.json_handlers.prubeh_rocniku_handling import get_aktualni_faze
 
 
 auth_views = Blueprint("auth_views",__name__)
@@ -39,7 +39,7 @@ def login():
 def register():
 	if current_user.is_authenticated:
 		return redirect(url_for("user_views.ucet"))   
-	elif not get_registrace_otevrena():
+	elif not get_aktualni_faze()["system_name"] == "otevrena_registrace":
 		return redirect(url_for("auth_views.mailing_list"))
 	else:
 		if request.method == "GET":
@@ -81,7 +81,7 @@ def register():
 def mailing_list():
 	if current_user.is_authenticated:
 		return redirect(url_for("user_views.ucet"))   
-	elif get_registrace_otevrena():
+	elif get_aktualni_faze()["system_name"] == "otevrena_registrace":
 		return redirect(url_for("auth_views.register"))
 	else:
 		if request.method == "GET":

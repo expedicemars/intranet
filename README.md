@@ -58,3 +58,14 @@ Pro jmenování prvního admina s rolí editing_admins_allowed:
 1. Registrace Usera
 2. v Pythonanywhere najít skript "jmenovani_admina_editing_admins_allowed.py"s
 4. v konzoli to pustit a řídit se pokyny
+
+
+# Myšlenky při implementování fází (again)
+1. Ročník bude
+    - bude
+2. Registrace budou - konkrétní datum
+    - datum_registraci
+3. Otevřené registrace
+    - otevrene_registrace
+4. Registrace uzavřené
+    - uzavrene_registrace

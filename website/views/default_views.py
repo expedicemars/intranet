@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user
 from website.models.chyba import Chyba
 from website.role_handler import get_access_rights, get_user_progress, get_info_o_konf_viditelne
-from website.json_handlers.prubeh_rocniku_handling import get_registrace_otevrena, get_zadani_viditelne
+from website.json_handlers.prubeh_rocniku_handling import get_zadani_viditelne, get_aktualni_faze, get_datum_zacatku_registrace_pretty, get_datum_konce_registrace_pretty
 from website.mail_handler import mail_sender
 
 
@@ -14,10 +14,12 @@ default_views = Blueprint("default_views", __name__)
 def home():
     return render_template("home.html", 
                            roles = get_access_rights(), 
-                           otevrena_registrace = get_registrace_otevrena(), 
                            user_progress = get_user_progress(),
                            zverejnena_zadani = get_zadani_viditelne(),
-                           konf_viditelne = get_info_o_konf_viditelne())
+                           konf_viditelne = get_info_o_konf_viditelne(),
+                           aktualni_faze_system_name = get_aktualni_faze()["system_name"],
+                           datum_zacatku_registrace = get_datum_zacatku_registrace_pretty(),
+                           datum_konce_registrace = get_datum_konce_registrace_pretty())
 
 
 @default_views.route("/nahlasit_bug", methods=["GET", "POST"])

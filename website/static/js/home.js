@@ -1,14 +1,8 @@
 import httpGet from "./httpGet.js"
-let zacatek_registrace = httpGet("/noauth_api/zacatek_registrace_pretty")
-let mit = httpGet("/noauth_api/mit")
-let konec_registrace = httpGet("/noauth_api/konec_registrace_pretty")
 let dostupne_odbornosti = JSON.parse(httpGet("/noauth_api/dostupne_odbornosti"))
 let odbornosti_div = document.getElementById("odbornosti")
 let sablony_li = document.getElementById("sablony")
 
-document.getElementById("zacatek_registrace").innerText = zacatek_registrace
-document.getElementById("konec_registrace").innerText = konec_registrace
-document.getElementById("mit").innerText = mit
 
 // zadani
 if (odbornosti_div) {

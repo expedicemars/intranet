@@ -163,6 +163,7 @@ def exportovat() -> None:
 def promazat() -> None:
     """
     Promaže vše, co bylo exportováno, krom mailing listu, prohlášení pro rodiče, šablon, app logů a odkazů.
+    Změní stav znění ročníku na "bude".
     """
     for folder in zadani_folder_path().iterdir():
         if folder.name == ".DS_Store":
