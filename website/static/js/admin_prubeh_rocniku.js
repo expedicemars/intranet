@@ -4,7 +4,6 @@ let konec_registrace = httpGet("/noauth_api/konec_registrace")
 let zacatek_registrace = httpGet("/noauth_api/zacatek_registrace")
 let je_zadani_viditelne = httpGet("/admin_api/je_zadani_viditelne")
 let je_info_o_konferenci_viditelne = httpGet("/admin_api/je_info_o_konferenci_viditelne")
-let mailing_list = httpGet("/admin_api/mailing_list")
 let koordinator_internetovych_kol = httpGet("/admin_api/koordinator_internetovych_kol")
 let aktualni_faze = JSON.parse(httpGet("/noauth_api/aktualni_faze"))
 let vsechny_faze = JSON.parse(httpGet("/noauth_api/vsechny_faze"))
@@ -23,7 +22,6 @@ let form = document.getElementById("form")
 datum_uzavreni_input.value=konec_registrace
 datum_otevreni_input.value=zacatek_registrace
 ukoncit_rocnik_button.addEventListener("click", ukoncit)
-document.getElementById("mailing_list").innerHTML = JSON.parse(mailing_list)
 document.getElementById("koordinator_internetovych_kol").value = koordinator_internetovych_kol
 
 

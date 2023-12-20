@@ -9,7 +9,6 @@ from website.models.chyba import Chyba
 from website.models.user import User
 from website.models.hodnoceni import Hodnoceni
 from website.models.motivacni_call import Motivacni_call
-from website.json_handlers.mailing_list import set_mailing_list
 from website.helpers.user_filter import seznam_generator
 from website.helpers.exporty import exportovat, promazat
 from website.helpers.pretty_date import pretty_datetime
@@ -20,24 +19,18 @@ from website.json_handlers.odkazy_handling import pridat_odkaz, smazat_odkaz_by_
 from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_registrace, set_nove_datum_zacatku_registrace, toggle_zadani, get_zadani_viditelne, zapsat_koordinatora_i_kol, toggle_info_o_konferenci, get_info_o_konferenci_viditelne, zapsat_info_o_konferenci, save_mezni_hodiny_pro_cally, get_mezni_hodiny_pro_cally, set_aktualni_faze_system_name
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 from website.json_handlers.velitele_odbornosti_handling import zapsat_kontakt
+from website.json_handlers.mailing_list import odebrat_mail_z_mailing_listu
 from website.paths import zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path, vzorove_vypracovani_path
 
 
 admin_views = Blueprint("admin_views",__name__)
 
-@admin_views.route("/", methods=["GET","POST"])
-@admin_views.route("/dashboard", methods=["GET","POST"])
+@admin_views.route("/")
+@admin_views.route("/dashboard")
 @require_role_on_current_user("admin")
 def admin_dashboard():
-    if request.method == "GET":
-        flash("Vítej a porozhlédni se tu. Zatím nejlépe shrnuté a popsané fíčury jsou dole v patičce v Přehledu fíčur systému.", category="success")
-        return render_template("admin_dashboard.html", roles=get_access_rights())
-    else:
-        mailing_list = request.form.get("mailing_list")
-        set_mailing_list(mailing_list)
-        flash("Změna mailing listu uložena.", category="success")
-        alog("Úprava mailing listu.")
-        return redirect(url_for("admin_views.admin_dashboard"))
+    flash("Vítej a porozhlédni se tu. Zatím nejlépe shrnuté a popsané fíčury jsou dole v patičce v Přehledu fíčur systému.", category="success")
+    return render_template("admin_dashboard.html", roles=get_access_rights())
 
 
 @admin_views.route("/poznamky", methods=["GET","POST"])
@@ -295,10 +288,6 @@ def prubeh_rocniku():
             set_nove_datum_konce_registrace(datum)
             alog(f"Úprava termínu konce registrace na {datum}.")
             flash("Termín konce registrace byl upraven.", category="success")
-        elif request.form.get("ulozit_mailing_list"):
-            set_mailing_list(request.form.get("mailing_list"))
-            alog("Upraven mailing list.")
-            flash("Mailing list byl upraven.", category="success")
         elif request.form.get("generovat"):
             alog("Vygenerování exportu.")
             exportovat()
@@ -537,3 +526,18 @@ def odkazy():
             alog(f"Smazán odkaz {request.form.get('name_to_delete')}")
             flash("Odkaz odebrán.", category="info")
         return redirect(url_for("admin_views.odkazy"))
+    
+
+@admin_views.route("/vyplnene_predregistrace", methods=["GET","POST"])
+@require_role_on_current_user("editing_prubeh_rocniku")
+def vyplnene_predregistrace():
+    if request.method == "GET":
+        return render_template("admin_vyplnene_predregistrace.html", roles=get_access_rights())
+    else:
+        if email := request.form.get("smazat"):
+            odebrat_mail_z_mailing_listu(email)
+            alog(f"Z mailing listu byl odebrán email {email}.")
+            flash("Email odebrán.", category="success")
+        else:
+            return request.form.to_dict()
+        return redirect(url_for("admin_views.vyplnene_predregistrace"))

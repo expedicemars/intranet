@@ -14,7 +14,7 @@ from website.models.hodnoceni import Hodnoceni
 from website.models.motivacni_call import Motivacni_call
 from website.role_handler import get_access_rights
 from website.json_handlers.dostupne_omezeni import get_dostupne_progressy, get_dostupne_role, get_dostupne_odbornosti
-from website.json_handlers.mailing_list import get_mails_from_mailing_list
+from website.json_handlers.mailing_list import get_mailing_list
 
 
 admin_api = Blueprint("admin_api", __name__)
@@ -122,7 +122,7 @@ def velitel_odbornosti_data():
 @admin_api.route("/mailing_list")
 @require_role_on_current_user("admin")
 def mailing_list():
-    return json.dumps(get_mails_from_mailing_list())
+    return json.dumps(get_mailing_list())
 
 
 @admin_api.route("/emaily_admin_editoru")

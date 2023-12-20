@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from website import db
 from website.models.user import User
 from website.mail_handler import mail_sender
-from website.json_handlers.mailing_list import get_mails_from_mailing_list, pridat_mail_do_mailing_listu
+from website.json_handlers.mailing_list import get_mailing_list, pridat_mail_do_mailing_listu
 from website.paths import user_data_folder_path
 from website.json_handlers.prubeh_rocniku_handling import get_aktualni_faze
 
@@ -95,7 +95,7 @@ def mailing_list():
 			if user:
 				flash("Tento email je už zaregistrovaný. Použij prosím jiný", category="error")
 				return redirect(url_for("auth_views.register"))
-			if email in get_mails_from_mailing_list():
+			if email in [i["email"] for i in get_mailing_list()]:
 				flash("Tenhle mail už v mailing listu máme - upozorníme tě, až to bude potřeba :).", category="info")
 				return redirect(url_for("default_views.home"))
 			pridat_mail_do_mailing_listu(email)
