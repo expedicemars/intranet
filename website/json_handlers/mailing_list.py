@@ -1,17 +1,32 @@
 from website.paths import mailing_list_path
 import json
+from datetime import datetime
+from website.helpers.pretty_date import pretty_datetime
 
-def get_mails_from_mailing_list() -> list:
+def get_mailing_list() -> list[dict]:
     with open(mailing_list_path()) as file:
-        return json.load(file)
+        file = json.load(file)
+        new = sorted(file, key = lambda x: datetime.fromisoformat(x["timestamp"]), reverse=True)
+        return new
 
 def pridat_mail_do_mailing_listu(mail: str) -> None:
-    mails = get_mails_from_mailing_list()
-    mails.append(mail)
+    mails = get_mailing_list()
+    timestamp = datetime.now()
+    new = {
+        "email": mail,
+        "timestamp": timestamp.isoformat(),
+        "pretty": pretty_datetime(timestamp)
+    }
+    mails.append(new)
     with open(mailing_list_path(), "w") as file:
         file.write(json.dumps(mails, indent=4))
 
-def set_mailing_list(mails: str) -> None:
-    mails = mails.replace(" ", "").split(",")
+def odebrat_mail_z_mailing_listu(mail: str) -> None:
+    mails = get_mailing_list()
+    new_mails = []
+    for m in mails:
+        if m["email"] != mail:
+            new_mails.append(m)
+            print(m, mail)
     with open(mailing_list_path(), "w") as file:
-        file.write(json.dumps(mails, indent=4))
+        file.write(json.dumps(new_mails, indent=4))

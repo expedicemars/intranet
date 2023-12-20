@@ -1,0 +1,11 @@
+{% extends "admin_navbar.html" %}
+{% block content %}
+    <h2>Vyplněné předregistrace</h2>
+    <form method="post">
+        <div id="parent_div"></div>
+    </form>
+    
+
+
+    <script type="module" src="{{url_for('static', filename='js/admin_vyplnene_predregistrace.js')}}"></script>
+{% endblock %}
