@@ -1,6 +1,8 @@
 import httpGet from "./httpGet.js"
+import TableCreator from "./table_creator.js";
 
 let useri_na_jmenovani_adminu = JSON.parse(httpGet("/admin_api/useri_na_jmenovani_adminu"))
+let prehled_roli = JSON.parse(httpGet("/admin_api/prehled_roli"))
 
 function generator_from_db(target, id, email, jmeno) {
     let tr = document.createElement("tr")
@@ -35,4 +37,11 @@ for (let u of useri_na_jmenovani_adminu["admins"]) {
 }
 for (let u of useri_na_jmenovani_adminu["users"]) {
     generator_from_db("users", u["id"], String(u["email"]), u["jmeno"])
+}
+
+let tc = new TableCreator(document.getElementById("role_table"))
+tc.make_header(["role", "počet adminů", "admini"])
+tc.make_tbody()
+for (let r of prehled_roli) {
+    tc.make_row([r.role, r.emails.length, r.emails.join(", ")])
 }

@@ -237,15 +237,15 @@ def detail_usera(id):
 
 
 
-@admin_views.route("/jmenovat_adminy", methods=["GET","POST"])
+@admin_views.route("/role", methods=["GET","POST"])
 @require_role_on_current_user("editing_admins_allowed")
-def jmenovat_adminy():
+def role():
         if request.method == "GET":
-            return render_template("admin_jmenovat_adminy.html", roles=get_access_rights())
+            return render_template("admin_role.html", roles=get_access_rights())
         else:
             return redirect(url_for("admin_views.vybrat_role_adminovi", id=int(request.form.get("result"))))
 
-@admin_views.route("/jmenovat_adminy/<int:id>", methods=["GET","POST"])
+@admin_views.route("/role/<int:id>", methods=["GET","POST"])
 @require_role_on_current_user("editing_admins_allowed")
 def vybrat_role_adminovi(id):
     if request.method == "GET":
@@ -264,7 +264,7 @@ def vybrat_role_adminovi(id):
             db.session.add(u)
             db.session.commit()
             flash("Role byly upraveny.", category="success")
-            return redirect(url_for("admin_views.jmenovat_adminy"))
+            return redirect(url_for("admin_views.role"))
 
 
 @admin_views.route("/prubeh_rocniku", methods=["GET","POST"])
