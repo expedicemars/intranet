@@ -16,7 +16,7 @@ def login():
 	if current_user.is_authenticated:
 		return redirect(url_for("user_views.ucet"))
 	if request.method == "GET":
-		return render_template("auth_login.html")
+		return render_template("auth/login.html")
 	else:
 		email = request.form.get("email")
 		password = request.form.get("password")
@@ -43,7 +43,7 @@ def register():
 		return redirect(url_for("auth_views.mailing_list"))
 	else:
 		if request.method == "GET":
-				return render_template("auth_register.html")
+				return render_template("auth/register.html")
 		else:
 			email = request.form.get("email")
 			password = request.form.get("password")
@@ -85,7 +85,7 @@ def mailing_list():
 		return redirect(url_for("auth_views.register"))
 	else:
 		if request.method == "GET":
-			return render_template("auth_registrace_uzavrene.html")
+			return render_template("auth/registrace_uzavrene.html")
 		else:
 			email = request.form.get("email")
 			if len(email) > 100:
@@ -119,7 +119,7 @@ def request_reset():
 	if current_user.is_authenticated:
 		return redirect(url_for("default_views.home"))
 	if request.method == "GET":
-		return render_template("auth_request_reset.html")
+		return render_template("auth/request_reset.html")
 	else:
 		email = request.form.get("email")
 		if len(email) > 100:
@@ -141,7 +141,7 @@ def reset_password(token):
 		flash("Obnovovací link vypršel, nebo je jinak neplatný.", category="info")
 		return redirect(url_for("auth_views.request_reset"))
 	if request.method == "GET":
-		return render_template("auth_reset_password.html")
+		return render_template("auth/reset_password.html")
 	else:
 		user.password = generate_password_hash(request.form.get("password"), method="sha256")
 		db.session.commit()

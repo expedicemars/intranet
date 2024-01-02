@@ -21,7 +21,7 @@ user_views = Blueprint("user_views", __name__)
 @require_role_on_current_user("user")
 def ucet():
     if request.method == "GET":
-        return render_template("ucet.html", current_user = current_user, roles=get_access_rights(), uzamcene_zmeny_udaju=current_user.uzamcene_zmeny_udaju, user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
+        return render_template("ucastnik/ucet.html", current_user = current_user, roles=get_access_rights(), uzamcene_zmeny_udaju=current_user.uzamcene_zmeny_udaju, user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
     else:
         if current_user.uzamcene_zmeny_udaju:
             flash("Máš uzamčené změny údajů, nesmíš nic měnit.")
@@ -84,7 +84,7 @@ def ucet():
         
 @user_views.route("/info")
 def info():
-    return render_template("info.html", roles = get_access_rights(), user_progress=get_user_progress(), odevzdany_formular = current_user.odevzdany_motivacni_dotaznik, konf_viditelne = get_info_o_konf_viditelne())
+    return render_template("ucastnik/info.html", roles = get_access_rights(), user_progress=get_user_progress(), odevzdany_formular = current_user.odevzdany_motivacni_dotaznik, konf_viditelne = get_info_o_konf_viditelne())
 
 
 @user_views.route("/ucet/<token>", methods=["GET"])
@@ -106,7 +106,7 @@ def ucet_overeny(token):
 @require_progress_na_ucastnikovi("Motivační call")
 def motivacni_call():
     if  request.method == "GET":
-        return render_template("motivacni_call.html", roles=get_access_rights(), uzamcene_zmeny_callu = current_user.uzamcene_zmeny_callu, user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
+        return render_template("ucastnik/motivacni_call.html", roles=get_access_rights(), uzamcene_zmeny_callu = current_user.uzamcene_zmeny_callu, user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
     else:
         if request.form.get("vybrat"):
             m: Motivacni_call
@@ -135,7 +135,7 @@ def odbornost(odb):
     if current_odbornost != "zatím nevybraná" and odb != current_odbornost:
         abort(401)
     if request.method == "GET":
-        return render_template("odbornost.html", 
+        return render_template("ucastnik/odbornost.html", 
                                roles=get_access_rights(), 
                                uzamcene_zmeny_prace = current_user.uzamcene_zmeny_prace, 
                                user_progress=get_user_progress(), 
@@ -203,7 +203,7 @@ def odbornost_vyber():
     if current_user.odbornost != "zatím nevybraná":
         return redirect(url_for("user_views.odbornost", odb = current_user.odbornost))
     else:
-        return render_template("odbornost_vyber.html", roles=get_access_rights(), user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
+        return render_template("ucastnik/odbornost_vyber.html", roles=get_access_rights(), user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
 
 @user_views.route("/motivacni_formular>", methods=["GET","POST"])
 @require_role_on_current_user("user")
@@ -216,7 +216,7 @@ def motivacni_formular():
 @require_progress_na_ucastnikovi("Motivační formulář")
 def motivacni_formular_numbered(blok_otazek):
     if request.method == "GET":
-        return render_template("motivacni_formular.html", roles=get_access_rights(), user_progress=get_user_progress(), blok_otazek=blok_otazek, odevzdany_formular=current_user.odevzdany_motivacni_dotaznik, konf_viditelne = get_info_o_konf_viditelne())
+        return render_template("ucastnik/motivacni_formular.html", roles=get_access_rights(), user_progress=get_user_progress(), blok_otazek=blok_otazek, odevzdany_formular=current_user.odevzdany_motivacni_dotaznik, konf_viditelne = get_info_o_konf_viditelne())
     else:
         if request.form.get("dalsi"):
             current_user.ulozit_odpovedi(request.form.to_dict())
@@ -238,7 +238,7 @@ def motivacni_formular_numbered(blok_otazek):
 @require_progress_na_ucastnikovi("Domácí projekt")
 def info_o_konferenci():
     if get_info_o_konf_viditelne():
-        return render_template("info_o_konferenci.html", roles=get_access_rights(), user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
+        return render_template("ucastnik/info_o_konferenci.html", roles=get_access_rights(), user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
     else:
         abort(401)
             

@@ -1,0 +1,96 @@
+{% extends "admin/navbar.html" %}
+{% block content %}
+
+    <h2>Generování seznamů dětí</h2>
+    <p>
+        Generování seznamů funguje ve dvou krocích:
+        <ol>
+            <li>Nejprve se pomocí kritérií vybere taková podmnožina uživatelů, která nás zajímá</li>
+            <li>Potom vybereme, jaká data chceme k těmto uživatelům vypsat.</li>
+        </ol>
+    </p>
+    <hr>
+    <div id="vyber">
+        <h3>Kritéria, podle kterých se vybere seznam:</h3>
+        <div class="row">
+            <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="odbornosti">
+                <h4>Odbornost</h4>
+                <input type="checkbox" name="odbornost" id="jakakoli" checked>
+                <label for="jakakoli">Jakákoli</label>
+                <br>
+                <input type="checkbox" name="odbornost" id="bez_odbornosti">
+                <label for="bez_odbornosti">Nemá odbornost</label>
+            </div>
+            <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="progressy">
+                <h4>Postup v Expedici</h4>
+                <input type="checkbox" name="postup" id="jakykoli" checked>
+                <label for="jakykoli">Jakýkoli</label>
+            </div>
+            <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="udaje_ma">
+                <h4>Mají údaj</h4>
+                <input type="radio" name="udaje_ma" id="nezalezi_ma" checked>
+                <label for="nezalezi_ma">Nezáleží na tom</label>
+            </div>
+            <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="udaje_nema">
+                <h4>Chybí údaj</h4>
+                <input type="radio" name="udaje_nema" id="nezalezi_nema" checked>
+                <label for="nezalezi_nema">Nezáleží na tom</label>
+            </div>
+            <div class="col-xl-2 col-lg-4 col-md-6 my-1">
+                <h4>Uzamčenost změn</h4>
+                <input type="checkbox" name="uzamcenost_zmen_cokoli" id="uzamcene_zmeny_cokoli" value="cokoli" checked>
+                <label for="uzamcene_zmeny_oboji">Cokoli</label>
+                <br>
+                <input type="checkbox" name="uzamcenost_zmen" id="uzamcene_zmeny_udaju" value="uzamcene_zmeny_udaju">
+                <label for="uzamcene_zmeny_udaju">Uzamčené změny údajů</label>
+                <br>
+                <input type="checkbox" name="uzamcenost_zmen" id="uzamcene_zmeny_callu" value="uzamcene_zmeny_callu">
+                <label for="uzamcene_zmeny_callu">Uzamčené změny callů</label>
+                <br>
+                <input type="checkbox" name="uzamcenost_zmen" id="uzamcene_zmeny_prace" value="uzamcene_zmeny_prace">
+                <label for="uzamcene_zmeny_prace">Uzamčené změny práce</label>
+            </div>
+            <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="odevzdany_motivacni_dotaznik">
+                <h4>Odevzdanost (?) motivačního dotazníku</h4>
+                <input type="radio" name="odevzdany_dotaznik" id="odevzdany_dotaznik_oboji" checked value="oboji">
+                <label for="odevzdany_dotaznik_oboji">Obojí</label>
+                <br>
+                <input type="radio" name="odevzdany_dotaznik" id="odevzdany_dotaznik_ano" value="odevzdany">
+                <label for="odevzdany_dotaznik_ano">Odevzdaný</label>
+                <br>
+                <input type="radio" name="odevzdany_dotaznik" id="odevzdany_dotaznik_ne" value="jeste_ne">
+                <label for="odevzdany_dotaznik_ne">Ještě ne</label>
+            </div>
+        </div>
+        
+        
+        <hr>
+        <h3>Sloupečky, které k nim chci vypsat:</h3>
+        <div id="vypsat_selects"></div>
+        <button class="btn em-button my-1" type="button" id="novy_sloupecek">Nový sloupeček</button> <br>
+    </div>
+    <button id="generovat" class="btn btn-success" type="button">Generovat</button>
+    <button id="ukazat" hidden type="button" class="btn btn-success">Ukázat výběr kritérií</button>
+    <div id="vysledek" hidden>
+        <hr>
+        <h2>Výsledek:</h2>
+        <p>
+            E-maily vybraných účastníků: <code id="emaily_vybranych"></code>
+        </p>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr id="tr">
+
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <script type="module" src="{{url_for('static', filename='js/admin/generovat_seznamy.js')}}"></script>
+{% endblock %}

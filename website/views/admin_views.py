@@ -30,14 +30,14 @@ admin_views = Blueprint("admin_views",__name__)
 @require_role_on_current_user("admin")
 def admin_dashboard():
     flash("Vítej a porozhlédni se tu. Zatím nejlépe shrnuté a popsané fíčury jsou dole v patičce v Přehledu fíčur systému.", category="success")
-    return render_template("admin_dashboard.html", roles=get_access_rights())
+    return render_template("admin/dashboard.html", roles=get_access_rights())
 
 
 @admin_views.route("/poznamky", methods=["GET","POST"])
 @require_role_on_current_user("admin")
 def poznamky():
     if request.method == "GET":
-        return render_template("admin_poznamky.html", roles=get_access_rights(), username = current_user.jmeno, date=datetime.date.today())
+        return render_template("admin/poznamky.html", roles=get_access_rights(), username = current_user.jmeno, date=datetime.date.today())
     else:
         zapsat_poznamky(json.loads(request.form.get("result")))
         flash("Změny uloženy.", category="success")
@@ -47,20 +47,20 @@ def poznamky():
 @admin_views.route("/planovane_featury")
 @require_role_on_current_user("admin")
 def planovane_featury():
-       return render_template("admin_planovane_featury.html", roles=get_access_rights())
+       return render_template("admin/planovane_featury.html", roles=get_access_rights())
 
 
 @admin_views.route("/historie_verzi")
 @require_role_on_current_user("admin")
 def historie_verzi():
-        return render_template("admin_historie_verzi.html", roles=get_access_rights())
+        return render_template("admin/historie_verzi.html", roles=get_access_rights())
 
 
 @admin_views.route("/uprava_znamych_bugu", methods=["GET","POST"])
 @require_role_on_current_user("editing_bugs_allowed")
 def uprava_znamych_bugu():
     if request.method == "GET":
-        return render_template("admin_uprava_znamych_chyb.html", roles=get_access_rights())
+        return render_template("admin/uprava_znamych_chyb.html", roles=get_access_rights())
     else:
         Chyba.save_po_upravach(json.loads(request.form.get("result")))
         alog("Uprava záznamů na bugtrackeru.")
@@ -71,7 +71,7 @@ def uprava_znamych_bugu():
 @require_role_on_current_user("editing_logs_allowed")
 def app_logs():
     if request.method == "GET":
-        return render_template("admin_app_logs.html", roles=get_access_rights())
+        return render_template("admin/app_logs.html", roles=get_access_rights())
     else:
         delete_logs()
         alog("Vymazani app logu.")
@@ -83,7 +83,7 @@ def app_logs():
 @require_role_on_current_user("editing_logs_allowed")
 def admin_logs():
     if request.method == "GET":
-        return render_template("admin_admin_logs.html", roles=get_access_rights())
+        return render_template("admin/admin_logs.html", roles=get_access_rights())
     else:
         delete_alogs()
         alog("Vymazani admin logu.")
@@ -95,7 +95,7 @@ def admin_logs():
 @require_role_on_current_user("editing_users_allowed")
 def registrovani_uzivatele():
     if request.method == "GET":
-        return render_template("admin_registrovani_uzivatele.html", roles=get_access_rights())
+        return render_template("admin/registrovani_uzivatele.html", roles=get_access_rights())
     else:
         result = request.form.get("result")
         return redirect(url_for("admin_views.detail_usera",id=int(result)))
@@ -105,7 +105,7 @@ def registrovani_uzivatele():
 @require_role_on_current_user("editing_users_allowed")
 def detail_usera(id):
     if request.method == "GET":
-        return render_template("admin_detail_usera.html", roles=get_access_rights(), id=id)
+        return render_template("admin/detail_usera.html", roles=get_access_rights(), id=id)
     else:
         u = User.get_by_id(id)
         if request.form.get("odebrat_motivacni_call"): #není tu check na to, zda m = None, protože disabluju tlačítko pomocí JS.
@@ -241,7 +241,7 @@ def detail_usera(id):
 @require_role_on_current_user("editing_admins_allowed")
 def role():
         if request.method == "GET":
-            return render_template("admin_role.html", roles=get_access_rights())
+            return render_template("admin/role.html", roles=get_access_rights())
         else:
             return redirect(url_for("admin_views.vybrat_role_adminovi", id=int(request.form.get("result"))))
 
@@ -249,7 +249,7 @@ def role():
 @require_role_on_current_user("editing_admins_allowed")
 def vybrat_role_adminovi(id):
     if request.method == "GET":
-        return render_template("admin_vybrat_role_adminovi.html", user=User.get_by_id(id), roles=get_access_rights())
+        return render_template("admin/vybrat_role_adminovi.html", user=User.get_by_id(id), roles=get_access_rights())
     else:
         if request.form.get("detail"):
             return redirect(url_for("admin_views.detail_usera", id=request.form.get("detail")))
@@ -271,7 +271,7 @@ def vybrat_role_adminovi(id):
 @require_role_on_current_user("editing_prubeh_rocniku")
 def prubeh_rocniku():
     if request.method == "GET":
-        return render_template("admin_prubeh_rocniku.html", roles=get_access_rights())
+        return render_template("admin/prubeh_rocniku.html", roles=get_access_rights())
     else:
         if request.form.get("ukoncit_rocnik_input"):
             promazat()
@@ -322,7 +322,7 @@ def prubeh_rocniku():
 @require_role_on_current_user("velitel_odbornosti")
 def velitele_odbornosti():
     if request.method == "GET":
-        return render_template("admin_velitele_odbornosti.html", roles=get_access_rights())
+        return render_template("admin/velitele_odbornosti.html", roles=get_access_rights())
     else:
         # mazani souboru
         if odbornost := request.form.get("smazat_zadani"):
@@ -355,7 +355,7 @@ def velitele_odbornosti():
 @require_role_on_current_user("editing_users_allowed")
 def generovat_seznamy():
     if request.method == "GET":
-        return render_template("admin_generovat_seznamy.html", roles=get_access_rights())
+        return render_template("admin/generovat_seznamy.html", roles=get_access_rights())
     else:
         alog("Generování seznamu účastníků podle: " + request.form.get("result") + ".")
         kriteria = json.loads(request.form.get("result"))
@@ -366,14 +366,14 @@ def generovat_seznamy():
 @require_role_on_current_user("editing_users_allowed")
 def prace():
     if request.method == "GET":
-        return render_template("admin_prace.html", roles=get_access_rights())
+        return render_template("admin/prace.html", roles=get_access_rights())
 
 
 @admin_views.route("/motivacni_call", methods=["GET","POST"])
 @require_role_on_current_user("editing_pohovory")
 def motivacni_call():
     if request.method == "GET":
-        return render_template("admin_motivacni_call.html", roles=get_access_rights())
+        return render_template("admin/motivacni_call.html", roles=get_access_rights())
     else:
         if request.form.get("pridat_termin"):
             date = request.form.get("date")
@@ -431,7 +431,7 @@ def motivacni_call():
 @require_role_on_current_user("admin")
 def nahrat_soubory():
     if request.method == "GET":
-        return render_template("admin_nahrat_soubory.html", roles=get_access_rights())
+        return render_template("admin/nahrat_soubory.html", roles=get_access_rights())
     else:
         if request.form.get("souhlas"):
             file = request.files.get("souhlas_file")
@@ -468,14 +468,14 @@ def nahrat_soubory():
 @admin_views.route("/featury")
 @require_role_on_current_user("admin")
 def featury():
-    return render_template("admin_featury.html", roles=get_access_rights())
+    return render_template("admin/featury.html", roles=get_access_rights())
     
     
 @admin_views.route("/organizatori", methods=["GET","POST"])
 @require_role_on_current_user("editing_users_allowed")
 def organizatori():
     if request.method == "GET":
-        return render_template("admin_organizatori.html", roles=get_access_rights())
+        return render_template("admin/organizatori.html", roles=get_access_rights())
     else:
         result = request.form.get("result")
         return redirect(url_for("admin_views.detail_usera",id=int(result)))
@@ -485,7 +485,7 @@ def organizatori():
 @require_role_on_current_user("editing_users_allowed")
 def hodnoceni(id):
     if request.method == "GET":
-        return render_template("admin_hodnoceni.html", roles=get_access_rights(), jmeno=User.get_by_id(id).jmeno)
+        return render_template("admin/hodnoceni.html", roles=get_access_rights(), jmeno=User.get_by_id(id).jmeno)
     else:
         Hodnoceni.zapsat_hodnoceni(request.form.to_dict(), id, current_user.id)
         flash("Hodnocení zapsáno", category="success")
@@ -495,13 +495,13 @@ def hodnoceni(id):
 @admin_views.route("/struktura_rozhovoru")
 @require_role_on_current_user("admin")
 def struktura_rozhovoru():
-    return render_template("admin_struktura_rozhovoru.html", roles=get_access_rights())
+    return render_template("admin/struktura_rozhovoru.html", roles=get_access_rights())
 
 @admin_views.route("/info_o_konferenci", methods=["GET","POST"])
 @require_role_on_current_user("editing_prubeh_rocniku")
 def info_o_konferenci():
     if request.method == "GET":
-        return render_template("admin_info_o_konferenci.html", roles=get_access_rights())
+        return render_template("admin/info_o_konferenci.html", roles=get_access_rights())
     else:
         if request.form.get("content"):
             zapsat_info_o_konferenci(request.form.get("content"))
@@ -515,7 +515,7 @@ def info_o_konferenci():
 @require_role_on_current_user("admin")
 def odkazy():
     if request.method == "GET":
-        return render_template("admin_odkazy.html", roles=get_access_rights())
+        return render_template("admin/odkazy.html", roles=get_access_rights())
     else:
         if request.form.get("adresa"):
             pridat_odkaz(nazev=request.form.get("nazev"), adresa=request.form.get("adresa"), kategorie_system_name=request.form.get("kategorie"))
@@ -532,7 +532,7 @@ def odkazy():
 @require_role_on_current_user("editing_prubeh_rocniku")
 def vyplnene_predregistrace():
     if request.method == "GET":
-        return render_template("admin_vyplnene_predregistrace.html", roles=get_access_rights())
+        return render_template("admin/vyplnene_predregistrace.html", roles=get_access_rights())
     else:
         if email := request.form.get("smazat"):
             odebrat_mail_z_mailing_listu(email)

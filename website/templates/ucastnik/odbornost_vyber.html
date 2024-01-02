@@ -1,0 +1,9 @@
+{% extends "navbar.html" %}
+{% block content %}
+<h2>Zadání a výběr odbornosti</h2>
+Zde si vyber odbornost a můžeš začít pracovat na domácí práci. V detailu můžeš práci odevzdávat.
+<div id="content">
+
+</div>
+<script type="module" src="{{url_for('static', filename='js/ucastnik/odbornost_vyber.js')}}"></script>
+{% endblock %}

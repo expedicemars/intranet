@@ -1,0 +1,26 @@
+{% extends "admin/navbar.html" %}
+
+{% block content %}
+<h2>Organizátoři</h2>
+
+Tady jsou data posbíraná z databáze. Zobrazuje tu jen účty s rolí <code>admin</code>.
+<form method="post">
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Jméno</th>
+                    <th>E-mail</th>
+                    <th>Detail</th>
+                </tr>
+            </thead>
+            <tbody id="users"></tbody>
+        </table>
+    </div>
+</form>
+
+
+<script type="module" src="{{url_for('static', filename='js/admin/organizatori.js')}}"></script>
+
+{% endblock %}
