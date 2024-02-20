@@ -197,6 +197,19 @@ def useri_na_jmenovani_adminu():
             result["users"].append({"id": u.id,"email": u.email, "jmeno": u.jmeno})
     return json.dumps(result)
 
+@admin_api.route("/prehled_roli")
+@require_role_on_current_user("editing_admins_allowed")
+def prehled_roli():
+    role = get_dostupne_role()
+    users = User.get_all()
+    result = []
+    for r in role:
+        result.append({
+            "role": r,
+            "emails": [u.email for u in users if r in get_access_rights(u)]
+        })
+    return result
+
 @admin_api.route("/statistiky")
 @require_role_on_current_user("admin")
 def statistiky():

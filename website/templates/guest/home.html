@@ -1,0 +1,43 @@
+{% extends "navbar.html" %}
+{% block content %}
+    
+<h2>Intranet Expedice Mars</h2>
+    {% if aktualni_faze_system_name == "rocnik_bude" %}
+        <p>
+            Registrace do Expedice Mars budou otevřeny v srpnu. Do té doby se ale můžeš <a class="link" href="{{url_for('auth_views.register')}}">předregistrovat</a>, my ti dáme vědět, až se registrace zpřístupní.
+        </p>
+    {% elif aktualni_faze_system_name == "datum_registrace" %}
+        <p>
+            Letošní ročník Expedice Mars bude mít otevřené registrace mezi <code>{{datum_zacatku_registrace}}</code> a <code>{{datum_konce_registrace}}</code>. Do té doby se ale můžeš <a class="link" href="{{url_for('auth_views.register')}}">předregistrovat</a>, my ti dáme vědět, až se registrace zpřístupní.
+        </p>
+    {% elif aktualni_faze_system_name == "otevrena_registrace" %}
+    <p>
+        Letošní ročník Expedice Mars má otevřené registrace mezi <code>{{datum_zacatku_registrace}}</code> a <code>{{datum_konce_registrace}}</code>. Můžeš se do Expedice <a class="link" href="{{url_for('auth_views.register')}}">zapojit</a>.
+    </p>
+    {% elif aktualni_faze_system_name == "uzavrena_registrace" %}
+    <p>
+        Letošní ročník Expedice Mars už nové registrace uzavřel. Do příštího ročníku se ale můžeš <a class="link" href="{{url_for('auth_views.register')}}">předregistrovat</a>, my ti dáme vědět, až se registrace znovu zpřístupní.
+    </p>
+    {% endif %}
+    <hr>
+    
+    {% if zverejnena_zadani %}
+        <h2>Zadání domácího kola</h2>
+        <p>
+            <ul>
+                <li>Zadání jsou nyní viditelná pro všechny</li>
+                <li>Na jednom z těchto zadání budeš pracovat</li>
+                <li>Tady najdeš <a class="link" href="/file_api/vzorove_vypracovani">vzorové vypracování</a></li>
+                <li id="sablony">Tady jsou šablony pro shrnutí práce: </li>
+            </ul>
+        </p>
+        <div id="odbornosti"></div>
+    {% else %}
+        <div>
+            Zadání domácího kola zatím nebyla zveřejněna. Až se tak stane, budou tady!
+        </div>
+    {% endif %}
+
+<script src="{{url_for('static', filename='js/guest/home.js')}}", type="module"></script>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "admin/navbar.html" %}
+
+{% block content %}
+    <h2>Velitelé odborností</h2>
+    <form method="post" enctype="multipart/form-data">
+        <div id="content">
+        </div>
+    </form>
+    
+
+    <script type="module" src="{{url_for('static', filename='js/admin/velitele_odbornosti.js')}}"></script>
+{% endblock %}

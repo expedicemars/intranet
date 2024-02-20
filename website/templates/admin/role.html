@@ -1,0 +1,43 @@
+{% extends "admin/navbar.html" %}
+
+{% block content %}
+<h2>Úprava oprávnění</h2>
+<hr>
+<form method="post">
+    <h3>Úprava rolí stávajících adminů</h3>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Jméno</th>
+                    <th>E-mail</th>
+                    <th>Vybrat</th>
+                </tr>
+            </thead>
+            <tbody id="admins"></tbody>
+        </table>
+    </div>
+    <hr>
+    <h3>Jmenování nových adminů</h3>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Jméno</th>
+                    <th>E-mail</th>
+                    <th>Vybrat</th>
+                </tr>
+            </thead>
+            <tbody id="users"></tbody>
+        </table>
+    </div>
+</form>
+<hr>
+<h3>Seznam adminů podle rolí</h3>
+<div id="role_table"></div>
+
+<script type="module" src="{{url_for('static', filename='js/admin/role.js')}}"></script>
+
+{% endblock %}

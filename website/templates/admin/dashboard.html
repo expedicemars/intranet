@@ -1,0 +1,102 @@
+{% extends "admin/navbar.html" %}
+{% block content %}
+<div>
+    <h3>Rozcestník řadového organizátora</h3>
+    <ul>
+        <li><a href="{{url_for('admin_views.nahrat_soubory')}}" class="link">Nahrávání souborů</a></li>
+        <li><a href="{{url_for('admin_views.poznamky')}}" class="link">Poznámky od adminů pro adminy</a></li>
+        <li><a href="{{url_for('admin_views.odkazy')}}" class="link">Užitečné odkazy</a></li>
+        <li>Poznávačka účastníků WIP</li>
+
+    </ul>
+</div>
+<hr>
+<div>
+    <h3>Přístupy</h3>
+    To, co tu vidíš, ovlivňují admini s rolí <code>editing_admins_allowed</code>. Pokud myslíš, že bys měl mít přístup někam, kam nemůžeš, kontaktuj jednoho znich:
+    <div class="border rounded-2 p-2 my-2 border-secondary lighter">
+        <code id="emails"></code>
+    </div>
+</div>
+<hr>
+<div>
+    <h3>Co všechno musí být udržováno up-to-date</h3>
+    <ul>
+        <li>Datum začátku a ukončení registrace, upravit jde <a class="link" href="{{url_for('admin_views.prubeh_rocniku')}}">tady</a>.</li>
+        <li>Viditelnost zadání na homepage, upravit jde <a class="link" href="{{url_for('admin_views.prubeh_rocniku')}}">tady</a>.</li>
+        <li>Reakce na bugtracker, upravit jdou <a class="link" href="{{url_for('admin_views.uprava_znamych_bugu')}}">tady</a>.</li>
+        <li>Kontakt na koordinátora internetových kol, upravit jde <a class="link" href="{{url_for('admin_views.prubeh_rocniku')}}">tady</a>.</li>
+        <li>Kontakty na velitele odborností, upravit jdou <a class="link" href="{{url_for('admin_views.velitele_odbornosti')}}">tady</a>.</li>
+        <li>Viditelnost a obsah stránky o online konferenci, obojí jde uprait <a class="link" href="{{url_for('admin_views.prubeh_rocniku')}}">tady</a>.</li>
+        <li>Prohlášení rodičů, nahrát nová verze jde <a class="link" href="{{url_for('admin_views.nahrat_soubory')}}">tady</a>.</li>
+        <li>Šablony a vzorové vypracování shrnutí domácí práce, upravit jde <a class="link" href="{{url_for('admin_views.nahrat_soubory')}}">tady</a>.</li>
+    </ul>
+</div>
+<hr>
+<div>
+    <h3>Statistiky</h3>
+    <table class="table table-hover table-striped">
+        <tbody id="tbody">
+            <tr>
+                <th>
+                    Registrovaných
+                </th>
+                <td id="registrovanych"></td>
+            </tr>
+            <tr>
+                <th>
+                    S odevzdaným motivačním formulářem
+                </th>
+                <td id="motivacni_formular"></td>
+            </tr>
+            <tr>
+                <th>
+                    S datem motivačního callu
+                </th>
+                <td id="motivacni_call"></td>
+            </tr>
+            <tr>
+                <th>
+                    V domácím kole
+                </th>
+                <td id="domaci_kolo"></td>
+            </tr>
+            <tr>
+                <th>
+                    Odevzdaných shrnutí práce
+                </th>
+                <td id="odevzdanych_shrnuti_prace"></td>
+            </tr>
+            <!-- sem se vejdou odbornosti -->
+            <tr>
+                <th>
+                    V přípravné misi
+                </th>
+                <td id="pripravna_mise"></td>
+            </tr>
+            <tr>
+                <th>
+                    V simulované misi
+                </th>
+                <td id="simulovana_mise"></td>
+            </tr>
+            <tr>
+                <th>
+                    Počet neřešených bugů
+                </th>
+                <td id="pocet_bugu"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <small>
+                        Pokud nemáš práva je upravovat, řekni to adminovi, kterej to umí. Jsem ale línej je sem vypisovat.
+                    </small>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script type="module" src="{{url_for('static', filename='js/admin/dashboard.js')}}"></script>
+{% endblock %}

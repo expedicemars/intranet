@@ -12,7 +12,7 @@ default_views = Blueprint("default_views", __name__)
 @default_views.route("/")
 @default_views.route("/home")
 def home():
-    return render_template("home.html", 
+    return render_template("guest/home.html", 
                            roles = get_access_rights(), 
                            user_progress = get_user_progress(),
                            zverejnena_zadani = get_zadani_viditelne(),
@@ -25,7 +25,7 @@ def home():
 @default_views.route("/nahlasit_bug", methods=["GET", "POST"])
 def nahlasit_bug():
     if request.method == "GET":
-        return render_template("nahlasit_chybu.html", roles = get_access_rights(), user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
+        return render_template("guest/nahlasit_chybu.html", roles = get_access_rights(), user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
     else:
         popis=request.form.get("popis")
         if len(popis) > 1000:
@@ -43,8 +43,8 @@ def nahlasit_bug():
 
 @default_views.route("/known_bugs")
 def known_bugs():
-    return render_template("zname_chyby.html", roles = get_access_rights(), user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
+    return render_template("guest/zname_chyby.html", roles = get_access_rights(), user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
 
 @default_views.route("/kontakty")
 def kontakty():
-    return render_template("kontakty.html", roles = get_access_rights(), user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
+    return render_template("guest/kontakty.html", roles = get_access_rights(), user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())

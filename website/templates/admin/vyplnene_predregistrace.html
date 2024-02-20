@@ -1,0 +1,15 @@
+{% extends "admin/navbar.html" %}
+{% block content %}
+    <h2>Vyplněné předregistrace</h2>
+    <p> 
+        Zkopírovat maily pro odeslání můžete tady:
+        <button class="btn em-button" id="zkopirovat_button">Kopírovat</button>
+    </p>
+    <form method="post">
+        <div id="parent_div"></div>
+    </form>
+    
+
+
+    <script type="module" src="{{url_for('static', filename='js/admin/vyplnene_predregistrace.js')}}"></script>
+{% endblock %}

@@ -1,0 +1,18 @@
+[
+    {
+        "system_name": "rocnik_bude",
+        "display_name": "Ročník bude"
+    },
+    {
+        "system_name": "datum_registrace",
+        "display_name": "Zveřejnéné datum registrace"
+    },
+    {
+        "system_name": "otevrena_registrace",
+        "display_name": "Otevřená registrace"
+    },
+    {
+        "system_name": "uzavrena_registrace",
+        "display_name": "Uzavřená registrace"
+    }
+]
