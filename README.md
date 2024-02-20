@@ -9,8 +9,6 @@
 ## Struktura a styl
 
 - Složky jsou strukturovány tak, jak mě to naučili v [tomhle videu v tomhle čase](https://youtu.be/dam0GPOAvVI?t=275)
-- Při programování byl používán [PEP 8](https://www.python.org/dev/peps/pep-0008/) styl pro formátování python kódu.
-- Komentáře v kódu často vedou k nepřesnostem. Zastarávají a stávají se irelevantními. V případě Pythonu se správně napsaný kód dá číst (s trochou nadsázky) jako kniha. O to se také snažím, tedy dokumentace v kódu místo nemá. Jedinou výjimou jsou TypeHints, které v kódu pomáhají mimojiné nahlédnout na typ proměnných.
 - Řada souborů se sama vytváří při spuštění a nejsou součástí version control. Jsou to:
     - instance/database.db
     - user_data
@@ -25,7 +23,20 @@
 
 ## Spuštění
 
-růčo založit `.env` soubor v root složce, populate SECRET_KEY, MAIL_USERNAME, MAIL_PASSWORD
+růčo založit `.env` soubor v root složce, pak správně vyplnit:
+- SECRET_KEY=
+- MAIL_USERNAME=
+- MAIL_PASSWORD=
+- MAIL_SERVER=
+- MAIL_PORT=
+- DB_NAME=
+- DB_USERNAME=
+- DB_PASSWORD=
+- DB_ADRESS=
+- DB_DRIVER=mysql+pymysql
+    - nejspíš
+
+Po založení virtuálního prostředí se spouští soubor main.py a postupně se řeší chyby.
 
 
 ## Použité knihovny
@@ -58,14 +69,3 @@ Pro jmenování prvního admina s rolí editing_admins_allowed:
 1. Registrace Usera
 2. v Pythonanywhere najít skript "jmenovani_admina_editing_admins_allowed.py"s
 4. v konzoli to pustit a řídit se pokyny
-
-
-# Myšlenky při implementování fází (again)
-1. Ročník bude
-    - bude
-2. Registrace budou - konkrétní datum
-    - datum_registraci
-3. Otevřené registrace
-    - otevrene_registrace
-4. Registrace uzavřené
-    - uzavrene_registrace
