@@ -27,16 +27,16 @@ Instrukce volně napovídají, co dříve a co později. Očekávejte chyby v pr
 
 ### Spuštění serveru
 
-1) git clone
-2) cd dovnitř
-3) pipenv install
-4) pipenv shell
-4) vytvořit schema v mysql-workbench
-5) vytvořit usera pro tohle schema
-5) limit to localhost?
-6) pridat mu prava na schema
+1. git clone
+2. cd dovnitř
+3. pipenv install
+4. pipenv shell
+4. vytvořit schema v mysql-workbench
+5. vytvořit usera pro tohle schema
+5. limit to localhost?
+6. pridat mu prava na schema
     SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES
-7) ručně vytvořit .env v root složce (t.j. na úrovni tohoto readme) a dát do něj 
+7. ručně vytvořit .env v root složce (t.j. na úrovni tohoto readme. a dát do něj 
     - SECRET_KEY=%tohle%
     - MAIL_USERNAME=
     - MAIL_PASSWORD=
@@ -47,24 +47,24 @@ Instrukce volně napovídají, co dříve a co později. Očekávejte chyby v pr
     - DB_PASSWORD=%tohle%
     - DB_ADRESS=localhost:3306
     - DB_DRIVER=mysql+pymysql
-8) python main.py
-9) běží to na http://127.0.0.1:8000
+8. python main.py
+9. běží to na http://127.0.0.1:8000
 
 ### Registrace prvního admina
 
-1) Registrace uživatele naa stránce
-2) ignorovat zprávu o failu odeslání mailu
-3) sestřelit server v terminálu
-4) python jmenovani_admina_editing_admins_allowed.py
-5) řídit se instrukcemi
-6) znovu psustit server a přihlásit se
-7) vstoupit do admin sekce a udělit si všechny další role
-8) profit
+1. Registrace uživatele naa stránce
+2. ignorovat zprávu o failu odeslání mailu
+3. sestřelit server v terminálu
+4. python jmenovani_admina_editing_admins_allowed.py
+5. řídit se instrukcemi
+6. znovu psustit server a přihlásit se
+7. vstoupit do admin sekce a udělit si všechny další role
+8. profit
 
 ### Zprovoznění mailů
 
-1) Sehnat jméno, heslo, smtp server a port svého providera
-2) vyplnit to do .env
+1. Sehnat jméno, heslo, smtp server a port svého providera
+2. vyplnit to do .env
 
 ## Použité knihovny
 
