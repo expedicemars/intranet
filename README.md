@@ -23,30 +23,62 @@
 
 ## Spuštění
 
-růčo založit `.env` soubor v root složce, pak správně vyplnit:
-- SECRET_KEY=
-- MAIL_USERNAME=
-- MAIL_PASSWORD=
-- MAIL_SERVER=
-- MAIL_PORT=
-- DB_NAME=
-- DB_USERNAME=
-- DB_PASSWORD=
-- DB_ADRESS=
-- DB_DRIVER=mysql+pymysql
-    - nejspíš
+Instrukce volně napovídají, co dříve a co později. Očekávejte chyby v průběhu.
 
-Po založení virtuálního prostředí se spouští soubor main.py a postupně se řeší chyby.
+### Spuštění serveru
 
+1) git clone
+2) cd dovnitř
+3) pipenv install
+4) pipenv shell
+4) vytvořit schema v mysql-workbench
+5) vytvořit usera pro tohle schema
+5) limit to localhost?
+6) pridat mu prava na schema
+    SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES
+7) ručně vytvořit .env v root složce (t.j. na úrovni tohoto readme) a dát do něj 
+    - SECRET_KEY=%tohle%
+    - MAIL_USERNAME=
+    - MAIL_PASSWORD=
+    - MAIL_SERVER=
+    - MAIL_PORT=
+    - DB_NAME=%tohle%
+    - DB_USERNAME=%tohle%
+    - DB_PASSWORD=%tohle%
+    - DB_ADRESS=localhost:3306
+    - DB_DRIVER=mysql+pymysql
+8) python main.py
+9) běží to na http://127.0.0.1:8000
+
+### Registrace prvního admina
+
+1) Registrace uživatele naa stránce
+2) ignorovat zprávu o failu odeslání mailu
+3) sestřelit server v terminálu
+4) python jmenovani_admina_editing_admins_allowed.py
+5) řídit se instrukcemi
+6) znovu psustit server a přihlásit se
+7) vstoupit do admin sekce a udělit si všechny další role
+8) profit
+
+### Zprovoznění mailů
+
+1) Sehnat jméno, heslo, smtp server a port svého providera
+2) vyplnit to do .env
 
 ## Použité knihovny
 
-- instalované přes pip
+- instalované přes pip (pomocí pipenv install, ono si je to natáhne z pipfile)
     - [Flask](https://flask.palletsprojects.com/en/2.0.x/) - framework pro web development
     - [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) - extension Flasku pro práci s databázemi
     - [Flask-Login](https://flask-login.readthedocs.io/en/latest/) - extension flasku pro podporu přihlašování userů
+    - [Flask-mail](https://flask-mail.readthedocs.io/en/latest/) - extension flasku pro podporu posílání mailů
     - [Requests](https://docs.python-requests.org/en/latest/) - Pro vytváření HTTP requestů a jejich obsahu
     -[PyJWT](https://pyjwt.readthedocs.io/en/stable/) - Pro vytváření Timed tokenů
+    -[Openpyxl](https://openpyxl.readthedocs.io/en/stable/) - Pro vytváření excelových exportů
+    -[Python-dotenv](https://pypi.org/project/python-dotenv/) - Pro načtení environment variables
+    -[Pymysql](https://pymysql.readthedocs.io/en/latest/index.html) - dialekt pro MySQL databázi
+    -[cryptography](https://pypi.org/project/cryptography/) - upřímně nevim proč není jako dependency jedné z minulých.
 - součástí standard library:
     - [json](https://docs.python.org/3/library/json.html) - pomáhá správně zapisovat dict proměnné do souborů
     - [typing](https://docs.python.org/3/library/typing.html) - pomáhá mít pořádek v typech proměnných nebo třeba v return values funkcí

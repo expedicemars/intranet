@@ -40,7 +40,7 @@ for (let u of useri_na_jmenovani_adminu["users"]) {
 }
 
 let tc = new TableCreator(document.getElementById("role_table"))
-tc.make_header(["role", "počet adminů", "admini"])
+tc.make_header(["role", "počet uživatelů", "uživatelé"])
 tc.make_tbody()
 for (let r of prehled_roli) {
     tc.make_row([r.role, r.emails.length, r.emails.join(", ")])
