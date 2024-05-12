@@ -162,7 +162,7 @@ def exportovat() -> None:
 
 def promazat() -> None:
     """
-    Promaže vše, co bylo exportováno, krom mailing listu, prohlášení pro rodiče, šablon, app logů a odkazů.
+    Promaže vše, co bylo exportováno, krom mailing listu, prohlášení pro rodiče, šablon a app logů.
     Změní stav znění ročníku na "bude".
     """
     for folder in zadani_folder_path().iterdir():
@@ -179,12 +179,22 @@ def promazat() -> None:
     with open(poznamky_path(), "w") as file:
         file.write(json.dumps([], indent=4))
     with open(prubeh_rocniku_path(),"w") as file:
-        file.write(json.dumps({"datum_konce_registrace":str(date.today()),"datum_zacatku_registrace":str(date.today()),"otevrena_registrace":False,"viditelna_zadani":False, "koordinator_internetovych_kol":""}, indent=4))
+        file.write(json.dumps({"datum_konce_registrace":str(date.today()),"datum_zacatku_registrace":str(date.today()),"otevrena_registrace":False,"viditelna_zadani":False, "koordinator_internetovych_kol":"", "info_o_konferenci_viditelne": False, "hodiny_motivacni_call": 3, "aktualni_faze": "rocnik_bude"}, indent=4))
     with open(velitel_odbornosti_data_path(), "w") as file:
         file.write(json.dumps({odb["system_name"]:"" for odb in get_dostupne_odbornosti()}, indent=4))
+    with open(odkazy_path()) as file:
+        file = json.load(file)
+    for zaznam in file:
+        zaznam["odkazy"] = []
+    with open(odkazy_path(), "w") as f:
+        f.write(json.dumps(file, indent=4))
     
     for h in Hodnoceni.get_all():
         db.session.delete(h)
+        db.session.commit()
+        
+    for m in Motivacni_call.get_all():
+        db.session.delete(m)
         db.session.commit()
         
     for u in User.get_all():

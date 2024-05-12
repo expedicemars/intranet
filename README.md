@@ -36,7 +36,7 @@ Instrukce volně napovídají, co dříve a co později. Očekávejte chyby v pr
 5. limit to localhost?
 6. pridat mu prava na schema
     SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES
-7. ručně vytvořit .env v root složce (t.j. na úrovni tohoto readme. a dát do něj 
+7. ručně vytvořit .env v root složce (t.j. na úrovni tohoto readme. a dát do něj)
     - SECRET_KEY=%tohle%
     - MAIL_USERNAME=
     - MAIL_PASSWORD=
