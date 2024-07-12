@@ -6,7 +6,7 @@
 </p>
 <form method="post" enctype="multipart/form-data">
     <div class="container">
-        <h3>Prohlášení rodičů</h3>
+        <h3>Prohlášení rodičů - léky, alergie</h3>
         <div class="row">
             <div class="col-auto">
                 Nahrát novou verzi:
@@ -19,6 +19,20 @@
             </div>
         </div>
         <div id="prohlaseni_link"></div>
+        <hr>
+        <h3>Souhlas rodičů s fotografováním</h3>
+        <div class="row">
+            <div class="col-auto">
+                Nahrát novou verzi:
+            </div>
+            <div class="col">
+                <input type="file" class="form-control" name="fotografie_souhlas_file" accept=".docx">
+            </div>
+            <div class="col-auto">
+                <button class="btn em-button" type="submit" name="fotografie_souhlas" value="whatever">Nahrát</button>
+            </div>
+        </div>
+        <div id="fotografie_link"></div>
     </div>
     <div id="sablony"></div>
     <hr>

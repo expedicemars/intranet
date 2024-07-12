@@ -20,7 +20,7 @@ from website.json_handlers.prubeh_rocniku_handling import set_nove_datum_konce_r
 from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 from website.json_handlers.velitele_odbornosti_handling import zapsat_kontakt
 from website.json_handlers.mailing_list import odebrat_mail_z_mailing_listu
-from website.paths import zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path, vzorove_vypracovani_path
+from website.paths import zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path, vzorove_vypracovani_path, souhlas_fotografie_path
 
 
 admin_views = Blueprint("admin_views",__name__)
@@ -440,6 +440,15 @@ def nahrat_soubory():
                 file.save(prohlaseni_path())
                 flash("Souhlas rodičů aktualizován.", category="success")
                 alog("Nahraný nový soubor souhlasu rodičů.")
+            else:
+                flash("Nenahrál jsi žádný soubor.", category="error")
+        if request.form.get("fotografie_souhlas"):
+            file = request.files.get("fotografie_souhlas_file")
+            if file:
+                file.name = "souhlas_fotografie.docx"
+                file.save(souhlas_fotografie_path())
+                flash("Souhlas s fotografií aktualizován.", category="success")
+                alog("Nahraný nový soubor souhlasu s fotografií.")
             else:
                 flash("Nenahrál jsi žádný soubor.", category="error")
         elif request.form.get("vzor"):

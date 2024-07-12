@@ -1,6 +1,7 @@
 import httpGet from "../httpGet.js"
 let soubory_existuji = JSON.parse(httpGet("/admin_api/soubory_existuji"))
 let prohlaseni_link_div = document.getElementById("prohlaseni_link")
+let fotografie_link_div = document.getElementById("fotografie_link")
 let vzor_link_div = document.getElementById("vzor_link")
 
 let dostupne_odbornosti = JSON.parse(httpGet("/noauth_api/dostupne_odbornosti"))
@@ -15,6 +16,17 @@ if (soubory_existuji["prohlaseni_rodicu"]) {
     a.classList.add("link")
 } else {
     prohlaseni_link_div.innerHTML = "Žádné prohlášení tu ještě nahrané není."
+}
+
+if (soubory_existuji["souhlas_fotografie"]) {
+    let a = document.createElement("a")
+    a.innerHTML = "Stáhnout současnou verzi"
+    a.href = "/file_api/souhlas_fotografie"
+    a.download = "souhlas_fotografie.docx"
+    fotografie_link_div.appendChild(a)
+    a.classList.add("link")
+} else {
+    fotografie_link_div.innerHTML = "Žádný souhlas s fotografiemi tu ještě nahraný není."
 }
 
 if (soubory_existuji["vzorove_vypracovani"]) {
