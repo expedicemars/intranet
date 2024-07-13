@@ -2,7 +2,7 @@ from flask import Blueprint, send_file
 from flask_login import current_user
 import json
 from website.helpers.require_role_decorator import require_role_on_current_user
-from website.paths import user_data_folder_path, zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path, vzorove_vypracovani_path, mail_logo_path
+from website.paths import user_data_folder_path, zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path, vzorove_vypracovani_path, mail_logo_path, souhlas_fotografie_path
 from website.helpers.get_user_files import get_prace_filenames, get_profilovka_by_id, get_shrnuti_filename
 from website.helpers.pretty_date import pretty_datetime
 
@@ -17,6 +17,10 @@ def prohlaseni_rodicu():
 @file_api.route("/vzorove_vypracovani")
 def vzorove_vypracovani():
     return send_file(vzorove_vypracovani_path())
+
+@file_api.route("/souhlas_fotografie")
+def souhlas_fotografie():
+    return send_file(souhlas_fotografie_path())
 
 @file_api.route("/stahnout_sablonu/<string:odb>")
 def stahnout_sablonu(odb):

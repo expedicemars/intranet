@@ -39,6 +39,9 @@ def prohlaseni_path() -> Path:
 def vzorove_vypracovani_path() -> Path:
     return Path.cwd() / "data" / "vzorove_vypracovani.docx"
 
+def souhlas_fotografie_path() -> Path:
+    return Path.cwd() / "data" / "souhlas_fotografie.docx"
+
 def exporty_path() -> Path:
     return Path.cwd() / "exporty"
 

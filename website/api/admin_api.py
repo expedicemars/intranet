@@ -1,5 +1,4 @@
 from flask import Blueprint
-from flask_login import current_user
 from datetime import datetime
 import json
 from website.helpers.require_role_decorator import require_role_on_current_user
@@ -7,7 +6,7 @@ from website.json_handlers.logs_handling import get_logs, get_alogs
 from website.json_handlers.prubeh_rocniku_handling import get_zadani_viditelne, get_koordinator_internetovych_kol, get_info_o_konferenci_viditelne, get_info_o_konferenci, get_mezni_hodiny_pro_cally
 from website.json_handlers.odkazy_handling import get_odkazy
 from website.helpers.pretty_date import pretty_datetime
-from website.paths import velitel_odbornosti_data_path, poznamky_path, prohlaseni_path, sablony_folder_path, vzorove_vypracovani_path
+from website.paths import velitel_odbornosti_data_path, poznamky_path, prohlaseni_path, sablony_folder_path, vzorove_vypracovani_path, souhlas_fotografie_path
 from website.models.user import User
 from website.models.chyba import Chyba
 from website.models.hodnoceni import Hodnoceni
@@ -61,7 +60,8 @@ def koordinator_internetovych_kol():
 def soubory_existuji():
     result = {
         "prohlaseni_rodicu": prohlaseni_path().exists(),
-        "vzorove_vypracovani": vzorove_vypracovani_path().exists()
+        "vzorove_vypracovani": vzorove_vypracovani_path().exists(),
+        "souhlas_fotografie": souhlas_fotografie_path().exists()
     }
     for odb in get_dostupne_odbornosti():
         filename = odb["system_name"] + "_sablona.docx"
