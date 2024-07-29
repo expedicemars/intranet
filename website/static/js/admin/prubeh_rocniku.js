@@ -56,7 +56,7 @@ for (let faze of vsechny_faze) {
 
 function ukoncit() {
     if (confirm("Chystáš se ukončit ročník, měj zazálohovaný data. Jseš si jistej?")) {
-        if (confirm("Vážně? Tohle neni sranda, fakt se to promaže.")) {
+        if (confirm("Vážně? Toto není sranda, fakt se to promaže.")) {
             if (confirm("Ještě se prosimtě ujisti, že máš přístup k odevzdanejm projektům a tak.")) {
                 if (confirm("Je Michal nejepší?")) {
                     ukoncit_rocnik_input.value = "koncime"

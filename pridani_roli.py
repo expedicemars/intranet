@@ -5,7 +5,7 @@ Přidání atributu role každýmu userovi:
 takhle nejak se to dela
 
 
-potom jsem musel vlezt do usera a nastavit, ze ma tohle pole
+potom jsem musel vlezt do usera a nastavit, ze ma toto pole
 
 stejne jsem pak smazal databazi, protoze user mel jeste pocet_odhadu a column nejde smazat
 """

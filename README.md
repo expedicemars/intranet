@@ -32,7 +32,7 @@ Instrukce volně napovídají, co dříve a co později. Očekávejte chyby v pr
 3. pipenv install
 4. pipenv shell
 4. vytvořit schema v mysql-workbench
-5. vytvořit usera pro tohle schema
+5. vytvořit usera pro toto schema
 5. limit to localhost?
 6. pridat mu prava na schema
     SELECT, INSERT, UPDATE, DELETE, CREATE, REFERENCES
