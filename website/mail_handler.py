@@ -3,6 +3,7 @@ from flask_mail import Message
 from flask import render_template, url_for, flash
 import os
 from socket import gaierror
+from website.models.user import User
 
 
 def mail_sender(mail_identifier, target, data=None) -> None:
@@ -42,7 +43,8 @@ def mail_sender(mail_identifier, target, data=None) -> None:
             mail.send(msg)
             
         if mail_identifier == "nove_shrnuti_prace":
-            msg = Message("Někdo odevzdal shrnutí své práce",
+            jmeno = User.get_by_id(data).jmeno
+            msg = Message(f"Nové odevzdané shrnutí práce: {jmeno}",
                         sender=os.environ.get("MAIL_USERNAME"),
                         recipients=target)
             msg.html = render_template("mails/nove_shrnuti_prace.html", url = url_for("admin_views.detail_usera", id=data, _external = True))
