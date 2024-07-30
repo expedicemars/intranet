@@ -18,11 +18,11 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(256))
     confirmed = db.Column(db.Boolean, default=False)
     jmeno = db.Column(db.String(100))
-    prijmeni = db.Column(db.String(100)) #--
+    prijmeni = db.Column(db.String(100)) #-- done
     puvod = db.Column(db.String(100)) # nabývá hodnot cz nebo sk
     pritomen_na_konferenci = db.Column(db.Boolean, default=False)
     pritomen_na_primi = db.Column(db.Boolean, default=False)
-    rok_matuity = db.Column(db.Integer)
+    rok_maturity = db.Column(db.Integer) # done
     datetime_odevzdani_motivaku = db.Column(db.DateTime)
     datetime_odevzdani_shrnuti_prace = db.Column(db.DateTime)
     datetime_odevzdani_prezentace = db.Column(db.DateTime) #--
@@ -79,6 +79,7 @@ class User(db.Model, UserMixin):
             "adresa": self.adresa,
             "telcislo": self.telcislo,
             "datum_narozeni": self.datum_narozeni.isoformat() if self.datum_narozeni else None,
+            "rok_maturity": self.rok_maturity,
             "mail_rodicu": self.mail_rodicu,
             "dozvedeli": self.dozvedeli,
             "alergie": self.alergie,
@@ -99,6 +100,7 @@ class User(db.Model, UserMixin):
             "jmeno": self.jmeno,
             "prijmeni": self.prijmeni,
             "datum_narozeni": pretty_date(self.datum_narozeni.isoformat()) if self.datum_narozeni else None,
+            "rok_maturity": self.rok_maturity,
             "email": self.email,
             "telcislo": self.telcislo,
             "adresa": self.adresa,
