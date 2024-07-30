@@ -43,7 +43,7 @@ def mail_sender(mail_identifier, target, data=None) -> None:
             mail.send(msg)
             
         if mail_identifier == "nove_shrnuti_prace":
-            jmeno = User.get_by_id(data).jmeno
+            jmeno = User.get_by_id(data).pretty_name()
             msg = Message(f"Nové odevzdané shrnutí práce: {jmeno}",
                         sender=os.environ.get("MAIL_USERNAME"),
                         recipients=target)

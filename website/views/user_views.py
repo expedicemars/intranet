@@ -62,6 +62,7 @@ def ucet():
         else:
             data = request.form.to_dict()
             current_user.jmeno = data["jmeno"]
+            current_user.prijmeni = data["prijmeni"]
             current_user.adresa = data["adresa"]
             current_user.telcislo = data["telcislo"]
             current_user.datum_narozeni = datetime.datetime.fromisoformat(data["datum_narozeni"]) if data["datum_narozeni"] else None
@@ -170,7 +171,7 @@ def odbornost(odb):
                 else: # ulozim origo a pak ho prejmenuju. taky tu probiha zapis do odbornosti
                     save_path: Path = user_data_folder_path() / str(current_user.id) / files[0].filename
                     files[0].save(save_path)
-                    name_do_filename = current_user.jmeno if current_user.jmeno else current_user.email
+                    name_do_filename = current_user.prijmeni if current_user.prijmeni else current_user.email
                     filename = "shrnuti_" + name_do_filename + save_path.suffix
                     new_path = save_path.parent / filename
                     save_path.rename(new_path)

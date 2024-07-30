@@ -18,13 +18,16 @@ let udaje_ma_inputs = document.getElementById("udaje_ma")
 let udaje_nema_inputs = document.getElementById("udaje_nema")
 let novy_sloupecek_button = document.getElementById("novy_sloupecek")
 let vypsat_selects_div = document.getElementById("vypsat_selects")
+
 // id, mail, confirmed, password, odbornost, progress, role, admin_poznamka, datum_registrace, nema cenu filtrovat?
-// uzammcenost zmen jako dalsi kriterium (jakkoli / uzamcene / povolene)
-// odevzdanost motivacniho dotazniku taky
 let udaje_k_filtrovani = [
     {
         "system_name": "jmeno",
         "display_name": "Jméno",
+    },
+    {
+        "system_name": "prijmeni",
+        "display_name": "Příjmení",
     },
     {
         "system_name": "adresa",
@@ -60,7 +63,7 @@ let udaje_k_filtrovani = [
     },
     {
         "system_name": "datum_motivacniho_callu",
-        "display_name": "Datum otivačního callu",
+        "display_name": "Datum motivačního callu",
     },
     {
         "system_name": "meeting_link",
@@ -109,6 +112,10 @@ let udaje_k_vypsani = [
     {
         "system_name": "jmeno",
         "display_name": "Jméno",
+    },
+    {
+        "system_name": "prijmeni",
+        "display_name": "Příjmení",
     },
     {
         "system_name": "adresa",
@@ -195,7 +202,6 @@ let udaje_k_vypsani = [
         "display_name": "Zájmeno",
     }
 ]
-
 
 
 // vygenerování inputů podle dostupných odborností a progressů

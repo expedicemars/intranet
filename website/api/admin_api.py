@@ -86,10 +86,10 @@ def motivacni_cally():
         zaznam["probehl"] = (p.datum_a_cas < datetime.now() and p.user_id)
         if p.user_id:
             u = User.get_by_id(p.user_id)
-            zaznam["jmeno"] = u.jmeno
+            zaznam["jmeno"] = u.pretty_name()
             zaznam["link"] = p.meeting_link
             #  aby bylo clickable, i když nemá jméno ještě:
-            if u.jmeno == "":
+            if u.pretty_name().strip() == "":
                 zaznam["jmeno"] = "Dosud nevyplnil jméno"
         else:
             zaznam["jmeno"] = None
@@ -176,12 +176,12 @@ def hodnoceni(id):
 @admin_api.route("/ucastnici")
 @require_role_on_current_user("editing_users_allowed")
 def ucastnici():
-    return json.dumps([{"id": u.id, "email": u.email, "jmeno": u.jmeno} for u in User.get_all() if "admin" not in json.loads(u.role)])
+    return json.dumps([{"id": u.id, "email": u.email, "jmeno": u.pretty_name()} for u in User.get_all() if "admin" not in json.loads(u.role)])
 
 @admin_api.route("/organizatori")
 @require_role_on_current_user("editing_users_allowed")
 def organizatori():
-    return json.dumps([{"id": u.id, "email": u.email, "jmeno": u.jmeno} for u in User.get_all() if "admin" in json.loads(u.role)])
+    return json.dumps([{"id": u.id, "email": u.email, "jmeno": u.pretty_name()} for u in User.get_all() if "admin" in json.loads(u.role)])
 
 @admin_api.route("/useri_na_jmenovani_adminu")
 @require_role_on_current_user("editing_admins_allowed")
@@ -192,9 +192,9 @@ def useri_na_jmenovani_adminu():
     }
     for u in User.get_all():
         if "admin" in json.loads(u.role):
-            result["admins"].append({"id": u.id,"email": u.email, "jmeno": u.jmeno})
+            result["admins"].append({"id": u.id,"email": u.email, "jmeno": u.pretty_name()})
         else:
-            result["users"].append({"id": u.id,"email": u.email, "jmeno": u.jmeno})
+            result["users"].append({"id": u.id,"email": u.email, "jmeno": u.pretty_name()})
     return json.dumps(result)
 
 @admin_api.route("/prehled_roli")

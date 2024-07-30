@@ -18,14 +18,14 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(256))
     confirmed = db.Column(db.Boolean, default=False)
     jmeno = db.Column(db.String(100))
-    prijmeni = db.Column(db.String(100))
+    prijmeni = db.Column(db.String(100)) #--
     puvod = db.Column(db.String(100)) # nabývá hodnot cz nebo sk
     pritomen_na_konferenci = db.Column(db.Boolean, default=False)
     pritomen_na_primi = db.Column(db.Boolean, default=False)
     rok_matuity = db.Column(db.Integer)
     datetime_odevzdani_motivaku = db.Column(db.DateTime)
     datetime_odevzdani_shrnuti_prace = db.Column(db.DateTime)
-    datetime_odevzdani_prezentace = db.Column(db.DateTime)
+    datetime_odevzdani_prezentace = db.Column(db.DateTime) #--
     adresa = db.Column(db.String(100))
     telcislo = db.Column(db.String(100))
     mail_rodicu = db.Column(db.String(100))
@@ -74,6 +74,7 @@ class User(db.Model, UserMixin):
     def get_info_na_ucet_stranku(self) -> dict:
         return {
             "jmeno": self.jmeno,
+            "prijmeni": self.prijmeni,
             "email": self.email,
             "adresa": self.adresa,
             "telcislo": self.telcislo,
@@ -96,6 +97,7 @@ class User(db.Model, UserMixin):
     def get_info_na_detail_usera(self) -> dict:
         return {
             "jmeno": self.jmeno,
+            "prijmeni": self.prijmeni,
             "datum_narozeni": pretty_date(self.datum_narozeni.isoformat()) if self.datum_narozeni else None,
             "email": self.email,
             "telcislo": self.telcislo,
@@ -225,3 +227,14 @@ class User(db.Model, UserMixin):
             return "Na online konferenci budeš prezentovat svou domácí práci. Nyní čekáme na to, než celou práci odevzdáš. Máš na to čas do půlnoci před konferencí."
         else:
             return "Informace o konferenci a dalších kolech budeš dostávat e-mailem. Tak na viděnou!"
+        
+    def pretty_name(self, surname_first:bool = False) -> str:
+        if not self.prijmeni: # protože fstrig s None vypíše None
+            self.prijmeni = ""
+        if not self.jmeno:
+            self.jmeno = ""
+            
+        if surname_first:
+            return f"{self.prijmeni} {self.jmeno}"
+        else:
+            return f"{self.jmeno} {self.prijmeni}"
