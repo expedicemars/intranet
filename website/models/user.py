@@ -18,6 +18,14 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(256))
     confirmed = db.Column(db.Boolean, default=False)
     jmeno = db.Column(db.String(100))
+    prijmeni = db.Column(db.String(100)) #-- done
+    puvod = db.Column(db.String(100)) # done, nabývá hodnot cz nebo sk
+    pritomen_na_konferenci = db.Column(db.Boolean, default=False)
+    pritomen_na_primi = db.Column(db.Boolean, default=False)
+    rok_maturity = db.Column(db.Integer) # done
+    datetime_odevzdani_motivaku = db.Column(db.DateTime)
+    datetime_odevzdani_shrnuti_prace = db.Column(db.DateTime)
+    datetime_odevzdani_prezentace = db.Column(db.DateTime) #--
     adresa = db.Column(db.String(100))
     telcislo = db.Column(db.String(100))
     mail_rodicu = db.Column(db.String(100))
@@ -66,10 +74,13 @@ class User(db.Model, UserMixin):
     def get_info_na_ucet_stranku(self) -> dict:
         return {
             "jmeno": self.jmeno,
+            "prijmeni": self.prijmeni,
             "email": self.email,
             "adresa": self.adresa,
             "telcislo": self.telcislo,
             "datum_narozeni": self.datum_narozeni.isoformat() if self.datum_narozeni else None,
+            "rok_maturity": self.rok_maturity,
+            "zeme_puvodu": self.puvod,
             "mail_rodicu": self.mail_rodicu,
             "dozvedeli": self.dozvedeli,
             "alergie": self.alergie,
@@ -86,9 +97,17 @@ class User(db.Model, UserMixin):
         }
     
     def get_info_na_detail_usera(self) -> dict:
+        puvod = "neurčena"
+        if self.puvod == "cz":
+            puvod = "Česká republika"
+        elif self.puvod == "sk":
+            puvod = "Slovensko"
         return {
             "jmeno": self.jmeno,
+            "prijmeni": self.prijmeni,
             "datum_narozeni": pretty_date(self.datum_narozeni.isoformat()) if self.datum_narozeni else None,
+            "rok_maturity": self.rok_maturity,
+            "zeme_puvodu": puvod,
             "email": self.email,
             "telcislo": self.telcislo,
             "adresa": self.adresa,
@@ -217,3 +236,14 @@ class User(db.Model, UserMixin):
             return "Na online konferenci budeš prezentovat svou domácí práci. Nyní čekáme na to, než celou práci odevzdáš. Máš na to čas do půlnoci před konferencí."
         else:
             return "Informace o konferenci a dalších kolech budeš dostávat e-mailem. Tak na viděnou!"
+        
+    def pretty_name(self, surname_first:bool = False) -> str:
+        if not self.prijmeni: # protože fstrig s None vypíše None
+            self.prijmeni = ""
+        if not self.jmeno:
+            self.jmeno = ""
+            
+        if surname_first:
+            return f"{self.prijmeni} {self.jmeno}"
+        else:
+            return f"{self.jmeno} {self.prijmeni}"

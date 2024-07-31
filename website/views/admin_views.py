@@ -37,7 +37,7 @@ def admin_dashboard():
 @require_role_on_current_user("admin")
 def poznamky():
     if request.method == "GET":
-        return render_template("admin/poznamky.html", roles=get_access_rights(), username = current_user.jmeno, date=datetime.date.today())
+        return render_template("admin/poznamky.html", roles=get_access_rights(), username = current_user.pretty_name(), date=datetime.date.today())
     else:
         zapsat_poznamky(json.loads(request.form.get("result")))
         flash("Změny uloženy.", category="success")
@@ -494,7 +494,7 @@ def organizatori():
 @require_role_on_current_user("editing_users_allowed")
 def hodnoceni(id):
     if request.method == "GET":
-        return render_template("admin/hodnoceni.html", roles=get_access_rights(), jmeno=User.get_by_id(id).jmeno)
+        return render_template("admin/hodnoceni.html", roles=get_access_rights(), jmeno=User.get_by_id(id).pretty_name())
     else:
         Hodnoceni.zapsat_hodnoceni(request.form.to_dict(), id, current_user.id)
         flash("Hodnocení zapsáno", category="success")

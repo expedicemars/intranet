@@ -72,6 +72,8 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: ma_profilovku(x), users)
     elif kriteria["udaj_ma"] == "jmeno":
         users = filter(lambda x: x.jmeno not in [None,""], users)
+    elif kriteria["udaj_ma"] == "prijmeni":
+        users = filter(lambda x: x.prijmeni not in [None,""], users)
     elif kriteria["udaj_ma"] == "adresa":
         users = filter(lambda x: x.adresa not in [None, ""], users)
     elif kriteria["udaj_ma"] == "telcislo":
@@ -105,6 +107,8 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: not ma_profilovku(x), users)
     elif kriteria["udaj_nema"] == "jmeno":
         users = filter(lambda x: x.jmeno in [None,""], users)
+    elif kriteria["udaj_nema"] == "prijmeni":
+        users = filter(lambda x: x.prijmeni in [None,""], users)
     elif kriteria["udaj_nema"] == "adresa":
         users = filter(lambda x: x.adresa in [None, ""], users)
     elif kriteria["udaj_nema"] == "telcislo":
@@ -182,6 +186,8 @@ def seznam_generator(kriteria: dict) -> dict:
             zaznam["confirmed"] = u.confirmed
         if "jmeno" in vypsat_list:
             zaznam["jmeno"] = u.jmeno
+        if "prijmeni" in vypsat_list:
+            zaznam["prijmeni"] = u.prijmeni
         if "adresa" in vypsat_list:
             zaznam["adresa"] = u.adresa
         if "telcislo" in vypsat_list:
