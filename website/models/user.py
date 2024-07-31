@@ -19,7 +19,7 @@ class User(db.Model, UserMixin):
     confirmed = db.Column(db.Boolean, default=False)
     jmeno = db.Column(db.String(100))
     prijmeni = db.Column(db.String(100)) #-- done
-    puvod = db.Column(db.String(100)) # nabývá hodnot cz nebo sk
+    puvod = db.Column(db.String(100)) # done, nabývá hodnot cz nebo sk
     pritomen_na_konferenci = db.Column(db.Boolean, default=False)
     pritomen_na_primi = db.Column(db.Boolean, default=False)
     rok_maturity = db.Column(db.Integer) # done
