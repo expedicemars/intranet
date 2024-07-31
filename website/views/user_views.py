@@ -67,6 +67,7 @@ def ucet():
             current_user.telcislo = data["telcislo"]
             current_user.datum_narozeni = datetime.datetime.fromisoformat(data["datum_narozeni"]) if data["datum_narozeni"] else None
             current_user.rok_maturity = data["rok_maturity"]
+            current_user.puvod = data["zeme_puvodu"]
             current_user.mail_rodicu = data["mail_rodicu"]
             current_user.tricko = data["tricko"]
             current_user.dozvedeli = data["dozvedeli"]

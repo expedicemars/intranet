@@ -80,6 +80,7 @@ class User(db.Model, UserMixin):
             "telcislo": self.telcislo,
             "datum_narozeni": self.datum_narozeni.isoformat() if self.datum_narozeni else None,
             "rok_maturity": self.rok_maturity,
+            "zeme_puvodu": self.puvod,
             "mail_rodicu": self.mail_rodicu,
             "dozvedeli": self.dozvedeli,
             "alergie": self.alergie,
@@ -96,11 +97,17 @@ class User(db.Model, UserMixin):
         }
     
     def get_info_na_detail_usera(self) -> dict:
+        puvod = "neurčena"
+        if self.puvod == "cz":
+            puvod = "Česká republika"
+        elif self.puvod == "sk":
+            puvod = "Slovensko"
         return {
             "jmeno": self.jmeno,
             "prijmeni": self.prijmeni,
             "datum_narozeni": pretty_date(self.datum_narozeni.isoformat()) if self.datum_narozeni else None,
             "rok_maturity": self.rok_maturity,
+            "zeme_puvodu": puvod,
             "email": self.email,
             "telcislo": self.telcislo,
             "adresa": self.adresa,
