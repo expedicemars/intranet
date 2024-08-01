@@ -157,6 +157,9 @@ def odbornost(odb):
                     for file in request.files.getlist("nahrana_prace"):
                         prace_folder_path = user_data_folder_path() / str(current_user.id) / "prace"
                         file.save(prace_folder_path / file.filename)
+                    current_user.datetime_odevzdani_prezentace = datetime.datetime.today()
+                    db.session.add(current_user)
+                    db.session.commit()
                     flash("Práce nahrána.", category="success")
             else:
                 flash("Nenahrál jsi žádné soubory.", category="info")
@@ -178,6 +181,7 @@ def odbornost(odb):
                     new_path = save_path.parent / filename
                     save_path.rename(new_path)
                     current_user.odbornost = odb
+                    current_user.datetime_odevzdani_shrnuti_prace = datetime.datetime.today()
                     db.session.add(current_user)
                     db.session.commit()
                     target = [u.email for u in User.get_all_by_role("velitel_odbornosti_" + odb)]
@@ -230,6 +234,7 @@ def motivacni_formular_numbered(blok_otazek):
         if request.form.get("odeslat"):
             current_user.ulozit_odpovedi(request.form.to_dict())
             current_user.odevzdany_motivacni_dotaznik = True
+            current_user.datetime_odevzdani_motivaku = datetime.datetime.now()
             current_user.progress = "Motivační call"
             db.session.add(current_user)
             db.session.commit()
