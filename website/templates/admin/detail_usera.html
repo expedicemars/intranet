@@ -167,15 +167,6 @@
         <table class="table table-hover">
             <tbody>
                 <tr>
-                    <th>
-                        Datum motivačního callu:
-                    </th>
-                    <td id="datum_motivacniho_callu"></td>
-                    <td>
-                        <button class="btn em-button m-1" type="submit" value = "whatever" name="odebrat_motivacni_call" id="odebrat_motivacni_call">Odhlásit z motivačního callu</button>
-                    </td>
-                </tr>
-                <tr>
                     <th>Progress:</th>
                     <!-- tohle id=progrress je tu kvuli js, if(node) -->
                     <td id="progress"> 
@@ -196,6 +187,49 @@
                         <button class="btn em-button" type="submit" name="odbornost_button" value="whatever">Uložit</button>
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        Adminí poznámka:
+                    </th>
+                    <td>
+                        <label for="admin_poznamka">Tuhle poznámku uživatel nikdy neuvidí.</label>
+                        <textarea id="admin_poznamka" class="form-control" rows="5" name="admin_poznamka"></textarea>
+                        <span id="charcount"></span>
+                    </td>
+                    <td>
+                        <button class="btn em-button" type="submit" name="admin_poznamka_button" value="whatever"> Uložit</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Datum motivačního callu:
+                    </th>
+                    <td id="datum_motivacniho_callu"></td>
+                    <td>
+                        <button class="btn em-button m-1" type="submit" value = "whatever" name="odebrat_motivacni_call" id="odebrat_motivacni_call">Odhlásit z motivačního callu</button>
+                    </td>
+                </tr>
+                <!-- id link je tu kvuli odkazu z pohovorů -->
+                <tr id="link"> 
+                    <th>
+                        Meeting link:
+                    </th>
+                    <td>
+                        <input type="text" id="meeting_link" name="meeting_link" class="form-control"></textarea>
+                    </td>
+                    <td>
+                        <button class="btn em-button" type="submit" name="meeting_button" value="whatever">Uložit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+<hr>
+<form method="post">
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tbody>
                 <tr>
                     <th>
                         Uzamčené změny osobních údajů: 
@@ -231,27 +265,24 @@
                 </tr>
                 <tr>
                     <th>
-                        Adminí poznámka:
+                        Skutečně přítomen na online konferenci:
                     </th>
                     <td>
-                        <label for="admin_poznamka">Tuhle poznámku uživatel nikdy neuvidí.</label>
-                        <textarea id="admin_poznamka" class="form-control" rows="5" name="admin_poznamka"></textarea>
-                        <span id="charcount"></span>
+                        <span id="pritomen_na_konferenci"></span>
                     </td>
                     <td>
-                        <button class="btn em-button" type="submit" name="admin_poznamka_button" value="whatever"> Uložit</button>
+                        <button type="submit" class="btn em-button" name="pritomen_na_konferenci" value="whatever">Toggle</button>
                     </td>
                 </tr>
-                <!-- id link je tu kvuli odkazu z pohovorů -->
-                <tr id="link"> 
+                <tr>
                     <th>
-                        Meeting link:
+                        Skutečně přítomen na Přimi:
                     </th>
                     <td>
-                        <input type="text" id="meeting_link" name="meeting_link" class="form-control"></textarea>
+                        <span id="pritomen_na_primi"></span>
                     </td>
                     <td>
-                        <button class="btn em-button" type="submit" name="meeting_button" value="whatever">Uložit</button>
+                        <button type="submit" class="btn em-button" name="pritomen_na_primi" value="whatever">Toggle</button>
                     </td>
                 </tr>
             </tbody>

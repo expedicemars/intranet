@@ -25,7 +25,7 @@ for (let prog of progressy) {
 }
 
 
-  // odbornost
+// odbornost
 dostupne_odbornosti.push(
     {
         "system_name": "zatím nevybraná",

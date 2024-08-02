@@ -20,12 +20,12 @@ class User(db.Model, UserMixin):
     jmeno = db.Column(db.String(100))
     prijmeni = db.Column(db.String(100)) #-- done
     puvod = db.Column(db.String(100)) # done, nabývá hodnot cz nebo sk
-    pritomen_na_konferenci = db.Column(db.Boolean, default=False)
-    pritomen_na_primi = db.Column(db.Boolean, default=False)
+    pritomen_na_konferenci = db.Column(db.Boolean, default=False) #done
+    pritomen_na_primi = db.Column(db.Boolean, default=False) #done
     rok_maturity = db.Column(db.Integer) # done
-    datetime_odevzdani_motivaku = db.Column(db.DateTime)
-    datetime_odevzdani_shrnuti_prace = db.Column(db.DateTime)
-    datetime_odevzdani_prezentace = db.Column(db.DateTime) #--
+    datetime_odevzdani_motivaku = db.Column(db.DateTime) # done
+    datetime_odevzdani_shrnuti_prace = db.Column(db.DateTime) # done
+    datetime_odevzdani_prezentace = db.Column(db.DateTime) # done#--
     adresa = db.Column(db.String(100))
     telcislo = db.Column(db.String(100))
     mail_rodicu = db.Column(db.String(100))
@@ -131,6 +131,8 @@ class User(db.Model, UserMixin):
             "uzamcene_zmeny_callu": "Ano" if self.uzamcene_zmeny_callu else "Ne",
             "uzamcene_zmeny_prace": "Ano" if self.uzamcene_zmeny_prace else "Ne",
             "uzamcene_zmeny_udaju": "Ano" if self.uzamcene_zmeny_udaju else "Ne",
+            "pritomen_na_konferenci": "Ano" if self.pritomen_na_konferenci else "Ne",
+            "pritomen_na_primi": "Ano" if self.pritomen_na_primi else "Ne",
             "motivacni_formular": json.loads(self.motivacni_dotaznik) if self.odevzdany_motivacni_dotaznik else None,
             "osloveni_1p": self.osloveni_1p,
             "osloveni_5p": self.osloveni_5p,
