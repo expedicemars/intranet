@@ -199,7 +199,7 @@ function createRowAndDivs(container, hodnoceni) {
 // vlozeni exportu pro Discord do schranky
 
 document.getElementById("export_for_discord").addEventListener("click", function() {
-    let text = ":notebook_with_decorative_cover: Motivační call " + detail_usera["jmeno"] + " " + detail_usera["prijmeni"] +  ":\n" + detail_usera["datum_motivaku"] + "\n" + meeting_link_input.value
+    let text = ":notebook_with_decorative_cover: Motivační call " + detail_usera["jmeno"] + " " + detail_usera["prijmeni"] +  ":\n" + detail_usera["datum_motivacniho_callu"] + "\n" + meeting_link_input.value
     navigator.clipboard.writeText(text)
     this.innerText = "Hotovo"
     setTimeout(() => {
