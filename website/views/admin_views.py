@@ -173,7 +173,7 @@ def detail_usera(id):
                 flash("Nemůžeš upravovat meeting link, tento uživatel není zapsaný na žádném callu.", category="info")
                 return redirect(url_for("admin_views.detail_usera", id=id))
             if m.meeting_link == meeting_link:
-                flash("Meeting link uživatele nezměněn, byla stejný.", category="info")
+                flash("Meeting link uživatele nezměněn, byl stejný.", category="info")
             else:
                 m.meeting_link = meeting_link
                 m.save()
