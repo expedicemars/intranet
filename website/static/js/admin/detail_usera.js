@@ -25,7 +25,7 @@ for (let prog of progressy) {
 }
 
 
-  // odbornost
+// odbornost
 dostupne_odbornosti.push(
     {
         "system_name": "zatím nevybraná",
@@ -194,3 +194,15 @@ function createRowAndDivs(container, hodnoceni) {
   
   const container = document.getElementById("hodnoceni_div");
   createRowAndDivs(container, hodnoceni);
+
+
+// vlozeni exportu pro Discord do schranky
+
+document.getElementById("export_for_discord").addEventListener("click", function() {
+    let text = ":notebook_with_decorative_cover: Motivační call " + detail_usera["jmeno"] + " " + detail_usera["prijmeni"] +  ":\n" + detail_usera["datum_motivaku"] + "\n" + meeting_link_input.value
+    navigator.clipboard.writeText(text)
+    this.innerText = "Hotovo"
+    setTimeout(() => {
+        this.innerText = "Znovu kopírovat"
+    }, 1000);
+})

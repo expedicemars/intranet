@@ -173,7 +173,7 @@ def detail_usera(id):
                 flash("Nemůžeš upravovat meeting link, tento uživatel není zapsaný na žádném callu.", category="info")
                 return redirect(url_for("admin_views.detail_usera", id=id))
             if m.meeting_link == meeting_link:
-                flash("Meeting link uživatele nezměněn, byla stejný.", category="info")
+                flash("Meeting link uživatele nezměněn, byl stejný.", category="info")
             else:
                 m.meeting_link = meeting_link
                 m.save()
@@ -200,22 +200,36 @@ def detail_usera(id):
         elif request.form.get("uzamcene_zmeny_udaju"):
             u.uzamcene_zmeny_udaju = not u.uzamcene_zmeny_udaju
             u.save()
-            alog(f"Uzamčení změn údajů akatualizováno na {u.uzamcene_zmeny_udaju}")
+            alog(f"Uzamčení změn údajů aktualizováno na {u.uzamcene_zmeny_udaju}")
             flash("Uzamčení změn údajů aktualizováno.", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
         
         elif request.form.get("uzamcene_zmeny_callu"):
             u.uzamcene_zmeny_callu = not u.uzamcene_zmeny_callu
             u.save()
-            alog(f"Uzamčení změn callů akatualizováno na {u.uzamcene_zmeny_callu}")
+            alog(f"Uzamčení změn callů aktualizováno na {u.uzamcene_zmeny_callu}")
             flash("Uzamčení změn callů aktualizováno.", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
         
         elif request.form.get("uzamcene_zmeny_prace"):
             u.uzamcene_zmeny_prace = not u.uzamcene_zmeny_prace
             u.save()
-            alog(f"Uzamčení změn práce akatualizováno na {u.uzamcene_zmeny_prace}")
+            alog(f"Uzamčení změn práce aktualizováno na {u.uzamcene_zmeny_prace}")
             flash("Uzamčení změn práce aktualizováno.", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+        
+        elif request.form.get("pritomen_na_konferenci"):
+            u.pritomen_na_konferenci = not u.pritomen_na_konferenci
+            u.save()
+            alog(f"Přítomnost na konferenci změněna na {u.pritomen_na_konferenci}")
+            flash("Přítomnost na konferrenci aktualizována.", category="success")
+            return redirect(url_for("admin_views.detail_usera", id=id))
+        
+        elif request.form.get("pritomen_na_primi"):
+            u.pritomen_na_primi = not u.pritomen_na_primi
+            u.save()
+            alog(f"Přítomnost na přimi aktualizována na {u.pritomen_na_primi}")
+            flash("Přítomnost na přimi aktualizována.", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
         
         elif id_hodnoceni := request.form.get("smazat_hodnoceni"):
