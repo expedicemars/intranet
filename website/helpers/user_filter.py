@@ -268,5 +268,11 @@ def seznam_generator(kriteria: dict) -> dict:
             zaznam["osloveni_5p"] = u.osloveni_5p
         if "zajmeno" in vypsat_list:
             zaznam["zajmeno"] = u.zajmeno
+        if "datetime_odevzdani_motivaku" in vypsat_list:
+            zaznam["datetime_odevzdani_motivaku"] = pretty_datetime(u.datetime_odevzdani_motivaku)
+        if "datetime_odevzdani_prezentace" in vypsat_list:
+            zaznam["datetime_odevzdani_prezentace"] = pretty_datetime(u.datetime_odevzdani_prezentace)
+        if "datetime_odevzdani_shrnuti_prace" in vypsat_list:
+            zaznam["datetime_odevzdani_shrnuti_prace"] = pretty_datetime(u.datetime_odevzdani_shrnuti_prace)
         result["users"].append(zaznam)
     return result

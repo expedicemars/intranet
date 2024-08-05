@@ -217,6 +217,18 @@ let udaje_k_vypsani = [
     {
         "system_name": "zajmeno",
         "display_name": "Zájmeno",
+    },
+    {
+        "system_name": "datetime_odevzdani_motivaku",
+        "display_name": "Datum odevzdání motivačního formuláře",
+    },
+    {
+        "system_name": "datetime_odevzdani_shrnuti_prace",
+        "display_name": "Datum odevzdání shrnutí práce",
+    },
+    {
+        "system_name": "datetime_odevzdani_prezentace",
+        "display_name": "Datum odevzdání prezentace",
     }
 ]
 
