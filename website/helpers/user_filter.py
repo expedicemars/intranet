@@ -7,7 +7,9 @@ from website.helpers.pretty_date import pretty_datetime, pretty_date
 
 def user_filter(kriteria: dict) -> List[User]:
     users = User.get_all()
-    users = filter(lambda x: "admin" not in x.role, users)
+    
+    if not kriteria["zahrnout_orgy"]:
+        users = filter(lambda x: "admin" not in x.role, users)
     
    # odbornost 
     if kriteria["odbornost"] == "jakakoli":
@@ -16,6 +18,13 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: x.odbornost == "zatím nevybraná", users)
     else:
         users = filter(lambda x: x.odbornost in kriteria["odbornost"], users)
+        
+    #původ
+    if kriteria["puvod"] == "jakykoli":
+        pass
+    else:
+        users = filter(lambda x: x.puvod in kriteria["puvod"], users)
+    
     
     # postup
     if kriteria["postup"] == "jakykoli":
@@ -82,6 +91,10 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: x.mail_rodicu not in [None, ""], users)
     elif kriteria["udaj_ma"] == "datum_narozeni":
         users = filter(lambda x: x.datum_narozeni not in [None, ""], users)
+    elif kriteria["udaj_ma"] == "rok_maturity":
+        users = filter(lambda x: x.rok_maturity not in [None, ""], users)
+    elif kriteria["udaj_ma"] == "puvod":
+        users = filter(lambda x: x.puvod not in [None, ""], users)
     elif kriteria["udaj_ma"] == "tricko":
         users = filter(lambda x: x.tricko not in [None, ""], users)
     elif kriteria["udaj_ma"] == "dozvedeli":
@@ -117,6 +130,10 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: x.mail_rodicu in [None, ""], users)
     elif kriteria["udaj_nema"] == "datum_narozeni":
         users = filter(lambda x: x.datum_narozeni in [None, ""], users)
+    elif kriteria["udaj_nema"] == "rok_maturity":
+        users = filter(lambda x: x.rok_maturity in [None, ""], users)
+    elif kriteria["udaj_nema"] == "puvod":
+        users = filter(lambda x: x.puvod in [None, ""], users)
     elif kriteria["udaj_nema"] == "tricko":
         users = filter(lambda x: x.tricko in [None, ""], users)
     elif kriteria["udaj_nema"] == "dozvedeli":
@@ -176,6 +193,12 @@ def seznam_generator(kriteria: dict) -> dict:
     for u in users:
         zaznam = {}
         zaznam["id_na_link"] = u.id
+        puvod = "Nevyplněný"
+        if u.puvod == "cz":
+            puvod = "Česká republika"
+        elif u.puvod == "sk":
+            puvod = "Slovensko"
+        
         if "prazdny" in vypsat_list:
             zaznam["prazdny"] = ""
         if "id" in vypsat_list:
@@ -198,6 +221,10 @@ def seznam_generator(kriteria: dict) -> dict:
             zaznam["odbornost"] = u.odbornost
         if "datum_narozeni" in vypsat_list:
             zaznam["datum_narozeni"] = pretty_date(u.datum_narozeni)
+        if "rok_maturity" in vypsat_list:
+            zaznam["rok_maturity"] = u.rok_maturity
+        if "puvod" in vypsat_list:
+            zaznam["puvod"] = puvod
         if "progress" in vypsat_list:
             zaznam["progress"] = u.progress
         if "tricko" in vypsat_list:

@@ -15,8 +15,8 @@
         <div class="row">
             <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="odbornosti">
                 <h4>Odbornost</h4>
-                <input type="checkbox" name="odbornost" id="jakakoli" checked>
-                <label for="jakakoli">Jakákoli</label>
+                <input type="checkbox" name="odbornost" id="jakakoli_odbornost" checked>
+                <label for="jakakoli_odbornost">Jakákoli</label>
                 <br>
                 <input type="checkbox" name="odbornost" id="bez_odbornosti">
                 <label for="bez_odbornosti">Nemá odbornost</label>
@@ -61,6 +61,17 @@
                 <input type="radio" name="odevzdany_dotaznik" id="odevzdany_dotaznik_ne" value="jeste_ne">
                 <label for="odevzdany_dotaznik_ne">Ještě ne</label>
             </div>
+            <div class="col-xl-2 col-lg-4 col-md-6 my-1">
+                <h4>Původ</h4>
+                <input type="checkbox" name="jakykoli_puvod" id="jakykoli_puvod" value="cokoli" checked>
+                <label for="jakykoli_puvod">Jakýkoli</label>
+                <br>
+                <input type="checkbox" name="puvod" id="sk" value="sk">
+                <label for="sk">Slovensko</label>
+                <br>
+                <input type="checkbox" name="puvod" id="cz" value="cz">
+                <label for="cz">Česká republika</label>
+            </div>
         </div>
         
         
@@ -69,6 +80,9 @@
         <div id="vypsat_selects"></div>
         <button class="btn em-button my-1" type="button" id="novy_sloupecek">Nový sloupeček</button> <br>
     </div>
+    <input type="checkbox" id="zahrnout_orgy">
+    <label for="zahrnout_adminy">Zahrnout organizátory?</label>
+    <br>
     <button id="generovat" class="btn btn-success" type="button">Generovat</button>
     <button id="ukazat" hidden type="button" class="btn btn-success">Ukázat výběr kritérií</button>
     <div id="vysledek" hidden>

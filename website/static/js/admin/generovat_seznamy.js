@@ -1,12 +1,13 @@
 import httpGet from "../httpGet.js"
 
 let generovat_button = document.getElementById("generovat")
-let jakakoli = document.getElementById("jakakoli")
+let jakakoli_odbornost = document.getElementById("jakakoli_odbornost")
 let bez_odbornosti = document.getElementById("bez_odbornosti")
 let jakykoli = document.getElementById("jakykoli")
 let nezalezi_ma = document.getElementById("nezalezi_ma")
 let nezalezi_nema = document.getElementById("nezalezi_nema")
 let jakakoli_uzamcenost = document.getElementById("uzamcene_zmeny_cokoli")
+let jakykoli_puvod = document.getElementById("jakykoli_puvod")
 let vyber_div = document.getElementById("vyber")
 let vysledek_div = document.getElementById("vysledek")
 let ukazat_button = document.getElementById("ukazat")
@@ -44,6 +45,14 @@ let udaje_k_filtrovani = [
     {
         "system_name": "datum_narozeni",
         "display_name": "Datum narození",
+    },
+    {
+        "system_name": "rok_maturity",
+        "display_name": "Rok maturity",
+    },
+    {
+        "system_name": "puvod",
+        "display_name": "Země původu",
     },
     {
         "system_name": "tricko",
@@ -138,6 +147,14 @@ let udaje_k_vypsani = [
         "display_name": "Datum narození",
     },
     {
+        "system_name": "rok_maturity",
+        "display_name": "Rok maturity",
+    },
+    {
+        "system_name": "puvod",
+        "display_name": "Země původu",
+    },
+    {
         "system_name": "progress",
         "display_name": "Postup v Expedici"
     },
@@ -211,7 +228,7 @@ for (let odb of dostupne_odbornosti) {
     inp.name = "odbornost"
     inp.id = odb.system_name
     inp.addEventListener("change", function() {
-        jakakoli.checked = false
+        jakakoli_odbornost.checked = false
         bez_odbornosti.checked = false
     })
 
@@ -308,8 +325,15 @@ function novy_sloupecek() {
 function vyhodnotit() {
     let result = {}
 
+    //zahrnutí orgů
+    if (document.getElementById("zahrnout_orgy").checked) {
+        result["zahrnout_orgy"] = true
+    } else {
+        result["zahrnout_orgy"] = false
+    }
+
     // odbornost
-    if (jakakoli.checked) {
+    if (jakakoli_odbornost.checked) {
         result["odbornost"] = "jakakoli"
     } else if (bez_odbornosti.checked) {
         result["odbornost"] = "bez_odbornosti"
@@ -371,6 +395,19 @@ function vyhodnotit() {
         for (let id of ["uzamcene_zmeny_callu", "uzamcene_zmeny_prace", "uzamcene_zmeny_udaju"]) {
             if (document.getElementById(id).checked) {
                 result["uzamcenost_zmen"].push(id)
+            }
+        }
+    }
+
+    // původ
+
+    if (jakykoli_puvod.checked) {
+        result["puvod"] = "jakykoli"
+    } else {
+        result["puvod"] = []
+        for (let id of ["cz", "sk"]) {
+            if (document.getElementById(id).checked) {
+                result["puvod"].push(id)
             }
         }
     }
@@ -479,7 +516,7 @@ ukazat_button.addEventListener("click", function() {
     vyber_div.hidden = false
     ukazat_button.hidden = true
 })
-jakakoli.addEventListener("change", function() {
+jakakoli_odbornost.addEventListener("change", function() {
     for (let odb of dostupne_odbornosti) {
         document.getElementById(odb["system_name"]).checked = false
     }
@@ -489,7 +526,7 @@ bez_odbornosti.addEventListener("change", function() {
     for (let odb of dostupne_odbornosti) {
         document.getElementById(odb["system_name"]).checked = false
     }
-    jakakoli.checked = false
+    jakakoli_odbornost.checked = false
 })
 jakykoli.addEventListener("change", function() {
     for (let id of dostupne_progressy) {
@@ -504,6 +541,16 @@ jakakoli_uzamcenost.addEventListener("change", function() {
 for (let radio of document.getElementsByName("uzamcenost_zmen")) {
     radio.addEventListener("change", function() {
         jakakoli_uzamcenost.checked = false
+    })
+}
+jakykoli_puvod.addEventListener("change", function() {
+    for (let radio of document.getElementsByName("puvod")) {
+        radio.checked = false
+    }
+})
+for (let radio of document.getElementsByName("puvod")) {
+    radio.addEventListener("change", function() {
+        jakykoli_puvod.checked = false
     })
 }
 novy_sloupecek() // aby tam vzdy byl jeden
