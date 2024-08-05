@@ -205,6 +205,8 @@ class User(db.Model, UserMixin):
         path = user_data_folder_path() / str(self.id) / "prace"
         for file in path.iterdir():
             file.unlink()
+        self.datetime_odevzdani_prezentace = None
+        self.save()
 
     def smazat_shrnuti(self):
         filename = get_shrnuti_filename(self.id)
@@ -212,16 +214,19 @@ class User(db.Model, UserMixin):
             p: Path = user_data_folder_path() / str(self.id) / filename["filename"]
             p.unlink()
         self.odbornost = "zatím nevybraná"
+        self.datetime_odevzdani_shrnuti_prace = None
         self.save()
     
         
     def odebrat_motivacni_formular(self):
         self.motivacni_dotaznik = None
         self.odevzdany_motivacni_dotaznik = False
+        self.datetime_odevzdani_motivaku = None
         self.save()
     
     def znovu_zpristupnit_motivacni_formular(self):
         self.odevzdany_motivacni_dotaznik = False
+        self.datetime_odevzdani_motivaku = None
         self.progress = "Motivační formulář"
         self.save()
     

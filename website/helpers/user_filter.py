@@ -43,14 +43,17 @@ def user_filter(kriteria: dict) -> List[User]:
         if "uzamcene_zmeny_udaju" in kriteria["uzamcenost_zmen"]:
             users = filter(lambda x: x.uzamcene_zmeny_udaju, users)
     
-    # odevzdany motivak     
-    if kriteria["odevzdany_dotaznik"] == "oboji":
+    # odevzdavani     
+    if kriteria["odevzdavani"] == "nezalezi":
         pass
-    else:
-        if kriteria["odevzdany_dotaznik"] == "odevzdany":
-            users = filter(lambda x: x.odevzdany_motivacni_dotaznik, users)
-        else:
-            users = filter(lambda x: not x.odevzdany_motivacni_dotaznik, users)
+    elif kriteria["odevzdavani"] == "motivak_chybi":
+        users = filter(lambda x: not x.datetime_odevzdani_motivaku, users)
+    elif kriteria["odevzdavani"] == "motivak":
+        users = filter(lambda x: x.datetime_odevzdani_motivaku and not x.datetime_odevzdani_shrnuti_prace, users)
+    elif kriteria["odevzdavani"] == "shrnuti":
+        users = filter(lambda x: x.datetime_odevzdani_shrnuti_prace and not x.datetime_odevzdani_prezentace, users)
+    elif kriteria["odevzdavani"] == "prezentace":
+        users = filter(lambda x: x.datetime_odevzdani_prezentace, users)
 
     # přítomnost na kolech   
     if kriteria["pritomnost"] == "nezalezi":

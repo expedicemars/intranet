@@ -424,12 +424,12 @@ function vyhodnotit() {
         }
     }
 
-    // odevzdany motivak
+    // odevzdavani
 
-    let radios_m = document.getElementsByName("odevzdany_dotaznik")
+    let radios_m = document.getElementsByName("odevzdavani")
     for (let r of radios_m) {
         if (r.checked) {
-            result["odevzdany_dotaznik"] = r.value
+            result["odevzdavani"] = r.value
         }
     }
 
