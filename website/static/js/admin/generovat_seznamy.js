@@ -338,10 +338,10 @@ function vyhodnotit() {
     let result = {}
 
     //zahrnutí orgů
-    if (document.getElementById("zahrnout_orgy").checked) {
-        result["zahrnout_orgy"] = true
+    if (document.getElementById("filtrovat_orgy").checked) {
+        result["filtrovat_orgy"] = true
     } else {
-        result["zahrnout_orgy"] = false
+        result["filtrovat_orgy"] = false
     }
 
     // odbornost

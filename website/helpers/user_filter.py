@@ -8,7 +8,9 @@ from website.helpers.pretty_date import pretty_datetime, pretty_date
 def user_filter(kriteria: dict) -> List[User]:
     users = User.get_all()
     
-    if not kriteria["zahrnout_orgy"]:
+    if kriteria["filtrovat_orgy"]:
+        users = filter(lambda x: "admin" in x.role, users)
+    else:
         users = filter(lambda x: "admin" not in x.role, users)
     
    # odbornost 
