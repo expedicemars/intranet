@@ -51,7 +51,7 @@
                 <label for="uzamcene_zmeny_prace">Uzamčené změny práce</label>
             </div>
             <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="odevzdany_motivacni_dotaznik">
-                <h4>Odevzdanost (?) motivačního dotazníku</h4>
+                <h4>Odevzdání motivačního dotazníku</h4>
                 <input type="radio" name="odevzdany_dotaznik" id="odevzdany_dotaznik_oboji" checked value="oboji">
                 <label for="odevzdany_dotaznik_oboji">Obojí</label>
                 <br>
@@ -72,6 +72,17 @@
                 <input type="checkbox" name="puvod" id="cz" value="cz">
                 <label for="cz">Česká republika</label>
             </div>
+            <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="odevzdany_motivacni_dotaznik">
+                <h4>Přítomnost na kolech</h4>
+                <input type="radio" name="pritomnost" id="pritomnost_nezalezi" checked value="nezalezi">
+                <label for="pritomnost_nezalezi">Nezáleží na tom</label>
+                <br>
+                <input type="radio" name="pritomnost" id="pritomen_na_konferenci" value="konference">
+                <label for="pritomen_na_konferenci">Přítomen na konferenci</label>
+                <br>
+                <input type="radio" name="pritomnost" id="pritomen_na_primi" value="primi">
+                <label for="pritomen_na_primi">Přítomen na Přimi</label>
+            </div>
         </div>
         
         
@@ -79,10 +90,9 @@
         <h3>Sloupečky, které k nim chci vypsat:</h3>
         <div id="vypsat_selects"></div>
         <button class="btn em-button my-1" type="button" id="novy_sloupecek">Nový sloupeček</button> <br>
+        <input type="checkbox" id="zahrnout_orgy">
+        <label for="zahrnout_adminy">Zahrnout organizátory?</label>
     </div>
-    <input type="checkbox" id="zahrnout_orgy">
-    <label for="zahrnout_adminy">Zahrnout organizátory?</label>
-    <br>
     <button id="generovat" class="btn btn-success" type="button">Generovat</button>
     <button id="ukazat" hidden type="button" class="btn btn-success">Ukázat výběr kritérií</button>
     <div id="vysledek" hidden>

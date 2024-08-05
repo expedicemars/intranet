@@ -52,6 +52,15 @@ def user_filter(kriteria: dict) -> List[User]:
         else:
             users = filter(lambda x: not x.odevzdany_motivacni_dotaznik, users)
 
+    # přítomnost na kolech   
+    if kriteria["pritomnost"] == "nezalezi":
+        pass
+    elif kriteria["pritomnost"] == "konference":
+        users = filter(lambda x: x.pritomen_na_konferenci, users)
+    elif kriteria["pritomnost"] == "primi":
+            users = filter(lambda x: x.pritomen_na_primi, users)
+
+
     def ma_profilovku(user):
         path = user_data_folder_path() / str(user.id)
         for file in path.iterdir():

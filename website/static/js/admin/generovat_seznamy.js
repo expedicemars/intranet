@@ -421,6 +421,15 @@ function vyhodnotit() {
         }
     }
 
+    // pritomnost
+
+    let radios_pritomnost = document.getElementsByName("pritomnost")
+    for (let r of radios_pritomnost) {
+        if (r.checked) {
+            result["pritomnost"] = r.value
+        }
+    }
+
     // vypsat
     let res = []
     for (let ch of vypsat_selects_div.children) {
