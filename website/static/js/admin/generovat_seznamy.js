@@ -519,7 +519,8 @@ function vypsat(data) {
         tr.appendChild(th)
     }
     // content
-    for (let u of data["users"]) {
+    for (let i=0; i<data["users"].length; i++) {
+        let u = data["users"][i]
         let tr = document.createElement("tr")
         tr.classList.add("tr-min-height")
         tbody.append(tr)
@@ -530,7 +531,7 @@ function vypsat(data) {
         let a = document.createElement("a")
         a.href = "/admin/detail_usera/" + u["id_na_link"]
         a.classList.add("link")
-        a.innerText = "#"
+        a.innerText = i+1
         td.appendChild(a)
         
         for (let key of data["keys"]) {
