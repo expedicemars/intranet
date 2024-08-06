@@ -344,6 +344,14 @@ function vyhodnotit() {
         result["filtrovat_orgy"] = false
     }
 
+    // řazení
+    let radios_razeni = document.getElementsByName("razeni")
+    for (let r of radios_razeni) {
+        if (r.checked) {
+            result["razeni"] = r.value
+        }
+    }    
+
     // odbornost
     if (jakakoli_odbornost.checked) {
         result["odbornost"] = "jakakoli"
@@ -468,7 +476,6 @@ function vyhodnotit() {
         alert("Nebyl určen žádný sloupeček, ktereý chceš k vybraným účastníkům vypsat.")
     } else {
         vyber_div.hidden = true
-        generovat_button.hidden = true
         vysledek_div.hidden = false
         ukazat_button.hidden = false
         $.ajax({
@@ -542,7 +549,6 @@ generovat_button.addEventListener("click", vyhodnotit)
 novy_sloupecek_button.addEventListener("click", novy_sloupecek)
 
 ukazat_button.addEventListener("click", function() {
-    generovat_button.hidden = false
     vyber_div.hidden = false
     ukazat_button.hidden = true
 })

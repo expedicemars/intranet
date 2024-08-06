@@ -7,7 +7,7 @@ from website.paths import user_data_folder_path
 from website.helpers.pretty_date import pretty_datetime, pretty_date
 
 def user_filter(kriteria: dict) -> List[User]:
-    users = User.get_all()
+    users: list[User] = User.get_all()
     
     if kriteria["filtrovat_orgy"]:
         users = filter(lambda x: "admin" in x.role, users)
@@ -175,6 +175,17 @@ def user_filter(kriteria: dict) -> List[User]:
     
     # list to je, abych to moh projíždět víckrát potom
     users = list(users)
+    
+    # řazení
+    def none_safe_prijmeni(user: User) -> str:
+        return user.prijmeni if user.prijmeni else ""
+        
+    
+    if kriteria["razeni"] == "prijmeni":
+        users = sorted(users, key = lambda u: none_safe_prijmeni(u))
+    elif kriteria["razeni"] == "registrace":
+        users = sorted(users, key = lambda u: u.datum_registrace)
+    
     return users
 
 

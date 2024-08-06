@@ -115,13 +115,25 @@
         
         
         <hr>
-        <h3>Sloupečky, které k nim chci vypsat:</h3>
+        <h3>Data, která chci k vybraným uživatelům vypsat:</h3>
         <div id="vypsat_selects"></div>
         <button class="btn em-button my-1" type="button" id="novy_sloupecek">Nový sloupeček</button> <br>
+
+        <hr>
+        <h3>Seřazení</h3>
+        <div>
+            <input type="radio" name="razeni" id="razeni_podle_prijmeni" checked value="prijmeni">
+            <label for="razeni_podle_prijmeni">Sečadit podle příjmení</label>
+            <br>
+            <input type="radio" name="razeni" id="razeni_podle_registrace" value="registrace">
+            <label for="razeni_podle_registrace">Seřadit podle data registrace</label>
+        </div>
+        <hr>
         <input type="checkbox" id="filtrovat_orgy">
         <label for="filtrovat_orgy">Aplikovat pouze na organizátory?</label>
+        <hr>
+        <button id="generovat" class="btn btn-success" type="button">Generovat</button>
     </div>
-    <button id="generovat" class="btn btn-success" type="button">Generovat</button>
     <button id="ukazat" hidden type="button" class="btn btn-success">Ukázat výběr kritérií</button>
     <div id="vysledek" hidden>
         <hr>
