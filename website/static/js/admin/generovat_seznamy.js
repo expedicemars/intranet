@@ -20,6 +20,8 @@ let udaje_nema_inputs = document.getElementById("udaje_nema")
 let novy_sloupecek_button = document.getElementById("novy_sloupecek")
 let vypsat_selects_div = document.getElementById("vypsat_selects")
 
+let result_na_kopirovani = ""
+
 // id, mail, confirmed, password, odbornost, progress, role, admin_poznamka, datum_registrace, nema cenu filtrovat?
 let udaje_k_filtrovani = [
     {
@@ -494,16 +496,24 @@ function vyhodnotit() {
 // funkce na to vypisování, volaná z ajaxu z funkce vyhodnotit
 function vypsat(data) {
     data = JSON.parse(data)
+    
+    // string na kopirovani do google docs - bude se do nej pridavat
+    let result = ""
+    let nadpisy_result = ["#"]
+    
+    // emaily vsech vybranych
     document.getElementById("emaily_vybranych").innerHTML = data["emails"].join(", ")
+
+    // smazani stare tabulky
     let tr = document.getElementById("tr")
     let tbody = document.getElementById("tbody")
-    // smazani stare tabulky
     while (tr.firstChild) {
         tr.removeChild(tr.firstChild)
     }
     while (tbody.firstChild) {
         tbody.removeChild(tbody.firstChild)
     }
+
     // nadpisy
     let th = document.createElement("th")
     th.innerText = "Účet"
@@ -513,14 +523,18 @@ function vypsat(data) {
         for (let udaj of udaje_k_vypsani) {
             if (udaj["system_name"] == key) {
                 th.innerText = udaj["display_name"]
+                nadpisy_result.push(udaj["display_name"])
                 break
             }
         } 
         tr.appendChild(th)
     }
+    result += nadpisy_result.join("\t")
+
     // content
     for (let i=0; i<data["users"].length; i++) {
         let u = data["users"][i]
+        let user_result = []
         let tr = document.createElement("tr")
         tr.classList.add("tr-min-height")
         tbody.append(tr)
@@ -532,15 +546,20 @@ function vypsat(data) {
         a.href = "/admin/detail_usera/" + u["id_na_link"]
         a.classList.add("link")
         a.innerText = i+1
+        user_result.push(i+1)
         td.appendChild(a)
         
         for (let key of data["keys"]) {
             let td = document.createElement("td")
             td.innerText = u[key]
+            user_result.push(u[key])
             tr.appendChild(td)
         }
+        let new_line = "\n" + user_result.join("\t")
+        result += new_line
     }
-    
+
+    result_na_kopirovani = result
 }
 
 
@@ -590,4 +609,12 @@ for (let radio of document.getElementsByName("puvod")) {
         jakykoli_puvod.checked = false
     })
 }
+document.getElementById("zkopirovat_button").addEventListener("click", function() {
+    navigator.clipboard.writeText(result_na_kopirovani)
+    this.innerText = "Zkopírováno!"
+    setTimeout(() => {
+        this.innerText = "Znovu kopírovat"
+    }, 800);
+})
+
 novy_sloupecek() // aby tam vzdy byl jeden
