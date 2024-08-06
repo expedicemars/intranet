@@ -442,6 +442,15 @@ function vyhodnotit() {
         }
     }
 
+    // k faktor
+
+    let k_faktor = document.getElementsByName("k_faktor")
+    for (let r of k_faktor) {
+        if (r.checked) {
+            result["k_faktor"] = r.value
+        }
+    }
+
     // vypsat
     let res = []
     for (let ch of vypsat_selects_div.children) {

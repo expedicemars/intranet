@@ -1,4 +1,5 @@
 from website.models.user import User
+from website.models.hodnoceni import Hodnoceni
 from website.models.motivacni_call import Motivacni_call
 from website.models.hodnoceni import Hodnoceni
 from typing import List
@@ -64,6 +65,9 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: x.pritomen_na_konferenci, users)
     elif kriteria["pritomnost"] == "primi":
             users = filter(lambda x: x.pritomen_na_primi, users)
+            
+    # k-faktor
+    users = [u for u in users if max(h.k_faktor for h in Hodnoceni.get_by_user_id(u.id)) == int(kriteria["k_faktor"])] if kriteria["k_faktor"] != "nezalezi" else users
 
 
     def ma_profilovku(user):
