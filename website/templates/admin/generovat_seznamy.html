@@ -13,33 +13,33 @@
     <div id="vyber">
         <h3>Kritéria, podle kterých se vybere seznam:</h3>
         <div class="row">
-            <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="odbornosti">
+            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-12 my-1" id="odbornosti">
                 <h4>Odbornost</h4>
-                <input type="checkbox" name="odbornost" id="jakakoli" checked>
-                <label for="jakakoli">Jakákoli</label>
+                <input type="checkbox" name="odbornost" id="jakakoli_odbornost" checked>
+                <label for="jakakoli_odbornost">Jakákoli</label>
                 <br>
                 <input type="checkbox" name="odbornost" id="bez_odbornosti">
                 <label for="bez_odbornosti">Nemá odbornost</label>
             </div>
-            <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="progressy">
+            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-12 my-1" id="progressy">
                 <h4>Postup v Expedici</h4>
                 <input type="checkbox" name="postup" id="jakykoli" checked>
                 <label for="jakykoli">Jakýkoli</label>
             </div>
-            <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="udaje_ma">
+            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-12 my-1" id="udaje_ma">
                 <h4>Mají údaj</h4>
                 <input type="radio" name="udaje_ma" id="nezalezi_ma" checked>
                 <label for="nezalezi_ma">Nezáleží na tom</label>
             </div>
-            <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="udaje_nema">
+            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-12 my-1" id="udaje_nema">
                 <h4>Chybí údaj</h4>
                 <input type="radio" name="udaje_nema" id="nezalezi_nema" checked>
                 <label for="nezalezi_nema">Nezáleží na tom</label>
             </div>
-            <div class="col-xl-2 col-lg-4 col-md-6 my-1">
+            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-12 my-1">
                 <h4>Uzamčenost změn</h4>
                 <input type="checkbox" name="uzamcenost_zmen_cokoli" id="uzamcene_zmeny_cokoli" value="cokoli" checked>
-                <label for="uzamcene_zmeny_oboji">Cokoli</label>
+                <label for="uzamcene_zmeny_cokoli">Cokoli</label>
                 <br>
                 <input type="checkbox" name="uzamcenost_zmen" id="uzamcene_zmeny_udaju" value="uzamcene_zmeny_udaju">
                 <label for="uzamcene_zmeny_udaju">Uzamčené změny údajů</label>
@@ -50,26 +50,90 @@
                 <input type="checkbox" name="uzamcenost_zmen" id="uzamcene_zmeny_prace" value="uzamcene_zmeny_prace">
                 <label for="uzamcene_zmeny_prace">Uzamčené změny práce</label>
             </div>
-            <div class="col-xl-2 col-lg-4 col-md-6 my-1" id="odevzdany_motivacni_dotaznik">
-                <h4>Odevzdanost (?) motivačního dotazníku</h4>
-                <input type="radio" name="odevzdany_dotaznik" id="odevzdany_dotaznik_oboji" checked value="oboji">
-                <label for="odevzdany_dotaznik_oboji">Obojí</label>
+            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-12 my-1">
+                <h4>Odevzdávání</h4>
+                <small><i>Zaškrtnutím např. motivačního formuláře se myslí to, že účastník odevzdal motivační formulář, ale nic dál.</i></small><br>
+                <input type="radio" name="odevzdavani" id="nezalezi_na_odevzdani" checked value="nezalezi">
+                <label for="nezalezi_na_odevzdani">Nezáleží na tom</label>
                 <br>
-                <input type="radio" name="odevzdany_dotaznik" id="odevzdany_dotaznik_ano" value="odevzdany">
-                <label for="odevzdany_dotaznik_ano">Odevzdaný</label>
+                <input type="radio" name="odevzdavani" id="neodevzdany_motivak" value="motivak_chybi">
+                <label for="neodevzdany_motivak">Chybí motivační formulář</label>
                 <br>
-                <input type="radio" name="odevzdany_dotaznik" id="odevzdany_dotaznik_ne" value="jeste_ne">
-                <label for="odevzdany_dotaznik_ne">Ještě ne</label>
+                <input type="radio" name="odevzdavani" id="odevzdany_motivak" value="motivak">
+                <label for="odevzdany_motivak">Motivační formulář</label>
+                <br>
+                <input type="radio" name="odevzdavani" id="odevzdane_shrnuti" value="shrnuti">
+                <label for="odevzdane_shrnuti">Shrnutí práce</label>
+                <br>
+                <input type="radio" name="odevzdavani" id="odevzdana_prezentace" value="prezentace">
+                <label for="odevzdana_prezentace">Prezentace</label>
+            </div>
+            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-12 my-1">
+                <h4>Původ</h4>
+                <input type="checkbox" name="jakykoli_puvod" id="jakykoli_puvod" value="cokoli" checked>
+                <label for="jakykoli_puvod">Jakýkoli</label>
+                <br>
+                <input type="checkbox" name="puvod" id="sk" value="sk">
+                <label for="sk">Slovensko</label>
+                <br>
+                <input type="checkbox" name="puvod" id="cz" value="cz">
+                <label for="cz">Česká republika</label>
+            </div>
+            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-12 my-1">
+                <h4>Přítomnost na kolech</h4>
+                <input type="radio" name="pritomnost" id="pritomnost_nezalezi" checked value="nezalezi">
+                <label for="pritomnost_nezalezi">Nezáleží na tom</label>
+                <br>
+                <input type="radio" name="pritomnost" id="pritomen_na_konferenci" value="konference">
+                <label for="pritomen_na_konferenci">Přítomen na konferenci</label>
+                <br>
+                <input type="radio" name="pritomnost" id="pritomen_na_primi" value="primi">
+                <label for="pritomen_na_primi">Přítomen na Přimi</label>
+            </div>
+            <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-12 my-1">
+                <h4>K-faktor</h4>
+                <small><i>Zaškrtnutím čísla se rozumí, že nejvyšší dosažený k-faktor v jakémkoli hodnocení je právě zvolené číslo.</i></small><br>
+                <input type="radio" name="k_faktor" id="k_nezalezi" checked value="nezalezi">
+                <label for="k_nezalezi">Nezáleží na tom</label>
+                <br>
+                <input type="radio" name="k_faktor" id="k_1" value=1>
+                <label for="k_1">1</label>
+                <br>
+                <input type="radio" name="k_faktor" id="k_2" value=2>
+                <label for="k_2">2</label>
+                <br>
+                <input type="radio" name="k_faktor" id="k_3" value=3>
+                <label for="k_3">3</label>
+                <br>
+                <input type="radio" name="k_faktor" id="k_4" value=4>
+                <label for="k_4">4</label>
+                <br>
+                <input type="radio" name="k_faktor" id="k_5" value=5>
+                <label for="k_5">5</label>
             </div>
         </div>
         
         
         <hr>
-        <h3>Sloupečky, které k nim chci vypsat:</h3>
+        <h3>Data, která chci k vybraným uživatelům vypsat:</h3>
         <div id="vypsat_selects"></div>
         <button class="btn em-button my-1" type="button" id="novy_sloupecek">Nový sloupeček</button> <br>
+
+        <hr>
+        <h3>Seřazení</h3>
+        <div>
+            <input type="radio" name="razeni" id="razeni_podle_prijmeni" checked value="prijmeni">
+            <label for="razeni_podle_prijmeni">Sečadit podle příjmení</label>
+            <br>
+            <input type="radio" name="razeni" id="razeni_podle_registrace" value="registrace">
+            <label for="razeni_podle_registrace">Seřadit podle data registrace</label>
+        </div>
+        <hr>
+        <input type="checkbox" id="filtrovat_orgy">
+        <label for="filtrovat_orgy">Aplikovat pouze na organizátory?</label>
+        <hr>
+        <button id="generovat" class="btn btn-success" type="button">Generovat</button>
     </div>
-    <button id="generovat" class="btn btn-success" type="button">Generovat</button>
     <button id="ukazat" hidden type="button" class="btn btn-success">Ukázat výběr kritérií</button>
     <div id="vysledek" hidden>
         <hr>
@@ -89,6 +153,7 @@
                 </tbody>
             </table>
         </div>
+        <button class="btn em-button my-1" type="button" id="zkopirovat_button">Zkopírovat pro vložení do Google sheets</button>
     </div>
 
 

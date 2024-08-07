@@ -1,4 +1,5 @@
 from website.models.user import User
+from website.models.hodnoceni import Hodnoceni
 from website.models.motivacni_call import Motivacni_call
 from website.models.hodnoceni import Hodnoceni
 from typing import List
@@ -6,8 +7,12 @@ from website.paths import user_data_folder_path
 from website.helpers.pretty_date import pretty_datetime, pretty_date
 
 def user_filter(kriteria: dict) -> List[User]:
-    users = User.get_all()
-    users = filter(lambda x: "admin" not in x.role, users)
+    users: list[User] = User.get_all()
+    
+    if kriteria["filtrovat_orgy"]:
+        users = filter(lambda x: "admin" in x.role, users)
+    else:
+        users = filter(lambda x: "admin" not in x.role, users)
     
    # odbornost 
     if kriteria["odbornost"] == "jakakoli":
@@ -16,6 +21,13 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: x.odbornost == "zatím nevybraná", users)
     else:
         users = filter(lambda x: x.odbornost in kriteria["odbornost"], users)
+        
+    #původ
+    if kriteria["puvod"] == "jakykoli":
+        pass
+    else:
+        users = filter(lambda x: x.puvod in kriteria["puvod"], users)
+    
     
     # postup
     if kriteria["postup"] == "jakykoli":
@@ -34,14 +46,29 @@ def user_filter(kriteria: dict) -> List[User]:
         if "uzamcene_zmeny_udaju" in kriteria["uzamcenost_zmen"]:
             users = filter(lambda x: x.uzamcene_zmeny_udaju, users)
     
-    # odevzdany motivak     
-    if kriteria["odevzdany_dotaznik"] == "oboji":
+    # odevzdavani     
+    if kriteria["odevzdavani"] == "nezalezi":
         pass
-    else:
-        if kriteria["odevzdany_dotaznik"] == "odevzdany":
-            users = filter(lambda x: x.odevzdany_motivacni_dotaznik, users)
-        else:
-            users = filter(lambda x: not x.odevzdany_motivacni_dotaznik, users)
+    elif kriteria["odevzdavani"] == "motivak_chybi":
+        users = filter(lambda x: not x.datetime_odevzdani_motivaku, users)
+    elif kriteria["odevzdavani"] == "motivak":
+        users = filter(lambda x: x.datetime_odevzdani_motivaku and not x.datetime_odevzdani_shrnuti_prace, users)
+    elif kriteria["odevzdavani"] == "shrnuti":
+        users = filter(lambda x: x.datetime_odevzdani_shrnuti_prace and not x.datetime_odevzdani_prezentace, users)
+    elif kriteria["odevzdavani"] == "prezentace":
+        users = filter(lambda x: x.datetime_odevzdani_prezentace, users)
+
+    # přítomnost na kolech   
+    if kriteria["pritomnost"] == "nezalezi":
+        pass
+    elif kriteria["pritomnost"] == "konference":
+        users = filter(lambda x: x.pritomen_na_konferenci, users)
+    elif kriteria["pritomnost"] == "primi":
+            users = filter(lambda x: x.pritomen_na_primi, users)
+            
+    # k-faktor
+    users = [u for u in users if max(h.k_faktor for h in Hodnoceni.get_by_user_id(u.id)) == int(kriteria["k_faktor"])] if kriteria["k_faktor"] != "nezalezi" else users
+
 
     def ma_profilovku(user):
         path = user_data_folder_path() / str(user.id)
@@ -82,6 +109,10 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: x.mail_rodicu not in [None, ""], users)
     elif kriteria["udaj_ma"] == "datum_narozeni":
         users = filter(lambda x: x.datum_narozeni not in [None, ""], users)
+    elif kriteria["udaj_ma"] == "rok_maturity":
+        users = filter(lambda x: x.rok_maturity not in [None, ""], users)
+    elif kriteria["udaj_ma"] == "puvod":
+        users = filter(lambda x: x.puvod not in [None, ""], users)
     elif kriteria["udaj_ma"] == "tricko":
         users = filter(lambda x: x.tricko not in [None, ""], users)
     elif kriteria["udaj_ma"] == "dozvedeli":
@@ -117,6 +148,10 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: x.mail_rodicu in [None, ""], users)
     elif kriteria["udaj_nema"] == "datum_narozeni":
         users = filter(lambda x: x.datum_narozeni in [None, ""], users)
+    elif kriteria["udaj_nema"] == "rok_maturity":
+        users = filter(lambda x: x.rok_maturity in [None, ""], users)
+    elif kriteria["udaj_nema"] == "puvod":
+        users = filter(lambda x: x.puvod in [None, ""], users)
     elif kriteria["udaj_nema"] == "tricko":
         users = filter(lambda x: x.tricko in [None, ""], users)
     elif kriteria["udaj_nema"] == "dozvedeli":
@@ -140,6 +175,17 @@ def user_filter(kriteria: dict) -> List[User]:
     
     # list to je, abych to moh projíždět víckrát potom
     users = list(users)
+    
+    # řazení
+    def none_safe_prijmeni(user: User) -> str:
+        return user.prijmeni if user.prijmeni else ""
+        
+    
+    if kriteria["razeni"] == "prijmeni":
+        users = sorted(users, key = lambda u: none_safe_prijmeni(u))
+    elif kriteria["razeni"] == "registrace":
+        users = sorted(users, key = lambda u: u.datum_registrace)
+    
     return users
 
 
@@ -176,6 +222,12 @@ def seznam_generator(kriteria: dict) -> dict:
     for u in users:
         zaznam = {}
         zaznam["id_na_link"] = u.id
+        puvod = "Nevyplněný"
+        if u.puvod == "cz":
+            puvod = "Česká republika"
+        elif u.puvod == "sk":
+            puvod = "Slovensko"
+        
         if "prazdny" in vypsat_list:
             zaznam["prazdny"] = ""
         if "id" in vypsat_list:
@@ -198,6 +250,10 @@ def seznam_generator(kriteria: dict) -> dict:
             zaznam["odbornost"] = u.odbornost
         if "datum_narozeni" in vypsat_list:
             zaznam["datum_narozeni"] = pretty_date(u.datum_narozeni)
+        if "rok_maturity" in vypsat_list:
+            zaznam["rok_maturity"] = u.rok_maturity
+        if "puvod" in vypsat_list:
+            zaznam["puvod"] = puvod
         if "progress" in vypsat_list:
             zaznam["progress"] = u.progress
         if "tricko" in vypsat_list:
@@ -232,5 +288,11 @@ def seznam_generator(kriteria: dict) -> dict:
             zaznam["osloveni_5p"] = u.osloveni_5p
         if "zajmeno" in vypsat_list:
             zaznam["zajmeno"] = u.zajmeno
+        if "datetime_odevzdani_motivaku" in vypsat_list:
+            zaznam["datetime_odevzdani_motivaku"] = pretty_datetime(u.datetime_odevzdani_motivaku)
+        if "datetime_odevzdani_prezentace" in vypsat_list:
+            zaznam["datetime_odevzdani_prezentace"] = pretty_datetime(u.datetime_odevzdani_prezentace)
+        if "datetime_odevzdani_shrnuti_prace" in vypsat_list:
+            zaznam["datetime_odevzdani_shrnuti_prace"] = pretty_datetime(u.datetime_odevzdani_shrnuti_prace)
         result["users"].append(zaznam)
     return result

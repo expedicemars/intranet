@@ -80,7 +80,7 @@ class User(db.Model, UserMixin):
             "telcislo": self.telcislo,
             "datum_narozeni": self.datum_narozeni.isoformat() if self.datum_narozeni else None,
             "rok_maturity": self.rok_maturity,
-            "zeme_puvodu": self.puvod,
+            "zeme_puvodu": self.puvod if self.puvod else "nic",
             "mail_rodicu": self.mail_rodicu,
             "dozvedeli": self.dozvedeli,
             "alergie": self.alergie,
@@ -88,7 +88,7 @@ class User(db.Model, UserMixin):
             "confirmed": "Ano" if self.confirmed else "Ne",
             "odbornost": get_odbornost_by_system_name(self.odbornost)["prvnipjc"] if self.odbornost != "zatím nevybraná" else "zatím nevybraná",
             "progress": self.progress,
-            "tricko": self.tricko,
+            "tricko": self.tricko if self.tricko else "nic",
             "datum_registrace": pretty_datetime(self.datum_registrace),
             "datum_motivaku": pretty_datetime(self.datetime_odevzdani_motivaku),
             "datum_shrnuti": pretty_datetime(self.datetime_odevzdani_shrnuti_prace),
@@ -205,6 +205,8 @@ class User(db.Model, UserMixin):
         path = user_data_folder_path() / str(self.id) / "prace"
         for file in path.iterdir():
             file.unlink()
+        self.datetime_odevzdani_prezentace = None
+        self.save()
 
     def smazat_shrnuti(self):
         filename = get_shrnuti_filename(self.id)
@@ -212,16 +214,19 @@ class User(db.Model, UserMixin):
             p: Path = user_data_folder_path() / str(self.id) / filename["filename"]
             p.unlink()
         self.odbornost = "zatím nevybraná"
+        self.datetime_odevzdani_shrnuti_prace = None
         self.save()
     
         
     def odebrat_motivacni_formular(self):
         self.motivacni_dotaznik = None
         self.odevzdany_motivacni_dotaznik = False
+        self.datetime_odevzdani_motivaku = None
         self.save()
     
     def znovu_zpristupnit_motivacni_formular(self):
         self.odevzdany_motivacni_dotaznik = False
+        self.datetime_odevzdani_motivaku = None
         self.progress = "Motivační formulář"
         self.save()
     

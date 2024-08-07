@@ -1,12 +1,13 @@
 import httpGet from "../httpGet.js"
 
 let generovat_button = document.getElementById("generovat")
-let jakakoli = document.getElementById("jakakoli")
+let jakakoli_odbornost = document.getElementById("jakakoli_odbornost")
 let bez_odbornosti = document.getElementById("bez_odbornosti")
 let jakykoli = document.getElementById("jakykoli")
 let nezalezi_ma = document.getElementById("nezalezi_ma")
 let nezalezi_nema = document.getElementById("nezalezi_nema")
 let jakakoli_uzamcenost = document.getElementById("uzamcene_zmeny_cokoli")
+let jakykoli_puvod = document.getElementById("jakykoli_puvod")
 let vyber_div = document.getElementById("vyber")
 let vysledek_div = document.getElementById("vysledek")
 let ukazat_button = document.getElementById("ukazat")
@@ -18,6 +19,8 @@ let udaje_ma_inputs = document.getElementById("udaje_ma")
 let udaje_nema_inputs = document.getElementById("udaje_nema")
 let novy_sloupecek_button = document.getElementById("novy_sloupecek")
 let vypsat_selects_div = document.getElementById("vypsat_selects")
+
+let result_na_kopirovani = ""
 
 // id, mail, confirmed, password, odbornost, progress, role, admin_poznamka, datum_registrace, nema cenu filtrovat?
 let udaje_k_filtrovani = [
@@ -44,6 +47,14 @@ let udaje_k_filtrovani = [
     {
         "system_name": "datum_narozeni",
         "display_name": "Datum narození",
+    },
+    {
+        "system_name": "rok_maturity",
+        "display_name": "Rok maturity",
+    },
+    {
+        "system_name": "puvod",
+        "display_name": "Země původu",
     },
     {
         "system_name": "tricko",
@@ -138,6 +149,14 @@ let udaje_k_vypsani = [
         "display_name": "Datum narození",
     },
     {
+        "system_name": "rok_maturity",
+        "display_name": "Rok maturity",
+    },
+    {
+        "system_name": "puvod",
+        "display_name": "Země původu",
+    },
+    {
         "system_name": "progress",
         "display_name": "Postup v Expedici"
     },
@@ -200,6 +219,18 @@ let udaje_k_vypsani = [
     {
         "system_name": "zajmeno",
         "display_name": "Zájmeno",
+    },
+    {
+        "system_name": "datetime_odevzdani_motivaku",
+        "display_name": "Datum odevzdání motivačního formuláře",
+    },
+    {
+        "system_name": "datetime_odevzdani_shrnuti_prace",
+        "display_name": "Datum odevzdání shrnutí práce",
+    },
+    {
+        "system_name": "datetime_odevzdani_prezentace",
+        "display_name": "Datum odevzdání prezentace",
     }
 ]
 
@@ -211,7 +242,7 @@ for (let odb of dostupne_odbornosti) {
     inp.name = "odbornost"
     inp.id = odb.system_name
     inp.addEventListener("change", function() {
-        jakakoli.checked = false
+        jakakoli_odbornost.checked = false
         bez_odbornosti.checked = false
     })
 
@@ -308,8 +339,23 @@ function novy_sloupecek() {
 function vyhodnotit() {
     let result = {}
 
+    //zahrnutí orgů
+    if (document.getElementById("filtrovat_orgy").checked) {
+        result["filtrovat_orgy"] = true
+    } else {
+        result["filtrovat_orgy"] = false
+    }
+
+    // řazení
+    let radios_razeni = document.getElementsByName("razeni")
+    for (let r of radios_razeni) {
+        if (r.checked) {
+            result["razeni"] = r.value
+        }
+    }    
+
     // odbornost
-    if (jakakoli.checked) {
+    if (jakakoli_odbornost.checked) {
         result["odbornost"] = "jakakoli"
     } else if (bez_odbornosti.checked) {
         result["odbornost"] = "bez_odbornosti"
@@ -375,12 +421,43 @@ function vyhodnotit() {
         }
     }
 
-    // odevzdany motivak
+    // původ
 
-    let radios_m = document.getElementsByName("odevzdany_dotaznik")
+    if (jakykoli_puvod.checked) {
+        result["puvod"] = "jakykoli"
+    } else {
+        result["puvod"] = []
+        for (let id of ["cz", "sk"]) {
+            if (document.getElementById(id).checked) {
+                result["puvod"].push(id)
+            }
+        }
+    }
+
+    // odevzdavani
+
+    let radios_m = document.getElementsByName("odevzdavani")
     for (let r of radios_m) {
         if (r.checked) {
-            result["odevzdany_dotaznik"] = r.value
+            result["odevzdavani"] = r.value
+        }
+    }
+
+    // pritomnost
+
+    let radios_pritomnost = document.getElementsByName("pritomnost")
+    for (let r of radios_pritomnost) {
+        if (r.checked) {
+            result["pritomnost"] = r.value
+        }
+    }
+
+    // k faktor
+
+    let k_faktor = document.getElementsByName("k_faktor")
+    for (let r of k_faktor) {
+        if (r.checked) {
+            result["k_faktor"] = r.value
         }
     }
 
@@ -401,7 +478,6 @@ function vyhodnotit() {
         alert("Nebyl určen žádný sloupeček, ktereý chceš k vybraným účastníkům vypsat.")
     } else {
         vyber_div.hidden = true
-        generovat_button.hidden = true
         vysledek_div.hidden = false
         ukazat_button.hidden = false
         $.ajax({
@@ -420,16 +496,24 @@ function vyhodnotit() {
 // funkce na to vypisování, volaná z ajaxu z funkce vyhodnotit
 function vypsat(data) {
     data = JSON.parse(data)
+    
+    // string na kopirovani do google docs - bude se do nej pridavat
+    let result = ""
+    let nadpisy_result = ["#"]
+    
+    // emaily vsech vybranych
     document.getElementById("emaily_vybranych").innerHTML = data["emails"].join(", ")
+
+    // smazani stare tabulky
     let tr = document.getElementById("tr")
     let tbody = document.getElementById("tbody")
-    // smazani stare tabulky
     while (tr.firstChild) {
         tr.removeChild(tr.firstChild)
     }
     while (tbody.firstChild) {
         tbody.removeChild(tbody.firstChild)
     }
+
     // nadpisy
     let th = document.createElement("th")
     th.innerText = "Účet"
@@ -439,13 +523,18 @@ function vypsat(data) {
         for (let udaj of udaje_k_vypsani) {
             if (udaj["system_name"] == key) {
                 th.innerText = udaj["display_name"]
+                nadpisy_result.push(udaj["display_name"])
                 break
             }
         } 
         tr.appendChild(th)
     }
+    result += nadpisy_result.join("\t")
+
     // content
-    for (let u of data["users"]) {
+    for (let i=0; i<data["users"].length; i++) {
+        let u = data["users"][i]
+        let user_result = []
         let tr = document.createElement("tr")
         tr.classList.add("tr-min-height")
         tbody.append(tr)
@@ -456,16 +545,21 @@ function vypsat(data) {
         let a = document.createElement("a")
         a.href = "/admin/detail_usera/" + u["id_na_link"]
         a.classList.add("link")
-        a.innerText = "#"
+        a.innerText = i+1
+        user_result.push(i+1)
         td.appendChild(a)
         
         for (let key of data["keys"]) {
             let td = document.createElement("td")
             td.innerText = u[key]
+            user_result.push(u[key])
             tr.appendChild(td)
         }
+        let new_line = "\n" + user_result.join("\t")
+        result += new_line
     }
-    
+
+    result_na_kopirovani = result
 }
 
 
@@ -475,11 +569,10 @@ generovat_button.addEventListener("click", vyhodnotit)
 novy_sloupecek_button.addEventListener("click", novy_sloupecek)
 
 ukazat_button.addEventListener("click", function() {
-    generovat_button.hidden = false
     vyber_div.hidden = false
     ukazat_button.hidden = true
 })
-jakakoli.addEventListener("change", function() {
+jakakoli_odbornost.addEventListener("change", function() {
     for (let odb of dostupne_odbornosti) {
         document.getElementById(odb["system_name"]).checked = false
     }
@@ -489,7 +582,7 @@ bez_odbornosti.addEventListener("change", function() {
     for (let odb of dostupne_odbornosti) {
         document.getElementById(odb["system_name"]).checked = false
     }
-    jakakoli.checked = false
+    jakakoli_odbornost.checked = false
 })
 jakykoli.addEventListener("change", function() {
     for (let id of dostupne_progressy) {
@@ -506,4 +599,22 @@ for (let radio of document.getElementsByName("uzamcenost_zmen")) {
         jakakoli_uzamcenost.checked = false
     })
 }
+jakykoli_puvod.addEventListener("change", function() {
+    for (let radio of document.getElementsByName("puvod")) {
+        radio.checked = false
+    }
+})
+for (let radio of document.getElementsByName("puvod")) {
+    radio.addEventListener("change", function() {
+        jakykoli_puvod.checked = false
+    })
+}
+document.getElementById("zkopirovat_button").addEventListener("click", function() {
+    navigator.clipboard.writeText(result_na_kopirovani)
+    this.innerText = "Zkopírováno!"
+    setTimeout(() => {
+        this.innerText = "Znovu kopírovat"
+    }, 800);
+})
+
 novy_sloupecek() // aby tam vzdy byl jeden
