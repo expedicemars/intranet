@@ -120,7 +120,7 @@ class User(db.Model, UserMixin):
             "jmeno": self.jmeno,
             "prijmeni": self.prijmeni,
             "datum_narozeni": pretty_date(self.datum_narozeni.isoformat()) if self.datum_narozeni else None,
-            "vek": int(self.calculate_age(self)) if self.datum_narozeni else None,
+            "vek": int(self.calculate_age()) if self.datum_narozeni else None,
             "rok_maturity": self.rok_maturity,
             "zeme_puvodu": puvod,
             "email": self.email,
