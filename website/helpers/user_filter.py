@@ -250,6 +250,8 @@ def seznam_generator(kriteria: dict) -> dict:
             zaznam["odbornost"] = u.odbornost
         if "datum_narozeni" in vypsat_list:
             zaznam["datum_narozeni"] = pretty_date(u.datum_narozeni)
+        if "vek" in vypsat_list:
+            zaznam["vek"] = u.calculate_age()
         if "rok_maturity" in vypsat_list:
             zaznam["rok_maturity"] = u.rok_maturity
         if "puvod" in vypsat_list:

@@ -149,6 +149,10 @@ let udaje_k_vypsani = [
         "display_name": "Datum narození",
     },
     {
+        "system_name": "vek",
+        "display_name": "Věk",
+    },
+    {
         "system_name": "rok_maturity",
         "display_name": "Rok maturity",
     },

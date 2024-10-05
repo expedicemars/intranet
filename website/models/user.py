@@ -98,6 +98,16 @@ class User(db.Model, UserMixin):
             "zajmeno": self.zajmeno,
             "dalsi_kroky": self.dalsi_kroky()
         }
+        
+    def calculate_age(self):
+        if self.datum_narozeni:
+            today = datetime.now()
+            age = today.year - self.datum_narozeni.year
+            # Check if the birthday has already occurred this year
+            if (today.month, today.day) < (self.datum_narozeni.month, self.datum_narozeni.day):
+                age -= 1
+            return age
+        return None
     
     def get_info_na_detail_usera(self) -> dict:
         puvod = "neurčena"
@@ -105,21 +115,12 @@ class User(db.Model, UserMixin):
             puvod = "Česká republika"
         elif self.puvod == "sk":
             puvod = "Slovensko"
-            
-        def calculate_age(self):
-            if self.datum_narozeni:
-                today = datetime.now()
-                age = today.year - self.datum_narozeni.year
-                # Check if the birthday has already occurred this year
-                if (today.month, today.day) < (self.datum_narozeni.month, self.datum_narozeni.day):
-                    age -= 1
-                return age
-            return None
+
         return {
             "jmeno": self.jmeno,
             "prijmeni": self.prijmeni,
             "datum_narozeni": pretty_date(self.datum_narozeni.isoformat()) if self.datum_narozeni else None,
-            "vek": int(calculate_age(self)) if self.datum_narozeni else None,
+            "vek": int(self.calculate_age(self)) if self.datum_narozeni else None,
             "rok_maturity": self.rok_maturity,
             "zeme_puvodu": puvod,
             "email": self.email,
