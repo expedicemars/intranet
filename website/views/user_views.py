@@ -187,7 +187,7 @@ def odbornost(odb):
                     target = [u.email for u in User.get_all_by_role("velitel_odbornosti_" + odb)]
                     target.append(get_koordinator_internetovych_kol())
                     mail_sender("nove_shrnuti_prace", target=target, data=current_user.id)
-                    flash(f"Shrnutí nahráno, zapsal jses tím do odbornosti {odb}.", category="success")
+                    flash(f"Shrnutí nahráno, tímto proběhlo zapsání do odbornosti {odb}.", category="success")
                     return redirect(url_for("user_views.odbornost", odb=odb))
             else:
                 flash("Nenahrál jsi žádné soubory.", category="info")
