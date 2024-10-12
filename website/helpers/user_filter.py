@@ -53,10 +53,12 @@ def user_filter(kriteria: dict) -> List[User]:
         users = filter(lambda x: not x.datetime_odevzdani_motivaku, users)
     elif kriteria["odevzdavani"] == "motivak":
         users = filter(lambda x: x.datetime_odevzdani_motivaku and not x.datetime_odevzdani_shrnuti_prace, users)
+    elif kriteria["odevzdavani"] == "chybi_shrnuti":
+        users = filter(lambda x: x.progress == "Domácí projekt" and not x.datetime_odevzdani_shrnuti_prace, users)
     elif kriteria["odevzdavani"] == "shrnuti":
+        users = filter(lambda x: x.datetime_odevzdani_shrnuti_prace, users)
+    elif kriteria["odevzdavani"] == "chybi_prezentace":
         users = filter(lambda x: x.datetime_odevzdani_shrnuti_prace and not x.datetime_odevzdani_prezentace, users)
-    elif kriteria["odevzdavani"] == "prezentace":
-        users = filter(lambda x: x.datetime_odevzdani_prezentace, users)
 
     # přítomnost na kolech   
     if kriteria["pritomnost"] == "nezalezi":
@@ -66,9 +68,22 @@ def user_filter(kriteria: dict) -> List[User]:
     elif kriteria["pritomnost"] == "primi":
             users = filter(lambda x: x.pritomen_na_primi, users)
             
+            
     # k-faktor
-    users = [u for u in users if max(h.k_faktor for h in Hodnoceni.get_by_user_id(u.id)) == int(kriteria["k_faktor"])] if kriteria["k_faktor"] != "nezalezi" else users
-
+    users_pred_filtrem_k_faktor = users
+    users = []
+    if kriteria["k_faktor"] == "nezalezi":
+        users = users_pred_filtrem_k_faktor
+    else:
+        for u in users_pred_filtrem_k_faktor:
+            maximum = 0
+            hodnoceni = Hodnoceni.get_by_user_id(u.id)
+            for h in hodnoceni:
+                if h.k_faktor > maximum:
+                    maximum = h.k_faktor
+            if maximum == int(kriteria["k_faktor"]):
+                users.append(u)
+    
 
     def ma_profilovku(user):
         path = user_data_folder_path() / str(user.id)

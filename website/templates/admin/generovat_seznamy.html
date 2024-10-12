@@ -52,22 +52,39 @@
             </div>
             <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-12 my-1">
                 <h4>Odevzdávání</h4>
-                <small><i>Zaškrtnutím např. motivačního formuláře se myslí to, že účastník odevzdal motivační formulář, ale nic dál.</i></small><br>
-                <input type="radio" name="odevzdavani" id="nezalezi_na_odevzdani" checked value="nezalezi">
-                <label for="nezalezi_na_odevzdani">Nezáleží na tom</label>
-                <br>
-                <input type="radio" name="odevzdavani" id="neodevzdany_motivak" value="motivak_chybi">
-                <label for="neodevzdany_motivak">Chybí motivační formulář</label>
-                <br>
-                <input type="radio" name="odevzdavani" id="odevzdany_motivak" value="motivak">
-                <label for="odevzdany_motivak">Motivační formulář</label>
-                <br>
-                <input type="radio" name="odevzdavani" id="odevzdane_shrnuti" value="shrnuti">
-                <label for="odevzdane_shrnuti">Shrnutí práce</label>
-                <br>
-                <input type="radio" name="odevzdavani" id="odevzdana_prezentace" value="prezentace">
-                <label for="odevzdana_prezentace">Prezentace</label>
+                <small><i>Zaškrtnutím např. motivačního formuláře se myslí to, že účastník odevzdal motivační formulář, ale nic dál.</i></small>
+                
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="odevzdavani" id="nezalezi_na_odevzdani" value="nezalezi" checked>
+                    <label class="form-check-label" for="nezalezi_na_odevzdani">Nezáleží na tom</label>
+                </div>
+                
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="odevzdavani" id="neodevzdany_motivak" value="motivak_chybi">
+                    <label class="form-check-label" for="neodevzdany_motivak">Chybí motivační formulář</label>
+                </div>
+                
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="odevzdavani" id="odevzdany_motivak" value="motivak">
+                    <label class="form-check-label" for="odevzdany_motivak">Motivační formulář</label>
+                </div>
+                
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="odevzdavani" id="chybi_shrnuti" value="chybi_shrnuti">
+                    <label class="form-check-label" for="chybi_shrnuti">Je v domácím kole a chybí shrnutí práce</label>
+                </div>
+                
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="odevzdavani" id="odevzdane_shrnuti" value="shrnuti">
+                    <label class="form-check-label" for="odevzdane_shrnuti">Shrnutí práce</label>
+                </div>
+                
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="odevzdavani" id="chybi_prezentace" value="chybi_prezentace">
+                    <label class="form-check-label" for="chybi_prezentace">Má shrnutí a chybí prezentace</label>
+                </div>
             </div>
+            
             <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-6 col-sm-12 my-1">
                 <h4>Původ</h4>
                 <input type="checkbox" name="jakykoli_puvod" id="jakykoli_puvod" value="cokoli" checked>
@@ -123,7 +140,7 @@
         <h3>Seřazení</h3>
         <div>
             <input type="radio" name="razeni" id="razeni_podle_prijmeni" checked value="prijmeni">
-            <label for="razeni_podle_prijmeni">Sečadit podle příjmení</label>
+            <label for="razeni_podle_prijmeni">Seřadit podle příjmení</label>
             <br>
             <input type="radio" name="razeni" id="razeni_podle_registrace" value="registrace">
             <label for="razeni_podle_registrace">Seřadit podle data registrace</label>
