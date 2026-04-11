@@ -48,3 +48,7 @@ def known_bugs():
 @default_views.route("/kontakty")
 def kontakty():
     return render_template("guest/kontakty.html", roles = get_access_rights(), user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
+
+@default_views.route("/repre_test")
+def repre_test():
+    return render_template("guest/repre_test.html", roles = get_access_rights())
