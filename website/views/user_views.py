@@ -69,6 +69,7 @@ def ucet():
             current_user.rok_maturity = data["rok_maturity"] if data["rok_maturity"] else None
             current_user.puvod = data["zeme_puvodu"]
             current_user.mail_rodicu = data["mail_rodicu"]
+            current_user.telcislo_rodicu = data["telcislo_rodicu"]
             current_user.tricko = data["tricko"]
             current_user.dozvedeli = data["dozvedeli"]
             current_user.skola = data["skola"]

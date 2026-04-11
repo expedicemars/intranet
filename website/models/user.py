@@ -29,6 +29,7 @@ class User(db.Model, UserMixin):
     adresa = db.Column(db.String(100))
     telcislo = db.Column(db.String(100))
     mail_rodicu = db.Column(db.String(100))
+    telcislo_rodicu = db.Column(db.String(100))
     odbornost = db.Column(db.String(100), default="zatím nevybraná")
     datum_narozeni = db.Column(db.Date)
     progress = db.Column(db.String(100), default="Motivační formulář")
@@ -82,6 +83,7 @@ class User(db.Model, UserMixin):
             "rok_maturity": self.rok_maturity,
             "zeme_puvodu": self.puvod if self.puvod else "nic",
             "mail_rodicu": self.mail_rodicu,
+            "telcislo_rodicu": self.telcislo_rodicu,
             "dozvedeli": self.dozvedeli,
             "alergie": self.alergie,
             "skola": self.skola,
@@ -130,6 +132,7 @@ class User(db.Model, UserMixin):
             "id": self.id,
             "tricko": self.tricko,
             "mail_rodicu": self.mail_rodicu,
+            "telcislo_rodicu": self.telcislo_rodicu,
             "odbornost": self.odbornost,
             "dozvedeli": self.dozvedeli,
             "alergie": self.alergie,
