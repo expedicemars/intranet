@@ -222,7 +222,7 @@ def detail_usera(id):
             u.pritomen_na_konferenci = not u.pritomen_na_konferenci
             u.save()
             alog(f"Přítomnost na konferenci změněna na {u.pritomen_na_konferenci}")
-            flash("Přítomnost na konferrenci aktualizována.", category="success")
+            flash("Přítomnost na konferenci aktualizována.", category="success")
             return redirect(url_for("admin_views.detail_usera", id=id))
         
         elif request.form.get("pritomen_na_primi"):

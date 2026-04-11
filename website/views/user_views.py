@@ -69,6 +69,7 @@ def ucet():
             current_user.rok_maturity = data["rok_maturity"] if data["rok_maturity"] else None
             current_user.puvod = data["zeme_puvodu"]
             current_user.mail_rodicu = data["mail_rodicu"]
+            current_user.telcislo_rodicu = data["telcislo_rodicu"]
             current_user.tricko = data["tricko"]
             current_user.dozvedeli = data["dozvedeli"]
             current_user.skola = data["skola"]
@@ -76,6 +77,7 @@ def ucet():
             current_user.osloveni_1p = data["osloveni_1p"]
             current_user.osloveni_5p = data["osloveni_5p"]
             current_user.zajmeno = data["zajmeno"]
+            current_user.stem_field = data["stem_field"]
             if current_user.email != data["email"]:
                 current_user.email = data["email"]
                 current_user.confirmed = False

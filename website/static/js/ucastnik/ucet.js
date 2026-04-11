@@ -2,7 +2,7 @@ import httpGet from "../httpGet.js"
 let info = JSON.parse(httpGet("/user_api/info"))
 let confirmed = JSON.parse(httpGet("/user_api/confirmed"))["confirmation_status"]
 let uzamcene_zmeny_udaju = JSON.parse(httpGet("/user_api/uzamcene_zmeny_udaju"))["status"]
-let ids_list = ["jmeno", "prijmeni", "email", "adresa", "telcislo", "datum_narozeni", "rok_maturity", "zeme_puvodu", "mail_rodicu", "tricko", "dozvedeli", "alergie", "skola", "osloveni_1p", "osloveni_5p", "zajmeno"]
+let ids_list = ["jmeno", "prijmeni", "email", "adresa", "telcislo", "datum_narozeni", "rok_maturity", "zeme_puvodu", "mail_rodicu", "telcislo_rodicu", "tricko", "dozvedeli", "alergie", "skola", "stem_field", "osloveni_1p", "osloveni_5p", "zajmeno"]
 let fixni_info_ids_list = ["confirmed", "odbornost", "progress", "datum_registrace", "datum_motivaku", "datum_shrnuti", "datum_prezentace", "datum_motivacniho_callu", "dalsi_kroky"]
 let show_img_input_button = document.getElementById("show_img_input")
 let img = document.getElementById("img_file");
