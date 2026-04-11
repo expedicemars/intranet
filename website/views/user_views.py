@@ -77,6 +77,7 @@ def ucet():
             current_user.osloveni_1p = data["osloveni_1p"]
             current_user.osloveni_5p = data["osloveni_5p"]
             current_user.zajmeno = data["zajmeno"]
+            current_user.stem_field = data["stem_field"]
             if current_user.email != data["email"]:
                 current_user.email = data["email"]
                 current_user.confirmed = False

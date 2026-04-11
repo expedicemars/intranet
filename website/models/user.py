@@ -42,6 +42,7 @@ class User(db.Model, UserMixin):
     uzamcene_zmeny_prace = db.Column(db.Boolean, default=False)
     alergie = db.Column(db.String(1000))
     skola = db.Column(db.String(1000))
+    stem_field = db.Column(db.String(1000))
     datum_registrace = db.Column((db.DateTime), default=datetime.now)
     motivacni_dotaznik = db.Column(db.Text)
     odevzdany_motivacni_dotaznik = db.Column(db.Boolean)
@@ -98,7 +99,8 @@ class User(db.Model, UserMixin):
             "osloveni_1p": self.osloveni_1p,
             "osloveni_5p": self.osloveni_5p,
             "zajmeno": self.zajmeno,
-            "dalsi_kroky": self.dalsi_kroky()
+            "dalsi_kroky": self.dalsi_kroky(),
+            "stem_field": self.stem_field
         }
         
     def calculate_age(self):
@@ -152,7 +154,8 @@ class User(db.Model, UserMixin):
             "osloveni_1p": self.osloveni_1p,
             "osloveni_5p": self.osloveni_5p,
             "zajmeno": self.zajmeno,
-            "dalsi_kroky": self.dalsi_kroky()
+            "dalsi_kroky": self.dalsi_kroky(),
+            "stem_field": self.stem_field
         }
         
 
@@ -196,7 +199,7 @@ class User(db.Model, UserMixin):
     
     def ulozit_odpovedi(self, form):
         if self.motivacni_dotaznik is None:
-            self.motivacni_dotaznik = [{"id": i, "odpoved": ""} for i in range(1,15)]
+            self.motivacni_dotaznik = [{"id": i, "odpoved": ""} for i in range(1,10)]
         else:
             self.motivacni_dotaznik = json.loads(self.motivacni_dotaznik)
         for key, value in form.items():
@@ -205,7 +208,7 @@ class User(db.Model, UserMixin):
             except ValueError:
                 continue
             
-            if key in range(1,15):
+            if key in range(1,10):
                 for entry in self.motivacni_dotaznik:
                     if entry["id"] == key:
                         entry["odpoved"] = value
