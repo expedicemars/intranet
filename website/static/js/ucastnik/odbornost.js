@@ -26,7 +26,7 @@ if (zadani.length != 0) {
         document.getElementById("zadani_single").appendChild(document.createElement("br"))
     }
 } else {
-    document.getElementById("zadani_single").innerHTML = "Bohužel, tvoje odbornost ještě žádný zadání neuploadla. Měli by to udělat co nejdřív!"
+    document.getElementById("zadani_single").innerHTML = "Bohužel, tvoje odbornost ještě žádný zadání nenahrála. Měli by to udělat co nejdřív!"
 }
 
 // shrnutí

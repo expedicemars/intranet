@@ -10,6 +10,14 @@ let progress_select = document.getElementById("progress_select")
 let odbornost_select = document.getElementById("odbornost_select")
 let dostupne_odbornosti = JSON.parse(httpGet("/noauth_api/dostupne_odbornosti"))
 let odebrat_call_button = document.getElementById("odebrat_motivacni_call")
+let smazat_button = document.getElementById("smazat_button")
+let smazat_form = document.getElementById("smazat_form")
+
+smazat_button.addEventListener("click", function() {
+    if (confirm("Opravdu chcete smazat tohoto uživatele? Tuto akci nelze vrátit zpět.")) {
+        smazat_form.submit()
+    }
+})
 
 textarea.addEventListener("input", function() {
     charcount_span.innerHTML = String(textarea.value.length) + "/1000"
@@ -44,9 +52,7 @@ for (let odb of dostupne_odbornosti) {
 for (let key in detail_usera) {
     let node = document.getElementById(key)
     if (node) {
-        if (key == "id") {
-            document.getElementById("id_display").innerHTML = detail_usera[key]
-        } else if (key == "progress") {
+        if (key == "progress") {
             document.getElementById(detail_usera["progress"]).selected = "selected"
         } else if (key == "odbornost") {
             for (let odb of dostupne_odbornosti) {

@@ -30,7 +30,7 @@ if (odbornosti_div) {
                 document.getElementById(odbornost.system_name  + "_zadani").appendChild(document.createElement("br"))
             }
         } else {
-            document.getElementById(odbornost.system_name + "_zadani").innerText = "Bohužel, tato odbornost ještě žádné zadání neuploadla. Měla by to udělat co nejdřív!"
+            document.getElementById(odbornost.system_name + "_zadani").innerText = "Bohužel, tato odbornost ještě žádné zadání nenahrála. Měla by to udělat co nejdřív!"
         }
     }
 }

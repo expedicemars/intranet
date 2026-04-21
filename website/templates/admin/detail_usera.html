@@ -94,12 +94,6 @@
                     </tr>
                     <tr>
                         <th>
-                            ID v systému:
-                        </th>
-                        <td id="id_display"></td>
-                    </tr>
-                    <tr>
-                        <th>
                             Tričko:
                         </th>
                         <td id="tricko"></td>
@@ -377,8 +371,9 @@
 <h3>Práce domácího kola</h3>
 <div id="ukazat_praci" class="border-orange rounded-2 my-2 p-2 lighter"></div>
 
-<form method="post">
-    <button class="btn btn-danger m-1" type="submit" value="1" name="smazat">Smazat uživatele</button>
+<form method="post" id="smazat_form">
+    <button class="btn btn-danger m-1" type="button" id="smazat_button">Smazat uživatele</button>
+    <input type="text" hidden name="smazat" value="whatever"/>
 </form>
 
 <script type="module" src="{{url_for('static', filename='js/admin/detail_usera.js')}}"></script>

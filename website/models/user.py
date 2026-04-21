@@ -49,6 +49,7 @@ class User(db.Model, UserMixin):
     osloveni_1p = db.Column(db.String(200))
     osloveni_5p = db.Column(db.String(200))
     zajmeno = db.Column(db.String(200))
+    hodnoceni = db.relationship("Hodnoceni", back_populates="user")
     
     def __repr__(self):
         return f"Uživatel {self.email}"
@@ -160,6 +161,8 @@ class User(db.Model, UserMixin):
         
 
     def odstranit(self):
+        for h in self.hodnoceni:
+            h.smazat()
         db.session.delete(self)
         db.session.commit()
         osobni_slozka = user_data_folder_path() / str(self.id)
