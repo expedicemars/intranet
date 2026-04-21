@@ -179,7 +179,15 @@ def hodnoceni(id):
 def ucastnici():
     all = User.get_all()
     ucastnici = sorted([u for u in all if "admin" not in json.loads(u.role)], key=lambda x: x.datum_registrace or datetime.min)
-    return json.dumps([{"id": u.id, "email": u.email, "jmeno": u.pretty_name(), "datum_registrace": pretty_date(u.datum_registrace)} for u in ucastnici])
+    return json.dumps([
+        {
+            "id": u.id, 
+            "email": u.email, 
+            "jmeno": u.pretty_name(),
+            "progress": u.progress,
+            "datum_registrace": pretty_date(u.datum_registrace)
+        } for u in ucastnici
+    ])
 
 
 @admin_api.route("/organizatori")
