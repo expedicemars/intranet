@@ -246,7 +246,7 @@ def detail_usera(id):
             else:
                 u.odstranit()
                 alog("Smazání usera " + str(id) + ".")
-                flash("User byl smazán", category="success")
+                flash("Účastník byl smazán", category="success")
                 return redirect(url_for("admin_views.registrovani_uzivatele"))
 
 

@@ -7,6 +7,7 @@ from website.helpers.pretty_date import pretty_datetime
 class Hodnoceni(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship("User", back_populates="hodnoceni")
     admin_id = db.Column(db.Integer)
     vecnost = db.Column(db.Integer)
     originalita = db.Column(db.Integer)

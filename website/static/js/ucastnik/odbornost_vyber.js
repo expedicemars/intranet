@@ -36,7 +36,7 @@ for (let odbornost of dostupne_odbornosti) {
             c1.appendChild(document.createElement("br"))
         }
     } else {
-        c1.innerText = "Bohužel, tvoje odbornost ještě žádný zadání neuploadla. Měli by to udělat co nejdřív!"
+        c1.innerText = "Bohužel, tvoje odbornost ještě žádný zadání nenahrála. Měli by to udělat co nejdřív!"
     }
 
     

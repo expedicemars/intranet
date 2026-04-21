@@ -5,7 +5,7 @@ from website.helpers.require_role_decorator import require_role_on_current_user
 from website.json_handlers.logs_handling import get_logs, get_alogs
 from website.json_handlers.prubeh_rocniku_handling import get_zadani_viditelne, get_koordinator_internetovych_kol, get_info_o_konferenci_viditelne, get_info_o_konferenci, get_mezni_hodiny_pro_cally
 from website.json_handlers.odkazy_handling import get_odkazy
-from website.helpers.pretty_date import pretty_datetime
+from website.helpers.pretty_date import pretty_datetime, pretty_date
 from website.paths import velitel_odbornosti_data_path, poznamky_path, prohlaseni_path, sablony_folder_path, vzorove_vypracovani_path, souhlas_fotografie_path
 from website.models.user import User
 from website.models.chyba import Chyba
@@ -167,6 +167,7 @@ def detail_usera(id):
         data["meeting_link"] = None
     return data
 
+
 @admin_api.route("/hodnoceni/<int:id>")
 @require_role_on_current_user("editing_users_allowed")
 def hodnoceni(id):
@@ -176,12 +177,16 @@ def hodnoceni(id):
 @admin_api.route("/ucastnici")
 @require_role_on_current_user("editing_users_allowed")
 def ucastnici():
-    return json.dumps([{"id": u.id, "email": u.email, "jmeno": u.pretty_name()} for u in User.get_all() if "admin" not in json.loads(u.role)])
+    all = User.get_all()
+    ucastnici = sorted([u for u in all if "admin" not in json.loads(u.role)], key=lambda x: x.datum_registrace or datetime.min)
+    return json.dumps([{"id": u.id, "email": u.email, "jmeno": u.pretty_name(), "datum_registrace": pretty_date(u.datum_registrace)} for u in ucastnici])
+
 
 @admin_api.route("/organizatori")
 @require_role_on_current_user("editing_users_allowed")
 def organizatori():
     return json.dumps([{"id": u.id, "email": u.email, "jmeno": u.pretty_name()} for u in User.get_all() if "admin" in json.loads(u.role)])
+
 
 @admin_api.route("/useri_na_jmenovani_adminu")
 @require_role_on_current_user("editing_admins_allowed")

@@ -2,7 +2,7 @@ import httpGet from "../httpGet.js"
 
 let ucastnici = JSON.parse(httpGet("/admin_api/ucastnici"))
 
-function generator_from_db(id, email, jmeno) {
+function generator_from_db(id, email, jmeno, datum_registrace) {
     let tr = document.createElement("tr")
     let td1 = document.createElement("td")
     let td2 = document.createElement("td")
@@ -14,9 +14,9 @@ function generator_from_db(id, email, jmeno) {
     tr.appendChild(td4)
     document.getElementById("users").appendChild(tr)
     
-    td1.innerText = id
-    td2.innerText = jmeno
-    td3.innerText = email
+    td1.innerText = jmeno
+    td2.innerText = email
+    td3.innerText = datum_registrace
 
     let button = document.createElement("button")
     button.classList.add("btn", "em-button")
@@ -30,5 +30,5 @@ function generator_from_db(id, email, jmeno) {
 }
 
 for (let u of ucastnici) {
-    generator_from_db(u["id"], String(u["email"]), u["jmeno"])
+    generator_from_db(u["id"], String(u["email"]), u["jmeno"], u["datum_registrace"])
 }

@@ -86,7 +86,7 @@ def odpovedi_motivaku():
     if current_user.motivacni_dotaznik:
         return current_user.motivacni_dotaznik
     else:
-        return json.dumps([{"id": i, "odpoved": ""} for i in range(1,15)])
+        return json.dumps([{"id": i, "odpoved": ""} for i in range(1,9)])
     
 
 @user_api.route("/vzorove_vypracovani_existuje")
