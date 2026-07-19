@@ -32,7 +32,7 @@ def mail_sender(mail_identifier, target, data=None) -> None:
             msg = Message("Někdo se zapsal na motivační call",
                         sender=os.environ.get("MAIL_USERNAME"),
                         recipients=target)
-            msg.html = render_template("mails/novy_motivacni_call.html", url = url_for("admin_views.motivacni_call", _external = True))
+            msg.html = render_template("mails/novy_motivacni_call.html", url = url_for("admin_views.motivacni_call", _external = True), data = data)
             mail.send(msg)
             
         if mail_identifier == "odhlaseni_motivacniho_callu":

@@ -281,3 +281,11 @@ class User(db.Model, UserMixin):
             return f"{self.prijmeni} {self.jmeno}"
         else:
             return f"{self.jmeno} {self.prijmeni}"
+
+    def data_for_call_email(self) -> dict:
+        return {
+            "jmeno": self.jmeno,
+            "prijmeni": self.prijmeni,
+            "email": self.email,
+            "datum_motivaku": pretty_datetime(self.datetime_odevzdani_motivaku),
+        }

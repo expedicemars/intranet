@@ -86,11 +86,15 @@ def motivacni_cally():
         zaznam["probehl"] = (p.datum_a_cas < datetime.now() and p.user_id)
         if p.user_id:
             u = User.get_by_id(p.user_id)
-            zaznam["jmeno"] = u.pretty_name()
-            zaznam["link"] = p.meeting_link
-            #  aby bylo clickable, i když nemá jméno ještě:
-            if u.pretty_name().strip() == "":
-                zaznam["jmeno"] = "Dosud nevyplnil jméno"
+            if u:
+                zaznam["jmeno"] = u.pretty_name()
+                zaznam["link"] = p.meeting_link
+                #  aby bylo clickable, i když nemá jméno ještě:
+                if u.pretty_name().strip() == "":
+                    zaznam["jmeno"] = "Dosud nevyplnil jméno"
+            else:
+                zaznam["jmeno"] = "Uživatel s tímto ID neexistuje"
+                zaznam["link"] = p.meeting_link
         else:
             zaznam["jmeno"] = None
             zaznam["link"] = None
