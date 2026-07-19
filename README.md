@@ -4,7 +4,7 @@
 ## Hosting
 
 - používám hosting na [python anywhere](https://eu.pythonanywhere.com).
-- přístupová data mám a můžu je poskytnout, ale hlavní je, že kód je zde na bitbucketu
+- přístupová data mám a můžu je poskytnout, ale hlavní je, že kód je zde na githubu
 
 ## Struktura a styl
 
