@@ -88,6 +88,7 @@ def ucet():
             return redirect(url_for("user_views.ucet"))
         
 @user_views.route("/info")
+@require_role_on_current_user("user")
 def info():
     return render_template("ucastnik/info.html", roles = get_access_rights(), user_progress=get_user_progress(), odevzdany_formular = current_user.odevzdany_motivacni_dotaznik, konf_viditelne = get_info_o_konf_viditelne())
 
@@ -118,7 +119,7 @@ def motivacni_call():
             m = Motivacni_call.get_by_id(request.form.get("vybrat"))
             vysledek = m.zapsat_usera(user_id = current_user.id)
             if vysledek:
-                mail_sender("novy_motivacni_call", target=User.get_by_id(m.admin_id).email)
+                mail_sender("novy_motivacni_call", target=User.get_by_id(m.admin_id).email, data = current_user.data_for_call_email())
                 flash("Termín vybrán.", category="success")
             else:
                 flash("Tento termín si mezitím vybral někdo jiný. Prosím, vyber si další.", category="error")
