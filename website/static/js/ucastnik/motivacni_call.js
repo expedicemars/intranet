@@ -23,7 +23,7 @@ if (aktualne["link"]) {
     a.target = "_blank"
     link_p.appendChild(a)
 } else {
-    link_p.innerHTML = "Zatím tu nemáš odkaz na pohovor. Až ho organizátoři vytvoří, čekej ho buď tady, nebo na e-mailu."
+    link_p.innerHTML = "Zatím tu nemáš odkaz na pohovor. Až ho organizátoři vytvoří, čekej ho buď tady nebo na e-mailu."
 }
 
 if (aktualne["datum"]) {
