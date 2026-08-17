@@ -15,8 +15,12 @@ if (aktualne["link"]) {
     let a = document.createElement("a")
     a.classList.add("link")
     a.innerHTML = "Odkaz na meeting"
-    a.href = aktualne["link"]
-    a.target = "blank"
+    let url = aktualne["link"]
+    if (!/^https?:\/\//i.test(url)) {
+        url = "https://" + url
+    }
+    a.href = url
+    a.target = "_blank"
     link_p.appendChild(a)
 } else {
     link_p.innerHTML = "Zatím tu nemáš odkaz na pohovor. Až ho organizátoři vytvoří, čekej ho buď tady, nebo na e-mailu."
