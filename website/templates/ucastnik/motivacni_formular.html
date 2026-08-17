@@ -5,7 +5,7 @@
 {% if odevzdany_formular %}
     Formulář už od tebe máme vyplněný. 
 {% else %}
-    Odpověz nám na několik otázek. Rádi bychom poznali tebe, tvé koníčky nebo tvé silné stránky, prodej se. Vždy při kliknutí na <code>další</code> a <code>předchozí</code> se tvé odpovědi uloží, takže se k nim můžeš vrátit později. Na konci formuláře je potom místo pro odeslání. 
+    Odpověz nám na několik otázek. Rádi bychom poznali tebe, tvé koníčky nebo tvé silné stránky, prodej se. Neboj se rozepsat, oceníme to. Vždy při kliknutí na <code>další</code> a <code>předchozí</code> se tvé odpovědi uloží, takže se k nim můžeš vrátit později. Na konci formuláře je potom místo pro odeslání. 
     <hr>
     <form method="post">
         {% if blok_otazek == 1 %}
@@ -15,12 +15,12 @@
             <textarea class="form-control" id="1" name="1" rows="3"></textarea>
             
             <p>
-                Máš něco, co bys rád vyzkoušel? (nové hobby, zážitek)
+                Máš v životě něco, co tě láká nebo co toužíš vyzkoušet?
             </p>
             <textarea class="form-control" id="2" name="2" rows="3"></textarea>
 
             <p>
-                V čem tě zaujala Expedice Mars? Co očekáváš, že ti přinese Expedice Mars? 
+                V čem tě zaujala Expedice Mars? Co očekáváš, že ti účast přinese? 
             </p>
             <textarea class="form-control" id="3" name="3" rows="3"></textarea>
             
@@ -50,7 +50,7 @@
         {% elif blok_otazek == 3 %}
             
             <p>
-                Jaké budou tvoje přínosy do týmu?
+                Jak funguješ v týmové spolupráci? Znáš svou roli v týmu? Nebo pracuješ raději o samotě?
             </p>
             <textarea class="form-control" id="7" name="7" rows="3"></textarea>
             
@@ -60,7 +60,7 @@
             <textarea class="form-control" id="8" name="8" rows="3"></textarea>
             
             <p>
-                Chtěl bys nám sdělit něco, co nebylo součástí formuláře? 
+                Chtěl bys nám ještě sdělit něco, co nebylo součástí formuláře?
             </p>
             <textarea class="form-control" id="9" name="9" rows="3"></textarea>
             <button class="btn em-button my-2" type="submit" value="3" name="predchozi">Předchozí (2/3)</button>

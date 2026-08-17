@@ -49,6 +49,7 @@ odkazy.forEach(kategorie => {
         a.innerText = radek.nazev
         a.href = radek.adresa
         a.classList.add("link")
+        a.target = "_blank"
 
         let b = document.createElement("button")
         b.classList.add("btn", "btn-danger")

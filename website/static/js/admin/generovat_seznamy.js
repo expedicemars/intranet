@@ -141,6 +141,10 @@ let udaje_k_vypsani = [
         "display_name": "E-mail rodičů",
     },
     {
+        "system_name": "telcislo_rodicu",
+        "display_name": "Telefonní číslo roičů"
+    },
+    {
         "system_name": "odbornost",
         "display_name": "Odbornost"
     },
