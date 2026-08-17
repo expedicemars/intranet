@@ -261,6 +261,8 @@ def seznam_generator(kriteria: dict) -> dict:
             zaznam["telcislo"] = u.telcislo
         if "mail_rodicu" in vypsat_list:
             zaznam["mail_rodicu"] = u.mail_rodicu
+        if "telcislo_rodicu" in vypsat_list:
+            zaznam["telcislo_rodicu"] = u.telcislo_rodicu
         if "odbornost" in vypsat_list:
             zaznam["odbornost"] = u.odbornost
         if "datum_narozeni" in vypsat_list:
