@@ -5,8 +5,10 @@ from website.helpers.pretty_date import pretty_datetime
 
 class Motivacni_call(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer)
-    admin_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship("User", back_populates="motivacni_call", foreign_keys="Motivacni_call.user_id")
+    admin_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    admin = db.relationship("User", back_populates="administered_calls", foreign_keys="Motivacni_call.admin_id")
     datum_a_cas = db.Column(db.DateTime)
     meeting_link = db.Column(db.String(1000))
     

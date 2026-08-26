@@ -51,6 +51,9 @@ class User(db.Model, UserMixin):
     zajmeno = db.Column(db.String(200))
     hodnoceni = db.relationship("Hodnoceni", back_populates="user")
     
+    motivacni_call = db.relationship("Motivacni_call", back_populates="user", foreign_keys="Motivacni_call.user_id", uselist=False)
+    administered_calls = db.relationship("Motivacni_call", back_populates="admin", foreign_keys="Motivacni_call.admin_id")
+    
     def __repr__(self):
         return f"Uživatel {self.email}"
 
@@ -287,5 +290,5 @@ class User(db.Model, UserMixin):
             "jmeno": self.jmeno,
             "prijmeni": self.prijmeni,
             "email": self.email,
-            "datum_motivaku": pretty_datetime(self.datetime_odevzdani_motivaku),
+            "datum_callu": pretty_datetime(self.motivacni_call.datum_a_cas) if self.motivacni_call else "zatím nevybraný"
         }
