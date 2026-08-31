@@ -63,7 +63,7 @@ def register():
 				flash("Tento email je už zaregistrovaný. Použij prosím jiný", category="error")
 				return redirect(url_for("auth_views.register"))
 			else:
-				user = User(email=email, password=generate_password_hash(password, method="sha256"))
+				user = User(email=email, password=generate_password_hash(password))
 				db.session.add(user)
 				db.session.commit()
 				login_user(user, remember=False)
@@ -143,7 +143,7 @@ def reset_password(token):
 	if request.method == "GET":
 		return render_template("auth/reset_password.html")
 	else:
-		user.password = generate_password_hash(request.form.get("password"), method="sha256")
+		user.password = generate_password_hash(request.form.get("password"))
 		db.session.commit()
 		flash("Heslo změněno, můžete se nyní přihlásit:", category="info")
 		return redirect(url_for("auth_views.login"))
