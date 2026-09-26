@@ -35,6 +35,9 @@ def login():
 				login_user(user, remember=True)
 				flash("úspěšné přihlášení", category="success")
 				return redirect(url_for("user_views.ucet"))
+			else:
+				flash("E-mail nebo heslo byly špatně", category="error")
+				return redirect(url_for("auth_views.login"))
 		else:
 			flash("E-mail nebo heslo byly špatně", category="error")
 			return redirect(url_for("auth_views.login"))
