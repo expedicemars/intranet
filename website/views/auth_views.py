@@ -27,13 +27,14 @@ def login():
 			flash("Zadané heslo bylo určitě příliš dlouhé.", category="error")
 			return redirect(url_for("auth_views.login"))
 		user = User.get_by_email(email)
-		if "sha256" in user.password:
-			flash("V srpnu 2026 jsme přešli na nový formát hesel. Prosím resetujte si heslo, abyste se mohli přihlásit. Omlouváme se za komplikace a těšíme se!", category="error")
-			return redirect(url_for("auth_views.request_reset"))
-		if user and check_password_hash(user.password, password):
-			login_user(user, remember=True)
-			flash("úspěšné přihlášení", category="success")
-			return redirect(url_for("user_views.ucet"))
+		if user:
+			if "sha256" in user.password:
+				flash("V srpnu 2026 jsme přešli na nový formát hesel. Prosím resetujte si heslo, abyste se mohli přihlásit. Omlouváme se za komplikace a těšíme se!", category="error")
+				return redirect(url_for("auth_views.request_reset"))
+			if check_password_hash(user.password, password):
+				login_user(user, remember=True)
+				flash("úspěšné přihlášení", category="success")
+				return redirect(url_for("user_views.ucet"))
 		else:
 			flash("E-mail nebo heslo byly špatně", category="error")
 			return redirect(url_for("auth_views.login"))
