@@ -231,11 +231,26 @@ def prehled_roli():
 @require_role_on_current_user("admin")
 def statistiky():
     ucastnici = [u for u in User.get_all() if "admin" not in json.loads(u.role)] 
-    pohovory = Motivacni_call.get_all()   
+    pohovory = Motivacni_call.get_all()
+    vyplnenych_formularu = len(list(filter(lambda x: x.odevzdany_motivacni_dotaznik == True, ucastnici)))
+    cekajici = []
+    after_call = []
+    for p in pohovory:
+        if p.user_id is None:
+            continue
+        if p.datum_a_cas > datetime.now():
+            cekajici.append(p.user_id)
+        else:
+            user = User.get_by_id(p.user_id)
+            if user.progress in ["Motivační formulář", "Motivační call"]:
+                after_call.append(p.user_id)
+
+
     result =  {
         "registrovanych": len(ucastnici),
-        "motivacni_formular": len(list(filter(lambda x: x.odevzdany_motivacni_dotaznik == True, ucastnici))),
-        "motivacni_call": len(list(filter(lambda x: x.user_id is not None, pohovory))),
+        "motivacni_formular": vyplnenych_formularu,
+        "motivacni_call": len(cekajici),
+        "after_call": len(after_call),
         "domaci_kolo": len(list(filter(lambda x: x.progress in ["Domácí projekt", "Přípravná mise", "Simulovaná mise"], ucastnici))),
         "pripravna_mise": len(list(filter(lambda x: x.progress in ["Přípravná mise", "Simulovaná mise"], ucastnici))),
         "simulovana_mise": len(list(filter(lambda x: x.progress == "Simulovaná mise", ucastnici))),

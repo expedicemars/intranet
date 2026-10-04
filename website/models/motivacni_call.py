@@ -71,5 +71,3 @@ class Motivacni_call(db.Model):
     def __repr__(self):
         return f"Call {pretty_datetime(self.datum_a_cas)}"
 
-
-        
