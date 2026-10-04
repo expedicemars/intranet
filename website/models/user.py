@@ -12,6 +12,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from website.models.motivacni_call import Motivacni_call
 
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True)
@@ -53,9 +54,11 @@ class User(db.Model, UserMixin):
     
     motivacni_call = db.relationship("Motivacni_call", back_populates="user", foreign_keys="Motivacni_call.user_id", uselist=False)
     administered_calls = db.relationship("Motivacni_call", back_populates="admin", foreign_keys="Motivacni_call.admin_id")
+
     
     def __repr__(self):
         return f"Uživatel {self.email}"
+
 
     def get_reset_token(self, expires_sec=9000) -> str:
         reset_token = jwt.encode(
@@ -68,6 +71,7 @@ class User(db.Model, UserMixin):
         )
         return reset_token
 
+
     @staticmethod
     def verify_reset_token(token) -> "User":
         try:
@@ -76,6 +80,7 @@ class User(db.Model, UserMixin):
         except:
             return None
         return db.session.get(User, data["user_id"])
+
     
     def get_info_na_ucet_stranku(self) -> dict:
         return {
@@ -106,6 +111,7 @@ class User(db.Model, UserMixin):
             "dalsi_kroky": self.dalsi_kroky(),
             "stem_field": self.stem_field
         }
+
         
     def calculate_age(self):
         if self.datum_narozeni:
@@ -116,6 +122,7 @@ class User(db.Model, UserMixin):
                 age -= 1
             return age
         return None
+
     
     def get_info_na_detail_usera(self) -> dict:
         puvod = "neurčena"
@@ -182,18 +189,22 @@ class User(db.Model, UserMixin):
             return "Success"
         else:
             return "Zadadný mail v db neexistuje"
+
     
     @staticmethod
     def get_by_id(id) -> "User":
         return db.session.get(User, int(id))
+
     
     @staticmethod
     def get_by_email(email) -> "User":
         return db.session.scalars(db.select(User).where(User.email == email)).first()
 
+
     @staticmethod
     def get_all() ->list:
         return db.session.scalars(db.select(User)).all()
+
 
     @staticmethod
     def get_all_by_role(role) -> list:
@@ -202,6 +213,7 @@ class User(db.Model, UserMixin):
             if role in json.loads(u.role):
                 result.append(u)
         return result
+
     
     def ulozit_odpovedi(self, form):
         if self.motivacni_dotaznik is None:
@@ -220,10 +232,12 @@ class User(db.Model, UserMixin):
                         entry["odpoved"] = value
         self.motivacni_dotaznik = json.dumps(self.motivacni_dotaznik)
         self.save()
+
     
     def ma_nahranou_praci(self):
         filenames = json.loads(get_prace_filenames(self.id))
         return bool(filenames)
+
     
     def smazat_praci(self):
         path = user_data_folder_path() / str(self.id) / "prace"
@@ -231,6 +245,7 @@ class User(db.Model, UserMixin):
             file.unlink()
         self.datetime_odevzdani_prezentace = None
         self.save()
+
 
     def smazat_shrnuti(self):
         filename = get_shrnuti_filename(self.id)
@@ -247,16 +262,19 @@ class User(db.Model, UserMixin):
         self.odevzdany_motivacni_dotaznik = False
         self.datetime_odevzdani_motivaku = None
         self.save()
+
     
     def znovu_zpristupnit_motivacni_formular(self):
         self.odevzdany_motivacni_dotaznik = False
         self.datetime_odevzdani_motivaku = None
         self.progress = "Motivační formulář"
         self.save()
+
     
     def save(self):
         db.session.add(self)
         db.session.commit()
+
         
     def dalsi_kroky(self) -> str:
         if not self.odevzdany_motivacni_dotaznik:
@@ -273,6 +291,7 @@ class User(db.Model, UserMixin):
             return "Na online konferenci budeš prezentovat svou domácí práci. Nyní čekáme na to, než celou práci odevzdáš. Máš na to čas do půlnoci před konferencí."
         else:
             return "Informace o konferenci a dalších kolech budeš dostávat e-mailem. Tak na viděnou!"
+
         
     def pretty_name(self, surname_first:bool = False) -> str:
         if not self.prijmeni: # protože fstrig s None vypíše None
@@ -285,6 +304,7 @@ class User(db.Model, UserMixin):
         else:
             return f"{self.jmeno} {self.prijmeni}"
 
+
     def data_for_call_email(self) -> dict:
         return {
             "jmeno": self.jmeno,
@@ -292,3 +312,10 @@ class User(db.Model, UserMixin):
             "email": self.email,
             "datum_callu": pretty_datetime(self.motivacni_call.datum_a_cas) if self.motivacni_call else "zatím nevybraný"
         }
+
+
+    def get_full_name(self) -> str:
+        result = f"{self.jmeno or ""} {self.prijmeni or ""}".strip()
+        if not result:
+            result = self.email
+        return result

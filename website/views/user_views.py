@@ -12,9 +12,10 @@ from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti, get_
 import datetime
 from pathlib import Path
 from website.json_handlers.prubeh_rocniku_handling import get_koordinator_internetovych_kol
+from website.helpers.discord import discord_odevzdany_formular, discord_zapis_na_call, discord_nove_shrnuti
+
 
 user_views = Blueprint("user_views", __name__)
-
 
 
 @user_views.route("/ucet", methods=["GET", "POST"])
@@ -120,6 +121,7 @@ def motivacni_call():
             vysledek = m.zapsat_usera(user_id = current_user.id)
             if vysledek:
                 mail_sender("novy_motivacni_call", target=User.get_by_id(m.admin_id).email, data = current_user.data_for_call_email())
+                discord_zapis_na_call(current_user, m)
                 flash("Termín vybrán.", category="success")
             else:
                 flash("Tento termín si mezitím vybral někdo jiný. Prosím, vyber si další.", category="error")
@@ -190,6 +192,7 @@ def odbornost(odb):
                     target = [u.email for u in User.get_all_by_role("velitel_odbornosti_" + odb)]
                     target.append(get_koordinator_internetovych_kol())
                     mail_sender("nove_shrnuti_prace", target=target, data=current_user.id)
+                    discord_nove_shrnuti(current_user, odb)
                     flash(f"Shrnutí nahráno, tímto proběhlo zapsání do odbornosti {odb}.", category="success")
                     return redirect(url_for("user_views.odbornost", odb=odb))
             else:
@@ -215,11 +218,13 @@ def odbornost_vyber():
     else:
         return render_template("ucastnik/odbornost_vyber.html", roles=get_access_rights(), user_progress=get_user_progress(), konf_viditelne = get_info_o_konf_viditelne())
 
+
 @user_views.route("/motivacni_formular>", methods=["GET","POST"])
 @require_role_on_current_user("user")
 @require_progress_na_ucastnikovi("Motivační formulář")
 def motivacni_formular():
     return redirect(url_for("user_views.motivacni_formular_numbered", blok_otazek = 1))
+
 
 @user_views.route("/motivacni_formular/<int:blok_otazek>", methods=["GET","POST"])
 @require_role_on_current_user("user")
@@ -241,6 +246,7 @@ def motivacni_formular_numbered(blok_otazek):
             current_user.progress = "Motivační call"
             db.session.add(current_user)
             db.session.commit()
+            discord_odevzdany_formular(current_user)
             flash("Motivační formulář byl odevzdán.", category="success")
             return redirect(url_for("user_views.ucet"))
     
