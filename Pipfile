@@ -12,6 +12,7 @@ python-dotenv = "*"
 pyjwt = "*"
 pymysql = "*"
 cryptography = "*"
+requests = "*"
 
 [dev-packages]
 autopep8 = "*"

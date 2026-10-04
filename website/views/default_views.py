@@ -4,7 +4,7 @@ from flask_login import current_user
 from website.models.chyba import Chyba
 from website.role_handler import get_access_rights, get_user_progress, get_info_o_konf_viditelne
 from website.json_handlers.prubeh_rocniku_handling import get_zadani_viditelne, get_aktualni_faze, get_datum_zacatku_registrace_pretty, get_datum_konce_registrace_pretty
-from website.mail_handler import mail_sender
+from website.helpers.discord import discord_nova_pripominka
 
 
 default_views = Blueprint("default_views", __name__)
@@ -37,7 +37,7 @@ def nahlasit_bug():
             popis=request.form.get("popis")
         )
         c.pridat_do_chyb()
-        mail_sender("novej_bug", "josef.latj@gmail.com")
+        discord_nova_pripominka(c)
         return redirect(url_for("default_views.known_bugs"))
 
 
