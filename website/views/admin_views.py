@@ -21,6 +21,7 @@ from website.json_handlers.dostupne_omezeni import get_dostupne_odbornosti
 from website.json_handlers.velitele_odbornosti_handling import zapsat_kontakt
 from website.json_handlers.mailing_list import odebrat_mail_z_mailing_listu
 from website.paths import zadani_folder_path, prohlaseni_path, exporty_path, sablony_folder_path, vzorove_vypracovani_path, souhlas_fotografie_path
+from website.helpers.discord import discord_novy_link_na_call
 
 
 admin_views = Blueprint("admin_views",__name__)
@@ -177,6 +178,7 @@ def detail_usera(id):
             else:
                 m.meeting_link = meeting_link
                 m.save()
+                discord_novy_link_na_call(current_user=u, call=m)
                 flash("Změna meeting linku.", category="success")
                 alog(f"Změna meeting linku uživatele {u.email}.")
             return redirect(url_for("admin_views.detail_usera", id=id))
